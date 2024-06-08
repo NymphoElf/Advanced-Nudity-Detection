@@ -15,6 +15,14 @@ Int Property UnderwearTransparentRoll = 0 Auto
 Int Property HotpantsTransparentRoll = 0 Auto
 Int Property ShowgirlTransparentRoll = 0 Auto
 
+Event OnInit()
+	RegisterForUpdateGameTime(0.5)
+EndEvent
+
+Event OnUpdate()
+	AND_DiceRoll()
+EndEvent
+
 Function AND_DiceRoll()
 
 	TopCurtainRoll = Utility.RandomInt(1,100)
