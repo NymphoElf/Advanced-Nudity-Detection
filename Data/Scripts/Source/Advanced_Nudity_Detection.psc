@@ -70,15 +70,15 @@ Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
 
-Bool TopCurtainLayer_Cover = False ;True means Curtain is covering everything underneath, False means it is not
-Bool BraLayer_Cover = False ;True means Bra cannot be see regardless of reason, False means bra can be seen
-Bool Chest_Cover = False ;True means Chest cannot be seen, False means chest can be seen
+Bool Property TopCurtainLayer_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
+Bool Property BraLayer_Cover = False Auto ;True means Bra cannot be see regardless of reason, False means bra can be seen
+Bool Property Chest_Cover = False Auto ;True means Chest cannot be seen, False means chest can be seen
 
-Bool PelvicCurtain_Cover = False ;True means Curtain is covering everything underneath, False means it is not
-Bool AssCurtain_Cover = False ;True means Curtain is covering everything underneath, False means it is not
-Bool BottomGenital_Cover = False ;False means Genitals are not Covered
-Bool BottomAss_Cover = False ;False means Ass is not Covered
-Bool Underwear_Cover = False ;False means Underwear can be seen, True means Underwear cannot regardless of reason
+Bool Property PelvicCurtain_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
+Bool Property AssCurtain_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
+Bool Property BottomGenital_Cover = False Auto ;False means Genitals are not Covered
+Bool Property BottomAss_Cover = False Auto ;False means Ass is not Covered
+Bool Property Underwear_Cover = False Auto ;False means Underwear can be seen, True means Underwear cannot regardless of reason
 
 Event OnInit()
 	If !PlayerRef.IsInFaction(AND_ShowingAssFaction)

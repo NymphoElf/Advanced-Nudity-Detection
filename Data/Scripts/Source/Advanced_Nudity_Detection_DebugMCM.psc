@@ -34,9 +34,108 @@ Event OnPageReset(string page)
 		
 	ElseIf (page == "Flashing States")
 		AddHeaderOption("Curtain Risk")
-		AddTextOption("Chest", AdvancedNudityScanner.Player_ChestFlashRisk)
-		AddTextOption("Ass", AdvancedNudityScanner.Player_AssFlashRisk)
-		AddTextOption("Pelvic", AdvancedNudityScanner.Player_PelvicFlashRisk)
+		If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestFlashRiskLow)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtain)
+				AddTextOption("Chest", "20%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtainT)
+				AddTextOption("Chest", "55%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestFlashRisk)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtain)
+				AddTextOption("Chest", "35%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtainT)
+				AddTextOption("Chest", "65%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestFlashRiskHigh)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtain)
+				AddTextOption("Chest", "50%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtainT)
+				AddTextOption("Chest", "75%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestFlashRiskExtreme)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtain)
+				AddTextOption("Chest", "65%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtainT)
+				AddTextOption("Chest", "85%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestFlashRiskUltra)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtain)
+				AddTextOption("Chest", "80%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ChestCurtainT)
+				AddTextOption("Chest", "95%")
+			EndIf
+		Else
+			AddTextOption("Chest", "0%")
+		EndIf
+		
+		If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRiskLow)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtain)
+				AddTextOption("Ass", "20%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT)
+				AddTextOption("Ass", "55%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRisk)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtain)
+				AddTextOption("Ass", "35%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT)
+				AddTextOption("Ass", "65%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRiskHigh)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtain)
+				AddTextOption("Ass", "50%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT)
+				AddTextOption("Ass", "75%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRiskExtreme)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtain)
+				AddTextOption("Ass", "65%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT)
+				AddTextOption("Ass", "85%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRiskUltra)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtain)
+				AddTextOption("Ass", "80%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT)
+				AddTextOption("Ass", "95%")
+			EndIf
+		Else
+			AddTextOption("Ass", "0%")
+		EndIf
+		
+		If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicFlashRiskLow)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtain)
+				AddTextOption("Pelvic", "20%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtainT)
+				AddTextOption("Pelvic", "55%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicFlashRisk)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtain)
+				AddTextOption("Pelvic", "35%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtainT)
+				AddTextOption("Pelvic", "65%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicFlashRiskHigh)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtain)
+				AddTextOption("Pelvic", "50%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtainT)
+				AddTextOption("Pelvic", "75%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicFlashRiskExtreme)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtain)
+				AddTextOption("Pelvic", "65%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtainT)
+				AddTextOption("Pelvic", "85%")
+			EndIf
+		ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicFlashRiskUltra)
+			If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtain)
+				AddTextOption("Pelvic", "80%")
+			ElseIf AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_PelvicCurtainT)
+				AddTextOption("Pelvic", "95%")
+			EndIf
+		Else
+			AddTextOption("Pelvic", "0%")
+		EndIf
+		
 		AddHeaderOption("Transparent Clothes Risk")
 		If AdvancedNudityScanner.PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_ArmorTopT)
 			AddTextOption("Top", "YES")

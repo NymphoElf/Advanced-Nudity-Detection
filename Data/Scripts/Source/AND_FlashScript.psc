@@ -18,7 +18,7 @@ Int Property ShowgirlTransparentRoll = 0 Auto
 Function AND_DiceRoll()
 
 	TopCurtainRoll = Utility.RandomInt(1,100)
-	PelvicCurtainRoll = = Utility.RandomInt(1,100)
+	PelvicCurtainRoll = Utility.RandomInt(1,100)
 	AssCurtainRoll = Utility.RandomInt(1,100)
 	CStringRoll = Utility.RandomInt(1,100)
 	TopTransparentRoll = Utility.RandomInt(1,2)
@@ -225,7 +225,7 @@ Bool Function AssCurtainCheck()
 		Else
 			return True
 		EndIf
-	ElseIf PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT) PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_MiniskirtT)
+	ElseIf PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssCurtainT) || PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_MiniskirtT)
 		If PlayerRef.WornHasKeyword(AdvancedNudityScanner.AND_AssFlashRiskLow)
 			If AssCurtainRoll <= 55
 				return False
