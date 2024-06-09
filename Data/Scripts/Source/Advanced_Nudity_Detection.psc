@@ -186,7 +186,7 @@ Function AND_LayerAnalyze()
 			ElseIf PlayerRef.WornHasKeyword(AND_BraT)
 				BraLayer_Cover = False
 				Chest_Cover = FlashScript.TransparentBraCheck()
-			ElseIf PlayerRef.WornHasKeyword()
+			ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
 				BraLayer_Cover = False
 				Chest_Cover = False
 			Else
