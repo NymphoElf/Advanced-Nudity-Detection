@@ -157,18 +157,42 @@ Function AND_LayerAnalyze()
 			BraLayer_Cover = True
 			Chest_Cover = True
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTopT)
-			BraLayer_Cover = FlashScript.TopTransparentArmorCheck()
+			Bool TopCovering = FlashScript.TopTransparentArmorCheck()
+			
+			If TopCovering == True
+				BraLayer_Cover = True
+				Chest_Cover = True
+			Else
+				;Bra Layer
+				If PlayerRef.WornHasKeyword(AND_Bra)
+					BraLayer_Cover = False
+					Chest_Cover = True
+				ElseIf PlayerRef.WornHasKeyword(AND_BraT)
+					BraLayer_Cover = False
+					Chest_Cover = FlashScript.TransparentBraCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
+					BraLayer_Cover = False
+					Chest_Cover = False
+				Else
+					BraLayer_Cover = True
+					Chest_Cover = False
+				EndIf
+			EndIf
 		Else
-			BraLayer_Cover = False
-		EndIf
-		
-		;Bra Layer
-		If PlayerRef.WornHasKeyword(AND_Bra)
-			Chest_Cover = True
-		ElseIf PlayerRef.WornHasKeyword(AND_BraT)
-			Chest_Cover = FlashScript.TransparentBraCheck()
-		Else
-			Chest_Cover = False
+			;Bra Layer
+			If PlayerRef.WornHasKeyword(AND_Bra)
+				BraLayer_Cover = False
+				Chest_Cover = True
+			ElseIf PlayerRef.WornHasKeyword(AND_BraT)
+				BraLayer_Cover = False
+				Chest_Cover = FlashScript.TransparentBraCheck()
+			ElseIf PlayerRef.WornHasKeyword()
+				BraLayer_Cover = False
+				Chest_Cover = False
+			Else
+				BraLayer_Cover = True
+				Chest_Cover = False
+			EndIf
 		EndIf
 		
 		
