@@ -139,14 +139,14 @@ Event OnUpdate()
 EndEvent
 
 Event OnUpdateGameTime()
-	Debug.Notification("AND Update Game Time")
+	;Debug.Notification("AND Update Game Time")
 	AND_DiceRoll()
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
-	Debug.Notification("AND - Object Equipped.")
+	;Debug.Notification("AND - Object Equipped.")
 	If (akBaseObject == none || akBaseObject.GetName() == "")
-		Debug.Notification("AND - Equipped None Object")
+		;Debug.Notification("AND - Equipped None Object")
 		return
 	EndIf
 	
@@ -154,9 +154,9 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
-	Debug.Notification("AND - Object Unequipped")
+	;Debug.Notification("AND - Object Unequipped")
 	If (akBaseObject == none || akBaseObject.GetName() == "")
-		Debug.Notification("AND - Unequipped None Object")
+		;Debug.Notification("AND - Unequipped None Object")
 		return
 	EndIf
 	
@@ -164,7 +164,7 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Function AND_DiceRoll()
-	Debug.Notification("AND Dice Roll")
+	;Debug.Notification("AND Dice Roll")
 	TopCurtainRoll.SetValue(Utility.RandomInt(1,100))
 	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,100))
 	AssCurtainRoll.SetValue(Utility.RandomInt(1,100))
@@ -176,7 +176,7 @@ Function AND_DiceRoll()
 	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,2))
 	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,2))
 	
-	Debug.Notification("AND Flash Script - Send Layer Analyze")
+	;Debug.Notification("AND Flash Script - Send Layer Analyze")
 	AND_LayerAnalyze()
 	
 EndFunction
@@ -462,7 +462,7 @@ Bool Function CStringCheck()
 EndFunction
 
 Function AND_LayerAnalyze()
-	Debug.Notification("AND - Layer Analyze")
+	;;Debug.Notification("AND - Layer Analyze")
 
 	Armor AND_Slot32 = PlayerRef.GetEquippedArmorInSlot(32)
 	
@@ -1118,6 +1118,6 @@ Function AND_LayerAnalyze()
 		PlayerRef.SetFactionRank(AND_NudeActorFaction, 0)
 	EndIf
 
-Debug.Notification("AND - Update Finished.")
+;Debug.Notification("AND - Update Finished.")
 
 EndFunction

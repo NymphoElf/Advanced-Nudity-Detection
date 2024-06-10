@@ -90,12 +90,12 @@ GlobalVariable Property ShowgirlTransparentRoll Auto
 Event OnConfigInit()
 	Utility.Wait(1)
 	RegisterForSingleUpdate(1)
-	Debug.MessageBox("AND MCM Config Init Fired")
+	Debug.Notification("AND Debug MCM Initializing...")
 EndEvent
 
 Event OnUpdate()
 	InstallMCM()
-	Debug.MessageBox("AND MCM OnUpdate Fired")
+	Debug.Notification("AND Debug MCM Ready!")
 EndEvent 
 
 Function InstallMCM()
