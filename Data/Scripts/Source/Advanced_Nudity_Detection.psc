@@ -1,6 +1,6 @@
-ScriptName Advanced_Nudity_Detection extends Quest
+ScriptName Advanced_Nudity_Detection extends ReferenceAlias
 
-AND_FlashScript Property FlashScript Auto
+;AND_FlashScript Property FlashScript Auto
 
 Actor Property PlayerRef Auto
 
@@ -68,15 +68,38 @@ Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
 
-Bool Property TopCurtainLayer_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
-Bool Property BraLayer_Cover = False Auto ;True means Bra cannot be see regardless of reason, False means bra can be seen
-Bool Property Chest_Cover = False Auto ;True means Chest cannot be seen, False means chest can be seen
+;/
+Bool Property TopCurtainLayer_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
+Bool Property BraLayer_Cover = 0 ;False Auto ;1 ;True means Bra cannot be see regardless of reason, 0 ;False means bra can be seen
+Bool Property Chest_Cover = 0 ;False Auto ;1 ;True means Chest cannot be seen, 0 ;False means chest can be seen
 
-Bool Property PelvicCurtain_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
-Bool Property AssCurtain_Cover = False Auto ;True means Curtain is covering everything underneath, False means it is not
-Bool Property BottomGenital_Cover = False Auto ;False means Genitals are not Covered
-Bool Property BottomAss_Cover = False Auto ;False means Ass is not Covered
-Bool Property Underwear_Cover = False Auto ;False means Underwear can be seen, True means Underwear cannot regardless of reason
+Bool Property PelvicCurtain_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
+Bool Property AssCurtain_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
+Bool Property BottomGenital_Cover = 0 ;False Auto ;0 ;False means Genitals are not Covered
+Bool Property BottomAss_Cover = 0 ;False Auto ;0 ;False means Ass is not Covered
+Bool Property Underwear_Cover = 0 ;False Auto ;0 ;False means Underwear can be seen, 1 ;True means Underwear cannot regardless of reason
+/;
+
+GlobalVariable Property TopCurtainLayer_Cover Auto
+GlobalVariable Property BraLayer_Cover Auto
+GlobalVariable Property Chest_Cover Auto
+
+GlobalVariable Property PelvicCurtain_Cover Auto
+GlobalVariable Property AssCurtain_Cover Auto
+GlobalVariable Property BottomGenital_Cover Auto
+GlobalVariable Property BottomAss_Cover Auto
+GlobalVariable Property Underwear_Cover Auto
+
+GlobalVariable Property TopCurtainRoll Auto
+GlobalVariable Property PelvicCurtainRoll Auto
+GlobalVariable Property AssCurtainRoll Auto
+GlobalVariable Property CStringRoll Auto
+GlobalVariable Property TopTransparentRoll Auto
+GlobalVariable Property BottomTransparentRoll Auto
+GlobalVariable Property BraTransparentRoll Auto
+GlobalVariable Property UnderwearTransparentRoll Auto
+GlobalVariable Property HotpantsTransparentRoll Auto
+GlobalVariable Property ShowgirlTransparentRoll Auto
 
 Event OnInit()
 	If !PlayerRef.IsInFaction(AND_ShowingAssFaction)
@@ -111,8 +134,19 @@ Event OnInit()
 	Debug.Notification("A.N.D. Initialized")
 EndEvent
 
+Event OnUpdate()
+	AND_LayerAnalyze()
+EndEvent
+
+Event OnUpdateGameTime()
+	Debug.Notification("AND Update Game Time")
+	AND_DiceRoll()
+EndEvent
+
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
+	Debug.Notification("AND - Object Equipped.")
 	If (akBaseObject == none || akBaseObject.GetName() == "")
+		Debug.Notification("AND - Equipped None Object")
 		return
 	EndIf
 	
@@ -120,22 +154,315 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
+	Debug.Notification("AND - Object Unequipped")
 	If (akBaseObject == none || akBaseObject.GetName() == "")
+		Debug.Notification("AND - Unequipped None Object")
 		return
 	EndIf
 	
 	RegisterForSingleUpdate(0.1)
 EndEvent
 
-Event OnUpdate()
+Function AND_DiceRoll()
+	Debug.Notification("AND Dice Roll")
+	TopCurtainRoll.SetValue(Utility.RandomInt(1,100))
+	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,100))
+	AssCurtainRoll.SetValue(Utility.RandomInt(1,100))
+	CStringRoll.SetValue(Utility.RandomInt(1,100))
+	TopTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	BottomTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	BraTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	UnderwearTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,2))
+	
+	Debug.Notification("AND Flash Script - Send Layer Analyze")
 	AND_LayerAnalyze()
-EndEvent
+	
+EndFunction
 
-Event OnUpdateGameTime()
-	AND_LayerAnalyze()
-EndEvent
+Bool Function TopCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
+			If TopCurtainRoll.GetValue() <= 20
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
+			If TopCurtainRoll.GetValue() <= 35
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
+			If TopCurtainRoll.GetValue() <= 50
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
+			If TopCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
+			If TopCurtainRoll.GetValue() <= 80
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
+			If TopCurtainRoll.GetValue() <= 55
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
+			If TopCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
+			If TopCurtainRoll.GetValue() <= 75
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
+			If TopCurtainRoll.GetValue() <= 85
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
+			If TopCurtainRoll.GetValue() <= 95
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	EndIf
+EndFunction
+
+Bool Function TopTransparentArmorCheck()
+	If TopTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function TransparentBraCheck()
+	If BraTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function PelvicCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_PelvicCurtain) || PlayerRef.WornHasKeyword(AND_Miniskirt)
+		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
+			If PelvicCurtainRoll.GetValue() <= 20
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
+			If PelvicCurtainRoll.GetValue() <= 35
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
+			If PelvicCurtainRoll.GetValue() <= 50
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
+			If PelvicCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
+			If PelvicCurtainRoll.GetValue() <= 80
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
+		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
+			If PelvicCurtainRoll.GetValue() <= 55
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
+			If PelvicCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
+			If PelvicCurtainRoll.GetValue() <= 75
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
+			If PelvicCurtainRoll.GetValue() <= 85
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
+			If PelvicCurtainRoll.GetValue() <= 95
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	EndIf
+EndFunction
+
+Bool Function AssCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_AssCurtain) || PlayerRef.WornHasKeyword(AND_Miniskirt)
+		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
+			If AssCurtainRoll.GetValue() <= 20
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
+			If AssCurtainRoll.GetValue() <= 35
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
+			If AssCurtainRoll.GetValue() <= 50
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
+			If AssCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
+			If AssCurtainRoll.GetValue() <= 80
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
+		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
+			If AssCurtainRoll.GetValue() <= 55
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
+			If AssCurtainRoll.GetValue() <= 65
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
+			If AssCurtainRoll.GetValue() <= 75
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
+			If AssCurtainRoll.GetValue() <= 85
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
+			If AssCurtainRoll.GetValue() <= 95
+				return False
+			Else
+				return True
+			EndIf
+		Else
+			return True
+		EndIf
+	EndIf
+EndFunction
+
+Bool Function BottomTransparentArmorCheck()
+	If BottomTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function TransparentHotpantsCheck()
+	If HotpantsTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function TransparentShowgirlCheck()
+	If ShowgirlTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function TransparentUnderwearCheck()
+	If UnderwearTransparentRoll.GetValue() == 1
+		return False
+	Else
+		return True
+	EndIf
+EndFunction
+
+Bool Function CStringCheck()
+	If PlayerRef.WornHasKeyword(AND_CString)
+		If CStringRoll.GetValue() <= 75
+			return False
+		Else
+			return True
+		EndIf
+	ElseIf PlayerRef.WornHasKeyword(AND_CStringT)
+		If CStringRoll.GetValue() <= 90
+			return False
+		Else
+			return True
+		EndIf
+	EndIf
+EndFunction
 
 Function AND_LayerAnalyze()
+	Debug.Notification("AND - Layer Analyze")
 
 	Armor AND_Slot32 = PlayerRef.GetEquippedArmorInSlot(32)
 	
@@ -147,51 +474,51 @@ Function AND_LayerAnalyze()
 		
 		;Curtain Layer
 		If PlayerRef.WornHasKeyword(AND_ChestCurtain) || PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-			TopCurtainLayer_Cover = FlashScript.TopCurtainCheck()
+			TopCurtainLayer_Cover.SetValue(TopCurtainCheck() as Int)
 		Else
-			TopCurtainLayer_Cover = False
+			TopCurtainLayer_Cover.SetValue(0) ;False
 		EndIf
 			
 		;Armor Layer
 		If PlayerRef.WornHasKeyword(AND_ArmorTop)
-			BraLayer_Cover = True
-			Chest_Cover = True
+			BraLayer_Cover.SetValue(1) ;True
+			Chest_Cover.SetValue(1) ;True
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTopT)
-			Bool TopCovering = FlashScript.TopTransparentArmorCheck()
+			Bool TopCovering = TopTransparentArmorCheck()
 			
 			If TopCovering == True
-				BraLayer_Cover = True
-				Chest_Cover = True
+				BraLayer_Cover.SetValue(1) ;True
+				Chest_Cover.SetValue(1) ;True
 			Else
 				;Bra Layer
 				If PlayerRef.WornHasKeyword(AND_Bra)
-					BraLayer_Cover = False
-					Chest_Cover = True
+					BraLayer_Cover.SetValue(0) ;False
+					Chest_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_BraT)
-					BraLayer_Cover = False
-					Chest_Cover = FlashScript.TransparentBraCheck()
+					BraLayer_Cover.SetValue(0) ;False
+					Chest_Cover.SetValue(TransparentBraCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
-					BraLayer_Cover = False
-					Chest_Cover = False
+					BraLayer_Cover.SetValue(0) ;False
+					Chest_Cover.SetValue(0) ;False
 				Else
-					BraLayer_Cover = True
-					Chest_Cover = False
+					BraLayer_Cover.SetValue(1) ;True
+					Chest_Cover.SetValue(0) ;False
 				EndIf
 			EndIf
 		Else
 			;Bra Layer
 			If PlayerRef.WornHasKeyword(AND_Bra)
-				BraLayer_Cover = False
-				Chest_Cover = True
+				BraLayer_Cover.SetValue(0) ;False
+				Chest_Cover.SetValue(1) ;True
 			ElseIf PlayerRef.WornHasKeyword(AND_BraT)
-				BraLayer_Cover = False
-				Chest_Cover = FlashScript.TransparentBraCheck()
+				BraLayer_Cover.SetValue(0) ;False
+				Chest_Cover.SetValue(TransparentBraCheck() as Int)
 			ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
-				BraLayer_Cover = False
-				Chest_Cover = False
+				BraLayer_Cover.SetValue(0) ;False
+				Chest_Cover.SetValue(0) ;False
 			Else
-				BraLayer_Cover = True
-				Chest_Cover = False
+				BraLayer_Cover.SetValue(1) ;True
+				Chest_Cover.SetValue(0) ;False
 			EndIf
 		EndIf
 		
@@ -202,352 +529,389 @@ Function AND_LayerAnalyze()
 		
 		;Pelvic Curtain Layer
 		If PlayerRef.WornHasKeyword(AND_PelvicCurtain) || PlayerRef.WornHasKeyword(AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(AND_Miniskirt) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
-			PelvicCurtain_Cover = FlashScript.PelvicCurtainCheck()
+			PelvicCurtain_Cover.SetValue(PelvicCurtainCheck() as Int)
 		Else
-			PelvicCurtain_Cover = False
+			PelvicCurtain_Cover.SetValue(0) ;False
 		EndIf
 		
 		;Ass Curtain Layer
 		If PlayerRef.WornHasKeyword(AND_AssCurtain) || PlayerRef.WornHasKeyword(AND_AssCurtainT) || PlayerRef.WornHasKeyword(AND_Miniskirt) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
-			AssCurtain_Cover = FlashScript.AssCurtainCheck()
+			AssCurtain_Cover.SetValue(AssCurtainCheck() as Int)
 		Else
-			AssCurtain_Cover = False
+			AssCurtain_Cover.SetValue(0) ;False
 		EndIf
 			
 		;Bottom Armor Layer
 		If PlayerRef.WornHasKeyword(AND_ArmorBottom)
-			BottomAss_Cover = True
-			BottomGenital_Cover = True
-			Underwear_Cover = True
+			BottomAss_Cover.SetValue(1) ;True
+			BottomGenital_Cover.SetValue(1) ;True
+			Underwear_Cover.SetValue(1) ;True
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottomT)
-			Underwear_Cover = FlashScript.BottomTransparentArmorCheck()
+			Underwear_Cover.SetValue(BottomTransparentArmorCheck() as Int)
 			
-			If Underwear_Cover == True
-				BottomGenital_Cover = True
-				BottomAss_Cover = True
+			If Underwear_Cover.GetValue() == 1 ;True
+				BottomGenital_Cover.SetValue(1) ;True
+				BottomAss_Cover.SetValue(1) ;True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottom_NoCover)
 			If PlayerRef.WornHasKeyword(AND_Underwear)
-				Underwear_Cover = False
-				BottomAss_Cover = True
-				BottomGenital_Cover = True
+				Underwear_Cover.SetValue(0) ;False
+				BottomAss_Cover.SetValue(1) ;True
+				BottomGenital_Cover.SetValue(1) ;True
 			ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-				Underwear_Cover = False
-				BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
-				BottomGenital_Cover = BottomAss_Cover
+				Underwear_Cover.SetValue(0) ;False
+				BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
+				BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 			ElseIf PlayerRef.WornHasKeyword(AND_Thong)
-				Underwear_Cover = False
-				BottomAss_Cover = False
-				BottomGenital_Cover = True
+				Underwear_Cover.SetValue(0) ;False
+				BottomAss_Cover.SetValue(0) ;False
+				BottomGenital_Cover.SetValue(1) ;True
 			ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-				Underwear_Cover = False
-				BottomAss_Cover = False
-				BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+				Underwear_Cover.SetValue(0) ;False
+				BottomAss_Cover.SetValue(0) ;False
+				BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 			ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-				BottomAss_Cover = False
-				BottomGenital_Cover = FlashScript.CStringCheck()
-				Underwear_Cover = !BottomGenital_Cover
+				BottomAss_Cover.SetValue(0) ;False
+				BottomGenital_Cover.SetValue(CStringCheck() as Int)
+				
+				If BottomGenital_Cover.GetValue() == 1 ;True
+					Underwear_Cover.SetValue(0) ;False
+				Else
+					Underwear_Cover.SetValue(1) ;True
+				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-				Underwear_Cover = False
-				BottomAss_Cover = False
-				BottomGenital_Cover = False
+				Underwear_Cover.SetValue(0) ;False
+				BottomAss_Cover.SetValue(0) ;False
+				BottomGenital_Cover.SetValue(0) ;False
 			Else
-				Underwear_Cover = True
-				BottomAss_Cover = False
-				BottomGenital_Cover = False
+				Underwear_Cover.SetValue(1) ;True
+				BottomAss_Cover.SetValue(0) ;False
+				BottomGenital_Cover.SetValue(0) ;False
 			EndIf
 		Else
 			If PlayerRef.WornHasKeyword(AND_Hotpants) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirt)
-				BottomAss_Cover = True
-				BottomGenital_Cover = True
-				Underwear_Cover = True				
+				BottomAss_Cover.SetValue(1) ;True
+				BottomGenital_Cover.SetValue(1) ;True
+				Underwear_Cover.SetValue(1) ;True				
 			ElseIf PlayerRef.WornHasKeyword(AND_Hotpants) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-				BottomGenital_Cover = True
+				BottomGenital_Cover.SetValue(1) ;True
 				
 				If PlayerRef.WornHasKeyword(AND_Underwear)
-					BottomAss_Cover = True
-					Underwear_Cover = FlashScript.TransparentShowgirlCheck()
+					BottomAss_Cover.SetValue(1) ;True
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-					Underwear_Cover = FlashScript.TransparentShowgirlCheck()
-					If Underwear_Cover == True
-						BottomAss_Cover = True
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
+					If Underwear_Cover.GetValue() == 1 ;True
+						BottomAss_Cover.SetValue(1) ;True
 					Else
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
-					Underwear_Cover = FlashScript.TransparentShowgirlCheck()
-					If Underwear_Cover == True
-						BottomAss_Cover = True
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
+					If Underwear_Cover.GetValue() == 1 ;True
+						BottomAss_Cover.SetValue(1) ;True
 					Else
-						BottomAss_Cover = False
+						BottomAss_Cover.SetValue(0) ;False
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Thong) || PlayerRef.WornHasKeyword(AND_ThongT) || PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-					Underwear_Cover = True
-					BottomAss_Cover = FlashScript.TransparentShowgirlCheck()
+					Underwear_Cover.SetValue(1) ;True
+					BottomAss_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				Else
-					Underwear_Cover = True
-					BottomAss_Cover = FlashScript.TransparentShowgirlCheck()
+					Underwear_Cover.SetValue(1) ;True
+					BottomAss_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				EndIf
 				
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirt)
-				BottomAss_Cover = True
+				BottomAss_Cover.SetValue(1) ;True
 				If PlayerRef.WornHasKeyword(AND_Underwear) || PlayerRef.WornHasKeyword(AND_Thong)
-					BottomGenital_Cover = True
-					Underwear_Cover = FlashScript.TransparentHotpantsCheck()
+					BottomGenital_Cover.SetValue(1) ;True
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT) || PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-					Underwear_Cover = FlashScript.TransparentHotpantsCheck()
-					If Underwear_Cover == True
-						BottomGenital_Cover = True
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
+					If Underwear_Cover.GetValue() == 1 ;True
+						BottomGenital_Cover.SetValue(1) ;True
 					Else
 						If PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
-							BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+							BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						Else
-							BottomGenital_Cover = FlashScript.CStringCheck()
-							Underwear_Cover = !BottomGenital_Cover
+							BottomGenital_Cover.SetValue(CStringCheck() as Int)
+							If BottomGenital_Cover.GetValue() == 1 ;True
+								Underwear_Cover.SetValue(0) ;False
+							Else
+								Underwear_Cover.SetValue(1) ;False
+							EndIf
 						EndIf
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-					Underwear_Cover = FlashScript.TransparentHotpantsCheck()
-					If Underwear_Cover == True
-						BottomGenital_Cover = True
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
+					If Underwear_Cover.GetValue() == 1 ;True
+						BottomGenital_Cover.SetValue(1) ;True
 					Else
-						BottomGenital_Cover = False
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				Else
-					Underwear_Cover = True
-					BottomGenital_Cover = FlashScript.TransparentHotpantsCheck()
+					Underwear_Cover.SetValue(1) ;True
+					BottomGenital_Cover.SetValue(TransparentHotpantsCheck() as Int)
 				EndIf
 					
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-				Bool Hotpants_Covering = FlashScript.TransparentHotpantsCheck()
-				Bool Showgirl_Covering = FlashScript.TransparentShowgirlCheck()
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				
 				If Hotpants_Covering == True && Showgirl_Covering == True
-					BottomAss_Cover = True
-					BottomGenital_Cover = True
-					Underwear_Cover = True
+					BottomAss_Cover.SetValue(1) ;True
+					BottomGenital_Cover.SetValue(1) ;True
+					Underwear_Cover.SetValue(1) ;True
 				ElseIf Hotpants_Covering == True && Showgirl_Covering == False
-					BottomGenital_Cover = True
+					BottomGenital_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomAss_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-						Underwear_Cover = False
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
-						Underwear_Cover = False
-						BottomAss_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomAss_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomAss_Cover.SetValue(0) ;False
 					EndIf
 				ElseIf Hotpants_Covering == False && Showgirl_Covering == True
-					BottomAss_Cover = True
+					BottomAss_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
-						Underwear_Cover = False
-						BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-						BottomGenital_Cover = FlashScript.CStringCheck()
-						Underwear_Cover = !BottomGenital_Cover
+						BottomGenital_Cover.SetValue(CStringCheck() as Int)
+						If BottomGenital_Cover.GetValue() == 1 ;True
+							Underwear_Cover.SetValue(0) ;False
+						Else
+							Underwear_Cover.SetValue(1) ;True
+						EndIf
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-						Underwear_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				Else
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomAss_Cover = True
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(1) ;True
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-						Underwear_Cover = False
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
-						BottomGenital_Cover = BottomAss_Cover
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
+						BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.CStringCheck()
-						Underwear_Cover = !BottomGenital_Cover
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(CStringCheck() as Int)
+						If BottomGenital_Cover.GetValue() == 1 ;True
+							Underwear_Cover.SetValue(0) ;False
+						Else
+							Underwear_Cover.SetValue(1) ;True
+						EndIf
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_Hotpants)
-				BottomGenital_Cover = True
+				BottomGenital_Cover.SetValue(1) ;True
 				If PlayerRef.WornHasKeyword(AND_Underwear)
-					Underwear_Cover = False
-					BottomAss_Cover = True
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-					Underwear_Cover = False
-					BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
-					Underwear_Cover = False
-					BottomAss_Cover = False
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(0) ;False
 				Else
-					Underwear_Cover = True
-					BottomAss_Cover = False
+					Underwear_Cover.SetValue(1) ;True
+					BottomAss_Cover.SetValue(0) ;False
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_ShowgirlSkirt)
-				BottomAss_Cover = True
+				BottomAss_Cover.SetValue(1) ;True
 				If PlayerRef.WornHasKeyword(AND_Underwear)
-					Underwear_Cover = False
-					BottomGenital_Cover = True
+					Underwear_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
-					Underwear_Cover = False
-					BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+					Underwear_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-					BottomGenital_Cover = FlashScript.CStringCheck()
-					Underwear_Cover = !BottomGenital_Cover
+					BottomGenital_Cover.SetValue(CStringCheck() as Int)
+					If BottomGenital_Cover.GetValue() == 1 ;True
+						Underwear_Cover.SetValue(0) ;False
+					Else
+						Underwear_Cover.SetValue(1) ;True
+					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-					Underwear_Cover = False
-					BottomGenital_Cover = False
+					Underwear_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(0) ;False
 				Else
-					Underwear_Cover = True
-					BottomGenital_Cover = False
+					Underwear_Cover.SetValue(1) ;True
+					BottomGenital_Cover.SetValue(0) ;False
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT)
-				Bool Hotpants_Covering = FlashScript.TransparentHotpantsCheck()
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
 				If Hotpants_Covering == True
-					BottomGenital_Cover = True
+					BottomGenital_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomAss_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-						Underwear_Cover = False
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
-						Underwear_Cover = False
-						BottomAss_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomAss_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomAss_Cover.SetValue(0) ;False
 					EndIf
 				Else
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomAss_Cover = True
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(1) ;True
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-						Underwear_Cover = False
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						BottomGenital_Cover = BottomAss_Cover
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.CStringCheck()
-						Underwear_Cover = !BottomGenital_Cover
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(CStringCheck() as Int)
+						If BottomGenital_Cover.GetValue() == 1 ;True
+							Underwear_Cover.SetValue(0) ;False
+						Else
+							Underwear_Cover.SetValue(1)
+						EndIf
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-				Bool Showgirl_Covering = FlashScript.TransparentShowgirlCheck()
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				If Showgirl_Covering == True
-					BottomAss_Cover = True
+					BottomAss_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear) || PlayerRef.WornHasKeyword(AND_Thong)
-						Underwear_Cover = False
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
-						Underwear_Cover = False
-						BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-						BottomGenital_Cover = FlashScript.CStringCheck()
-						Underwear_Cover = !BottomGenital_Cover
+						BottomGenital_Cover.SetValue(CStringCheck() as Int)
+						If BottomGenital_Cover.GetValue() == 1 ;True
+							Underwear_Cover.SetValue(0) ;False
+						Else
+							Underwear_Cover.SetValue(1) ;True
+						EndIf
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-						Underwear_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				Else
 					If PlayerRef.WornHasKeyword(AND_Underwear)
-						Underwear_Cover = False
-						BottomAss_Cover = True
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(1) ;True
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-						Underwear_Cover = False
-						BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
-						BottomGenital_Cover = BottomAss_Cover
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
+						BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = True
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-						BottomAss_Cover = False
-						BottomGenital_Cover = FlashScript.CStringCheck()
-						Underwear_Cover = !BottomGenital_Cover
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(CStringCheck() as Int)
+						If BottomGenital_Cover.GetValue() == 1 ;True
+							Underwear_Cover.SetValue(0) ;False
+						Else
+							Underwear_Cover.SetValue(1) ;True
+						EndIf
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-						Underwear_Cover = False
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(0) ;False
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					Else
-						Underwear_Cover = True
-						BottomAss_Cover = False
-						BottomGenital_Cover = False
+						Underwear_Cover.SetValue(1) ;True
+						BottomAss_Cover.SetValue(0) ;False
+						BottomGenital_Cover.SetValue(0) ;False
 					EndIf
 				EndIf
 			Else
 				If PlayerRef.WornHasKeyword(AND_Underwear)
-					Underwear_Cover = False
-					BottomAss_Cover = True
-					BottomGenital_Cover = True
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(1) ;True
+					BottomGenital_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-					Underwear_Cover = False
-					BottomAss_Cover = FlashScript.TransparentUnderwearCheck()
-					BottomGenital_Cover = BottomAss_Cover
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
+					BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 				ElseIf PlayerRef.WornHasKeyword(AND_Thong)
-					Underwear_Cover = False
-					BottomAss_Cover = False
-					BottomGenital_Cover = True
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-					Underwear_Cover = False
-					BottomAss_Cover = False
-					BottomGenital_Cover = FlashScript.TransparentUnderwearCheck()
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-					BottomAss_Cover = False
-					BottomGenital_Cover = FlashScript.CStringCheck()
-					Underwear_Cover = !BottomGenital_Cover
+					BottomAss_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(CStringCheck() as Int)
+					If BottomGenital_Cover.GetValue() == 1 ;True
+						Underwear_Cover.SetValue(0) ;False
+					Else
+						Underwear_Cover.SetValue(1) ;True
+					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-					Underwear_Cover = False
-					BottomAss_Cover = False
-					BottomGenital_Cover = False
+					Underwear_Cover.SetValue(0) ;False
+					BottomAss_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(0) ;False
 				Else
-					Underwear_Cover = True
-					BottomAss_Cover = False
-					BottomGenital_Cover = False
+					Underwear_Cover.SetValue(1) ;True
+					BottomAss_Cover.SetValue(0) ;False
+					BottomGenital_Cover.SetValue(0) ;False
 				EndIf
 			EndIf
 		EndIf
@@ -601,12 +965,12 @@ Function AND_LayerAnalyze()
 			EndIf
 			
 			If CurtainKeywords == False && TopKeywords == False && BottomKeywords == False && BraKeywords == False && UnderwearKeywords == False && ExtraKeywords == False
-				BraLayer_Cover = True
-				Chest_Cover = True
-				Underwear_Cover = True
-				BottomGenital_Cover = True
-				BottomAss_Cover = True
-				BottomGenital_Cover = True
+				BraLayer_Cover.SetValue(1) ;True
+				Chest_Cover.SetValue(1) ;True
+				Underwear_Cover.SetValue(1) ;True
+				BottomGenital_Cover.SetValue(1) ;True
+				BottomAss_Cover.SetValue(1) ;True
+				BottomGenital_Cover.SetValue(1) ;True
 			EndIf
 		EndIf
 		
@@ -615,24 +979,24 @@ Function AND_LayerAnalyze()
 		;/------------------------/;
 		
 		;Top conditions
-		If TopCurtainLayer_Cover == True
+		If TopCurtainLayer_Cover.GetValue() == 1 ;True
 			PlayerRef.SetFactionRank(AND_ToplessFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingBraFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingChestFaction, 0)
 		Else
-			If BraLayer_Cover == True && Chest_Cover == True
+			If BraLayer_Cover.GetValue() == 1 && Chest_Cover.GetValue() == 1 ;True-True
 				PlayerRef.SetFactionRank(AND_ToplessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingBraFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingChestFaction, 0)
-			ElseIf BraLayer_Cover == False && Chest_Cover == True
+			ElseIf BraLayer_Cover.GetValue() == 0 && Chest_Cover.GetValue() == 1 ;False-True
 				PlayerRef.SetFactionRank(AND_ToplessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingBraFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingChestFaction, 0)
-			ElseIf BraLayer_Cover == False && Chest_Cover == False
+			ElseIf BraLayer_Cover.GetValue() == 0 && Chest_Cover.GetValue() == 0 ;False-False
 				PlayerRef.SetFactionRank(AND_ToplessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingBraFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingChestFaction, 1)
-			ElseIf BraLayer_Cover == True && Chest_Cover == False
+			ElseIf BraLayer_Cover.GetValue() == 1 && Chest_Cover.GetValue() == 0 ;True-False
 				If PlayerRef.WornHasKeyword(AND_ArmorTopT) || PlayerRef.WornHasKeyword(AND_ArmorTop_NoCover) || PlayerRef.WornHasKeyword(AND_NipplePasties)
 					PlayerRef.SetFactionRank(AND_ToplessFaction, 0)
 					PlayerRef.SetFactionRank(AND_ShowingBraFaction, 0)
@@ -646,80 +1010,80 @@ Function AND_LayerAnalyze()
 		EndIf
 		
 		;Bottom conditions
-		If PelvicCurtain_Cover == True && AssCurtain_Cover == True
+		If PelvicCurtain_Cover.GetValue() == 1 && AssCurtain_Cover.GetValue() == 1 ;True
 			PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-		ElseIf PelvicCurtain_Cover == True && AssCurtain_Cover == False
+		ElseIf PelvicCurtain_Cover.GetValue() == 1 && AssCurtain_Cover.GetValue() == 0 ;False
 			PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
-			If Underwear_Cover == True && BottomAss_Cover == True
+			If Underwear_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 1 ;True
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == False && BottomAss_Cover == True
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 1 ;True
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == False && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 0 ;False
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 1)
-			ElseIf Underwear_Cover == True && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 0 ;False
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 1)
 			EndIf
-		ElseIf PelvicCurtain_Cover == False && AssCurtain_Cover == True
+		ElseIf PelvicCurtain_Cover.GetValue() == 0 && AssCurtain_Cover.GetValue() == 1 ;True
 			PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 			PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			If Underwear_Cover == True && BottomGenital_Cover == True
+			If Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 1 ;True
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == True
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 1 ;True
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 0 ;False
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 1)
-			ElseIf Underwear_Cover == True && BottomGenital_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 0 ;False
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 1)
 			EndIf
 		Else
-			If Underwear_Cover == True && BottomGenital_Cover == True && BottomAss_Cover == True
+			If Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 1 ;True-True-True
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == True && BottomAss_Cover == True
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 1 ;False-True-True
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == False && BottomAss_Cover == True
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 1 ;False-False-True
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == True && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 0 ;False-True-False
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 1)
-			ElseIf Underwear_Cover == False && BottomGenital_Cover == False && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 0 && BottomGenital_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 0 ;False-False-False
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 1)
-			ElseIf Underwear_Cover == True && BottomGenital_Cover == False && BottomAss_Cover == True
+			ElseIf Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 1 ;True-False-True
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 1)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 0)
-			ElseIf Underwear_Cover == True && BottomGenital_Cover == True && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 1 && BottomAss_Cover.GetValue() == 0 ;True-True-False
 				PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingGenitalsFaction, 0)
 				PlayerRef.SetFactionRank(AND_ShowingAssFaction, 1)
-			ElseIf Underwear_Cover == True && BottomGenital_Cover == False && BottomAss_Cover == False
+			ElseIf Underwear_Cover.GetValue() == 1 && BottomGenital_Cover.GetValue() == 0 && BottomAss_Cover.GetValue() == 0 ;True-False-False
 				If PlayerRef.WornHasKeyword(AND_HotpantsT) || PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(AND_Microskirt) || PlayerRef.WornHasKeyword(AND_VaginaPasties)
 					PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 					PlayerRef.SetFactionRank(AND_ShowingUnderwearFaction, 0)
@@ -753,5 +1117,7 @@ Function AND_LayerAnalyze()
 		PlayerRef.SetFactionRank(AND_BottomlessFaction, 0)
 		PlayerRef.SetFactionRank(AND_NudeActorFaction, 0)
 	EndIf
+
+Debug.Notification("AND - Update Finished.")
 
 EndFunction
