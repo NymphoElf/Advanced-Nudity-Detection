@@ -1,7 +1,5 @@
 ScriptName Advanced_Nudity_Detection extends ReferenceAlias
 
-;AND_FlashScript Property FlashScript Auto
-
 Actor Property PlayerRef Auto
 
 Faction Property AND_ShowingAssFaction Auto
@@ -67,18 +65,6 @@ Keyword Property AND_AssFlashRisk Auto
 Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
-
-;/
-Bool Property TopCurtainLayer_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
-Bool Property BraLayer_Cover = 0 ;False Auto ;1 ;True means Bra cannot be see regardless of reason, 0 ;False means bra can be seen
-Bool Property Chest_Cover = 0 ;False Auto ;1 ;True means Chest cannot be seen, 0 ;False means chest can be seen
-
-Bool Property PelvicCurtain_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
-Bool Property AssCurtain_Cover = 0 ;False Auto ;1 ;True means Curtain is covering everything underneath, 0 ;False means it is not
-Bool Property BottomGenital_Cover = 0 ;False Auto ;0 ;False means Genitals are not Covered
-Bool Property BottomAss_Cover = 0 ;False Auto ;0 ;False means Ass is not Covered
-Bool Property Underwear_Cover = 0 ;False Auto ;0 ;False means Underwear can be seen, 1 ;True means Underwear cannot regardless of reason
-/;
 
 GlobalVariable Property TopCurtainLayer_Cover Auto
 GlobalVariable Property BraLayer_Cover Auto
