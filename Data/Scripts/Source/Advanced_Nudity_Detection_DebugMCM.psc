@@ -136,51 +136,51 @@ Event OnPageReset(string page)
 		
 		AddHeaderOption("Armor Layer States")
 		If TopCurtainLayer_Cover.GetValue() == 1 ;True
-			AddTextOption("Top Curtain Layer Cover", "TRUE")
+			AddTextOption("Top Curtain", "Covering")
 		Else
-			AddTextOption("Top Curtain Layer Cover", "FALSE")
+			AddTextOption("Top Curtain", "Not Covering")
 		EndIf
 		
 		If BraLayer_Cover.GetValue() == 1 ;True
-			AddTextOption("Bra Layer Cover", "TRUE")
+			AddTextOption("Bra", "Not Visible")
 		Else
-			AddTextOption("Bra Layer Cover", "FALSE")
+			AddTextOption("Bra", "Visible")
 		EndIf
 			
 		If Chest_Cover.GetValue() == 1 ;True
-			AddTextOption("Chest Cover", "TRUE")
+			AddTextOption("Chest", "Not Visible")
 		Else
-			AddTextOption("Chest Cover", "FALSE")
+			AddTextOption("Chest", "Visible")
 		EndIf
 			
 		If PelvicCurtain_Cover.GetValue() == 1 ;True
-			AddTextOption("Pelvic Curtain Layer Cover", "TRUE")
+			AddTextOption("Pelvic Curtain", "Covering")
 		Else
-			AddTextOption("Pelvic Curtain Layer Cover", "FALSE")
+			AddTextOption("Pelvic Curtain", "Not Covering")
 		EndIf
 			
 		If AssCurtain_Cover.GetValue() == 1 ;True
-			AddTextOption("Ass Curtain Layer Cover", "TRUE")
+			AddTextOption("Ass Curtain", "Covering")
 		Else
-			AddTextOption("Ass Curtain Layer Cover", "FALSE")
+			AddTextOption("Ass Curtain", "Not Covering")
 		EndIf
 		
 		If Underwear_Cover.GetValue() == 1 ;True
-			AddTextOption("Underwear Cover", "TRUE")
+			AddTextOption("Underwear", "Not Visible")
 		Else
-			AddTextOption("Underwear Cover", "FALSE")
+			AddTextOption("Underwear", "Visible")
 		EndIf
 		
 		If BottomAss_Cover.GetValue() == 1 ;True
-			AddTextOption("Ass Cover", "TRUE")
+			AddTextOption("Ass", "Not Visible")
 		Else
-			AddTextOption("Ass Cover", "FALSE")
+			AddTextOption("Ass", "Visible")
 		EndIf
 			
 		If BottomGenital_Cover.GetValue() == 1 ;True
-			AddTextOption("Genitals Cover", "TRUE")
+			AddTextOption("Genitals", "Not Visible")
 		Else
-			AddTextOption("Genitals Cover", "FALSE")
+			AddTextOption("Genitals", "Visible")
 		EndIf
 		
 	ElseIf (page == "Flashing States")
