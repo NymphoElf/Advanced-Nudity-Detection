@@ -30,6 +30,7 @@ Keyword Property AND_Thong Auto
 Keyword Property AND_ThongT Auto
 Keyword Property AND_Underwear Auto
 Keyword Property AND_UnderwearT Auto
+Keyword Property AND_Ignore Auto
 
 Keyword Property AND_ArmorBottom_NoCover Auto
 Keyword Property AND_ArmorTop_NoCover Auto
@@ -87,6 +88,45 @@ GlobalVariable Property UnderwearTransparentRoll Auto
 GlobalVariable Property HotpantsTransparentRoll Auto
 GlobalVariable Property ShowgirlTransparentRoll Auto
 
+GlobalVariable Property TopCurtainOddsLow Auto
+GlobalVariable Property TopCurtainOdds Auto
+GlobalVariable Property TopCurtainOddsHigh Auto
+GlobalVariable Property TopCurtainOddsExtreme Auto
+GlobalVariable Property TopCurtainOddsUltra Auto
+GlobalVariable Property TransparentTopCurtainOddsLow Auto
+GlobalVariable Property TransparentTopCurtainOdds Auto
+GlobalVariable Property TransparentTopCurtainOddsHigh Auto
+GlobalVariable Property TransparentTopCurtainOddsExtreme Auto
+GlobalVariable Property TransparentTopCurtainOddsUltra Auto
+GlobalVariable Property PelvicCurtainOddsLow Auto
+GlobalVariable Property PelvicCurtainOdds Auto
+GlobalVariable Property PelvicCurtainOddsHigh Auto
+GlobalVariable Property PelvicCurtainOddsExtreme Auto
+GlobalVariable Property PelvicCurtainOddsUltra Auto
+GlobalVariable Property TransparentPelvicCurtainOddsLow Auto
+GlobalVariable Property TransparentPelvicCurtainOdds Auto
+GlobalVariable Property TransparentPelvicCurtainOddsHigh Auto
+GlobalVariable Property TransparentPelvicCurtainOddsExtreme Auto
+GlobalVariable Property TransparentPelvicCurtainOddsUltra Auto
+GlobalVariable Property AssCurtainOddsLow Auto
+GlobalVariable Property AssCurtainOdds Auto
+GlobalVariable Property AssCurtainOddsHigh Auto
+GlobalVariable Property AssCurtainOddsExtreme Auto
+GlobalVariable Property AssCurtainOddsUltra Auto
+GlobalVariable Property TransparentAssCurtainOddsLow Auto
+GlobalVariable Property TransparentAssCurtainOdds Auto
+GlobalVariable Property TransparentAssCurtainOddsHigh Auto
+GlobalVariable Property TransparentAssCurtainOddsExtreme Auto
+GlobalVariable Property TransparentAssCurtainOddsUltra Auto
+GlobalVariable Property CStringOdds Auto
+GlobalVariable Property TransparentCStringOdds Auto
+GlobalVariable Property TransparentTopArmorOdds Auto
+GlobalVariable Property TransparentBottomArmorOdds Auto
+GlobalVariable Property TransparentBraOdds Auto
+GlobalVariable Property TransparentUnderwearOdds Auto
+GlobalVariable Property TransparentHotpantsOdds Auto
+GlobalVariable Property TransparentShowgirlSkirtOdds Auto
+
 Event OnInit()
 	If !PlayerRef.IsInFaction(AND_ShowingAssFaction)
 		PlayerRef.AddToFaction(AND_ShowingAssFaction)
@@ -130,8 +170,8 @@ EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	;Debug.Notification("AND - Object Equipped.")
-	If (akBaseObject == none || akBaseObject.GetName() == "")
-		;Debug.Notification("AND - Equipped None Object")
+	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Ignore))
+		;Debug.Notification("AND - Equipped None Object or has Ignore Keyword")
 		return
 	EndIf
 	
@@ -140,8 +180,8 @@ EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	;Debug.Notification("AND - Object Unequipped")
-	If (akBaseObject == none || akBaseObject.GetName() == "")
-		;Debug.Notification("AND - Unequipped None Object")
+	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Ignore))
+		;Debug.Notification("AND - Unequipped None Object or has Ignore Keyword")
 		return
 	EndIf
 	
@@ -154,12 +194,12 @@ Function AND_DiceRoll()
 	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,100))
 	AssCurtainRoll.SetValue(Utility.RandomInt(1,100))
 	CStringRoll.SetValue(Utility.RandomInt(1,100))
-	TopTransparentRoll.SetValue(Utility.RandomInt(0,1))
-	BottomTransparentRoll.SetValue(Utility.RandomInt(0,1))
-	BraTransparentRoll.SetValue(Utility.RandomInt(0,1))
-	UnderwearTransparentRoll.SetValue(Utility.RandomInt(0,1))
-	HotpantsTransparentRoll.SetValue(Utility.RandomInt(0,1))
-	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(0,1))
+	TopTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	BottomTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	BraTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	UnderwearTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,100))
 	
 	;Debug.Notification("AND Flash Script - Send Layer Analyze")
 	AND_LayerAnalyze()
@@ -169,31 +209,31 @@ EndFunction
 Bool Function TopCurtainCheck()
 	If PlayerRef.WornHasKeyword(AND_ChestCurtain)
 		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
-			If TopCurtainRoll.GetValue() <= 20
+			If TopCurtainRoll.GetValue() <= TopCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
-			If TopCurtainRoll.GetValue() <= 35
+			If TopCurtainRoll.GetValue() <= TopCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
-			If TopCurtainRoll.GetValue() <= 50
+			If TopCurtainRoll.GetValue() <= TopCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
-			If TopCurtainRoll.GetValue() <= 65
+			If TopCurtainRoll.GetValue() <= TopCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
-			If TopCurtainRoll.GetValue() <= 80
+			If TopCurtainRoll.GetValue() <= TopCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -203,31 +243,31 @@ Bool Function TopCurtainCheck()
 		EndIf
 	ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
 		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
-			If TopCurtainRoll.GetValue() <= 55
+			If TopCurtainRoll.GetValue() <= TransparentTopCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
-			If TopCurtainRoll.GetValue() <= 65
+			If TopCurtainRoll.GetValue() <= TransparentTopCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
-			If TopCurtainRoll.GetValue() <= 75
+			If TopCurtainRoll.GetValue() <= TransparentTopCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
-			If TopCurtainRoll.GetValue() <= 85
+			If TopCurtainRoll.GetValue() <= TransparentTopCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
-			If TopCurtainRoll.GetValue() <= 95
+			If TopCurtainRoll.GetValue() <= TransparentTopCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -238,42 +278,50 @@ Bool Function TopCurtainCheck()
 	EndIf
 EndFunction
 
-Int Function TopTransparentArmorCheck()
-	return TopTransparentRoll.GetValue() as Int
+Bool Function TopTransparentArmorCheck()
+	If TopTransparentRoll.GetValue() <= TransparentTopArmorOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
-Int Function TransparentBraCheck()
-	return BraTransparentRoll.GetValue() as Int
+Bool Function TransparentBraCheck()
+	If BraTransparentRoll.GetValue() <= TransparentBraOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
 Bool Function PelvicCurtainCheck()
 	If PlayerRef.WornHasKeyword(AND_PelvicCurtain) || PlayerRef.WornHasKeyword(AND_Miniskirt)
 		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
-			If PelvicCurtainRoll.GetValue() <= 20
+			If PelvicCurtainRoll.GetValue() <= PelvicCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
-			If PelvicCurtainRoll.GetValue() <= 35
+			If PelvicCurtainRoll.GetValue() <= PelvicCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
-			If PelvicCurtainRoll.GetValue() <= 50
+			If PelvicCurtainRoll.GetValue() <= PelvicCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
-			If PelvicCurtainRoll.GetValue() <= 65
+			If PelvicCurtainRoll.GetValue() <= PelvicCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
-			If PelvicCurtainRoll.GetValue() <= 80
+			If PelvicCurtainRoll.GetValue() <= PelvicCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -283,31 +331,31 @@ Bool Function PelvicCurtainCheck()
 		EndIf
 	ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
 		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
-			If PelvicCurtainRoll.GetValue() <= 55
+			If PelvicCurtainRoll.GetValue() <= TransparentPelvicCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
-			If PelvicCurtainRoll.GetValue() <= 65
+			If PelvicCurtainRoll.GetValue() <= TransparentPelvicCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
-			If PelvicCurtainRoll.GetValue() <= 75
+			If PelvicCurtainRoll.GetValue() <= TransparentPelvicCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
-			If PelvicCurtainRoll.GetValue() <= 85
+			If PelvicCurtainRoll.GetValue() <= TransparentPelvicCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
-			If PelvicCurtainRoll.GetValue() <= 95
+			If PelvicCurtainRoll.GetValue() <= TransparentPelvicCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -321,31 +369,31 @@ EndFunction
 Bool Function AssCurtainCheck()
 	If PlayerRef.WornHasKeyword(AND_AssCurtain) || PlayerRef.WornHasKeyword(AND_Miniskirt)
 		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
-			If AssCurtainRoll.GetValue() <= 20
+			If AssCurtainRoll.GetValue() <= AssCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
-			If AssCurtainRoll.GetValue() <= 35
+			If AssCurtainRoll.GetValue() <= AssCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
-			If AssCurtainRoll.GetValue() <= 50
+			If AssCurtainRoll.GetValue() <= AssCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
-			If AssCurtainRoll.GetValue() <= 65
+			If AssCurtainRoll.GetValue() <= AssCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
-			If AssCurtainRoll.GetValue() <= 80
+			If AssCurtainRoll.GetValue() <= AssCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -355,31 +403,31 @@ Bool Function AssCurtainCheck()
 		EndIf
 	ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT) || PlayerRef.WornHasKeyword(AND_MiniskirtT)
 		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
-			If AssCurtainRoll.GetValue() <= 55
+			If AssCurtainRoll.GetValue() <= TransparentAssCurtainOddsLow.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
-			If AssCurtainRoll.GetValue() <= 65
+			If AssCurtainRoll.GetValue() <= TransparentAssCurtainOdds.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
-			If AssCurtainRoll.GetValue() <= 75
+			If AssCurtainRoll.GetValue() <= TransparentAssCurtainOddsHigh.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
-			If AssCurtainRoll.GetValue() <= 85
+			If AssCurtainRoll.GetValue() <= TransparentAssCurtainOddsExtreme.GetValue()
 				return False
 			Else
 				return True
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
-			If AssCurtainRoll.GetValue() <= 95
+			If AssCurtainRoll.GetValue() <= TransparentAssCurtainOddsUltra.GetValue()
 				return False
 			Else
 				return True
@@ -390,31 +438,47 @@ Bool Function AssCurtainCheck()
 	EndIf
 EndFunction
 
-Int Function BottomTransparentArmorCheck()
-	return BottomTransparentRoll.GetValue() as Int
+Bool Function BottomTransparentArmorCheck()
+	If BottomTransparentRoll.GetValue() <= TransparentBottomArmorOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
-Int Function TransparentHotpantsCheck()
-	return HotpantsTransparentRoll.GetValue() as Int
+Bool Function TransparentHotpantsCheck()
+	If HotpantsTransparentRoll.GetValue() <= TransparentHotpantsOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
-Int Function TransparentShowgirlCheck()
-	return ShowgirlTransparentRoll.GetValue() as Int
+Bool Function TransparentShowgirlCheck()
+	If ShowgirlTransparentRoll.GetValue() <= TransparentShowgirlSkirtOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
-Int Function TransparentUnderwearCheck()
-	return UnderwearTransparentRoll.GetValue() as Int
+Bool Function TransparentUnderwearCheck()
+	If UnderwearTransparentRoll.GetValue() <= TransparentUnderwearOdds.GetValue()
+		return False
+	Else
+		return True
+	EndIf
 EndFunction
 
 Bool Function CStringCheck()
 	If PlayerRef.WornHasKeyword(AND_CString)
-		If CStringRoll.GetValue() <= 75
+		If CStringRoll.GetValue() <= CStringOdds.GetValue()
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf PlayerRef.WornHasKeyword(AND_CStringT)
-		If CStringRoll.GetValue() <= 90
+		If CStringRoll.GetValue() <= TransparentCStringOdds.GetValue()
 			return False
 		Else
 			return True
@@ -445,9 +509,9 @@ Function AND_LayerAnalyze()
 			BraLayer_Cover.SetValue(1) ;True
 			Chest_Cover.SetValue(1) ;True
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTopT)
-			Int TopCovering = TopTransparentArmorCheck()
+			Bool TopCovering = TopTransparentArmorCheck()
 			
-			If TopCovering == 1 ;True
+			If TopCovering == True
 				BraLayer_Cover.SetValue(1) ;True
 				Chest_Cover.SetValue(1) ;True
 			Else
@@ -457,7 +521,7 @@ Function AND_LayerAnalyze()
 					Chest_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_BraT)
 					BraLayer_Cover.SetValue(0) ;False
-					Chest_Cover.SetValue(TransparentBraCheck())
+					Chest_Cover.SetValue(TransparentBraCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
 					BraLayer_Cover.SetValue(0) ;False
 					Chest_Cover.SetValue(0) ;False
@@ -473,7 +537,7 @@ Function AND_LayerAnalyze()
 				Chest_Cover.SetValue(1) ;True
 			ElseIf PlayerRef.WornHasKeyword(AND_BraT)
 				BraLayer_Cover.SetValue(0) ;False
-				Chest_Cover.SetValue(TransparentBraCheck())
+				Chest_Cover.SetValue(TransparentBraCheck() as Int)
 			ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover)
 				BraLayer_Cover.SetValue(0) ;False
 				Chest_Cover.SetValue(0) ;False
@@ -508,7 +572,7 @@ Function AND_LayerAnalyze()
 			BottomGenital_Cover.SetValue(1) ;True
 			Underwear_Cover.SetValue(1) ;True
 		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottomT)
-			Underwear_Cover.SetValue(BottomTransparentArmorCheck())
+			Underwear_Cover.SetValue(BottomTransparentArmorCheck() as Int)
 			
 			If Underwear_Cover.GetValue() == 1 ;True
 				BottomGenital_Cover.SetValue(1) ;True
@@ -521,7 +585,7 @@ Function AND_LayerAnalyze()
 				BottomGenital_Cover.SetValue(1) ;True
 			ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 				Underwear_Cover.SetValue(0) ;False
-				BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+				BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 			ElseIf PlayerRef.WornHasKeyword(AND_Thong)
 				Underwear_Cover.SetValue(0) ;False
@@ -530,7 +594,7 @@ Function AND_LayerAnalyze()
 			ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
 				Underwear_Cover.SetValue(0) ;False
 				BottomAss_Cover.SetValue(0) ;False
-				BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+				BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 			ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 				BottomAss_Cover.SetValue(0) ;False
 				BottomGenital_Cover.SetValue(CStringCheck() as Int)
@@ -559,16 +623,16 @@ Function AND_LayerAnalyze()
 				
 				If PlayerRef.WornHasKeyword(AND_Underwear)
 					BottomAss_Cover.SetValue(1) ;True
-					Underwear_Cover.SetValue(TransparentShowgirlCheck())
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
-					Underwear_Cover.SetValue(TransparentShowgirlCheck())
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
 					If Underwear_Cover.GetValue() == 1 ;True
 						BottomAss_Cover.SetValue(1) ;True
 					Else
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
-					Underwear_Cover.SetValue(TransparentShowgirlCheck())
+					Underwear_Cover.SetValue(TransparentShowgirlCheck() as Int)
 					If Underwear_Cover.GetValue() == 1 ;True
 						BottomAss_Cover.SetValue(1) ;True
 					Else
@@ -576,24 +640,24 @@ Function AND_LayerAnalyze()
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Thong) || PlayerRef.WornHasKeyword(AND_ThongT) || PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
 					Underwear_Cover.SetValue(1) ;True
-					BottomAss_Cover.SetValue(TransparentShowgirlCheck())
+					BottomAss_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				Else
 					Underwear_Cover.SetValue(1) ;True
-					BottomAss_Cover.SetValue(TransparentShowgirlCheck())
+					BottomAss_Cover.SetValue(TransparentShowgirlCheck() as Int)
 				EndIf
 				
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirt)
 				BottomAss_Cover.SetValue(1) ;True
 				If PlayerRef.WornHasKeyword(AND_Underwear) || PlayerRef.WornHasKeyword(AND_Thong)
 					BottomGenital_Cover.SetValue(1) ;True
-					Underwear_Cover.SetValue(TransparentHotpantsCheck())
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT) || PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-					Underwear_Cover.SetValue(TransparentHotpantsCheck())
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
 					If Underwear_Cover.GetValue() == 1 ;True
 						BottomGenital_Cover.SetValue(1) ;True
 					Else
 						If PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
-							BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+							BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						Else
 							BottomGenital_Cover.SetValue(CStringCheck() as Int)
 							If BottomGenital_Cover.GetValue() == 1 ;True
@@ -604,7 +668,7 @@ Function AND_LayerAnalyze()
 						EndIf
 					EndIf
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Thong_NoCover)
-					Underwear_Cover.SetValue(TransparentHotpantsCheck())
+					Underwear_Cover.SetValue(TransparentHotpantsCheck() as Int)
 					If Underwear_Cover.GetValue() == 1 ;True
 						BottomGenital_Cover.SetValue(1) ;True
 					Else
@@ -612,12 +676,12 @@ Function AND_LayerAnalyze()
 					EndIf
 				Else
 					Underwear_Cover.SetValue(1) ;True
-					BottomGenital_Cover.SetValue(TransparentHotpantsCheck())
+					BottomGenital_Cover.SetValue(TransparentHotpantsCheck() as Int)
 				EndIf
 					
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-				Bool Hotpants_Covering = TransparentHotpantsCheck() as Bool
-				Bool Showgirl_Covering = TransparentShowgirlCheck() as Bool
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				
 				If Hotpants_Covering == True && Showgirl_Covering == True
 					BottomAss_Cover.SetValue(1) ;True
@@ -630,7 +694,7 @@ Function AND_LayerAnalyze()
 						BottomAss_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
 						Underwear_Cover.SetValue(0) ;False
 						BottomAss_Cover.SetValue(0) ;False
@@ -645,7 +709,7 @@ Function AND_LayerAnalyze()
 						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 						BottomGenital_Cover.SetValue(CStringCheck() as Int)
 						If BottomGenital_Cover.GetValue() == 1 ;True
@@ -667,7 +731,7 @@ Function AND_LayerAnalyze()
 						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
 						Underwear_Cover.SetValue(0) ;False
@@ -676,7 +740,7 @@ Function AND_LayerAnalyze()
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
 						Underwear_Cover.SetValue(0) ;False
 						BottomAss_Cover.SetValue(0) ;False
-						BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 						BottomAss_Cover.SetValue(0) ;False
 						BottomGenital_Cover.SetValue(CStringCheck() as Int)
@@ -702,7 +766,7 @@ Function AND_LayerAnalyze()
 					BottomAss_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 					Underwear_Cover.SetValue(0) ;False
-					BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+					BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
 					Underwear_Cover.SetValue(0) ;False
 					BottomAss_Cover.SetValue(0) ;False
@@ -717,7 +781,7 @@ Function AND_LayerAnalyze()
 					BottomGenital_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
 					Underwear_Cover.SetValue(0) ;False
-					BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+					BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 					BottomGenital_Cover.SetValue(CStringCheck() as Int)
 					If BottomGenital_Cover.GetValue() == 1 ;True
@@ -733,7 +797,7 @@ Function AND_LayerAnalyze()
 					BottomGenital_Cover.SetValue(0) ;False
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT)
-				Bool Hotpants_Covering = TransparentHotpantsCheck() as Bool
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
 				If Hotpants_Covering == True
 					BottomGenital_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear)
@@ -741,7 +805,7 @@ Function AND_LayerAnalyze()
 						BottomAss_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover)
 						Underwear_Cover.SetValue(0) ;False
 						BottomAss_Cover.SetValue(0) ;False
@@ -756,7 +820,7 @@ Function AND_LayerAnalyze()
 						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						BottomGenital_Cover = BottomAss_Cover
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
 						Underwear_Cover.SetValue(0) ;False
@@ -765,7 +829,7 @@ Function AND_LayerAnalyze()
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
 						Underwear_Cover.SetValue(0) ;False
 						BottomAss_Cover.SetValue(0) ;False
-						BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 						BottomAss_Cover.SetValue(0) ;False
 						BottomGenital_Cover.SetValue(CStringCheck() as Int)
@@ -785,7 +849,7 @@ Function AND_LayerAnalyze()
 					EndIf
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-				Bool Showgirl_Covering = TransparentShowgirlCheck() as Bool
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				If Showgirl_Covering == True
 					BottomAss_Cover.SetValue(1) ;True
 					If PlayerRef.WornHasKeyword(AND_Underwear) || PlayerRef.WornHasKeyword(AND_Thong)
@@ -793,7 +857,7 @@ Function AND_LayerAnalyze()
 						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_ThongT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 						BottomGenital_Cover.SetValue(CStringCheck() as Int)
 						If BottomGenital_Cover.GetValue() == 1 ;True
@@ -812,7 +876,7 @@ Function AND_LayerAnalyze()
 						BottomGenital_Cover.SetValue(1) ;True
 					ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 						Underwear_Cover.SetValue(0) ;False
-						BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+						BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 						BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 					ElseIf PlayerRef.WornHasKeyword(AND_Thong)
 						Underwear_Cover.SetValue(0) ;False
@@ -821,7 +885,7 @@ Function AND_LayerAnalyze()
 					ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
 						Underwear_Cover.SetValue(0) ;False
 						BottomAss_Cover.SetValue(0) ;False
-						BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+						BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 						BottomAss_Cover.SetValue(0) ;False
 						BottomGenital_Cover.SetValue(CStringCheck() as Int)
@@ -847,7 +911,7 @@ Function AND_LayerAnalyze()
 					BottomGenital_Cover.SetValue(1) ;True
 				ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT)
 					Underwear_Cover.SetValue(0) ;False
-					BottomAss_Cover.SetValue(TransparentUnderwearCheck())
+					BottomAss_Cover.SetValue(TransparentUnderwearCheck() as Int)
 					BottomGenital_Cover.SetValue(BottomAss_Cover.GetValue())
 				ElseIf PlayerRef.WornHasKeyword(AND_Thong)
 					Underwear_Cover.SetValue(0) ;False
@@ -856,7 +920,7 @@ Function AND_LayerAnalyze()
 				ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
 					Underwear_Cover.SetValue(0) ;False
 					BottomAss_Cover.SetValue(0) ;False
-					BottomGenital_Cover.SetValue(TransparentUnderwearCheck())
+					BottomGenital_Cover.SetValue(TransparentUnderwearCheck() as Int)
 				ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
 					BottomAss_Cover.SetValue(0) ;False
 					BottomGenital_Cover.SetValue(CStringCheck() as Int)

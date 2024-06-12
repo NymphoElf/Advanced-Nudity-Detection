@@ -87,36 +87,115 @@ GlobalVariable Property UnderwearTransparentRoll Auto
 GlobalVariable Property HotpantsTransparentRoll Auto
 GlobalVariable Property ShowgirlTransparentRoll Auto
 
+GlobalVariable Property TopCurtainOddsLow Auto
+GlobalVariable Property TopCurtainOdds Auto
+GlobalVariable Property TopCurtainOddsHigh Auto
+GlobalVariable Property TopCurtainOddsExtreme Auto
+GlobalVariable Property TopCurtainOddsUltra Auto
+GlobalVariable Property TransparentTopCurtainOddsLow Auto
+GlobalVariable Property TransparentTopCurtainOdds Auto
+GlobalVariable Property TransparentTopCurtainOddsHigh Auto
+GlobalVariable Property TransparentTopCurtainOddsExtreme Auto
+GlobalVariable Property TransparentTopCurtainOddsUltra Auto
+GlobalVariable Property PelvicCurtainOddsLow Auto
+GlobalVariable Property PelvicCurtainOdds Auto
+GlobalVariable Property PelvicCurtainOddsHigh Auto
+GlobalVariable Property PelvicCurtainOddsExtreme Auto
+GlobalVariable Property PelvicCurtainOddsUltra Auto
+GlobalVariable Property TransparentPelvicCurtainOddsLow Auto
+GlobalVariable Property TransparentPelvicCurtainOdds Auto
+GlobalVariable Property TransparentPelvicCurtainOddsHigh Auto
+GlobalVariable Property TransparentPelvicCurtainOddsExtreme Auto
+GlobalVariable Property TransparentPelvicCurtainOddsUltra Auto
+GlobalVariable Property AssCurtainOddsLow Auto
+GlobalVariable Property AssCurtainOdds Auto
+GlobalVariable Property AssCurtainOddsHigh Auto
+GlobalVariable Property AssCurtainOddsExtreme Auto
+GlobalVariable Property AssCurtainOddsUltra Auto
+GlobalVariable Property TransparentAssCurtainOddsLow Auto
+GlobalVariable Property TransparentAssCurtainOdds Auto
+GlobalVariable Property TransparentAssCurtainOddsHigh Auto
+GlobalVariable Property TransparentAssCurtainOddsExtreme Auto
+GlobalVariable Property TransparentAssCurtainOddsUltra Auto
+GlobalVariable Property CStringOdds Auto
+GlobalVariable Property TransparentCStringOdds Auto
+GlobalVariable Property TransparentTopArmorOdds Auto
+GlobalVariable Property TransparentBottomArmorOdds Auto
+GlobalVariable Property TransparentBraOdds Auto
+GlobalVariable Property TransparentUnderwearOdds Auto
+GlobalVariable Property TransparentHotpantsOdds Auto
+GlobalVariable Property TransparentShowgirlSkirtOdds Auto
+
 Event OnConfigInit()
 	Utility.Wait(1)
 	RegisterForSingleUpdate(1)
-	Debug.Notification("AND Debug MCM Initializing...")
+	Debug.Notification("Advanced Nudity MCM Initializing...")
+	TopCurtainOddsLow.SetValue(20)
+	TopCurtainOdds.SetValue(35)
+	TopCurtainOddsHigh.SetValue(50)
+	TopCurtainOddsExtreme.SetValue(65)
+	TopCurtainOddsUltra.SetValue(80)
+	TransparentTopCurtainOddsLow.SetValue(55)
+	TransparentTopCurtainOdds.SetValue(65)
+	TransparentTopCurtainOddsHigh.SetValue(75)
+	TransparentTopCurtainOddsExtreme.SetValue(85)
+	TransparentTopCurtainOddsUltra.SetValue(95)
+	PelvicCurtainOddsLow.SetValue(20)
+	PelvicCurtainOdds.SetValue(35)
+	PelvicCurtainOddsHigh.SetValue(50)
+	PelvicCurtainOddsExtreme.SetValue(65)
+	PelvicCurtainOddsUltra.SetValue(80)
+	TransparentPelvicCurtainOddsLow.SetValue(55)
+	TransparentPelvicCurtainOdds.SetValue(65)
+	TransparentPelvicCurtainOddsHigh.SetValue(75)
+	TransparentPelvicCurtainOddsExtreme.SetValue(85)
+	TransparentPelvicCurtainOddsUltra.SetValue(95)
+	AssCurtainOddsLow.SetValue(20)
+	AssCurtainOdds.SetValue(35)
+	AssCurtainOddsHigh.SetValue(50)
+	AssCurtainOddsExtreme.SetValue(65)
+	AssCurtainOddsUltra.SetValue(80)
+	TransparentAssCurtainOddsLow.SetValue(55)
+	TransparentAssCurtainOdds.SetValue(65)
+	TransparentAssCurtainOddsHigh.SetValue(75)
+	TransparentAssCurtainOddsExtreme.SetValue(85)
+	TransparentAssCurtainOddsUltra.SetValue(95)
+	CStringOdds.SetValue(70)
+	TransparentCStringOdds.SetValue(90)
+	TransparentTopArmorOdds.SetValue(50)
+	TransparentBottomArmorOdds.SetValue(50)
+	TransparentBraOdds.SetValue(50)
+	TransparentUnderwearOdds.SetValue(50)
+	TransparentHotpantsOdds.SetValue(50)
+	TransparentShowgirlSkirtOdds.SetValue(50)
 EndEvent
 
 Event OnUpdate()
 	InstallMCM()
-	Debug.Notification("AND Debug MCM Ready!")
+	Debug.Notification("Advanced Nudity MCM Ready!")
 EndEvent 
 
 Function InstallMCM()
-	ModName = "AND Debug"
-	Pages = New String[5]
+	ModName = "Advanced Nudity"
+	Pages = New String[7]
 	Pages[0] = "Factions and Armor States"
 	Pages[1] = "Flashing States"
 	Pages[2] = "Detected Keywords - Curtain"
 	Pages[3] = "Detected Keywords - Armor & Underwear"
 	Pages[4] = "Detected Keywords - General/Catch-All"
 	Pages[5] = "Detected Keywords - Flash Risk"
+	Pages[6] = "Flash Chance"
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[5]
+	Pages = New String[7]
 	Pages[0] = "Factions and Armor States"
 	Pages[1] = "Flashing States"
 	Pages[2] = "Detected Keywords - Curtain"
 	Pages[3] = "Detected Keywords - Armor & Underwear"
 	Pages[4] = "Detected Keywords - General/Catch-All"
 	Pages[5] = "Detected Keywords - Flash Risk"
+	Pages[6] = "Flash Chance"
 EndEvent
 
 Event OnPageReset(string page)
@@ -187,33 +266,33 @@ Event OnPageReset(string page)
 		AddHeaderOption("Curtain Risk")
 		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
 			If PlayerRef.WornHasKeyword(AND_ChestCurtain)
-				AddTextOption("Chest", "20%")
+				AddTextOption("Chest", (TopCurtainOddsLow.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-				AddTextOption("Chest", "55%")
+				AddTextOption("Chest", (TransparentTopCurtainOddsLow.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
 			If PlayerRef.WornHasKeyword(AND_ChestCurtain)
-				AddTextOption("Chest", "35%")
+				AddTextOption("Chest", (TopCurtainOdds.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-				AddTextOption("Chest", "65%")
+				AddTextOption("Chest", (TransparentTopArmorOdds.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
 			If PlayerRef.WornHasKeyword(AND_ChestCurtain)
-				AddTextOption("Chest", "50%")
+				AddTextOption("Chest", (TopCurtainOddsHigh.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-				AddTextOption("Chest", "75%")
+				AddTextOption("Chest", (TransparentTopCurtainOddsHigh.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
 			If PlayerRef.WornHasKeyword(AND_ChestCurtain)
-				AddTextOption("Chest", "65%")
+				AddTextOption("Chest", (TopCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-				AddTextOption("Chest", "85%")
+				AddTextOption("Chest", (TransparentTopCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
 			If PlayerRef.WornHasKeyword(AND_ChestCurtain)
-				AddTextOption("Chest", "80%")
+				AddTextOption("Chest", (TopCurtainOddsUltra.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
-				AddTextOption("Chest", "95%")
+				AddTextOption("Chest", (TransparentTopCurtainOddsUltra.GetValue() as Int) as String + "%")
 			EndIf
 		Else
 			AddTextOption("Chest", "0%")
@@ -221,33 +300,33 @@ Event OnPageReset(string page)
 		
 		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
 			If PlayerRef.WornHasKeyword(AND_AssCurtain)
-				AddTextOption("Ass", "20%")
+				AddTextOption("Ass", (AssCurtainOddsLow.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
-				AddTextOption("Ass", "55%")
+				AddTextOption("Ass", (TransparentAssCurtainOddsLow.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
 			If PlayerRef.WornHasKeyword(AND_AssCurtain)
-				AddTextOption("Ass", "35%")
+				AddTextOption("Ass", (AssCurtainOdds.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
-				AddTextOption("Ass", "65%")
+				AddTextOption("Ass", (TransparentAssCurtainOdds.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
 			If PlayerRef.WornHasKeyword(AND_AssCurtain)
-				AddTextOption("Ass", "50%")
+				AddTextOption("Ass", (AssCurtainOddsHigh.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
-				AddTextOption("Ass", "75%")
+				AddTextOption("Ass", (TransparentAssCurtainOddsHigh.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
 			If PlayerRef.WornHasKeyword(AND_AssCurtain)
-				AddTextOption("Ass", "65%")
+				AddTextOption("Ass", (AssCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
-				AddTextOption("Ass", "85%")
+				AddTextOption("Ass", (TransparentAssCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
 			If PlayerRef.WornHasKeyword(AND_AssCurtain)
-				AddTextOption("Ass", "80%")
+				AddTextOption("Ass", (AssCurtainOddsUltra.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
-				AddTextOption("Ass", "95%")
+				AddTextOption("Ass", (TransparentAssCurtainOddsUltra.GetValue() as Int) as String + "%")
 			EndIf
 		Else
 			AddTextOption("Ass", "0%")
@@ -255,88 +334,90 @@ Event OnPageReset(string page)
 		
 		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
 			If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
-				AddTextOption("Pelvic", "20%")
+				AddTextOption("Pelvic", (PelvicCurtainOddsLow.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
-				AddTextOption("Pelvic", "55%")
+				AddTextOption("Pelvic", (TransparentPelvicCurtainOddsLow.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
 			If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
-				AddTextOption("Pelvic", "35%")
+				AddTextOption("Pelvic", (PelvicCurtainOdds.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
-				AddTextOption("Pelvic", "65%")
+				AddTextOption("Pelvic", (TransparentPelvicCurtainOdds.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
 			If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
-				AddTextOption("Pelvic", "50%")
+				AddTextOption("Pelvic", (PelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
-				AddTextOption("Pelvic", "75%")
+				AddTextOption("Pelvic", (TransparentPelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
 			If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
-				AddTextOption("Pelvic", "65%")
+				AddTextOption("Pelvic", (PelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
-				AddTextOption("Pelvic", "85%")
+				AddTextOption("Pelvic", (TransparentPelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
 			EndIf
 		ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
 			If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
-				AddTextOption("Pelvic", "80%")
+				AddTextOption("Pelvic", (PelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
-				AddTextOption("Pelvic", "95%")
+				AddTextOption("Pelvic", (TransparentPelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
 			EndIf
 		Else
 			AddTextOption("Pelvic", "0%")
 		EndIf
 		
 		AddHeaderOption("Transparent Clothes Risk")
-		If PlayerRef.WornHasKeyword(AND_ArmorTopT)
-			AddTextOption("Top", "YES")
+		If PlayerRef.WornHasKeyword(AND_ArmorTopT) 
+			AddTextOption("Top", (TransparentTopArmorOdds.GetValue() as Int) as String + "%")
 		Else
-			AddTextOption("Top", "NO")
+			AddTextOption("Top", "0%")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_ArmorBottomT)
-			AddTextOption("Bottom", "YES")
+			AddTextOption("Bottom", (TransparentBottomArmorOdds.GetValue() as Int) as String + "%")
 		Else
-			AddTextOption("Bottom", "NO")
+			AddTextOption("Bottom", "0%")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_BraT)
-			AddTextOption("Bra", "YES")
+			AddTextOption("Bra", (TransparentBraOdds.GetValue() as Int) as String + "%")
 		Else
-			AddTextOption("Bra", "NO")
+			AddTextOption("Bra", "0%")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_UnderwearT)
-			AddTextOption("Underwear", "YES")
+			AddTextOption("Underwear", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
 		ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
-			AddTextOption("Thong", "YES")
-		ElseIf PlayerRef.WornHasKeyword(AND_CString) || PlayerRef.WornHasKeyword(AND_CStringT)
-			AddTextOption("CString", "YES")
+			AddTextOption("Thong", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
+		ElseIf PlayerRef.WornHasKeyword(AND_CString)
+			AddTextOption("CString", (CStringOdds.GetValue() as Int) as String + "%")
+		ElseIf PlayerRef.WornHasKeyword(AND_CStringT)
+			AddTextOption("CString", (TransparentCStringOdds.GetValue() as Int) as String + "%")
 		Else
-			AddTextOption("Underwear", "NO")
+			AddTextOption("Underwear", "0%")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_HotpantsT)
-			AddTextOption("Hotpants", "YES")
+			AddTextOption("Hotpants", (TransparentHotpantsOdds.GetValue() as Int) as String + "%")
 		Else
-			AddTextOption("Hotpants", "NO")
+			AddTextOption("Hotpants", "0%")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT)
-			AddTextOption("Showgirl Skirt", "YES")
+			AddTextOption("Showgirl Skirt", (TransparentShowgirlSkirtOdds.GetValue() as Int) as String + "")
 		Else
-			AddTextOption("Showgirl Skirt", "NO")
+			AddTextOption("Showgirl Skirt", "0%")
 		EndIf
-		AddTextOption("Last Chest Curtain Roll: ", TopCurtainRoll.GetValue())
-		AddTextOption("Last Ass Curtain Roll: ", AssCurtainRoll.GetValue())
-		AddTextOption("Last Pelvic Curtain Roll: ", PelvicCurtainRoll.GetValue())
-		AddTextOption("Last CString Roll", CStringRoll.GetValue())
-		AddTextOption("Last Transparent Top Roll", TopTransparentRoll.GetValue())
-		AddTextOption("Last Transparent Bottom Roll", BottomTransparentRoll.GetValue())
-		AddTextOption("Last Transparent Bra Roll", BraTransparentRoll.GetValue())
-		AddTextOption("Last Transparent Underwear Roll", UnderwearTransparentRoll.GetValue())
-		AddTextOption("Last Transparent Hotpants Roll", HotpantsTransparentRoll.GetValue())
-		AddTextOption("Last Transparent Showgirl Skirt Roll", ShowgirlTransparentRoll.GetValue())
+		AddTextOption("Last Chest Curtain Roll: ", TopCurtainRoll.GetValue() as Int)
+		AddTextOption("Last Ass Curtain Roll: ", AssCurtainRoll.GetValue() as Int)
+		AddTextOption("Last Pelvic Curtain Roll: ", PelvicCurtainRoll.GetValue() as Int)
+		AddTextOption("Last CString Roll", CStringRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Top Roll", TopTransparentRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Bottom Roll", BottomTransparentRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Bra Roll", BraTransparentRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Underwear Roll", UnderwearTransparentRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Hotpants Roll", HotpantsTransparentRoll.GetValue() as Int)
+		AddTextOption("Last Transparent Showgirl Skirt Roll", ShowgirlTransparentRoll.GetValue() as Int)
 		
 	ElseIf (page == "Detected Keywords - Curtain")
 	
@@ -584,6 +665,12 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRiskLow", "No")
 		EndIf
 		
+		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
+			AddTextOption("AND_PelvicFlashRiskUltra", "Yes")
+		Else
+			AddTextOption("AND_PelvicFlashRiskUltra", "No")
+		EndIf
+		
 		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
 			AddTextOption("AND_PelvicFlashRiskExtreme", "Yes")
 		Else
@@ -606,6 +693,12 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRiskLow", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRiskLow", "No")
+		EndIf
+		
+		If PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
+			AddTextOption("AND_AssFlashRiskUltra", "Yes")
+		Else
+			AddTextOption("AND_AssFlashRiskUltra", "No")
 		EndIf
 		
 		If PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
@@ -631,5 +724,808 @@ Event OnPageReset(string page)
 		Else
 			AddTextOption("AND_AssFlashRiskLow", "No")
 		EndIf
+	ElseIf (page == "Flash Chance")
+		AddHeaderOption("Chest Curtain")
+		AddSliderOptionST("AND_ChestCurtainLowOdds", "Chest Curtain - Low", TopCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_ChestCurtainOdds", "Chest Curtain - Normal", TopCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_ChestCurtainHighOdds", "Chest Curtain - High", TopCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_ChestCurtainExtremeOdds", "Chest Curtain - Extreme", TopCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_ChestCurtainUltraOdds", "Chest Curtain - Ultra", TopCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddSliderOptionST("AND_TransparentChestCurtainLowOdds", "Transparent Chest Curtain - Low", TransparentTopCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentChestCurtainOdds", "Transparent Chest Curtain - Normal", TransparentTopCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentChestCurtainHighOdds", "Transparent Chest Curtain - High", TransparentTopCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentChestCurtainExtremeOdds", "Transparent Chest Curtain - Extreme", TransparentTopCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentChestCurtainUltraOdds", "Transparent Chest Curtain - Ultra", TransparentTopCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddHeaderOption("Pelvic Curtain")
+		AddSliderOptionST("AND_PelvicCurtainLowOdds", "Pelvic Curtain - Low", PelvicCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_PelvicCurtainOdds", "Pelvic Curtain - Normal", PelvicCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_PelvicCurtainHighOdds", "Pelvic Curtain - High", PelvicCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_PelvicCurtainExtremeOdds", "Pelvic Curtain - Extreme", PelvicCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_PelvicCurtainUltraOdds", "Pelvic Curtain - Ultra", PelvicCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddSliderOptionST("AND_TransparentPelvicCurtainLowOdds", "Transparent Pelvic Curtain - Low", TransparentPelvicCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentPelvicCurtainOdds", "Transparent Pelvic Curtain - Normal", TransparentPelvicCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentPelvicCurtainHighOdds", "Transparent Pelvic Curtain - High", TransparentPelvicCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentPelvicCurtainExtremeOdds", "Transparent Pelvic Curtain - Extreme", TransparentPelvicCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentPelvicCurtainUltraOdds", "Transparent Pelvic Curtain - Ultra", TransparentPelvicCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddHeaderOption("Ass Curtain")
+		AddSliderOptionST("AND_AssCurtainLowOdds", "Ass Curtain - Low", AssCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_AssCurtainOdds", "Ass Curtain - Normal", AssCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_AssCurtainHighOdds", "Ass Curtain - High", AssCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_AssCurtainExtremeOdds", "Ass Curtain - Extreme", AssCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_AssCurtainUltraOdds", "Ass Curtain - Ultra", AssCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddSliderOptionST("AND_TransparentAssCurtainLowOdds", "Transparent Ass Curtain - Low", TransparentAssCurtainOddsLow.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentAssCurtainOdds", "Transparent Ass Curtain - Normal", TransparentAssCurtainOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentAssCurtainHighOdds", "Transparent Ass Curtain - High", TransparentAssCurtainOddsHigh.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentAssCurtainExtremeOdds", "Transparent Ass Curtain - Extreme", TransparentAssCurtainOddsExtreme.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentAssCurtainUltraOdds", "Transparent Ass Curtain - Ultra", TransparentAssCurtainOddsUltra.GetValue(), "{0}%")
+		
+		AddHeaderOption("C-String")
+		AddSliderOptionST("AND_CStringOdds", "C-String", CStringOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentCStringOdds", "Transparent C-String", TransparentCStringOdds.GetValue(), "{0}%")
+		
+		AddHeaderOption("Transparent Clothes")
+		AddSliderOptionST("AND_TransparentTopArmorOdds", "Transparent Top", TransparentTopArmorOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentBottomArmorOdds", "Transparent Bottom", TransparentBottomArmorOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentBraOdds", "Transparent Bra", TransparentBraOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentUnderwearOdds", "Transparent Underwear", TransparentUnderwearOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentHotpantsOdds", "Transparent Hotpants", TransparentHotpantsOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "Transparent Showgirl Skirt", TransparentShowgirlSkirtOdds.GetValue(), "{0}%")
 	EndIf
 EndEvent
+
+State AND_ChestCurtainLowOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(20)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TopCurtainOddsLow.SetValue(20)
+		SetSliderOptionValueST(20, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_ChestCurtainOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(35)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TopCurtainOdds.SetValue(35)
+		SetSliderOptionValueST(35, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_ChestCurtainHighOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TopCurtainOddsHigh.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_ChestCurtainExtremeOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TopCurtainOddsExtreme.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_ChestCurtainUltraOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(80)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TopCurtainOddsUltra.SetValue(80)
+		SetSliderOptionValueST(80, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentChestCurtainLowOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(55)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopCurtainOddsLow.SetValue(55)
+		SetSliderOptionValueST(55, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentChestCurtainOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopCurtainOdds.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentChestCurtainHighOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(75)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopCurtainOddsHigh.SetValue(75)
+		SetSliderOptionValueST(75, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentChestCurtainExtremeOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(85)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopCurtainOddsExtreme.SetValue(85)
+		SetSliderOptionValueST(85, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentChestCurtainUltraOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(95)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopCurtainOddsUltra.SetValue(95)
+		SetSliderOptionValueST(95, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_PelvicCurtainLowOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(20)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		PelvicCurtainOddsLow.SetValue(20)
+		SetSliderOptionValueST(20, "{0}%")
+	EndEvent 
+EndState
+
+State AND_PelvicCurtainOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(35)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		PelvicCurtainOdds.SetValue(35)
+		SetSliderOptionValueST(35, "{0}%")
+	EndEvent 
+EndState
+
+State AND_PelvicCurtainHighOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		PelvicCurtainOddsHigh.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_PelvicCurtainExtremeOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		PelvicCurtainOddsExtreme.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+EndState
+
+State AND_PelvicCurtainUltraOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(80)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		PelvicCurtainOddsUltra.SetValue(80)
+		SetSliderOptionValueST(80, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentPelvicCurtainLowOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(55)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentPelvicCurtainOddsLow.SetValue(55)
+		SetSliderOptionValueST(55, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentPelvicCurtainOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentPelvicCurtainOdds.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentPelvicCurtainHighOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(75)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentPelvicCurtainOddsHigh.SetValue(75)
+		SetSliderOptionValueST(75, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentPelvicCurtainExtremeOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(85)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentPelvicCurtainOddsExtreme.SetValue(85)
+		SetSliderOptionValueST(85, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_TransparentPelvicCurtainUltraOdds
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(95)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentPelvicCurtainOddsUltra.SetValue(95)
+		SetSliderOptionValueST(95, "{0}%")
+	EndEvent 
+
+EndState
+
+State AND_AssCurtainLowOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(20)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		AssCurtainOddsLow.SetValue(20)
+		SetSliderOptionValueST(20, "{0}%")
+	EndEvent 
+EndState
+
+State AND_AssCurtainOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(35)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		AssCurtainOdds.SetValue(35)
+		SetSliderOptionValueST(35, "{0}%")
+	EndEvent 
+EndState
+
+State AND_AssCurtainHighOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		AssCurtainOddsHigh.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_AssCurtainExtremeOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		AssCurtainOddsExtreme.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+EndState
+
+State AND_AssCurtainUltraOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(80)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		AssCurtainOddsUltra.SetValue(80)
+		SetSliderOptionValueST(80, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentAssCurtainLowOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsLow.GetValue())
+		SetSliderDialogDefaultValue(55)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsLow.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentAssCurtainOddsLow.SetValue(55)
+		SetSliderOptionValueST(55, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentAssCurtainOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOdds.GetValue())
+		SetSliderDialogDefaultValue(65)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentAssCurtainOdds.SetValue(65)
+		SetSliderOptionValueST(65, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentAssCurtainHighOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsHigh.GetValue())
+		SetSliderDialogDefaultValue(75)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsHigh.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentAssCurtainOddsHigh.SetValue(75)
+		SetSliderOptionValueST(75, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentAssCurtainExtremeOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsExtreme.GetValue())
+		SetSliderDialogDefaultValue(85)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsExtreme.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentAssCurtainOddsExtreme.SetValue(85)
+		SetSliderOptionValueST(85, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentAssCurtainUltraOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsUltra.GetValue())
+		SetSliderDialogDefaultValue(95)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsUltra.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentAssCurtainOddsUltra.SetValue(95)
+		SetSliderOptionValueST(95, "{0}%")
+	EndEvent 
+EndState
+
+State AND_CStringOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(CStringOdds.GetValue())
+		SetSliderDialogDefaultValue(70)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		CStringOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		CStringOdds.SetValue(70)
+		SetSliderOptionValueST(70, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentCStringOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentCStringOdds.GetValue())
+		SetSliderDialogDefaultValue(90)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentCStringOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentCStringOdds.SetValue(90)
+		SetSliderOptionValueST(90, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentTopArmorOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopArmorOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopArmorOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentTopArmorOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentBottomArmorOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBottomArmorOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBottomArmorOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentBottomArmorOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentBraOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBraOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBraOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentBraOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentUnderwearOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentUnderwearOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentUnderwearOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentUnderwearOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentHotpantsOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentHotpantsOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentHotpantsOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentHotpantsOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
+
+State AND_TransparentShowgirlSkirtOdds
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds.GetValue())
+		SetSliderDialogDefaultValue(50)
+		SetSliderDialogRange(1, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentShowgirlSkirtOdds.SetValue(value)
+		SetSliderOptionValueST(value, "{0}%")
+	EndEvent 
+
+	Event OnDefaultST()
+		TransparentShowgirlSkirtOdds.SetValue(50)
+		SetSliderOptionValueST(50, "{0}%")
+	EndEvent 
+EndState
