@@ -1,4 +1,4 @@
-Scriptname Advanced_Nudity_Detection_DebugMCM extends SKI_Configbase  
+Scriptname Advanced_Nudity_Detection_DebugMCM extends SKI_Configbase
 
 Actor Property PlayerRef Auto
 
@@ -40,6 +40,7 @@ Keyword Property AND_Thong_NoCover Auto
 Keyword Property AND_NearlyNaked Auto
 Keyword Property AND_NipplePasties Auto
 Keyword Property AND_VaginaPasties Auto
+Keyword Property AND_EffectivelyNaked Auto
 
 Keyword Property AND_AssCurtain Auto
 Keyword Property AND_AssCurtainT Auto
@@ -65,6 +66,25 @@ Keyword Property AND_AssFlashRisk Auto
 Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
+
+Keyword Property SLA_Brabikini Auto
+Keyword Property SLA_ThongT Auto
+Keyword Property SLA_ThongGstring Auto
+Keyword Property SLA_ThongLowleg Auto
+Keyword Property SLA_ThongCString Auto
+Keyword Property SLA_ArmorPartTop Auto
+Keyword Property SLA_ArmorPartBottom Auto
+Keyword Property SLA_FullSkirt Auto
+Keyword Property SLA_MicroHotpants Auto
+Keyword Property SLA_MicroSkirt Auto
+Keyword Property SLA_MiniSkirt Auto
+Keyword Property SLA_PantiesNormal Auto
+Keyword Property SLA_PantsNormal Auto
+Keyword Property SLA_PastiesCrotch Auto
+Keyword Property SLA_PastiesNipple Auto
+Keyword Property SLA_ArmorHalfNaked Auto
+Keyword Property SLA_PelvicCurtain Auto
+Keyword Property SLA_ShowgirlSkirt Auto
 
 GlobalVariable Property TopCurtainLayer_Cover Auto
 GlobalVariable Property BraLayer_Cover Auto
@@ -126,9 +146,13 @@ GlobalVariable Property TransparentUnderwearOdds Auto
 GlobalVariable Property TransparentHotpantsOdds Auto
 GlobalVariable Property TransparentShowgirlSkirtOdds Auto
 
+GlobalVariable Property SLA_Found Auto
+
+Int Property SLA_Checked Auto Hidden
+
 Event OnConfigInit()
 	Utility.Wait(1)
-	RegisterForSingleUpdate(1)
+	RegisterForSingleUpdate(5)
 	Debug.Notification("Advanced Nudity MCM Initializing...")
 	TopCurtainOddsLow.SetValue(20)
 	TopCurtainOdds.SetValue(35)
@@ -173,29 +197,82 @@ EndEvent
 Event OnUpdate()
 	InstallMCM()
 	Debug.Notification("Advanced Nudity MCM Ready!")
-EndEvent 
+EndEvent
+
+Function AND_MCM_SLA_Check()
+	If Game.GetModByName("SexLabAroused.esm") != 255 || SLA_Found.GetValue() == 1
+		If SLA_Found.GetValue() == -1
+			SLA_Found.SetValue(1)
+		EndIf
+		
+		SLA_ArmorHalfNaked = Game.GetFormFromFile(0x8E855, "SexLabAroused.esm") as Keyword
+		SLA_Brabikini = Game.GetFormFromFile(0x8E856, "SexLabAroused.esm") as Keyword
+		SLA_ThongT = Game.GetFormFromFile(0x8E857, "SexLabAroused.esm") as Keyword
+		SLA_ThongGstring = Game.GetFormFromFile(0x8F3F5, "SexLabAroused.esm") as Keyword
+		SLA_ThongLowleg = Game.GetFormFromFile(0x8EDC2, "SexLabAroused.esm") as Keyword
+		SLA_ThongCString = Game.GetFormFromFile(0x8EDC3, "SexLabAroused.esm") as Keyword
+		SLA_ArmorPartTop = Game.GetFormFromFile(0x8FEA0, "SexLabAroused.esm") as Keyword
+		SLA_ArmorPartBottom = Game.GetFormFromFile(0x8FEA1, "SexLabAroused.esm") as Keyword
+		SLA_FullSkirt = Game.GetFormFromFile(0x8F40D, "SexLabAroused.esm") as Keyword
+		SLA_MicroHotpants = Game.GetFormFromFile(0x8F3F4, "SexLabAroused.esm") as Keyword
+		SLA_MicroSkirt = Game.GetFormFromFile(0x8F40F, "SexLabAroused.esm") as Keyword
+		SLA_MiniSkirt = Game.GetFormFromFile(0x8F40E, "SexLabAroused.esm") as Keyword
+		SLA_PantiesNormal = Game.GetFormFromFile(0x8EDC1, "SexLabAroused.esm") as Keyword
+		SLA_PantsNormal = Game.GetFormFromFile(0x8F3F3, "SexLabAroused.esm") as Keyword
+		SLA_PastiesCrotch = Game.GetFormFromFile(0x8F409, "SexLabAroused.esm") as Keyword
+		SLA_PastiesNipple = Game.GetFormFromFile(0x8F40A, "SexLabAroused.esm") as Keyword
+		SLA_PelvicCurtain = Game.GetFormFromFile(0x8F402, "SexLabAroused.esm") as Keyword
+		SLA_ShowgirlSkirt = Game.GetFormFromFile(0x8F403, "SexLabAroused.esm") as Keyword
+	Else
+		If SLA_Found.GetValue() == -1
+			SLA_Found.SetValue(0)
+		EndIf
+		
+		SLA_Brabikini = None
+		SLA_ThongT = None
+		SLA_ThongGstring = None
+		SLA_ThongLowleg = None
+		SLA_ThongCString = None
+		SLA_ArmorPartTop = None
+		SLA_ArmorPartBottom = None
+		SLA_FullSkirt = None
+		SLA_MicroHotpants = None
+		SLA_MicroSkirt = None
+		SLA_MiniSkirt = None
+		SLA_PantiesNormal = None
+		SLA_PantsNormal = None
+		SLA_PastiesCrotch = None
+		SLA_PastiesNipple = None
+		SLA_ArmorHalfNaked = None
+		SLA_PelvicCurtain = None
+		SLA_ShowgirlSkirt = None
+	EndIf
+	SLA_Checked = 1
+EndFunction
 
 Function InstallMCM()
 	ModName = "Advanced Nudity"
-	Pages = New String[7]
+	Pages = New String[8]
 	Pages[0] = "Factions and Armor States"
 	Pages[1] = "Flashing States"
 	Pages[2] = "Detected Keywords - Curtain"
 	Pages[3] = "Detected Keywords - Armor & Underwear"
 	Pages[4] = "Detected Keywords - General/Catch-All"
 	Pages[5] = "Detected Keywords - Flash Risk"
-	Pages[6] = "Flash Chance"
+	Pages[6] = "Detected Keywords - Baka Keywords"
+	Pages[7] = "Flash Chance"
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[7]
+	Pages = New String[8]
 	Pages[0] = "Factions and Armor States"
 	Pages[1] = "Flashing States"
 	Pages[2] = "Detected Keywords - Curtain"
 	Pages[3] = "Detected Keywords - Armor & Underwear"
 	Pages[4] = "Detected Keywords - General/Catch-All"
 	Pages[5] = "Detected Keywords - Flash Risk"
-	Pages[6] = "Flash Chance"
+	Pages[6] = "Detected Keywords - Baka Keywords"
+	Pages[7] = "Flash Chance"
 EndEvent
 
 Event OnPageReset(string page)
@@ -408,6 +485,8 @@ Event OnPageReset(string page)
 		Else
 			AddTextOption("Showgirl Skirt", "0%")
 		EndIf
+		
+		AddHeaderOption("Flash Rolls")
 		AddTextOption("Last Chest Curtain Roll: ", TopCurtainRoll.GetValue() as Int)
 		AddTextOption("Last Ass Curtain Roll: ", AssCurtainRoll.GetValue() as Int)
 		AddTextOption("Last Pelvic Curtain Roll: ", PelvicCurtainRoll.GetValue() as Int)
@@ -632,9 +711,15 @@ Event OnPageReset(string page)
 		Else
 			AddTextOption("AND_NearlyNaked", "No")
 		EndIf
+		
+		If PlayerRef.WornHasKeyword(AND_EffectivelyNaked)
+			AddTextOption("AND_EffectivelyNaked", "Yes")
+		Else
+			AddTextOption("AND_EffectivelyNaked", "No")
+		EndIf
 	
 	ElseIf (page == "Detected Keywords - Flash Risk")
-	
+		AddHeaderOption("Chest Curtain")
 		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
 			AddTextOption("AND_ChestFlashRiskUltra", "Yes")
 		Else
@@ -665,6 +750,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRiskLow", "No")
 		EndIf
 		
+		AddHeaderOption("Pelvic Curtain")
 		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
 			AddTextOption("AND_PelvicFlashRiskUltra", "Yes")
 		Else
@@ -695,6 +781,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRiskLow", "No")
 		EndIf
 		
+		AddHeaderOption("Ass Curtain")
 		If PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
 			AddTextOption("AND_AssFlashRiskUltra", "Yes")
 		Else
@@ -732,6 +819,7 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_ChestCurtainExtremeOdds", "Chest Curtain - Extreme", TopCurtainOddsExtreme.GetValue(), "{0}%")
 		AddSliderOptionST("AND_ChestCurtainUltraOdds", "Chest Curtain - Ultra", TopCurtainOddsUltra.GetValue(), "{0}%")
 		
+		AddHeaderOption("Transparent Chest Curtain")
 		AddSliderOptionST("AND_TransparentChestCurtainLowOdds", "Transparent Chest Curtain - Low", TransparentTopCurtainOddsLow.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentChestCurtainOdds", "Transparent Chest Curtain - Normal", TransparentTopCurtainOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentChestCurtainHighOdds", "Transparent Chest Curtain - High", TransparentTopCurtainOddsHigh.GetValue(), "{0}%")
@@ -745,6 +833,7 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_PelvicCurtainExtremeOdds", "Pelvic Curtain - Extreme", PelvicCurtainOddsExtreme.GetValue(), "{0}%")
 		AddSliderOptionST("AND_PelvicCurtainUltraOdds", "Pelvic Curtain - Ultra", PelvicCurtainOddsUltra.GetValue(), "{0}%")
 		
+		AddHeaderOption("Transparent Pelvic Curtain")
 		AddSliderOptionST("AND_TransparentPelvicCurtainLowOdds", "Transparent Pelvic Curtain - Low", TransparentPelvicCurtainOddsLow.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentPelvicCurtainOdds", "Transparent Pelvic Curtain - Normal", TransparentPelvicCurtainOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentPelvicCurtainHighOdds", "Transparent Pelvic Curtain - High", TransparentPelvicCurtainOddsHigh.GetValue(), "{0}%")
@@ -758,6 +847,7 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_AssCurtainExtremeOdds", "Ass Curtain - Extreme", AssCurtainOddsExtreme.GetValue(), "{0}%")
 		AddSliderOptionST("AND_AssCurtainUltraOdds", "Ass Curtain - Ultra", AssCurtainOddsUltra.GetValue(), "{0}%")
 		
+		AddHeaderOption("Transparent Ass Curtain")
 		AddSliderOptionST("AND_TransparentAssCurtainLowOdds", "Transparent Ass Curtain - Low", TransparentAssCurtainOddsLow.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentAssCurtainOdds", "Transparent Ass Curtain - Normal", TransparentAssCurtainOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentAssCurtainHighOdds", "Transparent Ass Curtain - High", TransparentAssCurtainOddsHigh.GetValue(), "{0}%")
@@ -775,6 +865,124 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_TransparentUnderwearOdds", "Transparent Underwear", TransparentUnderwearOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentHotpantsOdds", "Transparent Hotpants", TransparentHotpantsOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "Transparent Showgirl Skirt", TransparentShowgirlSkirtOdds.GetValue(), "{0}%")
+		
+		Debug.MessageBox("Changing the Flash Chances will NOT immediately change your Flashing Status. You must wait for the next Dice Roll for the changes to take effect.")
+	ElseIf (page == "Detected Keywords - Baka Keywords")
+		If SLA_Checked != 1
+			AND_MCM_SLA_Check()
+		EndIf
+		If SLA_Found.GetValue() == 0
+			AddTextOption("SexLabAroused Not Found.", None)
+		ElseIf SLA_Found.GetValue() == 1
+			If PlayerRef.WornHasKeyword(SLA_ArmorPartTop)
+				AddTextOption("SLA_ArmorPartTop", "YES")
+			Else
+				AddTextOption("SLA_ArmorPartTop", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ArmorPartBottom)
+				AddTextOption("SLA_ArmorPartBottom", "YES")
+			Else
+				AddTextOption("SLA_ArmorPartBottom", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_Brabikini)
+				AddTextOption("SLA_Brabikini", "YES")
+			Else
+				AddTextOption("SLA_Brabikini", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_FullSkirt)
+				AddTextOption("SLA_FullSkirt", "YES")
+			Else
+				AddTextOption("SLA_FullSkirt", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_MicroHotpants)
+				AddTextOption("SLA_MicroHotpants", "YES")
+			Else
+				AddTextOption("SLA_MicroHotpants", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_MicroSkirt)
+				AddTextOption("SLA_MicroSkirt", "YES")
+			Else
+				AddTextOption("SLA_MicroSkirt", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_MiniSkirt)
+				AddTextOption("SLA_MiniSkirt", "YES")
+			Else
+				AddTextOption("SLA_MiniSkirt", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_PantiesNormal)
+				AddTextOption("SLA_PantiesNormal", "YES")
+			Else
+				AddTextOption("SLA_PantiesNormal", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_PantsNormal)
+				AddTextOption("SLA_PantsNormal", "YES")
+			Else
+				AddTextOption("SLA_PantsNormal", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_PastiesCrotch)
+				AddTextOption("SLA_PastiesCrotch", "YES")
+			Else
+				AddTextOption("SLA_PastiesCrotch", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_PastiesNipple)
+				AddTextOption("SLA_PastiesNipple", "YES")
+			Else
+				AddTextOption("SLA_PastiesNipple", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_PelvicCurtain)
+				AddTextOption("SLA_PelvicCurtain", "YES")
+			Else
+				AddTextOption("SLA_PelvicCurtain", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt)
+				AddTextOption("SLA_ShowgirlSkirt", "YES")
+			Else
+				AddTextOption("SLA_ShowgirlSkirt", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ThongCString)
+				AddTextOption("SLA_ThongCString", "YES")
+			Else
+				AddTextOption("SLA_ThongCString", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ThongGstring)
+				AddTextOption("SLA_ThongGstring", "YES")
+			Else
+				AddTextOption("SLA_ThongGstring", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ThongLowleg)
+				AddTextOption("SLA_ThongLowleg", "YES")
+			Else
+				AddTextOption("SLA_ThongLowleg", "NO")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(SLA_ThongT)
+				AddTextOption("SLA_ThongT", "YES")
+			Else
+				AddTextOption("SLA_ThongT", "NO")
+			EndIf
+			;/
+		ElseIf SLA_Found.GetValue() == -1
+			AND_MCM_SLA_Check()
+			Debug.MessageBox("SexLabAroused Presence not checked. Checking now. Please exit all menus and wait 10 Seconds.")
+			/;
+		Else
+			Debug.MessageBox("AND - ERROR - SLA_Found value is " + (SLA_Found.GetValue() as Int) as String + ". Please report this error.")
+		EndIf
 	EndIf
 EndEvent
 
