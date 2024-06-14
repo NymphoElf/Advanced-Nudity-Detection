@@ -149,6 +149,7 @@ GlobalVariable Property TransparentShowgirlSkirtOdds Auto
 GlobalVariable Property SLA_Found Auto
 
 Int Property SLA_Checked Auto Hidden
+Int Property FlashChanceInfoShown Auto Hidden
 
 Event OnConfigInit()
 	Utility.Wait(1)
@@ -866,7 +867,10 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_TransparentHotpantsOdds", "Transparent Hotpants", TransparentHotpantsOdds.GetValue(), "{0}%")
 		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "Transparent Showgirl Skirt", TransparentShowgirlSkirtOdds.GetValue(), "{0}%")
 		
-		Debug.MessageBox("Changing the Flash Chances will NOT immediately change your Flashing Status. You must wait for the next Dice Roll for the changes to take effect.")
+		If FlashChanceInfoShown != 1
+			Debug.MessageBox("Changing the Flash Chances will NOT immediately change your Flashing Status. You must wait for the next Dice Roll for the changes to take effect.")
+			FlashChanceInfoShown = 1
+		EndIf
 	ElseIf (page == "Detected Keywords - Baka Keywords")
 		If SLA_Checked != 1
 			AND_MCM_SLA_Check()
