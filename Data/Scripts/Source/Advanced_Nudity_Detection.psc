@@ -672,7 +672,7 @@ Function AND_LayerAnalyze()
 		EndIf
 			
 		;Bottom Armor Layer
-		If PlayerRef.WornHasKeyword(AND_ArmorBottom) || (SLA_ArmorPartBottom != None && PlayerRef.WornHasKeyword(SLA_ArmorPartBottom)) || (SLA_PantsNormal != None && PlayerRef.WornHasKeyword(SLA_PantsNormal))
+		If PlayerRef.WornHasKeyword(AND_ArmorBottom) || (SLA_ArmorPartBottom != None && PlayerRef.WornHasKeyword(SLA_ArmorPartBottom)) || (SLA_PantsNormal != None && PlayerRef.WornHasKeyword(SLA_PantsNormal)) || (SLA_FullSkirt != None && PlayerRef.WornHasKeyword(SLA_FullSkirt))
 			BottomAss_Cover.SetValue(1) ;True
 			BottomGenital_Cover.SetValue(1) ;True
 			Underwear_Cover.SetValue(1) ;True
