@@ -153,7 +153,7 @@ Int Property FlashChanceInfoShown Auto Hidden
 
 Event OnConfigInit()
 	Utility.Wait(1)
-	RegisterForSingleUpdate(5)
+	RegisterForSingleUpdate(1)
 	Debug.Notification("Advanced Nudity MCM Initializing...")
 	TopCurtainOddsLow.SetValue(20)
 	TopCurtainOdds.SetValue(35)

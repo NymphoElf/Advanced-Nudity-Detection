@@ -1257,6 +1257,9 @@ Function AND_LayerAnalyze()
 		PlayerRef.SetFactionRank(AND_NudeActorFaction, 0)
 	EndIf
 
+Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+ModEvent.Send(EventHandle)
+
 If AND_DebugMode.GetValue() == 1
 	Debug.Notification("AND - Update Finished.")
 EndIf
