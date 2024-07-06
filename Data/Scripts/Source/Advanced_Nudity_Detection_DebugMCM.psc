@@ -148,7 +148,8 @@ GlobalVariable Property TransparentShowgirlSkirtOdds Auto
 
 GlobalVariable Property SLA_Found Auto
 
-Int Property SLA_Checked Auto Hidden
+Bool Property IgnoreBakaKeywords Auto
+
 Int Property FlashChanceInfoShown Auto Hidden
 
 Event OnConfigInit()
@@ -200,57 +201,6 @@ Event OnUpdate()
 	Debug.Notification("Advanced Nudity MCM Ready!")
 EndEvent
 
-Function AND_MCM_SLA_Check()
-	If Game.GetModByName("SexLabAroused.esm") != 255 || SLA_Found.GetValue() == 1
-		If SLA_Found.GetValue() == -1
-			SLA_Found.SetValue(1)
-		EndIf
-		
-		SLA_ArmorHalfNaked = Game.GetFormFromFile(0x8E855, "SexLabAroused.esm") as Keyword
-		SLA_Brabikini = Game.GetFormFromFile(0x8E856, "SexLabAroused.esm") as Keyword
-		SLA_ThongT = Game.GetFormFromFile(0x8E857, "SexLabAroused.esm") as Keyword
-		SLA_ThongGstring = Game.GetFormFromFile(0x8F3F5, "SexLabAroused.esm") as Keyword
-		SLA_ThongLowleg = Game.GetFormFromFile(0x8EDC2, "SexLabAroused.esm") as Keyword
-		SLA_ThongCString = Game.GetFormFromFile(0x8EDC3, "SexLabAroused.esm") as Keyword
-		SLA_ArmorPartTop = Game.GetFormFromFile(0x8FEA0, "SexLabAroused.esm") as Keyword
-		SLA_ArmorPartBottom = Game.GetFormFromFile(0x8FEA1, "SexLabAroused.esm") as Keyword
-		SLA_FullSkirt = Game.GetFormFromFile(0x8F40D, "SexLabAroused.esm") as Keyword
-		SLA_MicroHotpants = Game.GetFormFromFile(0x8F3F4, "SexLabAroused.esm") as Keyword
-		SLA_MicroSkirt = Game.GetFormFromFile(0x8F40F, "SexLabAroused.esm") as Keyword
-		SLA_MiniSkirt = Game.GetFormFromFile(0x8F40E, "SexLabAroused.esm") as Keyword
-		SLA_PantiesNormal = Game.GetFormFromFile(0x8EDC1, "SexLabAroused.esm") as Keyword
-		SLA_PantsNormal = Game.GetFormFromFile(0x8F3F3, "SexLabAroused.esm") as Keyword
-		SLA_PastiesCrotch = Game.GetFormFromFile(0x8F409, "SexLabAroused.esm") as Keyword
-		SLA_PastiesNipple = Game.GetFormFromFile(0x8F40A, "SexLabAroused.esm") as Keyword
-		SLA_PelvicCurtain = Game.GetFormFromFile(0x8F402, "SexLabAroused.esm") as Keyword
-		SLA_ShowgirlSkirt = Game.GetFormFromFile(0x8F403, "SexLabAroused.esm") as Keyword
-	Else
-		If SLA_Found.GetValue() == -1
-			SLA_Found.SetValue(0)
-		EndIf
-		
-		SLA_Brabikini = None
-		SLA_ThongT = None
-		SLA_ThongGstring = None
-		SLA_ThongLowleg = None
-		SLA_ThongCString = None
-		SLA_ArmorPartTop = None
-		SLA_ArmorPartBottom = None
-		SLA_FullSkirt = None
-		SLA_MicroHotpants = None
-		SLA_MicroSkirt = None
-		SLA_MiniSkirt = None
-		SLA_PantiesNormal = None
-		SLA_PantsNormal = None
-		SLA_PastiesCrotch = None
-		SLA_PastiesNipple = None
-		SLA_ArmorHalfNaked = None
-		SLA_PelvicCurtain = None
-		SLA_ShowgirlSkirt = None
-	EndIf
-	SLA_Checked = 1
-EndFunction
-
 Function InstallMCM()
 	ModName = "Advanced Nudity"
 	Pages = New String[8]
@@ -266,7 +216,7 @@ EndFunction
 
 Event OnConfigOpen()
 	Pages = New String[8]
-	Pages[0] = "Factions and Armor States"
+	Pages[0] = "Nudity States"
 	Pages[1] = "Flashing States"
 	Pages[2] = "Detected Keywords - Curtain"
 	Pages[3] = "Detected Keywords - Armor & Underwear"
@@ -280,16 +230,55 @@ Event OnPageReset(string page)
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
 	
-	If (page == "" || page == "Factions and Armor States") ;default page
-		AddHeaderOption("Faction Ranks")
-		AddTextOption("Nude", PlayerRef.GetFactionRank(AND_NudeActorFaction))
-		AddTextOption("Topless", PlayerRef.GetFactionRank(AND_ToplessFaction))
-		AddTextOption("Bottomless", PlayerRef.GetFactionRank(AND_BottomlessFaction))
-		AddTextOption("Showing Bra", PlayerRef.GetFactionRank(AND_ShowingBraFaction))
-		AddTextOption("Showing Chest", PlayerRef.GetFactionRank(AND_ShowingChestFaction))
-		AddTextOption("Showing Underwear", PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction))
-		AddTextOption("Showing Genitals", PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction))
-		AddTextOption("Showing Ass", PlayerRef.GetFactionRank(AND_ShowingAssFaction))
+	If (page == "" || page == "Nudity States") ;default page
+		AddHeaderOption("Nudity Conditions")
+		If PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
+			AddTextOption("Nude", "YES")
+		Else
+			AddTextOption("Nude", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
+			AddTextOption("Topless", "YES")
+		Else
+			AddTextOption("Topless", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
+			AddTextOption("Bottomless", "YES")
+		Else
+			AddTextOption("Bottomless", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
+			AddTextOption("Showing Bra", "YES")
+		Else
+			AddTextOption("Showing Bra", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
+			AddTextOption("Showing Chest", "YES")
+		Else
+			AddTextOption("Showing Chest", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
+			AddTextOption("Showing Underwear", "YES")
+		Else
+			AddTextOption("Showing Underwear", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
+			AddTextOption("Showing Genitals", "YES")
+		Else
+			AddTextOption("Showing Genitals", "NO")
+		EndIf
+		
+		If PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
+			AddTextOption("Showing Ass", "YES")
+		Else
+			AddTextOption("Showing Ass", "NO")
+		EndIf
 		
 		AddHeaderOption("Armor Layer States")
 		If TopCurtainLayer_Cover.GetValue() == 1 ;True
@@ -814,181 +803,290 @@ Event OnPageReset(string page)
 		EndIf
 	ElseIf (page == "Flash Chance")
 		AddHeaderOption("Chest Curtain")
-		AddSliderOptionST("AND_ChestCurtainLowOdds", "Chest Curtain - Low", TopCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_ChestCurtainOdds", "Chest Curtain - Normal", TopCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_ChestCurtainHighOdds", "Chest Curtain - High", TopCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_ChestCurtainExtremeOdds", "Chest Curtain - Extreme", TopCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_ChestCurtainUltraOdds", "Chest Curtain - Ultra", TopCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_ChestCurtainLowOdds", "Chest Curtain - Low", TopCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainOdds", "Chest Curtain - Normal", TopCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainHighOdds", "Chest Curtain - High", TopCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainExtremeOdds", "Chest Curtain - Extreme", TopCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainUltraOdds", "Chest Curtain - Ultra", TopCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Transparent Chest Curtain")
-		AddSliderOptionST("AND_TransparentChestCurtainLowOdds", "Transparent Chest Curtain - Low", TransparentTopCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentChestCurtainOdds", "Transparent Chest Curtain - Normal", TransparentTopCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentChestCurtainHighOdds", "Transparent Chest Curtain - High", TransparentTopCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentChestCurtainExtremeOdds", "Transparent Chest Curtain - Extreme", TransparentTopCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentChestCurtainUltraOdds", "Transparent Chest Curtain - Ultra", TransparentTopCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentChestCurtainLowOdds", "Transparent Chest Curtain - Low", TransparentTopCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainOdds", "Transparent Chest Curtain - Normal", TransparentTopCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainHighOdds", "Transparent Chest Curtain - High", TransparentTopCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainExtremeOdds", "Transparent Chest Curtain - Extreme", TransparentTopCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainUltraOdds", "Transparent Chest Curtain - Ultra", TransparentTopCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Pelvic Curtain")
-		AddSliderOptionST("AND_PelvicCurtainLowOdds", "Pelvic Curtain - Low", PelvicCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_PelvicCurtainOdds", "Pelvic Curtain - Normal", PelvicCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_PelvicCurtainHighOdds", "Pelvic Curtain - High", PelvicCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_PelvicCurtainExtremeOdds", "Pelvic Curtain - Extreme", PelvicCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_PelvicCurtainUltraOdds", "Pelvic Curtain - Ultra", PelvicCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_PelvicCurtainLowOdds", "Pelvic Curtain - Low", PelvicCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainOdds", "Pelvic Curtain - Normal", PelvicCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainHighOdds", "Pelvic Curtain - High", PelvicCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainExtremeOdds", "Pelvic Curtain - Extreme", PelvicCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainUltraOdds", "Pelvic Curtain - Ultra", PelvicCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Transparent Pelvic Curtain")
-		AddSliderOptionST("AND_TransparentPelvicCurtainLowOdds", "Transparent Pelvic Curtain - Low", TransparentPelvicCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentPelvicCurtainOdds", "Transparent Pelvic Curtain - Normal", TransparentPelvicCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentPelvicCurtainHighOdds", "Transparent Pelvic Curtain - High", TransparentPelvicCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentPelvicCurtainExtremeOdds", "Transparent Pelvic Curtain - Extreme", TransparentPelvicCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentPelvicCurtainUltraOdds", "Transparent Pelvic Curtain - Ultra", TransparentPelvicCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentPelvicCurtainLowOdds", "Transparent Pelvic Curtain - Low", TransparentPelvicCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainOdds", "Transparent Pelvic Curtain - Normal", TransparentPelvicCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainHighOdds", "Transparent Pelvic Curtain - High", TransparentPelvicCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainExtremeOdds", "Transparent Pelvic Curtain - Extreme", TransparentPelvicCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainUltraOdds", "Transparent Pelvic Curtain - Ultra", TransparentPelvicCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Ass Curtain")
-		AddSliderOptionST("AND_AssCurtainLowOdds", "Ass Curtain - Low", AssCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_AssCurtainOdds", "Ass Curtain - Normal", AssCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_AssCurtainHighOdds", "Ass Curtain - High", AssCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_AssCurtainExtremeOdds", "Ass Curtain - Extreme", AssCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_AssCurtainUltraOdds", "Ass Curtain - Ultra", AssCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_AssCurtainLowOdds", "Ass Curtain - Low", AssCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainOdds", "Ass Curtain - Normal", AssCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainHighOdds", "Ass Curtain - High", AssCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainExtremeOdds", "Ass Curtain - Extreme", AssCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainUltraOdds", "Ass Curtain - Ultra", AssCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Transparent Ass Curtain")
-		AddSliderOptionST("AND_TransparentAssCurtainLowOdds", "Transparent Ass Curtain - Low", TransparentAssCurtainOddsLow.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentAssCurtainOdds", "Transparent Ass Curtain - Normal", TransparentAssCurtainOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentAssCurtainHighOdds", "Transparent Ass Curtain - High", TransparentAssCurtainOddsHigh.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentAssCurtainExtremeOdds", "Transparent Ass Curtain - Extreme", TransparentAssCurtainOddsExtreme.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentAssCurtainUltraOdds", "Transparent Ass Curtain - Ultra", TransparentAssCurtainOddsUltra.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentAssCurtainLowOdds", "Transparent Ass Curtain - Low", TransparentAssCurtainOddsLow.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainOdds", "Transparent Ass Curtain - Normal", TransparentAssCurtainOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainHighOdds", "Transparent Ass Curtain - High", TransparentAssCurtainOddsHigh.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainExtremeOdds", "Transparent Ass Curtain - Extreme", TransparentAssCurtainOddsExtreme.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainUltraOdds", "Transparent Ass Curtain - Ultra", TransparentAssCurtainOddsUltra.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("C-String")
-		AddSliderOptionST("AND_CStringOdds", "C-String", CStringOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentCStringOdds", "Transparent C-String", TransparentCStringOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_CStringOdds", "C-String", CStringOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOdds", "Transparent C-String", TransparentCStringOdds.GetValue(), "{0}%", 0)
 		
 		AddHeaderOption("Transparent Clothes")
-		AddSliderOptionST("AND_TransparentTopArmorOdds", "Transparent Top", TransparentTopArmorOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentBottomArmorOdds", "Transparent Bottom", TransparentBottomArmorOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentBraOdds", "Transparent Bra", TransparentBraOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentUnderwearOdds", "Transparent Underwear", TransparentUnderwearOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentHotpantsOdds", "Transparent Hotpants", TransparentHotpantsOdds.GetValue(), "{0}%")
-		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "Transparent Showgirl Skirt", TransparentShowgirlSkirtOdds.GetValue(), "{0}%")
+		AddSliderOptionST("AND_TransparentTopArmorOdds", "Transparent Top", TransparentTopArmorOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBottomArmorOdds", "Transparent Bottom", TransparentBottomArmorOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBraOdds", "Transparent Bra", TransparentBraOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentUnderwearOdds", "Transparent Underwear", TransparentUnderwearOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentHotpantsOdds", "Transparent Hotpants", TransparentHotpantsOdds.GetValue(), "{0}%", 0)
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "Transparent Showgirl Skirt", TransparentShowgirlSkirtOdds.GetValue(), "{0}%", 0)
 		
 		If FlashChanceInfoShown != 1
-			Debug.MessageBox("Changing the Flash Chances will NOT immediately change your Flashing Status. You must wait for the next Dice Roll for the changes to take effect.")
+			Debug.MessageBox("Changing the Flash Chances here will NOT immediately change your Flashing Status. The changes will take effect on all future checks.")
 			FlashChanceInfoShown = 1
 		EndIf
 	ElseIf (page == "Detected Keywords - Baka Keywords")
-		If SLA_Checked != 1
-			AND_MCM_SLA_Check()
-		EndIf
+		
 		If SLA_Found.GetValue() == 0
 			AddTextOption("SexLabAroused Not Found.", None)
 		ElseIf SLA_Found.GetValue() == 1
-			If PlayerRef.WornHasKeyword(SLA_ArmorPartTop)
+			AddToggleOptionST("IgnoreBakaState", "Ignore Baka Keywords", IgnoreBakaKeywords, 0)
+			AddTextOption("", None)
+			If PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartTop", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartTop", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ArmorPartTop", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ArmorPartTop", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 1", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ArmorPartBottom)
+			If PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ArmorPartBottom", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ArmorPartBottom", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 2", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_Brabikini)
+			If PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_Brabikini", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_Brabikini", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 3", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_FullSkirt)
+			If PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_FullSkirt", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_FullSkirt", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 4", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MicroHotpants)
+			If PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MicroHotpants", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MicroHotpants", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 5", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MicroSkirt)
+			If PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MicroSkirt", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MicroSkirt", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 6", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MiniSkirt)
+			If PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MiniSkirt", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_MiniSkirt", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 7", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PantiesNormal)
+			If PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PantiesNormal", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PantiesNormal", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 8", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PantsNormal)
+			If PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PantsNormal", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PantsNormal", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 9", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PastiesCrotch)
+			If PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PastiesCrotch", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PastiesCrotch", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 10", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PastiesNipple)
+			If PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PastiesNipple", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PastiesNipple", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 11", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PelvicCurtain)
+			If PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PelvicCurtain", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_PelvicCurtain", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 12", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt)
+			If PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ShowgirlSkirt", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ShowgirlSkirt", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 13", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongCString)
+			If PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongCString", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongCString", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 14", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongGstring)
+			If PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongGstring", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongGstring", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 15", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongLowleg)
+			If PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongLowleg", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongLowleg", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 16", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongT)
+			If PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "YES")
-			Else
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "NO")
+			ElseIf PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongT", "YES (IGNORED)")
+			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == True
+				AddTextOption("SLA_ThongT", "NO (IGNORED)")
+			Else
+				AddTextOption("MCM ERROR - Report CODE 17", "")
 			EndIf
-			;/
-		ElseIf SLA_Found.GetValue() == -1
-			AND_MCM_SLA_Check()
-			Debug.MessageBox("SexLabAroused Presence not checked. Checking now. Please exit all menus and wait 10 Seconds.")
-			/;
 		Else
 			Debug.MessageBox("AND - ERROR - SLA_Found value is " + (SLA_Found.GetValue() as Int) as String + ". Please report this error.")
 		EndIf
 	EndIf
 EndEvent
+
+State IgnoreBakaState
+	Event OnSelectST()
+		If IgnoreBakaKeywords == False
+			IgnoreBakaKeywords = True
+		Else
+			IgnoreBakaKeywords = False
+		EndIf
+		SetToggleOptionValueST(IgnoreBakaKeywords, False, "IgnoreBakaState")
+		ForcePageReset()
+	EndEvent
+EndState
 
 State AND_ChestCurtainLowOdds
 
@@ -1001,12 +1099,12 @@ State AND_ChestCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		TopCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TopCurtainOddsLow.SetValue(20)
-		SetSliderOptionValueST(20, "{0}%")
+		SetSliderOptionValueST(20, "{0}%", False, "AND_ChestCurtainLowOdds")
 	EndEvent 
 
 EndState
@@ -1022,12 +1120,12 @@ State AND_ChestCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		TopCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TopCurtainOdds.SetValue(35)
-		SetSliderOptionValueST(35, "{0}%")
+		SetSliderOptionValueST(35, "{0}%", False, "AND_ChestCurtainOdds")
 	EndEvent 
 
 EndState
@@ -1043,12 +1141,12 @@ State AND_ChestCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		TopCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TopCurtainOddsHigh.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_ChestCurtainHighOdds")
 	EndEvent 
 
 EndState
@@ -1064,12 +1162,12 @@ State AND_ChestCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		TopCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TopCurtainOddsExtreme.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_ChestCurtainExtremeOdds")
 	EndEvent 
 
 EndState
@@ -1085,12 +1183,12 @@ State AND_ChestCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		TopCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TopCurtainOddsUltra.SetValue(80)
-		SetSliderOptionValueST(80, "{0}%")
+		SetSliderOptionValueST(80, "{0}%", False, "AND_ChestCurtainUltraOdds")
 	EndEvent 
 
 EndState
@@ -1106,12 +1204,12 @@ State AND_TransparentChestCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopCurtainOddsLow.SetValue(55)
-		SetSliderOptionValueST(55, "{0}%")
+		SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentChestCurtainLowOdds")
 	EndEvent 
 
 EndState
@@ -1127,12 +1225,12 @@ State AND_TransparentChestCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopCurtainOdds.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentChestCurtainOdds")
 	EndEvent 
 
 EndState
@@ -1148,12 +1246,12 @@ State AND_TransparentChestCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopCurtainOddsHigh.SetValue(75)
-		SetSliderOptionValueST(75, "{0}%")
+		SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentChestCurtainHighOdds")
 	EndEvent 
 
 EndState
@@ -1169,12 +1267,12 @@ State AND_TransparentChestCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopCurtainOddsExtreme.SetValue(85)
-		SetSliderOptionValueST(85, "{0}%")
+		SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentChestCurtainExtremeOdds")
 	EndEvent 
 
 EndState
@@ -1190,12 +1288,12 @@ State AND_TransparentChestCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopCurtainOddsUltra.SetValue(95)
-		SetSliderOptionValueST(95, "{0}%")
+		SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentChestCurtainUltraOdds")
 	EndEvent 
 
 EndState
@@ -1210,12 +1308,12 @@ State AND_PelvicCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		PelvicCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		PelvicCurtainOddsLow.SetValue(20)
-		SetSliderOptionValueST(20, "{0}%")
+		SetSliderOptionValueST(20, "{0}%", False, "AND_PelvicCurtainLowOdds")
 	EndEvent 
 EndState
 
@@ -1229,12 +1327,12 @@ State AND_PelvicCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		PelvicCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		PelvicCurtainOdds.SetValue(35)
-		SetSliderOptionValueST(35, "{0}%")
+		SetSliderOptionValueST(35, "{0}%", False, "AND_PelvicCurtainOdds")
 	EndEvent 
 EndState
 
@@ -1248,12 +1346,12 @@ State AND_PelvicCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		PelvicCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		PelvicCurtainOddsHigh.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_PelvicCurtainHighOdds")
 	EndEvent 
 EndState
 
@@ -1267,12 +1365,12 @@ State AND_PelvicCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		PelvicCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		PelvicCurtainOddsExtreme.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_PelvicCurtainExtremeOdds")
 	EndEvent 
 EndState
 
@@ -1286,12 +1384,12 @@ State AND_PelvicCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		PelvicCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		PelvicCurtainOddsUltra.SetValue(80)
-		SetSliderOptionValueST(80, "{0}%")
+		SetSliderOptionValueST(80, "{0}%", False, "AND_PelvicCurtainUltraOdds")
 	EndEvent 
 EndState
 
@@ -1306,12 +1404,12 @@ State AND_TransparentPelvicCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentPelvicCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentPelvicCurtainOddsLow.SetValue(55)
-		SetSliderOptionValueST(55, "{0}%")
+		SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentPelvicCurtainLowOdds")
 	EndEvent 
 
 EndState
@@ -1327,12 +1425,12 @@ State AND_TransparentPelvicCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentPelvicCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentPelvicCurtainOdds.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentPelvicCurtainOdds")
 	EndEvent 
 
 EndState
@@ -1348,12 +1446,12 @@ State AND_TransparentPelvicCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentPelvicCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentPelvicCurtainOddsHigh.SetValue(75)
-		SetSliderOptionValueST(75, "{0}%")
+		SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentPelvicCurtainHighOdds")
 	EndEvent 
 
 EndState
@@ -1369,12 +1467,12 @@ State AND_TransparentPelvicCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentPelvicCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentPelvicCurtainOddsExtreme.SetValue(85)
-		SetSliderOptionValueST(85, "{0}%")
+		SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOdds")
 	EndEvent 
 
 EndState
@@ -1390,12 +1488,12 @@ State AND_TransparentPelvicCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentPelvicCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentPelvicCurtainOddsUltra.SetValue(95)
-		SetSliderOptionValueST(95, "{0}%")
+		SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentPelvicCurtainUltraOdds")
 	EndEvent 
 
 EndState
@@ -1410,12 +1508,12 @@ State AND_AssCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		AssCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		AssCurtainOddsLow.SetValue(20)
-		SetSliderOptionValueST(20, "{0}%")
+		SetSliderOptionValueST(20, "{0}%", False, "AND_AssCurtainLowOdds")
 	EndEvent 
 EndState
 
@@ -1429,12 +1527,12 @@ State AND_AssCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		AssCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		AssCurtainOdds.SetValue(35)
-		SetSliderOptionValueST(35, "{0}%")
+		SetSliderOptionValueST(35, "{0}%", False, "AND_AssCurtainOdds")
 	EndEvent 
 EndState
 
@@ -1448,12 +1546,12 @@ State AND_AssCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		AssCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		AssCurtainOddsHigh.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_AssCurtainHighOdds")
 	EndEvent 
 EndState
 
@@ -1467,12 +1565,12 @@ State AND_AssCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		AssCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		AssCurtainOddsExtreme.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_AssCurtainExtremeOdds")
 	EndEvent 
 EndState
 
@@ -1486,12 +1584,12 @@ State AND_AssCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		AssCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		AssCurtainOddsUltra.SetValue(80)
-		SetSliderOptionValueST(80, "{0}%")
+		SetSliderOptionValueST(80, "{0}%", False, "AND_AssCurtainUltraOdds")
 	EndEvent 
 EndState
 
@@ -1505,12 +1603,12 @@ State AND_TransparentAssCurtainLowOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentAssCurtainOddsLow.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainLowOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentAssCurtainOddsLow.SetValue(55)
-		SetSliderOptionValueST(55, "{0}%")
+		SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentAssCurtainLowOdds")
 	EndEvent 
 EndState
 
@@ -1524,12 +1622,12 @@ State AND_TransparentAssCurtainOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentAssCurtainOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentAssCurtainOdds.SetValue(65)
-		SetSliderOptionValueST(65, "{0}%")
+		SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentAssCurtainOdds")
 	EndEvent 
 EndState
 
@@ -1543,12 +1641,12 @@ State AND_TransparentAssCurtainHighOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentAssCurtainOddsHigh.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainHighOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentAssCurtainOddsHigh.SetValue(75)
-		SetSliderOptionValueST(75, "{0}%")
+		SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentAssCurtainHighOdds")
 	EndEvent 
 EndState
 
@@ -1562,12 +1660,12 @@ State AND_TransparentAssCurtainExtremeOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentAssCurtainOddsExtreme.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainExtremeOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentAssCurtainOddsExtreme.SetValue(85)
-		SetSliderOptionValueST(85, "{0}%")
+		SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentAssCurtainExtremeOdds")
 	EndEvent 
 EndState
 
@@ -1581,12 +1679,12 @@ State AND_TransparentAssCurtainUltraOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentAssCurtainOddsUltra.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainUltraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentAssCurtainOddsUltra.SetValue(95)
-		SetSliderOptionValueST(95, "{0}%")
+		SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentAssCurtainUltraOdds")
 	EndEvent 
 EndState
 
@@ -1600,12 +1698,12 @@ State AND_CStringOdds
 	
 	Event OnSliderAcceptST(float value)
 		CStringOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_CStringOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		CStringOdds.SetValue(70)
-		SetSliderOptionValueST(70, "{0}%")
+		SetSliderOptionValueST(70, "{0}%", False, "AND_CStringOdds")
 	EndEvent 
 EndState
 
@@ -1619,12 +1717,12 @@ State AND_TransparentCStringOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentCStringOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentCStringOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentCStringOdds.SetValue(90)
-		SetSliderOptionValueST(90, "{0}%")
+		SetSliderOptionValueST(90, "{0}%", False, "AND_TransparentCStringOdds")
 	EndEvent 
 EndState
 
@@ -1638,12 +1736,12 @@ State AND_TransparentTopArmorOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentTopArmorOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentTopArmorOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentTopArmorOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentTopArmorOdds")
 	EndEvent 
 EndState
 
@@ -1657,12 +1755,12 @@ State AND_TransparentBottomArmorOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentBottomArmorOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBottomArmorOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentBottomArmorOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentBottomArmorOdds")
 	EndEvent 
 EndState
 
@@ -1676,12 +1774,12 @@ State AND_TransparentBraOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentBraOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBraOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentBraOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentBraOdds")
 	EndEvent 
 EndState
 
@@ -1695,12 +1793,12 @@ State AND_TransparentUnderwearOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentUnderwearOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentUnderwearOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentUnderwearOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentUnderwearOdds")
 	EndEvent 
 EndState
 
@@ -1714,12 +1812,12 @@ State AND_TransparentHotpantsOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentHotpantsOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentHotpantsOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentHotpantsOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentHotpantsOdds")
 	EndEvent 
 EndState
 
@@ -1733,11 +1831,11 @@ State AND_TransparentShowgirlSkirtOdds
 	
 	Event OnSliderAcceptST(float value)
 		TransparentShowgirlSkirtOdds.SetValue(value)
-		SetSliderOptionValueST(value, "{0}%")
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentShowgirlSkirtOdds")
 	EndEvent 
 
 	Event OnDefaultST()
 		TransparentShowgirlSkirtOdds.SetValue(50)
-		SetSliderOptionValueST(50, "{0}%")
+		SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentShowgirlSkirtOdds")
 	EndEvent 
 EndState
