@@ -1,5 +1,7 @@
 Scriptname AND_MCM extends SKI_Configbase
 
+AND_Core property Main Auto
+
 Actor Property PlayerRef Auto
 
 Faction Property AND_ShowingAssFaction Auto
@@ -104,25 +106,6 @@ Keyword Property AND_AssFlashRisk Auto
 Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
-
-Keyword Property SLA_Brabikini Auto
-Keyword Property SLA_ThongT Auto
-Keyword Property SLA_ThongGstring Auto
-Keyword Property SLA_ThongLowleg Auto
-Keyword Property SLA_ThongCString Auto
-Keyword Property SLA_ArmorPartTop Auto
-Keyword Property SLA_ArmorPartBottom Auto
-Keyword Property SLA_FullSkirt Auto
-Keyword Property SLA_MicroHotpants Auto
-Keyword Property SLA_MicroSkirt Auto
-Keyword Property SLA_MiniSkirt Auto
-Keyword Property SLA_PantiesNormal Auto
-Keyword Property SLA_PantsNormal Auto
-Keyword Property SLA_PastiesCrotch Auto
-Keyword Property SLA_PastiesNipple Auto
-Keyword Property SLA_ArmorHalfNaked Auto
-Keyword Property SLA_PelvicCurtain Auto
-Keyword Property SLA_ShowgirlSkirt Auto
 
 GlobalVariable Property TopCurtainLayer_Cover Auto
 GlobalVariable Property BraLayer_Cover Auto
@@ -295,9 +278,17 @@ Event OnPageReset(string page)
 		EndIf
 		
 		If PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
-			AddTextOption("Showing Chest", "YES")
+			If PlayerBase.GetSex() == 0 ;Male
+				AddTextOption("Showing Chest", "YES")
+			Else
+				AddTextOption("Showing Boobs", "YES")
+			EndIf
 		Else
-			AddTextOption("Showing Chest", "NO")
+			If PlayerBase.GetSex() == 0 ;Male
+				AddTextOption("Showing Chest", "NO")
+			Else
+				AddTextOption("Showing Boobs", "NO")
+			EndIf
 		EndIf
 		
 		If PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
@@ -307,9 +298,17 @@ Event OnPageReset(string page)
 		EndIf
 		
 		If PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
-			AddTextOption("Showing Genitals", "YES")
+			If PlayerBase.GetSex() == 0 ;Male
+				AddTextOption("Showing Penis", "YES")
+			Else
+				AddTextOption("Showing Pussy", "YES")
+			EndIf
 		Else
-			AddTextOption("Showing Genitals", "NO")
+			If PlayerBase.GetSex() == 0 ;Male
+				AddTextOption("Showing Penis", "NO")
+			Else
+				AddTextOption("Showing Pussy", "NO")
+			EndIf
 		EndIf
 		
 		If PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
@@ -328,25 +327,13 @@ Event OnPageReset(string page)
 		
 		SetCursorPosition(1)
 		
-		AddHeaderOption("Armor Layer States")
+		AddHeaderOption("Curtain States")
 		If TopCurtainLayer_Cover.GetValue() == 1 ;True
 			AddTextOption("Top Curtain", "Covering")
 		Else
 			AddTextOption("Top Curtain", "Not Covering")
 		EndIf
 		
-		If BraLayer_Cover.GetValue() == 1 ;True
-			AddTextOption("Bra", "Not Visible")
-		Else
-			AddTextOption("Bra", "Visible")
-		EndIf
-			
-		If Chest_Cover.GetValue() == 1 ;True
-			AddTextOption("Chest", "Not Visible")
-		Else
-			AddTextOption("Chest", "Visible")
-		EndIf
-			
 		If PelvicCurtain_Cover.GetValue() == 1 ;True
 			AddTextOption("Pelvic Curtain", "Covering")
 		Else
@@ -357,24 +344,6 @@ Event OnPageReset(string page)
 			AddTextOption("Ass Curtain", "Covering")
 		Else
 			AddTextOption("Ass Curtain", "Not Covering")
-		EndIf
-		
-		If Underwear_Cover.GetValue() == 1 ;True
-			AddTextOption("Underwear", "Not Visible")
-		Else
-			AddTextOption("Underwear", "Visible")
-		EndIf
-		
-		If BottomAss_Cover.GetValue() == 1 ;True
-			AddTextOption("Ass", "Not Visible")
-		Else
-			AddTextOption("Ass", "Visible")
-		EndIf
-			
-		If BottomGenital_Cover.GetValue() == 1 ;True
-			AddTextOption("Genitals", "Not Visible")
-		Else
-			AddTextOption("Genitals", "Visible")
 		EndIf
 		
 	ElseIf (page == "Flashing States")
@@ -1167,217 +1136,218 @@ Event OnPageReset(string page)
 		ElseIf SLA_Found.GetValue() == 1
 			AddToggleOptionST("IgnoreBakaState", "Ignore Baka Keywords", IgnoreBakaKeywords, 0)
 			AddEmptyOption()
-			If PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartTop", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartTop", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorPartTop", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartTop) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorPartTop", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 1", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorPartBottom", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorPartBottom", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 2", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_Brabikini", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_Brabikini) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_Brabikini", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 3", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_FullSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_FullSkirt) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_FullSkirt", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 4", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MicroHotpants", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroHotpants) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MicroHotpants", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 5", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MicroSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MicroSkirt) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MicroSkirt", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 6", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MiniSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_MiniSkirt) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_MiniSkirt", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 7", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PantiesNormal", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PantiesNormal) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PantiesNormal", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 8", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PantsNormal", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PantsNormal) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PantsNormal", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 9", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PastiesCrotch", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesCrotch) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PastiesCrotch", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 10", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == False
+			SetCursorPosition(1)
+			If PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PastiesNipple", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PastiesNipple) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PastiesNipple", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 11", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PelvicCurtain", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_PelvicCurtain) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_PelvicCurtain", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 12", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ShowgirlSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ShowgirlSkirt", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 13", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongCString", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongCString) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongCString", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 14", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongGstring", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongGstring) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongGstring", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 15", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongLowleg", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongLowleg) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongLowleg", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 16", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongT", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ThongT) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ThongT", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 17", "")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
+			If PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorHalfNaked", "YES")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorHalfNaked", "NO")
-			ElseIf PlayerRef.WornHasKeyword(SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
+			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorHalfNaked", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
+			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
 				AddTextOption("SLA_ArmorHalfNaked", "NO (IGNORED)")
 			Else
 				AddTextOption("MCM ERROR - Report CODE 18", "")
