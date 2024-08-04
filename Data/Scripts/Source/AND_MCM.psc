@@ -4,109 +4,6 @@ AND_Core property Main Auto
 
 Actor Property PlayerRef Auto
 
-Faction Property AND_ShowingAssFaction Auto
-Faction Property AND_ShowingChestFaction Auto
-Faction Property AND_ShowingGenitalsFaction Auto 
-Faction Property AND_ShowingBraFaction Auto
-Faction Property AND_ShowingUnderwearFaction Auto
-Faction Property AND_ToplessFaction Auto
-Faction Property AND_BottomlessFaction Auto
-Faction Property AND_NudeActorFaction Auto
-
-Keyword Property AND_ArmorTop Auto
-Keyword Property AND_ArmorTopT Auto
-Keyword Property AND_ArmorBottom Auto
-Keyword Property AND_ArmorBottomT Auto
-Keyword Property AND_Bra Auto
-Keyword Property AND_BraT Auto
-Keyword Property AND_CString Auto
-Keyword Property AND_CStringT Auto
-Keyword Property AND_Hotpants Auto
-Keyword Property AND_HotpantsT Auto
-Keyword Property AND_Microskirt Auto
-Keyword Property AND_Miniskirt Auto
-Keyword Property AND_MiniskirtT Auto
-Keyword Property AND_ShowgirlSkirt Auto
-Keyword Property AND_ShowgirlSkirtT Auto
-Keyword Property AND_Thong Auto
-Keyword Property AND_ThongT Auto
-Keyword Property AND_Underwear Auto
-Keyword Property AND_UnderwearT Auto
-
-Keyword Property AND_ArmorBottom_NoCover Auto
-Keyword Property AND_ArmorTop_NoCover Auto
-Keyword Property AND_Bra_NoCover Auto
-Keyword Property AND_Underwear_NoCover Auto
-Keyword Property AND_Thong_NoCover Auto
-
-Keyword Property AND_NearlyNaked Auto
-Keyword Property AND_NipplePasties Auto
-Keyword Property AND_VaginaPasties Auto
-Keyword Property AND_EffectivelyNaked Auto
-
-Keyword Property AND_AssCurtain Auto
-Keyword Property AND_AssCurtainT Auto
-Keyword Property AND_ChestCurtain Auto
-Keyword Property AND_ChestCurtainT Auto
-Keyword Property AND_PelvicCurtain Auto
-Keyword Property AND_PelvicCurtainT Auto
-
-Keyword Property AND_ArmorTop_Male Auto
-Keyword Property AND_ArmorTopT_Male Auto
-Keyword Property AND_ArmorBottom_Male Auto
-Keyword Property AND_ArmorBottomT_Male Auto
-Keyword Property AND_Bra_Male Auto
-Keyword Property AND_BraT_Male Auto
-Keyword Property AND_BananaHammock Auto
-Keyword Property AND_BananaHammockT Auto
-Keyword Property AND_Hotpants_Male Auto
-Keyword Property AND_HotpantsT_Male Auto
-Keyword Property AND_Microskirt_Male Auto
-Keyword Property AND_Miniskirt_Male Auto
-Keyword Property AND_MiniskirtT_Male Auto
-Keyword Property AND_HimboSkirt Auto
-Keyword Property AND_HimboSkirtT Auto
-Keyword Property AND_Thong_Male Auto
-Keyword Property AND_ThongT_Male Auto
-Keyword Property AND_Underwear_Male Auto
-Keyword Property AND_UnderwearT_Male Auto
-
-Keyword Property AND_ArmorBottom_NoCover_Male Auto
-Keyword Property AND_ArmorTop_NoCover_Male Auto
-Keyword Property AND_Bra_NoCover_Male Auto
-Keyword Property AND_Underwear_NoCover_Male Auto
-Keyword Property AND_Thong_NoCover_Male Auto
-
-Keyword Property AND_NearlyNaked_Male Auto
-Keyword Property AND_NipplePasties_Male Auto
-Keyword Property AND_EffectivelyNaked_Male Auto
-
-Keyword Property AND_AssCurtain_Male Auto
-Keyword Property AND_AssCurtainT_Male Auto
-Keyword Property AND_ChestCurtain_Male Auto
-Keyword Property AND_ChestCurtainT_Male Auto
-Keyword Property AND_PelvicCurtain_Male Auto
-Keyword Property AND_PelvicCurtainT_Male Auto
-
-Keyword Property AND_CoversAll Auto
-Keyword Property AND_CoversAll_Male Auto
-
-Keyword Property AND_ChestFlashRiskLow Auto
-Keyword Property AND_ChestFlashRisk Auto
-Keyword Property AND_ChestFlashRiskHigh Auto
-Keyword Property AND_ChestFlashRiskExtreme Auto
-Keyword Property AND_ChestFlashRiskUltra Auto
-Keyword Property AND_PelvicFlashRiskLow Auto
-Keyword Property AND_PelvicFlashRisk Auto
-Keyword Property AND_PelvicFlashRiskHigh Auto
-Keyword Property AND_PelvicFlashRiskExtreme Auto
-Keyword Property AND_PelvicFlashRiskUltra Auto
-Keyword Property AND_AssFlashRiskLow Auto
-Keyword Property AND_AssFlashRisk Auto
-Keyword Property AND_AssFlashRiskHigh Auto
-Keyword Property AND_AssFlashRiskExtreme Auto
-Keyword Property AND_AssFlashRiskUltra Auto
-
 GlobalVariable Property TopCurtainLayer_Cover Auto
 GlobalVariable Property BraLayer_Cover Auto
 GlobalVariable Property Chest_Cover Auto
@@ -169,7 +66,8 @@ GlobalVariable Property TransparentShowgirlSkirtOdds Auto
 
 GlobalVariable Property SLA_Found Auto
 
-Bool Property IgnoreBakaKeywords Auto
+Bool Property GenderlessWording Auto Hidden
+Bool Property IgnoreBakaKeywords Auto Hidden
 
 Int Property FlashChanceInfoShown Auto Hidden
 
@@ -225,26 +123,26 @@ EndEvent
 Function InstallMCM()
 	ModName = "Advanced Nudity"
 	Pages = New String[8]
-	Pages[0] = "Factions and Armor States"
+	Pages[0] = "Nudity States"
 	Pages[1] = "Flashing States"
-	Pages[2] = "Detected Keywords - Curtain"
-	Pages[3] = "Detected Keywords - Armor & Underwear"
-	Pages[4] = "Detected Keywords - General/Catch-All"
-	Pages[5] = "Detected Keywords - Flash Risk"
-	Pages[6] = "Detected Keywords - Baka Keywords"
-	Pages[7] = "Flash Chance"
+	Pages[2] = "Curtain Keywords"
+	Pages[3] = "Armor & Underwear Keywords"
+	Pages[4] = "General/Catch-All Keywords"
+	Pages[5] = "Flash Risk Keywords"
+	Pages[6] = "Baka Keywords"
+	Pages[7] = "Flash Chances"
 EndFunction
 
 Event OnConfigOpen()
 	Pages = New String[8]
 	Pages[0] = "Nudity States"
 	Pages[1] = "Flashing States"
-	Pages[2] = "Detected Keywords - Curtain"
-	Pages[3] = "Detected Keywords - Armor & Underwear"
-	Pages[4] = "Detected Keywords - General/Catch-All"
-	Pages[5] = "Detected Keywords - Flash Risk"
-	Pages[6] = "Detected Keywords - Baka Keywords"
-	Pages[7] = "Flash Chance"
+	Pages[2] = "Curtain Keywords"
+	Pages[3] = "Armor & Underwear Keywords"
+	Pages[4] = "General/Catch-All Keywords"
+	Pages[5] = "Flash Risk Keywords"
+	Pages[6] = "Baka Keywords"
+	Pages[7] = "Flash Chances"
 EndEvent
 
 Event OnPageReset(string page)
@@ -253,71 +151,76 @@ Event OnPageReset(string page)
 	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If (page == "" || page == "Nudity States") ;default page
 		AddHeaderOption("Nudity Conditions")
-		If PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_NudeActorFaction) == 1
 			AddTextOption("Nude", "YES")
 		Else
 			AddTextOption("Nude", "NO")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_ToplessFaction) == 1
 			AddTextOption("Topless", "YES")
 		Else
 			AddTextOption("Topless", "NO")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_BottomlessFaction) == 1
 			AddTextOption("Bottomless", "YES")
 		Else
 			AddTextOption("Bottomless", "NO")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_ShowingBraFaction) == 1
 			AddTextOption("Showing Bra", "YES")
 		Else
 			AddTextOption("Showing Bra", "NO")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
-			If PlayerBase.GetSex() == 0 ;Male
+		If PlayerRef.GetFactionRank(Main.AND_ShowingChestFaction) == 1
+			If PlayerBase.GetSex() == 0 || GenderlessWording == True ;Male/Genderless
 				AddTextOption("Showing Chest", "YES")
 			Else
 				AddTextOption("Showing Boobs", "YES")
 			EndIf
 		Else
-			If PlayerBase.GetSex() == 0 ;Male
+			If PlayerBase.GetSex() == 0 || GenderlessWording == True ;Male/Genderless
 				AddTextOption("Showing Chest", "NO")
 			Else
 				AddTextOption("Showing Boobs", "NO")
 			EndIf
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_ShowingUnderwearFaction) == 1
 			AddTextOption("Showing Underwear", "YES")
 		Else
 			AddTextOption("Showing Underwear", "NO")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
-			If PlayerBase.GetSex() == 0 ;Male
+		If PlayerRef.GetFactionRank(Main.AND_ShowingGenitalsFaction) == 1
+			If PlayerBase.GetSex() == 0 && GenderlessWording == False ;Male
 				AddTextOption("Showing Penis", "YES")
-			Else
+			ElseIf GenderlessWording == False
 				AddTextOption("Showing Pussy", "YES")
+			Else
+				AddTextOption("Showing Genitals", "YES")
 			EndIf
 		Else
-			If PlayerBase.GetSex() == 0 ;Male
+			If PlayerBase.GetSex() == 0 && GenderlessWording == False ;Male
 				AddTextOption("Showing Penis", "NO")
-			Else
+			ElseIf GenderlessWording == False
 				AddTextOption("Showing Pussy", "NO")
+			Else
+				AddTextOption("Showing Genitals", "NO")
 			EndIf
 		EndIf
 		
-		If PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
+		If PlayerRef.GetFactionRank(Main.AND_ShowingAssFaction) == 1
 			AddTextOption("Showing Ass", "YES")
 		Else
 			AddTextOption("Showing Ass", "NO")
 		EndIf
 		
 		AddEmptyOption()
+		AddToggleOptionST("UseGenderlessState", "Use Genderless Wording", GenderlessWording, 0)
 		
 		If PlayerBase.GetSex() == 0 ;Male
 			AddTextOption("Base Player Sex is:", "MALE")
@@ -349,204 +252,204 @@ Event OnPageReset(string page)
 	ElseIf (page == "Flashing States")
 		AddHeaderOption("Curtain Risk")
 		If PlayerBase.GetSex() == 0 ;Male
-			If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("Chest", (TopCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 					AddTextOption("Chest", (TransparentTopCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("Chest", (TopCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 					AddTextOption("Chest", (TransparentTopCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("Chest", (TopCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 					AddTextOption("Chest", (TransparentTopCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("Chest", (TopCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 					AddTextOption("Chest", (TransparentTopCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("Chest", (TopCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 					AddTextOption("Chest", (TransparentTopCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
 				AddTextOption("Chest", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 					AddTextOption("Ass", (AssCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 					AddTextOption("Ass", (TransparentAssCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 					AddTextOption("Ass", (AssCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 					AddTextOption("Ass", (TransparentAssCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 					AddTextOption("Ass", (AssCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 					AddTextOption("Ass", (TransparentAssCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 					AddTextOption("Ass", (AssCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 					AddTextOption("Ass", (TransparentAssCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 					AddTextOption("Ass", (AssCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 					AddTextOption("Ass", (TransparentAssCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
 				AddTextOption("Ass", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 					AddTextOption("Pelvic", (PelvicCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 					AddTextOption("Pelvic", (PelvicCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 					AddTextOption("Pelvic", (PelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 					AddTextOption("Pelvic", (PelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 					AddTextOption("Pelvic", (PelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
 				AddTextOption("Pelvic", "0%")
 			EndIf
 		Else
-			If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("Chest", (TopCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
 					AddTextOption("Chest", (TransparentTopCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("Chest", (TopCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
 					AddTextOption("Chest", (TransparentTopCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("Chest", (TopCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
 					AddTextOption("Chest", (TransparentTopCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("Chest", (TopCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
 					AddTextOption("Chest", (TransparentTopCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_ChestCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("Chest", (TopCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
 					AddTextOption("Chest", (TransparentTopCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
 				AddTextOption("Chest", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain)
+			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain)
 					AddTextOption("Ass", (AssCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
 					AddTextOption("Ass", (TransparentAssCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain)
 					AddTextOption("Ass", (AssCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
 					AddTextOption("Ass", (TransparentAssCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain)
 					AddTextOption("Ass", (AssCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
 					AddTextOption("Ass", (TransparentAssCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain)
 					AddTextOption("Ass", (AssCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
 					AddTextOption("Ass", (TransparentAssCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_AssCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain)
 					AddTextOption("Ass", (AssCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
 					AddTextOption("Ass", (TransparentAssCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
 				AddTextOption("Ass", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
+			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain)
 					AddTextOption("Pelvic", (PelvicCurtainOddsLow.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsLow.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain)
 					AddTextOption("Pelvic", (PelvicCurtainOdds.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOdds.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain)
 					AddTextOption("Pelvic", (PelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsHigh.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain)
 					AddTextOption("Pelvic", (PelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsExtreme.GetValue() as Int) as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(AND_PelvicCurtain)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain)
 					AddTextOption("Pelvic", (PelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
 					AddTextOption("Pelvic", (TransparentPelvicCurtainOddsUltra.GetValue() as Int) as String + "%")
 				EndIf
 			Else
@@ -555,67 +458,67 @@ Event OnPageReset(string page)
 		EndIf
 		
 		AddHeaderOption("Transparent Clothes Risk")
-		If PlayerRef.WornHasKeyword(AND_ArmorTopT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
 			AddTextOption("Top", (TransparentTopArmorOdds.GetValue() as Int) as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTopT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male)
 			AddTextOption("Top", (TransparentTopArmorOdds.GetValue() as Int) as String + "%")
 		Else
 			AddTextOption("Top", "0%")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorBottomT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) && PlayerBase.GetSex() != 0
 			AddTextOption("Bottom", (TransparentBottomArmorOdds.GetValue() as Int) as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottomT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male)
 			AddTextOption("Bottom", (TransparentBottomArmorOdds.GetValue() as Int) as String + "%")
 		Else
 			AddTextOption("Bottom", "0%")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_BraT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_BraT) && PlayerBase.GetSex() != 0
 			AddTextOption("Bra", (TransparentBraOdds.GetValue() as Int) as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(AND_BraT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Male)
 			AddTextOption("Bra", (TransparentBraOdds.GetValue() as Int) as String + "%")
 		Else
 			AddTextOption("Bra", "0%")
 		EndIf
 		
 		If PlayerBase.GetSex() == 0
-			If PlayerRef.WornHasKeyword(AND_UnderwearT_Male)
+			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male)
 				AddTextOption("Underwear", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerRef.WornHasKeyword(AND_ThongT_Male)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Male)
 				AddTextOption("Thong", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(AND_BananaHammock)
+			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_BananaHammock)
 				AddTextOption("Banana Hammock", (CStringOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(AND_BananaHammockT)
+			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_BananaHammockT)
 				AddTextOption("Banana Hammock", (TransparentCStringOdds.GetValue() as Int) as String + "%")
 			Else
 				AddTextOption("Underwear", "0%")
 			EndIf
 		Else
-			If PlayerRef.WornHasKeyword(AND_UnderwearT)
+			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT)
 				AddTextOption("Underwear", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerRef.WornHasKeyword(AND_ThongT)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT)
 				AddTextOption("Thong", (TransparentUnderwearOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(AND_CString)
+			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_CString)
 				AddTextOption("CString", (CStringOdds.GetValue() as Int) as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(AND_CStringT)
+			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_CStringT)
 				AddTextOption("CString", (TransparentCStringOdds.GetValue() as Int) as String + "%")
 			Else
 				AddTextOption("Underwear", "0%")
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_HotpantsT) && PlayerBase.GetSex() != 0
 			AddTextOption("Hotpants", (TransparentHotpantsOdds.GetValue() as Int) as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male)
 			AddTextOption("Hotpants", (TransparentHotpantsOdds.GetValue() as Int) as String + "%")
 		Else
 			AddTextOption("Hotpants", "0%")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
 			AddTextOption("Showgirl Skirt", (TransparentShowgirlSkirtOdds.GetValue() as Int) as String + "")
-		ElseIf PlayerRef.WornHasKeyword(AND_HimboSkirtT)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT)
 			AddTextOption("Himbo Skirt", (TransparentShowgirlSkirtOdds.GetValue() as Int) as String + "")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -647,143 +550,143 @@ Event OnPageReset(string page)
 			AddTextOption("Last Transparent Showgirl Skirt Roll", ShowgirlTransparentRoll.GetValue() as Int)
 		EndIf
 		
-	ElseIf (page == "Detected Keywords - Curtain")
+	ElseIf (page == "Curtain Keywords")
 	
-		If PlayerRef.WornHasKeyword(AND_ChestCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ChestCurtain", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtain_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 			AddTextOption("AND_ChestCurtain", "Yes")
 		Else
 			AddTextOption("AND_ChestCurtain", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ChestCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ChestCurtainT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ChestCurtainT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 			AddTextOption("AND_ChestCurtainT", "Yes")
 		Else
 			AddTextOption("AND_ChestCurtainT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_PelvicCurtain", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtain_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 			AddTextOption("AND_PelvicCurtain", "Yes")
 		Else
 			AddTextOption("AND_PelvicCurtain", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_PelvicCurtainT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_PelvicCurtainT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 			AddTextOption("AND_PelvicCurtainT", "Yes")
 		Else
 			AddTextOption("AND_PelvicCurtainT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_AssCurtain", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_AssCurtain_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 			AddTextOption("AND_AssCurtain", "Yes")
 		Else
 			AddTextOption("AND_AssCurtain", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_AssCurtainT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_AssCurtainT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 			AddTextOption("AND_AssCurtainT", "Yes")
 		Else
 			AddTextOption("AND_AssCurtainT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Miniskirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Miniskirt) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Miniskirt", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Miniskirt_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 			AddTextOption("AND_Miniskirt", "Yes")
 		Else
 			AddTextOption("AND_Miniskirt", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_MiniskirtT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_MiniskirtT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_MiniskirtT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_MiniskirtT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 			AddTextOption("AND_MiniskirtT", "Yes")
 		Else
 			AddTextOption("AND_MiniskirtT", "No")
 		EndIf
 	
-	ElseIf (page == "Detected Keywords - Armor & Underwear")
+	ElseIf (page == "Armor & Underwear Keywords")
 	
 		AddHeaderOption("Armor Keywords")
 	
-		If PlayerRef.WornHasKeyword(AND_ArmorTop) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorTop", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTop_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTop_Male)
 			AddTextOption("AND_ArmorTop", "Yes")
 		Else
 			AddTextOption("AND_ArmorTop", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorTopT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorTopT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTopT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male)
 			AddTextOption("AND_ArmorTopT", "Yes")
 		Else
 			AddTextOption("AND_ArmorTopT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorTop_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop_NoCover) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorTop_NoCover", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorTop_NoCover_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTop_NoCover_Male)
 			AddTextOption("AND_ArmorTop_NoCover", "Yes")
 		Else
 			AddTextOption("AND_ArmorTop_NoCover", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorBottom) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorBottom", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottom_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_Male)
 			AddTextOption("AND_ArmorBottom", "Yes")
 		Else
 			AddTextOption("AND_ArmorBottom", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorBottomT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorBottomT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottomT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male)
 			AddTextOption("AND_ArmorBottomT", "Yes")
 		Else
 			AddTextOption("AND_ArmorBottomT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ArmorBottom_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_NoCover) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorBottom_NoCover", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ArmorBottom_NoCover_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_NoCover_Male)
 			AddTextOption("AND_ArmorBottom_NoCover", "Yes")
 		Else
 			AddTextOption("AND_ArmorBottom_NoCover", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Hotpants) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Hotpants) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Hotpants", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Hotpants_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Hotpants_Male)
 			AddTextOption("AND_Hotpants", "Yes")
 		Else
 			AddTextOption("AND_Hotpants", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_HotpantsT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_HotpantsT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_HotpantsT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_HotpantsT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male)
 			AddTextOption("AND_HotpantsT", "Yes")
 		Else
 			AddTextOption("AND_HotpantsT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ShowgirlSkirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirt) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ShowgirlSkirt", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_HimboSkirt)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirt)
 			AddTextOption("AND_HimboSkirt", "Yes")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -793,9 +696,9 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ShowgirlSkirtT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_HimboSkirtT)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT)
 			AddTextOption("AND_HimboSkirtT", "Yes")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -809,33 +712,33 @@ Event OnPageReset(string page)
 		
 		AddHeaderOption("Underwear Keywords")
 		
-		If PlayerRef.WornHasKeyword(AND_Bra) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Bra) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Bra", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Bra_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Bra_Male)
 			AddTextOption("AND_Bra", "Yes")
 		Else
 			AddTextOption("AND_Bra", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_BraT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_BraT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_BraT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_BraT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Male)
 			AddTextOption("AND_BraT", "Yes")
 		Else
 			AddTextOption("AND_BraT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Bra_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Bra_NoCover) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Bra_NoCover", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Bra_NoCover_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Bra_NoCover_Male)
 			AddTextOption("AND_Bra_NoCover", "Yes")
 		Else
 			AddTextOption("AND_Bra_NoCover", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_CString) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_CString) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_CString", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_BananaHammock)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammock)
 			AddTextOption("AND_BananaHammock", "Yes")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -845,9 +748,9 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_CStringT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_CStringT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_CStringT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_BananaHammockT)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT)
 			AddTextOption("AND_BananaHammockT", "Yes")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -857,81 +760,81 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Thong) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Thong) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Thong", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Thong_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Thong_Male)
 			AddTextOption("AND_Thong", "Yes")
 		Else
 			AddTextOption("AND_Thong", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ThongT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ThongT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ThongT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_ThongT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Male)
 			AddTextOption("AND_ThongT", "Yes")
 		Else
 			AddTextOption("AND_ThongT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Thong_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Thong_NoCover) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Thong_NoCover", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Thong_NoCover_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Thong_NoCover_Male)
 			AddTextOption("AND_Thong_NoCover", "Yes")
 		Else
 			AddTextOption("AND_Thong_NoCover", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Underwear) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Underwear) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Underwear", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Underwear_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Underwear_Male)
 			AddTextOption("AND_Underwear", "Yes")
 		Else
 			AddTextOption("AND_Underwear", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_UnderwearT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_UnderwearT) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_UnderwearT", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_UnderwearT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male)
 			AddTextOption("AND_UnderwearT", "Yes")
 		Else
 			AddTextOption("AND_UnderwearT", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Underwear_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Underwear_NoCover) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Underwear_NoCover", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Underwear_NoCover_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Underwear_NoCover_Male)
 			AddTextOption("AND_Underwear_NoCover", "Yes")
 		Else
 			AddTextOption("AND_Underwear_NoCover", "No")
 		EndIf
 
-	ElseIf (page == "Detected Keywords - General/Catch-All")
+	ElseIf (page == "General/Catch-All Keywords")
 	
-		If PlayerRef.WornHasKeyword(AND_CoversAll) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_CoversAll) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_CoversAll", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_CoversAll_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_CoversAll_Male)
 			AddTextOption("AND_CoversAll", "Yes")
 		Else
 			AddTextOption("AND_CoversAll", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_Microskirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Microskirt) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_Microskirt", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_Microskirt_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_Microskirt_Male)
 			AddTextOption("AND_Microskirt", "Yes")
 		Else
 			AddTextOption("AND_Microskirt", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_NipplePasties) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_NipplePasties) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_NipplePasties", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_NipplePasties_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_NipplePasties_Male)
 			AddTextOption("AND_NipplePasties", "Yes")
 		Else
 			AddTextOption("AND_NipplePasties", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_VaginaPasties) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_VaginaPasties) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_VaginaPasties", "Yes")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -941,80 +844,80 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_NearlyNaked) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_NearlyNaked) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_NearlyNaked", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_NearlyNaked_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_NearlyNaked_Male)
 			AddTextOption("AND_NearlyNaked", "Yes")
 		Else
 			AddTextOption("AND_NearlyNaked", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_EffectivelyNaked) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_EffectivelyNaked) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_EffectivelyNaked", "Yes")
-		ElseIf PlayerRef.WornHasKeyword(AND_EffectivelyNaked_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_EffectivelyNaked_Male)
 			AddTextOption("AND_EffectivelyNaked", "Yes")
 		Else
 			AddTextOption("AND_EffectivelyNaked", "No")
 		EndIf
 	
-	ElseIf (page == "Detected Keywords - Flash Risk")
+	ElseIf (page == "Flash Risk Keywords")
 		AddHeaderOption("Chest Curtain")
-		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra)
 			AddTextOption("AND_ChestFlashRiskUltra", "Yes")
 		Else
 			AddTextOption("AND_ChestFlashRiskUltra", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme)
 			AddTextOption("AND_ChestFlashRiskExtreme", "Yes")
 		Else
 			AddTextOption("AND_ChestFlashRiskExtreme", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh)
 			AddTextOption("AND_ChestFlashRiskHigh", "Yes")
 		Else
 			AddTextOption("AND_ChestFlashRiskHigh", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ChestFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk)
 			AddTextOption("AND_ChestFlashRisk", "Yes")
 		Else
 			AddTextOption("AND_ChestFlashRisk", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_ChestFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
 			AddTextOption("AND_ChestFlashRiskLow", "Yes")
 		Else
 			AddTextOption("AND_ChestFlashRiskLow", "No")
 		EndIf
 		
 		AddHeaderOption("Pelvic Curtain")
-		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
 			AddTextOption("AND_PelvicFlashRiskUltra", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRiskUltra", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
 			AddTextOption("AND_PelvicFlashRiskExtreme", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRiskExtreme", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
 			AddTextOption("AND_PelvicFlashRiskHigh", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRiskHigh", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
 			AddTextOption("AND_PelvicFlashRisk", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRisk", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_PelvicFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
 			AddTextOption("AND_PelvicFlashRiskLow", "Yes")
 		Else
 			AddTextOption("AND_PelvicFlashRiskLow", "No")
@@ -1023,36 +926,36 @@ Event OnPageReset(string page)
 		SetCursorPosition(1)
 		
 		AddHeaderOption("Ass Curtain")
-		If PlayerRef.WornHasKeyword(AND_AssFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
 			AddTextOption("AND_AssFlashRiskUltra", "Yes")
 		Else
 			AddTextOption("AND_AssFlashRiskUltra", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
 			AddTextOption("AND_AssFlashRiskExtreme", "Yes")
 		Else
 			AddTextOption("AND_AssFlashRiskExtreme", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
 			AddTextOption("AND_AssFlashRiskHigh", "Yes")
 		Else
 			AddTextOption("AND_AssFlashRiskHigh", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
 			AddTextOption("AND_AssFlashRisk", "Yes")
 		Else
 			AddTextOption("AND_AssFlashRisk", "No")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(AND_AssFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
 			AddTextOption("AND_AssFlashRiskLow", "Yes")
 		Else
 			AddTextOption("AND_AssFlashRiskLow", "No")
 		EndIf
-	ElseIf (page == "Flash Chance")
+	ElseIf (page == "Flash Chances")
 		AddHeaderOption("Chest Curtain")
 		AddSliderOptionST("AND_ChestCurtainLowOdds", "Chest Curtain - Low", TopCurtainOddsLow.GetValue(), "{0}%", 0)
 		AddSliderOptionST("AND_ChestCurtainOdds", "Chest Curtain - Normal", TopCurtainOdds.GetValue(), "{0}%", 0)
@@ -1127,7 +1030,7 @@ Event OnPageReset(string page)
 			Debug.MessageBox("Changing the Flash Chances here will NOT immediately change your Flashing Status. The changes will take effect on all future checks.")
 			FlashChanceInfoShown = 1
 		EndIf
-	ElseIf (page == "Detected Keywords - Baka Keywords")
+	ElseIf (page == "Baka Keywords")
 		
 		If SLA_Found.GetValue() == 0
 			AddTextOption("SexLabAroused Not Found.", None)
@@ -1140,223 +1043,163 @@ Event OnPageReset(string page)
 				AddTextOption("SLA_ArmorPartTop", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartTop", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorPartTop", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorPartTop", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 1", "")
+				AddTextOption("SLA_ArmorPartTop", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorPartBottom", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorPartBottom", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorPartBottom", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 2", "")
+				AddTextOption("SLA_ArmorPartBottom", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_Brabikini", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_Brabikini", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_Brabikini", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 3", "")
+				AddTextOption("SLA_Brabikini", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_FullSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_FullSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_FullSkirt", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 4", "")
+				AddTextOption("SLA_FullSkirt", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroHotpants", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MicroHotpants", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MicroHotpants", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 5", "")
+				AddTextOption("SLA_MicroHotpants", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MicroSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MicroSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MicroSkirt", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 6", "")
+				AddTextOption("SLA_MicroSkirt", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_MiniSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MiniSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_MiniSkirt", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 7", "")
+				AddTextOption("SLA_MiniSkirt", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantiesNormal", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PantiesNormal", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PantiesNormal", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 8", "")
+				AddTextOption("SLA_PantiesNormal", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PantsNormal", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PantsNormal", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PantsNormal", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 9", "")
+				AddTextOption("SLA_PantsNormal", "IGNORED")
 			EndIf
 			
+			SetCursorPosition(5)
 			If PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesCrotch", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PastiesCrotch", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PastiesCrotch", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 10", "")
+				AddTextOption("SLA_PastiesCrotch", "IGNORED")
 			EndIf
 			
-			SetCursorPosition(1)
 			If PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PastiesNipple", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PastiesNipple", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PastiesNipple", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 11", "")
+				AddTextOption("SLA_PastiesNipple", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_PelvicCurtain", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PelvicCurtain", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_PelvicCurtain", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 12", "")
+				AddTextOption("SLA_PelvicCurtain", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ShowgirlSkirt", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ShowgirlSkirt", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ShowgirlSkirt", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 13", "")
+				AddTextOption("SLA_ShowgirlSkirt", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongCString", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongCString", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongCString", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 14", "")
+				AddTextOption("SLA_ThongCString", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongGstring", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongGstring", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongGstring", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 15", "")
+				AddTextOption("SLA_ThongGstring", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongLowleg", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongLowleg", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongLowleg", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 16", "")
+				AddTextOption("SLA_ThongLowleg", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ThongT", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongT", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ThongT", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 17", "")
+				AddTextOption("SLA_ThongT", "IGNORED")
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorHalfNaked", "YES")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorHalfNaked", "NO")
-			ElseIf PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorHalfNaked", "YES (IGNORED)")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == True
-				AddTextOption("SLA_ArmorHalfNaked", "NO (IGNORED)")
 			Else
-				AddTextOption("MCM ERROR - Report CODE 18", "")
+				AddTextOption("SLA_ArmorHalfNaked", "IGNORED")
 			EndIf
 		Else
 			Debug.MessageBox("AND - ERROR - SLA_Found value is " + (SLA_Found.GetValue() as Int) as String + ". Please report this error.")
 		EndIf
 	EndIf
 EndEvent
+
+State UseGenderlessState
+	Event OnSelectST()
+		If GenderlessWording == False
+			GenderlessWording = True
+		Else
+			GenderlessWording = False
+		EndIf
+		SetToggleOptionValueST(GenderlessWording, False, "UseGenderlessState")
+		ForcePageReset()
+	EndEvent
+EndState
 
 State IgnoreBakaState
 	Event OnSelectST()

@@ -109,24 +109,24 @@ Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
 
-Keyword Property SLA_Brabikini Auto
-Keyword Property SLA_ThongT Auto
-Keyword Property SLA_ThongGstring Auto
-Keyword Property SLA_ThongLowleg Auto
-Keyword Property SLA_ThongCString Auto
-Keyword Property SLA_ArmorPartTop Auto
-Keyword Property SLA_ArmorPartBottom Auto
-Keyword Property SLA_FullSkirt Auto
-Keyword Property SLA_MicroHotpants Auto
-Keyword Property SLA_MicroSkirt Auto
-Keyword Property SLA_MiniSkirt Auto
-Keyword Property SLA_PantiesNormal Auto
-Keyword Property SLA_PantsNormal Auto
-Keyword Property SLA_PastiesCrotch Auto
-Keyword Property SLA_PastiesNipple Auto
-Keyword Property SLA_ArmorHalfNaked Auto
-Keyword Property SLA_PelvicCurtain Auto
-Keyword Property SLA_ShowgirlSkirt Auto
+Keyword Property SLA_Brabikini Auto Hidden
+Keyword Property SLA_ThongT Auto Hidden
+Keyword Property SLA_ThongGstring Auto Hidden
+Keyword Property SLA_ThongLowleg Auto Hidden
+Keyword Property SLA_ThongCString Auto Hidden
+Keyword Property SLA_ArmorPartTop Auto Hidden
+Keyword Property SLA_ArmorPartBottom Auto Hidden
+Keyword Property SLA_FullSkirt Auto Hidden
+Keyword Property SLA_MicroHotpants Auto Hidden
+Keyword Property SLA_MicroSkirt Auto Hidden
+Keyword Property SLA_MiniSkirt Auto Hidden
+Keyword Property SLA_PantiesNormal Auto Hidden
+Keyword Property SLA_PantsNormal Auto Hidden
+Keyword Property SLA_PastiesCrotch Auto Hidden
+Keyword Property SLA_PastiesNipple Auto Hidden
+Keyword Property SLA_ArmorHalfNaked Auto Hidden
+Keyword Property SLA_PelvicCurtain Auto Hidden
+Keyword Property SLA_ShowgirlSkirt Auto Hidden
 
 GlobalVariable Property TopCurtainRoll Auto
 GlobalVariable Property PelvicCurtainRoll Auto
@@ -145,15 +145,10 @@ GlobalVariable Property SLA_Found Auto
 
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
-	;RegisterForUpdateGameTime(0.25) ;When initialized, register the OnUpdateGameTime event to fire every 15 in-game minutes. This separate event is required for updating using Game Time instead of Real Time
 	
 	SLA_Check()
 	
 	Debug.Notification("A.N.D. Initialized")
-EndEvent
-
-Event OnPlayerLoadGame()
-	SLA_Check()
 EndEvent
 
 Event OnUpdate()
@@ -169,13 +164,6 @@ Event OnUpdate()
 		EndIf
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
 	EndIf
-EndEvent
-
-Event OnUpdateGameTime()
-	If AND_DebugMode.GetValue() == 1
-		Debug.Notification("AND Update Game Time")
-	EndIf
-	AND_DiceRoll()
 EndEvent
 
 Function SLA_Check()
@@ -237,16 +225,23 @@ Function AND_DiceRoll()
 		Debug.Notification("AND Dice Roll")
 	EndIf
 	
-	TopCurtainRoll.SetValue(Utility.RandomInt(1,100))
-	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,100))
-	AssCurtainRoll.SetValue(Utility.RandomInt(1,100))
-	CStringRoll.SetValue(Utility.RandomInt(1,100))
-	TopTransparentRoll.SetValue(Utility.RandomInt(1,100))
-	BottomTransparentRoll.SetValue(Utility.RandomInt(1,100))
-	BraTransparentRoll.SetValue(Utility.RandomInt(1,100))
-	UnderwearTransparentRoll.SetValue(Utility.RandomInt(1,100))
-	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,100))
-	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,100))
+	Int MaxRoll = 100
+	If AND_Player.PlayerRef.IsSprinting()
+		MaxRoll = 80
+	ElseIf AND_Player.PlayerRef.IsRunning()
+		MaxRoll = 90
+	EndIf
+	
+	TopCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	AssCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	CStringRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	TopTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	BottomTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	BraTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	UnderwearTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
 	
 	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If PlayerBase.GetSex() == 0 ;Male

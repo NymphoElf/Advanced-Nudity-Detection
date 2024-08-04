@@ -1,10 +1,17 @@
 ScriptName AND_PlayerScript extends ReferenceAlias
 
 AND_Core Property AND_Main Auto
+AND_MotionTimer Property AND_MotionClock Auto
 
 Actor Property PlayerRef Auto
 
+GlobalVariable Property AND_DebugMode Auto
+
 Event OnInit()
+	Startup()
+EndEvent
+
+Function Startup()
 	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingAssFaction)
 		PlayerRef.AddToFaction(AND_Main.AND_ShowingAssFaction)
 	EndIf
@@ -30,7 +37,45 @@ Event OnInit()
 		PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
 	EndIf
 	
+	RegisterForAnimationEvent(PlayerRef, "FootLeft")
+	RegisterForAnimationEvent(PlayerRef, "tailSprint")
+	RegisterForAnimationEvent(PlayerRef, "EndAnimatedCameraDelta")
+	
 	RegisterForUpdateGameTime(0.25)
+EndFunction
+
+Event OnPlayerLoadGame()
+	AND_Main.SLA_Check()
+	
+	RegisterForAnimationEvent(PlayerRef, "FootLeft")
+	RegisterForAnimationEvent(PlayerRef, "tailSprint")
+	RegisterForAnimationEvent(PlayerRef, "EndAnimatedCameraDelta")
+EndEvent
+
+Event OnAnimationEvent(ObjectReference akReference, String akEventName)
+	If akReference == PlayerRef
+		If akEventName == "FootLeft"
+			If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0
+				AND_Main.AND_DiceRoll()
+				AND_MotionClock.RunTimer = 3
+				AND_MotionClock.StartClock()
+			EndIf
+		EndIf
+		
+		If akEventName == "tailSprint"
+			If AND_MotionClock.SprintTimer == 0
+				AND_Main.AND_DiceRoll()
+			EndIf
+		EndIf
+		
+		If akEventName == "EndAnimatedCameraDelta"
+			If AND_MotionClock.SprintTimer == 0
+				AND_Main.AND_DiceRoll()
+				AND_MotionClock.SprintTimer = 3
+				AND_MotionClock.StartClock()
+			EndIf
+		EndIf
+	EndIf
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
@@ -62,5 +107,8 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnUpdateGameTime()
+	If AND_DebugMode.GetValue() == 1
+		Debug.Notification("AND Update Game Time")
+	EndIf
 	AND_Main.AND_DiceRoll()
 EndEvent
