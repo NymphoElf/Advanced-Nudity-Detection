@@ -935,7 +935,7 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover.GetValue() == 1 && AND_BottomGenital_Cover.GetValue() == 0 && AND_BottomAss_Cover.GetValue() == 0 ;True-False-False
-				If ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_Microskirt) || ScannedActor.WornHasKeyword(AND_Main.AND_VaginaPasties) || (AND_Main.SLA_MicroSkirt != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_MicroSkirt)) || (AND_Main.SLA_PastiesCrotch != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_PastiesCrotch))
+				If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_Microskirt) || ScannedActor.WornHasKeyword(AND_Main.AND_VaginaPasties) || (AND_Main.SLA_MicroSkirt != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_MicroSkirt)) || (AND_Main.SLA_PastiesCrotch != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_PastiesCrotch))
 					ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
 					ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
 					ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)

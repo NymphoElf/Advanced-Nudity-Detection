@@ -919,7 +919,7 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover.GetValue() == 1 && AND_BottomGenital_Cover.GetValue() == 0 && AND_BottomAss_Cover.GetValue() == 0 ;True-False-False
-				If ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_Microskirt_Male)
+				If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_Microskirt_Male)
 					ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
 					ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
 					ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
