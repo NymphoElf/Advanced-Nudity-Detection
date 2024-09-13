@@ -15,24 +15,40 @@ Faction Property AND_BottomlessFaction Auto
 Faction Property AND_NudeActorFaction Auto
 
 Keyword Property AND_ArmorTop Auto
+Keyword Property AND_ArmorTopT_Low Auto
 Keyword Property AND_ArmorTopT Auto
+Keyword Property AND_ArmorTopT_High Auto
 Keyword Property AND_ArmorBottom Auto
+Keyword Property AND_ArmorBottomT_Low Auto
 Keyword Property AND_ArmorBottomT Auto
+Keyword Property AND_ArmorBottomT_High Auto
 Keyword Property AND_Bra Auto
+Keyword Property AND_BraT_Low Auto
 Keyword Property AND_BraT Auto
+Keyword Property AND_BraT_High Auto
 Keyword Property AND_CString Auto
+Keyword Property AND_CStringT_Low Auto
 Keyword Property AND_CStringT Auto
+Keyword Property AND_CStringT_High Auto
 Keyword Property AND_Hotpants Auto
+Keyword Property AND_HotpantsT_Low Auto
 Keyword Property AND_HotpantsT Auto
+Keyword Property AND_HotpantsT_High Auto
 Keyword Property AND_Microskirt Auto
 Keyword Property AND_Miniskirt Auto
 Keyword Property AND_MiniskirtT Auto
 Keyword Property AND_ShowgirlSkirt Auto
+Keyword Property AND_ShowgirlSkirtT_Low Auto
 Keyword Property AND_ShowgirlSkirtT Auto
+Keyword Property AND_ShowgirlSkirtT_High Auto
 Keyword Property AND_Thong Auto
+Keyword Property AND_ThongT_Low Auto
 Keyword Property AND_ThongT Auto
+Keyword Property AND_ThongT_High Auto
 Keyword Property AND_Underwear Auto
+Keyword Property AND_UnderwearT_Low Auto
 Keyword Property AND_UnderwearT Auto
+Keyword Property AND_UnderwearT_High Auto
 Keyword Property AND_Ignore Auto
 
 Keyword Property AND_ArmorBottom_NoCover Auto
@@ -54,24 +70,40 @@ Keyword Property AND_PelvicCurtain Auto
 Keyword Property AND_PelvicCurtainT Auto
 
 Keyword Property AND_ArmorTop_Male Auto
+Keyword Property AND_ArmorTopT_Low_Male Auto
 Keyword Property AND_ArmorTopT_Male Auto
+Keyword Property AND_ArmorTopT_High_Male Auto
 Keyword Property AND_ArmorBottom_Male Auto
+Keyword Property AND_ArmorBottomT_Low_Male Auto
 Keyword Property AND_ArmorBottomT_Male Auto
+Keyword Property AND_ArmorBottomT_High_Male Auto
 Keyword Property AND_Bra_Male Auto
+Keyword Property AND_BraT_Low_Male Auto
 Keyword Property AND_BraT_Male Auto
+Keyword Property AND_BraT_High_Male Auto
 Keyword Property AND_BananaHammock Auto
+Keyword Property AND_BananaHammockT_Low Auto
 Keyword Property AND_BananaHammockT Auto
+Keyword Property AND_BananaHammockT_High Auto
 Keyword Property AND_Hotpants_Male Auto
+Keyword Property AND_HotpantsT_Low_Male Auto
 Keyword Property AND_HotpantsT_Male Auto
+Keyword Property AND_HotpantsT_High_Male Auto
 Keyword Property AND_Microskirt_Male Auto
 Keyword Property AND_Miniskirt_Male Auto
 Keyword Property AND_MiniskirtT_Male Auto
 Keyword Property AND_HimboSkirt Auto
+Keyword Property AND_HimboSkirtT_Low Auto
 Keyword Property AND_HimboSkirtT Auto
+Keyword Property AND_HimboSkirtT_High Auto
 Keyword Property AND_Thong_Male Auto
+Keyword Property AND_ThongT_Low_Male Auto
 Keyword Property AND_ThongT_Male Auto
+Keyword Property AND_ThongT_High_Male Auto
 Keyword Property AND_Underwear_Male Auto
+Keyword Property AND_UnderwearT_Low_Male Auto
 Keyword Property AND_UnderwearT_Male Auto
+Keyword Property AND_UnderwearT_High_Male Auto
 
 Keyword Property AND_ArmorBottom_NoCover_Male Auto
 Keyword Property AND_ArmorTop_NoCover_Male Auto
@@ -128,20 +160,32 @@ Keyword Property SLA_ArmorHalfNaked Auto Hidden
 Keyword Property SLA_PelvicCurtain Auto Hidden
 Keyword Property SLA_ShowgirlSkirt Auto Hidden
 
-GlobalVariable Property TopCurtainRoll Auto
-GlobalVariable Property PelvicCurtainRoll Auto
-GlobalVariable Property AssCurtainRoll Auto
-GlobalVariable Property CStringRoll Auto
-GlobalVariable Property TopTransparentRoll Auto
-GlobalVariable Property BottomTransparentRoll Auto
-GlobalVariable Property BraTransparentRoll Auto
-GlobalVariable Property UnderwearTransparentRoll Auto
-GlobalVariable Property HotpantsTransparentRoll Auto
-GlobalVariable Property ShowgirlTransparentRoll Auto
+Int Property TopCurtainRoll Auto Hidden
+Int Property PelvicCurtainRoll Auto Hidden
+Int Property AssCurtainRoll Auto Hidden
+Int Property CStringRoll Auto Hidden
+Int Property TopTransparentRoll Auto Hidden
+Int Property BottomTransparentRoll Auto Hidden
+Int Property BraTransparentRoll Auto Hidden
+Int Property UnderwearTransparentRoll Auto Hidden
+Int Property HotpantsTransparentRoll Auto Hidden
+Int Property ShowgirlTransparentRoll Auto Hidden
+
+Int Property NPCTopCurtainRoll Auto Hidden
+Int Property NPCPelvicCurtainRoll Auto Hidden
+Int Property NPCAssCurtainRoll Auto Hidden
+Int Property NPCCStringRoll Auto Hidden
+Int Property NPCTopTransparentRoll Auto Hidden
+Int Property NPCBottomTransparentRoll Auto Hidden
+Int Property NPCBraTransparentRoll Auto Hidden
+Int Property NPCUnderwearTransparentRoll Auto Hidden
+Int Property NPCHotpantsTransparentRoll Auto Hidden
+Int Property NPCShowgirlTransparentRoll Auto Hidden
+
+Spell Property NPCScanSpell Auto
 
 GlobalVariable Property AND_DebugMode Auto
-
-GlobalVariable Property SLA_Found Auto
+Bool Property SLA_Found Auto Hidden
 
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
@@ -157,12 +201,16 @@ Event OnUpdate()
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Start Male Scan")
 		EndIf
+		
 		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetMaleCoverage()
 	Else
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Start Female Scan")
 		EndIf
+		
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetFemaleCoverage()
 	EndIf
 EndEvent
 
@@ -187,7 +235,7 @@ Function SLA_Check()
 		SLA_PelvicCurtain = Game.GetFormFromFile(0x8F402, "SexLabAroused.esm") as Keyword
 		SLA_ShowgirlSkirt = Game.GetFormFromFile(0x8F403, "SexLabAroused.esm") as Keyword
 		
-		SLA_Found.SetValue(1)
+		SLA_Found = True
 		
 		If AND_DebugMode.GetValue() == 1
 			Debug.MessageBox("Advanced Nudity Detection - SexLab Aroused Found. Extra Keywords Enabled.")
@@ -212,7 +260,7 @@ Function SLA_Check()
 		SLA_PelvicCurtain = None
 		SLA_ShowgirlSkirt = None
 		
-		SLA_Found.SetValue(0)
+		SLA_Found = False
 		
 		If AND_DebugMode.GetValue() == 1
 			Debug.MessageBox("Advanced Nudity Detection - SexLab Aroused NOT Found. Extra Keywords NOT Enabled.")
@@ -220,28 +268,29 @@ Function SLA_Check()
 	EndIf
 EndFunction
 
-Function AND_DiceRoll()
+Function AND_MovementDiceRoll()
 	If AND_DebugMode.GetValue() == 1
-		Debug.Notification("AND Dice Roll")
+		Debug.Notification("AND Movement Dice Roll")
 	EndIf
 	
-	Int MaxRoll = 100
-	If AND_Player.PlayerRef.IsSprinting()
-		MaxRoll = 80
-	ElseIf AND_Player.PlayerRef.IsRunning()
-		MaxRoll = 90
+	Int MaxRoll = 0
+	Int RunMod = AND_Config.RunningModifier
+	Int SprintMod = AND_Config.SprintingModifier
+	
+	If AND_Config.AllowMotionFlash == True
+		If AND_Player.PlayerRef.IsSprinting()
+			MaxRoll = (100 - SprintMod)
+		ElseIf AND_Player.PlayerRef.IsRunning()
+			MaxRoll = (100 - RunMod)
+		EndIf
+	Else
+		MaxRoll = 100
 	EndIf
 	
-	TopCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	PelvicCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	AssCurtainRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	CStringRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	TopTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	BottomTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	BraTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	UnderwearTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	HotpantsTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
-	ShowgirlTransparentRoll.SetValue(Utility.RandomInt(1,MaxRoll))
+	;Player Flash Odds
+	TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
 	
 	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If PlayerBase.GetSex() == 0 ;Male
@@ -255,4 +304,63 @@ Function AND_DiceRoll()
 		EndIf
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
 	EndIf
+EndFunction
+
+Function AND_DiceRoll()
+	If AND_DebugMode.GetValue() == 1
+		Debug.Notification("AND Dice Roll")
+	EndIf
+	
+	Int MaxRoll = 0
+	Int RunMod = AND_Config.RunningModifier
+	Int SprintMod = AND_Config.SprintingModifier
+	
+	If AND_Config.AllowMotionFlash == True
+		If AND_Player.PlayerRef.IsSprinting()
+			MaxRoll = (100 - SprintMod)
+		ElseIf AND_Player.PlayerRef.IsRunning()
+			MaxRoll = (100 - RunMod)
+		EndIf
+	Else
+		MaxRoll = 100
+	EndIf
+	
+	;Player Flash Odds
+	TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	CStringRoll = Utility.RandomInt(1,100)
+	TopTransparentRoll = Utility.RandomInt(1,100)
+	BottomTransparentRoll = Utility.RandomInt(1,100)
+	BraTransparentRoll = Utility.RandomInt(1,100)
+	UnderwearTransparentRoll = Utility.RandomInt(1,100)
+	HotpantsTransparentRoll = Utility.RandomInt(1,100)
+	ShowgirlTransparentRoll = Utility.RandomInt(1,100)
+
+	;NPC Flash Odds
+	NPCTopCurtainRoll = Utility.RandomInt(1,100)
+	NPCPelvicCurtainRoll = Utility.RandomInt(1,100)
+	NPCAssCurtainRoll = Utility.RandomInt(1,100)
+	NPCCStringRoll = Utility.RandomInt(1,100)
+	NPCTopTransparentRoll = Utility.RandomInt(1,100)
+	NPCBottomTransparentRoll = Utility.RandomInt(1,100)
+	NPCBraTransparentRoll = Utility.RandomInt(1,100)
+	NPCUnderwearTransparentRoll = Utility.RandomInt(1,100)
+	NPCHotpantsTransparentRoll = Utility.RandomInt(1,100)
+	NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
+	
+	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
+	If PlayerBase.GetSex() == 0 ;Male
+		If AND_DebugMode.GetValue() == 1
+			Debug.Notification("AND - Send Male Scan")
+		EndIf
+		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+	Else
+		If AND_DebugMode.GetValue() == 1
+			Debug.Notification("AND - Send Female Scan")
+		EndIf
+		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+	EndIf
+	
+	NPCScanSpell.Cast(AND_Player.PlayerRef)
 EndFunction

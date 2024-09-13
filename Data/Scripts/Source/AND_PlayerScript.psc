@@ -2,6 +2,7 @@ ScriptName AND_PlayerScript extends ReferenceAlias
 
 AND_Core Property AND_Main Auto
 AND_MotionTimer Property AND_MotionClock Auto
+AND_MCM Property AND_Config Auto
 
 Actor Property PlayerRef Auto
 
@@ -53,37 +54,39 @@ Event OnPlayerLoadGame()
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	If akReference == PlayerRef
-		If akEventName == "FootLeft"
-			If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0
-				AND_Main.AND_DiceRoll()
-				AND_MotionClock.RunTimer = 3
-				AND_MotionClock.StartClock()
+	If AND_Config.AllowMotionFlash == True
+		If akReference == PlayerRef
+			If akEventName == "FootLeft"
+				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0
+					AND_Main.AND_MovementDiceRoll()
+					AND_MotionClock.RunTimer = 3
+					AND_MotionClock.StartClock()
+				EndIf
 			EndIf
-		EndIf
-		
-		If akEventName == "tailSprint"
-			If AND_MotionClock.SprintTimer == 0
-				AND_Main.AND_DiceRoll()
+			
+			If akEventName == "tailSprint"
+				If AND_MotionClock.SprintTimer == 0
+					AND_Main.AND_MovementDiceRoll()
+				EndIf
 			EndIf
-		EndIf
-		
-		If akEventName == "EndAnimatedCameraDelta"
-			If AND_MotionClock.SprintTimer == 0
-				AND_Main.AND_DiceRoll()
-				AND_MotionClock.SprintTimer = 3
-				AND_MotionClock.StartClock()
+			
+			If akEventName == "EndAnimatedCameraDelta"
+				If AND_MotionClock.SprintTimer == 0
+					AND_Main.AND_MovementDiceRoll()
+					AND_MotionClock.SprintTimer = 3
+					AND_MotionClock.StartClock()
+				EndIf
 			EndIf
 		EndIf
 	EndIf
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
-	If AND_Main.AND_DebugMode.GetValue() == 1
+	If AND_DebugMode.GetValue() == 1
 		Debug.Notification("AND - Object Equipped.")
 	EndIf
 	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Main.AND_Ignore))
-		If AND_Main.AND_DebugMode.GetValue() == 1
+		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Equipped Null Object or has Ignore Keyword. Update Skipped.")
 		EndIf
 		return
@@ -93,11 +96,11 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
-	If AND_Main.AND_DebugMode.GetValue() == 1
+	If AND_DebugMode.GetValue() == 1
 		Debug.Notification("AND - Object Unequipped.")
 	EndIf
 	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Main.AND_Ignore))
-		If AND_Main.AND_DebugMode.GetValue() == 1
+		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Unequipped None Object or has Ignore Keyword. Update Skipped.")
 		EndIf
 		return
