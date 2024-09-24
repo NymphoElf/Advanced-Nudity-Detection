@@ -5,6 +5,8 @@ AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 AND_PlayerScript Property AND_Player Auto
 
+ActorBase Property PlayerBase Auto Hidden
+
 Faction Property AND_ShowingAssFaction Auto
 Faction Property AND_ShowingChestFaction Auto
 Faction Property AND_ShowingGenitalsFaction Auto 
@@ -192,11 +194,12 @@ Event OnInit()
 	
 	SLA_Check()
 	
+	PlayerBase = Game.GetPlayer().GetActorBase()
+	
 	Debug.Notification("A.N.D. Initialized")
 EndEvent
 
 Event OnUpdate()
-	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If PlayerBase.GetSex() == 0 ;Male
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Start Male Scan")
@@ -292,7 +295,6 @@ Function AND_MovementDiceRoll()
 	PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
 	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
 	
-	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If PlayerBase.GetSex() == 0 ;Male
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Send Male Scan")
@@ -349,7 +351,6 @@ Function AND_DiceRoll()
 	NPCHotpantsTransparentRoll = Utility.RandomInt(1,100)
 	NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
 	
-	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
 	If PlayerBase.GetSex() == 0 ;Male
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Send Male Scan")
