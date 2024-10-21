@@ -285,6 +285,8 @@ Function AND_MovementDiceRoll()
 			MaxRoll = (100 - SprintMod)
 		ElseIf AND_Player.PlayerRef.IsRunning()
 			MaxRoll = (100 - RunMod)
+		Else
+			MaxRoll = 100
 		EndIf
 	Else
 		MaxRoll = 100
@@ -322,6 +324,8 @@ Function AND_DiceRoll()
 			MaxRoll = (100 - SprintMod)
 		ElseIf AND_Player.PlayerRef.IsRunning()
 			MaxRoll = (100 - RunMod)
+		Else
+			MaxRoll = 100
 		EndIf
 	Else
 		MaxRoll = 100
