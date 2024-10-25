@@ -47,6 +47,7 @@ EndFunction
 
 Event OnPlayerLoadGame()
 	AND_Main.SLA_Check()
+	AND_Main.SLSF_Reloaded_Check()
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")

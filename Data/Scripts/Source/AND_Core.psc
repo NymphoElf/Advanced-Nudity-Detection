@@ -5,6 +5,9 @@ AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 AND_PlayerScript Property AND_Player Auto
 
+SLSF_Reloaded_MCM Property SLSFR_Config Auto Hidden
+SLSF_Reloaded_ModIntegration Property SLSFR_Mods Auto Hidden
+
 ActorBase Property PlayerBase Auto Hidden
 
 Faction Property AND_ShowingAssFaction Auto
@@ -188,11 +191,15 @@ Spell Property NPCScanSpell Auto
 
 GlobalVariable Property AND_DebugMode Auto
 Bool Property SLA_Found Auto Hidden
+Bool Property SLSFR_Found Auto Hidden
+
+GlobalVariable Property WICommentChanceNaked Auto
 
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	
 	SLA_Check()
+	SLSF_Reloaded_Check()
 	
 	PlayerBase = Game.GetPlayer().GetActorBase()
 	
@@ -214,6 +221,12 @@ Event OnUpdate()
 		
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
 		AND_Config.SetFemaleCoverage()
+	EndIf
+	
+	If SLSFR_Found == True
+		SLSFR_NakedCommentPreCheck()
+	Else
+		WICommentChanceNaked.SetValue(NakedCommentChance(False))
 	EndIf
 EndEvent
 
@@ -268,6 +281,18 @@ Function SLA_Check()
 		If AND_DebugMode.GetValue() == 1
 			Debug.MessageBox("Advanced Nudity Detection - SexLab Aroused NOT Found. Extra Keywords NOT Enabled.")
 		EndIf
+	EndIf
+EndFunction
+
+Function SLSF_Reloaded_Check()
+	If Game.GetModByName("SLSF Reloaded.esp") != 255
+		SLSFR_Found = True
+		SLSFR_Config = Game.GetFormFromFile(0x809, "SLSF Reloaded.esp") as SLSF_Reloaded_MCM
+		SLSFR_Mods = Game.GetFormFromFile(0x808, "SLSF Reloaded.esp") as SLSF_Reloaded_ModIntegration
+	Else
+		SLSFR_Found = False
+		SLSFR_Config = None
+		SLSFR_Mods = None
 	EndIf
 EndFunction
 
@@ -368,4 +393,60 @@ Function AND_DiceRoll()
 	EndIf
 	
 	NPCScanSpell.Cast(AND_Player.PlayerRef)
+EndFunction
+
+Function SLSFR_NakedCommentPreCheck()
+	If SLSFR_Config.DisableNakedCommentsWhilePW == True
+		If SLSFR_Mods.IsPublicWhore() == True
+			return
+		Else
+			WICommentChanceNaked.SetValue(NakedCommentChance(False))
+		EndIf
+	Else
+		WICommentChanceNaked.SetValue(NakedCommentChance(False))
+	EndIf
+EndFunction
+
+Int Function NakedCommentChance(Bool IsMCMRequest)
+	Int CommentChance = -1
+	Bool UnderwearCounted = False
+	
+	If IsMCMRequest == True
+		CommentChance += 1 ;Increase return value by 1 for a more understandable % return in the MCM
+	EndIf
+	
+	If AND_Config.DisableNakedComments == False
+		If AND_Player.PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
+			CommentChance += AND_Config.NudeFactionCommentChance
+		EndIf
+		
+		If AND_Player.PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
+			CommentChance += AND_Config.ToplessFactionCommentChance
+		EndIf
+		
+		If AND_Player.PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
+			CommentChance += AND_Config.BottomlessFactionCommentChance
+		EndIf
+		
+		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
+			CommentChance += AND_Config.ChestFactionCommentChance
+		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
+			CommentChance += AND_Config.BraFactionCommentChance
+		EndIf
+		
+		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
+			CommentChance += AND_Config.GenitalsFactionCommentChance
+		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
+			CommentChance += AND_Config.UnderwearFactionCommentChance
+			UnderwearCounted = True
+		EndIf
+		
+		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
+			CommentChance += AND_Config.AssFactionCommentChance
+		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1 && UnderwearCounted == False
+			CommentChance += AND_Config.UnderwearFactionCommentChance
+		EndIf
+	EndIf
+	
+	return CommentChance
 EndFunction
