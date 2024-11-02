@@ -327,11 +327,13 @@ Function AND_MovementDiceRoll()
 			Debug.Notification("AND - Send Male Scan")
 		EndIf
 		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetMaleCoverage()
 	Else
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Send Female Scan")
 		EndIf
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetFemaleCoverage()
 	EndIf
 EndFunction
 
@@ -385,11 +387,13 @@ Function AND_DiceRoll()
 			Debug.Notification("AND - Send Male Scan")
 		EndIf
 		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetMaleCoverage()
 	Else
 		If AND_DebugMode.GetValue() == 1
 			Debug.Notification("AND - Send Female Scan")
 		EndIf
 		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_Config.SetFemaleCoverage()
 	EndIf
 	
 	NPCScanSpell.Cast(AND_Player.PlayerRef)
