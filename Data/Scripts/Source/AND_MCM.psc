@@ -59,6 +59,59 @@ Int Property TransparentShowgirlSkirtOdds Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_Low Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_High Auto Hidden
 
+Int Property TopCurtainOddsLow_Male Auto Hidden
+Int Property TopCurtainOdds_Male Auto Hidden
+Int Property TopCurtainOddsHigh_Male Auto Hidden
+Int Property TopCurtainOddsExtreme_Male Auto Hidden
+Int Property TopCurtainOddsUltra_Male Auto Hidden
+Int Property TransparentTopCurtainOddsLow_Male Auto Hidden
+Int Property TransparentTopCurtainOdds_Male Auto Hidden
+Int Property TransparentTopCurtainOddsHigh_Male Auto Hidden
+Int Property TransparentTopCurtainOddsExtreme_Male Auto Hidden
+Int Property TransparentTopCurtainOddsUltra_Male Auto Hidden
+Int Property PelvicCurtainOddsLow_Male Auto Hidden
+Int Property PelvicCurtainOdds_Male Auto Hidden
+Int Property PelvicCurtainOddsHigh_Male Auto Hidden
+Int Property PelvicCurtainOddsExtreme_Male Auto Hidden
+Int Property PelvicCurtainOddsUltra_Male Auto Hidden
+Int Property TransparentPelvicCurtainOddsLow_Male Auto Hidden
+Int Property TransparentPelvicCurtainOdds_Male Auto Hidden
+Int Property TransparentPelvicCurtainOddsHigh_Male Auto Hidden
+Int Property TransparentPelvicCurtainOddsExtreme_Male Auto Hidden
+Int Property TransparentPelvicCurtainOddsUltra_Male Auto Hidden
+Int Property AssCurtainOddsLow_Male Auto Hidden
+Int Property AssCurtainOdds_Male Auto Hidden
+Int Property AssCurtainOddsHigh_Male Auto Hidden
+Int Property AssCurtainOddsExtreme_Male Auto Hidden
+Int Property AssCurtainOddsUltra_Male Auto Hidden
+Int Property TransparentAssCurtainOddsLow_Male Auto Hidden
+Int Property TransparentAssCurtainOdds_Male Auto Hidden
+Int Property TransparentAssCurtainOddsHigh_Male Auto Hidden
+Int Property TransparentAssCurtainOddsExtreme_Male Auto Hidden
+Int Property TransparentAssCurtainOddsUltra_Male Auto Hidden
+Int Property CStringOdds_Male Auto Hidden
+Int Property TransparentCStringOdds_Male Auto Hidden
+Int Property TransparentCStringOdds_Low_Male Auto Hidden
+Int Property TransparentCStringOdds_High_Male Auto Hidden
+Int Property TransparentTopArmorOdds_Male Auto Hidden
+Int Property TransparentTopArmorOdds_Low_Male Auto Hidden
+Int Property TransparentTopArmorOdds_High_Male Auto Hidden
+Int Property TransparentBottomArmorOdds_Male Auto Hidden
+Int Property TransparentBottomArmorOdds_Low_Male Auto Hidden
+Int Property TransparentBottomArmorOdds_High_Male Auto Hidden
+Int Property TransparentBraOdds_Male Auto Hidden
+Int Property TransparentBraOdds_Low_Male Auto Hidden
+Int Property TransparentBraOdds_High_Male Auto Hidden
+Int Property TransparentUnderwearOdds_Male Auto Hidden
+Int Property TransparentUnderwearOdds_Low_Male Auto Hidden
+Int Property TransparentUnderwearOdds_High_Male Auto Hidden
+Int Property TransparentHotpantsOdds_Male Auto Hidden
+Int Property TransparentHotpantsOdds_Low_Male Auto Hidden
+Int Property TransparentHotpantsOdds_High_Male Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_Male Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_Low_Male Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_High_Male Auto Hidden
+
 Bool Property GenderlessWording Auto Hidden
 Bool Property IgnoreBakaKeywords Auto Hidden
 Bool Property AllowMotionFlash Auto Hidden
@@ -67,8 +120,6 @@ Bool Property DisableNakedComments Auto Hidden
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
 Bool Property AssCurtain_Cover Auto Hidden
-
-Int Property FlashChanceInfoShown Auto Hidden
 
 Int Property RunningModifier Auto Hidden
 Int Property SprintingModifier Auto Hidden
@@ -86,7 +137,6 @@ Event OnConfigInit()
 	Utility.Wait(1)
 	RegisterForSingleUpdate(1)
 	Debug.Notification("Advanced Nudity MCM Initializing...")
-	
 EndEvent
 
 Function SetDefaults()
@@ -150,16 +200,76 @@ Function SetDefaults()
 	TransparentShowgirlSkirtOdds_Low = 30
 	TransparentShowgirlSkirtOdds_High = 70
 	
+	TopCurtainOddsLow_Male = 20
+	TopCurtainOdds_Male = 35
+	TopCurtainOddsHigh_Male = 50
+	TopCurtainOddsExtreme_Male = 65
+	TopCurtainOddsUltra_Male = 80
+	TransparentTopCurtainOddsLow_Male = 55
+	TransparentTopCurtainOdds_Male = 65
+	TransparentTopCurtainOddsHigh_Male = 75
+	TransparentTopCurtainOddsExtreme_Male = 85
+	TransparentTopCurtainOddsUltra_Male = 95
+	PelvicCurtainOddsLow_Male = 20
+	PelvicCurtainOdds_Male = 35
+	PelvicCurtainOddsHigh_Male = 50
+	PelvicCurtainOddsExtreme_Male = 65
+	PelvicCurtainOddsUltra_Male = 80
+	TransparentPelvicCurtainOddsLow_Male = 55
+	TransparentPelvicCurtainOdds_Male = 65
+	TransparentPelvicCurtainOddsHigh_Male = 75
+	TransparentPelvicCurtainOddsExtreme_Male = 85
+	TransparentPelvicCurtainOddsUltra_Male = 95
+	AssCurtainOddsLow_Male = 20
+	AssCurtainOdds_Male = 35
+	AssCurtainOddsHigh_Male = 50
+	AssCurtainOddsExtreme_Male = 65
+	AssCurtainOddsUltra_Male = 80
+	TransparentAssCurtainOddsLow_Male = 55
+	TransparentAssCurtainOdds_Male = 65
+	TransparentAssCurtainOddsHigh_Male = 75
+	TransparentAssCurtainOddsExtreme_Male = 85
+	TransparentAssCurtainOddsUltra_Male = 95
+	CStringOdds_Male = 60
+	
+	TransparentCStringOdds_Male = 80
+	TransparentCStringOdds_Low_Male = 70
+	TransparentCStringOdds_High_Male = 90
+	
+	TransparentTopArmorOdds_Male = 50
+	TransparentTopArmorOdds_Low_Male = 30
+	TransparentTopArmorOdds_High_Male = 70
+	
+	TransparentBottomArmorOdds_Male = 50
+	TransparentBottomArmorOdds_Low_Male = 30
+	TransparentBottomArmorOdds_High_Male = 70
+	
+	TransparentBraOdds_Male = 50
+	TransparentBraOdds_Low_Male = 30
+	TransparentBraOdds_High_Male = 70
+	
+	TransparentUnderwearOdds_Male = 50
+	TransparentUnderwearOdds_Low_Male = 30
+	TransparentUnderwearOdds_High_Male = 70
+
+	TransparentHotpantsOdds_Male = 50
+	TransparentHotpantsOdds_Low_Male = 30
+	TransparentHotpantsOdds_High_Male = 70
+
+	TransparentShowgirlSkirtOdds_Male = 50
+	TransparentShowgirlSkirtOdds_Low_Male = 30
+	TransparentShowgirlSkirtOdds_High_Male = 70
+	
 	AllowMotionFlash = True
 	RunningModifier = 10
 	SprintingModifier = 20
 	
-	NudeFactionCommentChance = 30
-	ToplessFactionCommentChance = 20
-	BottomlessFactionCommentChance = 20
-	ChestFactionCommentChance = 10
-	GenitalsFactionCommentChance = 15
-	AssFactionCommentChance = 5
+	NudeFactionCommentChance = 10
+	ToplessFactionCommentChance = 10
+	BottomlessFactionCommentChance = 10
+	ChestFactionCommentChance = 20
+	GenitalsFactionCommentChance = 25
+	AssFactionCommentChance = 15
 	BraFactionCommentChance = 5
 	UnderwearFactionCommentChance = 5
 EndFunction
@@ -172,7 +282,7 @@ EndEvent
 
 Function InstallMCM()
 	ModName = "Advanced Nudity"
-	Pages = New String[9]
+	Pages = New String[10]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -180,8 +290,9 @@ Function InstallMCM()
 	Pages[4] = "$GeneralKeywordsPage"
 	Pages[5] = "$FlashRiskKeywordsPage"
 	Pages[6] = "$BakaKeywordsPage"
-	Pages[7] = "$FlashChancesPage"
-	Pages[8] = "$NakedCommentsPage"
+	Pages[7] = "$FemaleFlashChancesPage"
+	Pages[8] = "$MaleFlashChancesPage"
+	Pages[9] = "$NakedCommentsPage"
 EndFunction
 
 Function SetMaleCoverage()
@@ -197,7 +308,7 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[9]
+	Pages = New String[10]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -205,8 +316,9 @@ Event OnConfigOpen()
 	Pages[4] = "$GeneralKeywordsPage"
 	Pages[5] = "$FlashRiskKeywordsPage"
 	Pages[6] = "$BakaKeywordsPage"
-	Pages[7] = "$FlashChancesPage"
-	Pages[8] = "$NakedCommentsPage"
+	Pages[7] = "$FemaleFlashChancesPage"
+	Pages[8] = "$MaleFlashChancesPage"
+	Pages[9] = "$NakedCommentsPage"
 EndEvent
 
 Event OnPageReset(string page)
@@ -295,129 +407,147 @@ Event OnPageReset(string page)
 		SetCursorPosition(1)
 		
 		AddHeaderOption("$CurtainStatesHeader")
-		If TopCurtainLayer_Cover == True
-			AddTextOption("$TopCurtainText", "$CoveringText")
+		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain) || PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT)
+			If TopCurtainLayer_Cover == True
+				AddTextOption("$TopCurtainText", "$CoveringText")
+			Else
+				AddTextOption("$TopCurtainText", "$NotCoveringText")
+			EndIf
 		Else
-			AddTextOption("$TopCurtainText", "$NotCoveringText")
+			AddTextOption("$TopCurtainText", "$NotWearingText")
 		EndIf
 		
-		If PelvicCurtain_Cover == True
-			AddTextOption("$PelvicCurtainText", "$CoveringText")
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
+			If PelvicCurtain_Cover == True
+				AddTextOption("$PelvicCurtainText", "$CoveringText")
+			Else
+				AddTextOption("$PelvicCurtainText", "$NotCoveringText")
+			EndIf
 		Else
-			AddTextOption("$PelvicCurtainText", "$NotCoveringText")
+			AddTextOption("$PelvicCurtainText", "$NotWearingText")
 		EndIf
 			
-		If AssCurtain_Cover == True
-			AddTextOption("$AssCurtainText", "$CoveringText")
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
+			If AssCurtain_Cover == True
+				AddTextOption("$AssCurtainText", "$CoveringText")
+			Else
+				AddTextOption("$AssCurtainText", "$NotCoveringText")
+			EndIf
 		Else
-			AddTextOption("$AssCurtainText", "$NotCoveringText")
+			AddTextOption("$AssCurtainText", "$NotWearingText")
 		EndIf
+		
+		AddEmptyOption()
+		AddHeaderOption("$MotionSettingsHeader")
+		AddToggleOptionST("AND_AllowMotionFlashState", "$AllowMotionFlashText", AllowMotionFlash, 0)
+		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
+		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
 		
 	ElseIf (page == "$FlashingStatesPage")
 		AddHeaderOption("$CurtainRiskHeader")
 		If PlayerBase.GetSex() == 0 ;Male
-			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
+			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
-					AddTextOption("$ChestText", TopCurtainOddsLow as String + "%")
+					AddTextOption("$ChestText", TopCurtainOddsLow_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
-					AddTextOption("$ChestText", TransparentTopCurtainOddsLow as String + "%")
+					AddTextOption("$ChestText", TransparentTopCurtainOddsLow_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
-					AddTextOption("$ChestText", TopCurtainOdds as String + "%")
+					AddTextOption("$ChestText", TopCurtainOdds_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
-					AddTextOption("$ChestText", TransparentTopCurtainOdds as String + "%")
+					AddTextOption("$ChestText", TransparentTopCurtainOdds_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
-					AddTextOption("$ChestText", TopCurtainOddsHigh as String + "%")
+					AddTextOption("$ChestText", TopCurtainOddsHigh_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
-					AddTextOption("$ChestText", TransparentTopCurtainOddsHigh as String + "%")
+					AddTextOption("$ChestText", TransparentTopCurtainOddsHigh_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
-					AddTextOption("$ChestText", TopCurtainOddsExtreme as String + "%")
+					AddTextOption("$ChestText", TopCurtainOddsExtreme_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
-					AddTextOption("$ChestText", TransparentTopCurtainOddsExtreme as String + "%")
+					AddTextOption("$ChestText", TransparentTopCurtainOddsExtreme_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
-					AddTextOption("$ChestText", TopCurtainOddsUltra as String + "%")
+					AddTextOption("$ChestText", TopCurtainOddsUltra_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
-					AddTextOption("$ChestText", TransparentTopCurtainOddsUltra as String + "%")
+					AddTextOption("$ChestText", TransparentTopCurtainOddsUltra_Male as String + "%")
 				EndIf
 			Else
 				AddTextOption("$ChestText", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
+			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
-					AddTextOption("$AssText", AssCurtainOddsLow as String + "%")
+					AddTextOption("$AssText", AssCurtainOddsLow_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
-					AddTextOption("$AssText", TransparentAssCurtainOddsLow as String + "%")
+					AddTextOption("$AssText", TransparentAssCurtainOddsLow_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
-					AddTextOption("$AssText", AssCurtainOdds as String + "%")
+					AddTextOption("$AssText", AssCurtainOdds_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
-					AddTextOption("$AssText", TransparentAssCurtainOdds as String + "%")
+					AddTextOption("$AssText", TransparentAssCurtainOdds_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
-					AddTextOption("$AssText", AssCurtainOddsHigh as String + "%")
+					AddTextOption("$AssText", AssCurtainOddsHigh_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
-					AddTextOption("$AssText", TransparentAssCurtainOddsHigh as String + "%")
+					AddTextOption("$AssText", TransparentAssCurtainOddsHigh_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
-					AddTextOption("$AssText", AssCurtainOddsExtreme as String + "%")
+					AddTextOption("$AssText", AssCurtainOddsExtreme_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
-					AddTextOption("$AssText", TransparentAssCurtainOddsExtreme as String + "%")
+					AddTextOption("$AssText", TransparentAssCurtainOddsExtreme_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
-					AddTextOption("$AssText", AssCurtainOddsUltra as String + "%")
+					AddTextOption("$AssText", AssCurtainOddsUltra_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
-					AddTextOption("$AssText", TransparentAssCurtainOddsUltra as String + "%")
+					AddTextOption("$AssText", TransparentAssCurtainOddsUltra_Male as String + "%")
 				EndIf
 			Else
 				AddTextOption("$AssText", "0%")
 			EndIf
 			
-			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
+			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
-					AddTextOption("$PelvicText", PelvicCurtainOddsLow as String + "%")
+					AddTextOption("$PelvicText", PelvicCurtainOddsLow_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
-					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsLow as String + "%")
+					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsLow_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
-					AddTextOption("$PelvicText", PelvicCurtainOdds as String + "%")
+					AddTextOption("$PelvicText", PelvicCurtainOdds_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
-					AddTextOption("$PelvicText", TransparentPelvicCurtainOdds as String + "%")
+					AddTextOption("$PelvicText", TransparentPelvicCurtainOdds_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
-					AddTextOption("$PelvicText", PelvicCurtainOddsHigh as String + "%")
+					AddTextOption("$PelvicText", PelvicCurtainOddsHigh_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
-					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsHigh as String + "%")
+					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsHigh_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
-					AddTextOption("$PelvicText", PelvicCurtainOddsExtreme as String + "%")
+					AddTextOption("$PelvicText", PelvicCurtainOddsExtreme_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
-					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsExtreme as String + "%")
+					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsExtreme_Male as String + "%")
 				EndIf
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
-					AddTextOption("$PelvicText", PelvicCurtainOddsUltra as String + "%")
+					AddTextOption("$PelvicText", PelvicCurtainOddsUltra_Male as String + "%")
 				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
-					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsUltra as String + "%")
+					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsUltra_Male as String + "%")
 				EndIf
 			Else
 				AddTextOption("$PelvicText", "0%")
 			EndIf
-		Else
+		Else ;Female
 			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain)
 					AddTextOption("$ChestText", TopCurtainOddsLow as String + "%")
@@ -522,71 +652,151 @@ Event OnPageReset(string page)
 		EndIf
 		
 		AddHeaderOption("$TransparentClothesRiskHeader")
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
-			AddTextOption("$TopText", TransparentTopArmorOdds as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male)
-			AddTextOption("$TopText", TransparentTopArmorOdds as String + "%")
-		Else
-			AddTextOption("$TopText", "0%")
-		EndIf
-		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) && PlayerBase.GetSex() != 0
-			AddTextOption("$BottomText", TransparentBottomArmorOdds as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male)
-			AddTextOption("$BottomText", TransparentBottomArmorOdds as String + "%")
-		Else
-			AddTextOption("$BottomText", "0%")
-		EndIf
-		
-		If PlayerRef.WornHasKeyword(Main.AND_BraT) && PlayerBase.GetSex() != 0
-			AddTextOption("$BraText", TransparentBraOdds as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Male)
-			AddTextOption("$BraText", TransparentBraOdds as String + "%")
-		Else
-			AddTextOption("$BraText", "0%")
-		EndIf
-		
-		If PlayerBase.GetSex() == 0
-			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male)
-				AddTextOption("$UnderwearText", TransparentUnderwearOdds as String + "%")
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Male)
-				AddTextOption("$ThongText", TransparentUnderwearOdds as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_BananaHammock)
-				AddTextOption("$BananaHammockText", CStringOdds as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_BananaHammockT)
-				AddTextOption("$BananaHammockText", TransparentCStringOdds as String + "%")
+		If PlayerBase.GetSex() != 0 ;FEMALE
+			If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low)
+				AddTextOption("$TopText", TransparentTopArmorOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
+				AddTextOption("$TopText", TransparentTopArmorOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High)
+				AddTextOption("$TopText", TransparentTopArmorOdds_High as String + "%")
 			Else
-				AddTextOption("$UnderwearText", "0%")
+				AddTextOption("$TopText", "0%")
 			EndIf
-		Else
-			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT)
+			
+			If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds_High as String + "%")
+			Else
+				AddTextOption("$BottomText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_BraT_Low)
+				AddTextOption("$BraText", TransparentBraOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT)
+				AddTextOption("$BraText", TransparentBraOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_High)
+				AddTextOption("$BraText", TransparentBraOdds_High as String + "%")
+			Else
+				AddTextOption("$BraText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low)
+				AddTextOption("$UnderwearText", TransparentUnderwearOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT)
 				AddTextOption("$UnderwearText", TransparentUnderwearOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High)
+				AddTextOption("$UnderwearText", TransparentUnderwearOdds_High as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Low)
+				AddTextOption("$ThongText", TransparentUnderwearOdds_Low as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT)
 				AddTextOption("$ThongText", TransparentUnderwearOdds as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_CString)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_High)
+				AddTextOption("$ThongText", TransparentUnderwearOdds_High as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_CString)
 				AddTextOption("$CStringText", CStringOdds as String + "%")
-			ElseIf PlayerBase.GetSex() != 0 && PlayerRef.WornHasKeyword(Main.AND_CStringT)
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_CStringT_Low)
+				AddTextOption("$CStringText", TransparentCStringOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_CStringT)
 				AddTextOption("$CStringText", TransparentCStringOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_CStringT_High)
+				AddTextOption("$CStringText", TransparentCStringOdds_High as String + "%")
 			Else
 				AddTextOption("$UnderwearText", "0%")
 			EndIf
-		EndIf
-		
-		If PlayerRef.WornHasKeyword(Main.AND_HotpantsT) && PlayerBase.GetSex() != 0
-			AddTextOption("$HotpantsText", TransparentHotpantsOdds as String + "%")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male)
-			AddTextOption("$HotpantsText", TransparentHotpantsOdds as String + "%")
-		Else
-			AddTextOption("$HotpantsText", "0%")
-		EndIf
-		
-		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
-			AddTextOption("$ShowgirlSkirtText", TransparentShowgirlSkirtOdds as String + "")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT)
-			AddTextOption("$HimboSkirtText", TransparentShowgirlSkirtOdds as String + "")
-		Else
-			If PlayerBase.GetSex() != 0
+			
+			If PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds_Low as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds_High as String + "%")
+			Else
+				AddTextOption("$HotpantsText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_Low)
+				AddTextOption("$ShowgirlSkirtText", TransparentShowgirlSkirtOdds_Low as String + "")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT)
+				AddTextOption("$ShowgirlSkirtText", TransparentShowgirlSkirtOdds as String + "")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_High)
+				AddTextOption("$ShowgirlSkirtText", TransparentShowgirlSkirtOdds_High as String + "")
+			Else
 				AddTextOption("$ShowgirlSkirtText", "0%")
+			EndIf
+		Else ;MALE
+			If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low_Male)
+				AddTextOption("$TopText", TransparentTopArmorOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male)
+				AddTextOption("$TopText", TransparentTopArmorOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High_Male)
+				AddTextOption("$TopText", TransparentTopArmorOdds_High_Male as String + "%")
+			Else
+				AddTextOption("$TopText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low_Male)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High_Male)
+				AddTextOption("$BottomText", TransparentBottomArmorOdds_High_Male as String + "%")
+			Else
+				AddTextOption("$BottomText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_BraT_Low_Male)
+				AddTextOption("$BraText", TransparentBraOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Male)
+				AddTextOption("$BraText", TransparentBraOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_High_Male)
+				AddTextOption("$BraText", TransparentBraOdds_High_Male as String + "%")
+			Else
+				AddTextOption("$BraText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low_Male)
+				AddTextOption("$UnderwearText", TransparentUnderwearOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male)
+				AddTextOption("$UnderwearText", TransparentUnderwearOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High_Male)
+				AddTextOption("$UnderwearText", TransparentUnderwearOdds_High_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Low_Male)
+				AddTextOption("$ThongText", TransparentUnderwearOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Male)
+				AddTextOption("$ThongText", TransparentUnderwearOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_High_Male)
+				AddTextOption("$ThongText", TransparentUnderwearOdds_High_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammock)
+				AddTextOption("$BananaHammockText", CStringOdds as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_Low)
+				AddTextOption("$BananaHammockText", TransparentCStringOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT)
+				AddTextOption("$BananaHammockText", TransparentCStringOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_High)
+				AddTextOption("$BananaHammockText", TransparentCStringOdds_High_Male as String + "%")
+			Else
+				AddTextOption("$UnderwearText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low_Male)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds_Low_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds_Male as String + "%")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High_Male)
+				AddTextOption("$HotpantsText", TransparentHotpantsOdds_High_Male as String + "%")
+			Else
+				AddTextOption("$HotpantsText", "0%")
+			EndIf
+			
+			If PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_Low)
+				AddTextOption("$HimboSkirtText", TransparentShowgirlSkirtOdds_Low_Male as String + "")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT)
+				AddTextOption("$HimboSkirtText", TransparentShowgirlSkirtOdds as String + "")
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_High)
+				AddTextOption("$HimboSkirtText", TransparentShowgirlSkirtOdds_High_Male as String + "")
 			Else
 				AddTextOption("$HimboSkirtText", "0%")
 			EndIf
@@ -692,9 +902,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorTop", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorTopT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High_Male)
 			AddTextOption("AND_ArmorTopT", "$YesText")
 		Else
 			AddTextOption("AND_ArmorTopT", "$NoText")
@@ -716,9 +926,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorBottom", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ArmorBottomT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High_Male)
 			AddTextOption("AND_ArmorBottomT", "$YesText")
 		Else
 			AddTextOption("AND_ArmorBottomT", "$NoText")
@@ -740,9 +950,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Hotpants", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_HotpantsT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_HotpantsT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High_Male)
 			AddTextOption("AND_HotpantsT", "$YesText")
 		Else
 			AddTextOption("AND_HotpantsT", "$NoText")
@@ -760,9 +970,9 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ShowgirlSkirtT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_Low) || PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT) || PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_High)
 			AddTextOption("AND_HimboSkirtT", "$YesText")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -784,9 +994,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Bra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_BraT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_BraT_Low) || PlayerRef.WornHasKeyword(Main.AND_BraT) || PlayerRef.WornHasKeyword(Main.AND_BraT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_BraT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_BraT_Male) || PlayerRef.WornHasKeyword(Main.AND_BraT_High_Male)
 			AddTextOption("AND_BraT", "$YesText")
 		Else
 			AddTextOption("AND_BraT", "$NoText")
@@ -812,9 +1022,9 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_CStringT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(Main.AND_CStringT) || PlayerRef.WornHasKeyword(Main.AND_CStringT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_CStringT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_Low) || PlayerRef.WornHasKeyword(Main.AND_BananaHammockT) || PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_High)
 			AddTextOption("AND_BananaHammockT", "$YesText")
 		Else
 			If PlayerBase.GetSex() != 0
@@ -832,9 +1042,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Thong", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ThongT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(Main.AND_ThongT) || PlayerRef.WornHasKeyword(Main.AND_ThongT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_ThongT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ThongT_Male) || PlayerRef.WornHasKeyword(Main.AND_ThongT_High_Male)
 			AddTextOption("AND_ThongT", "$YesText")
 		Else
 			AddTextOption("AND_ThongT", "$NoText")
@@ -856,9 +1066,9 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Underwear", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_UnderwearT) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High)) && PlayerBase.GetSex() != 0
 			AddTextOption("AND_UnderwearT", "$YesText")
-		ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male)
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High_Male)
 			AddTextOption("AND_UnderwearT", "$YesText")
 		Else
 			AddTextOption("AND_UnderwearT", "$NoText")
@@ -926,62 +1136,82 @@ Event OnPageReset(string page)
 	
 	ElseIf (page == "$FlashRiskKeywordsPage")
 		AddHeaderOption("$ChestCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_ChestFlashRiskUltra", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra_Male)
 			AddTextOption("AND_ChestFlashRiskUltra", "$YesText")
 		Else
 			AddTextOption("AND_ChestFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_ChestFlashRiskExtreme", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme_Male)
 			AddTextOption("AND_ChestFlashRiskExtreme", "$YesText")
 		Else
 			AddTextOption("AND_ChestFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_ChestFlashRiskHigh", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh_Male)
 			AddTextOption("AND_ChestFlashRiskHigh", "$YesText")
 		Else
 			AddTextOption("AND_ChestFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_ChestFlashRisk", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk_Male)
 			AddTextOption("AND_ChestFlashRisk", "$YesText")
 		Else
 			AddTextOption("AND_ChestFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_ChestFlashRiskLow", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow_Male)
 			AddTextOption("AND_ChestFlashRiskLow", "$YesText")
 		Else
 			AddTextOption("AND_ChestFlashRiskLow", "$NoText")
 		EndIf
 		
 		AddHeaderOption("$PelvicCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_PelvicFlashRiskUltra", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra_Male)
 			AddTextOption("AND_PelvicFlashRiskUltra", "$YesText")
 		Else
 			AddTextOption("AND_PelvicFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_PelvicFlashRiskExtreme", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme_Male)
 			AddTextOption("AND_PelvicFlashRiskExtreme", "$YesText")
 		Else
 			AddTextOption("AND_PelvicFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_PelvicFlashRiskHigh", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh_Male)
 			AddTextOption("AND_PelvicFlashRiskHigh", "$YesText")
 		Else
 			AddTextOption("AND_PelvicFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_PelvicFlashRisk", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk_Male)
 			AddTextOption("AND_PelvicFlashRisk", "$YesText")
 		Else
 			AddTextOption("AND_PelvicFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_PelvicFlashRiskLow", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow_Male)
 			AddTextOption("AND_PelvicFlashRiskLow", "$YesText")
 		Else
 			AddTextOption("AND_PelvicFlashRiskLow", "$NoText")
@@ -990,36 +1220,46 @@ Event OnPageReset(string page)
 		SetCursorPosition(1)
 		
 		AddHeaderOption("$AssCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_AssFlashRiskUltra", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra_Male)
 			AddTextOption("AND_AssFlashRiskUltra", "$YesText")
 		Else
 			AddTextOption("AND_AssFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_AssFlashRiskExtreme", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme_Male)
 			AddTextOption("AND_AssFlashRiskExtreme", "$YesText")
 		Else
 			AddTextOption("AND_AssFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_AssFlashRiskHigh", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh_Male)
 			AddTextOption("AND_AssFlashRiskHigh", "$YesText")
 		Else
 			AddTextOption("AND_AssFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_AssFlashRisk", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk_Male)
 			AddTextOption("AND_AssFlashRisk", "$YesText")
 		Else
 			AddTextOption("AND_AssFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow) && PlayerBase.GetSex() != 0
+			AddTextOption("AND_AssFlashRiskLow", "$YesText")
+		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow_Male)
 			AddTextOption("AND_AssFlashRiskLow", "$YesText")
 		Else
 			AddTextOption("AND_AssFlashRiskLow", "$NoText")
 		EndIf
-	ElseIf (page == "$FlashChancesPage")
+	ElseIf (page == "$FemaleFlashChancesPage")
 		AddHeaderOption("$ChestCurtainText")
 		AddSliderOptionST("AND_ChestCurtainLowOdds", "$ChestCurtainLowText", TopCurtainOddsLow, "{0}%", 0)
 		AddSliderOptionST("AND_ChestCurtainOdds", "$ChestCurtainNormalText", TopCurtainOdds, "{0}%", 0)
@@ -1041,24 +1281,11 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_AssCurtainExtremeOdds", "$AssCurtainExtremeText", AssCurtainOddsExtreme, "{0}%", 0)
 		AddSliderOptionST("AND_AssCurtainUltraOdds", "$AssCurtainUltraText", AssCurtainOddsUltra, "{0}%", 0)
 		
-		If PlayerBase.GetSex() == 0 ;Male
-			AddHeaderOption("$BananaHammockText")
-			AddSliderOptionST("AND_CStringOdds", "$BananaHammockText", CStringOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOddsLow", "$TransparentBananaHammockLowText", TransparentCStringOdds_Low, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOdds", "$TransparentBananaHammockNormalText", TransparentCStringOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOddsHigh", "$TransparentBananaHammockHighText", TransparentCStringOdds_High, "{0}%", 0)
-		Else
-			AddHeaderOption("$CStringText")
-			AddSliderOptionST("AND_CStringOdds", "$CStringText", CStringOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOddsLow", "$TransparentCStringLowText", TransparentCStringOdds_Low, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOdds", "$TransparentCStringNormalText", TransparentCStringOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentCStringOddsHigh", "$TransparentCStringHighText", TransparentCStringOdds_High, "{0}%", 0)
-		EndIf
-		
-		AddHeaderOption("$MotionSettingsHeader")
-		AddToggleOptionST("AND_AllowMotionFlashState", "$AllowMotionFlashText", AllowMotionFlash, 0)
-		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
-		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
+		AddHeaderOption("$CStringText")
+		AddSliderOptionST("AND_CStringOdds", "$CStringText", CStringOdds, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOddsLow", "$TransparentCStringLowText", TransparentCStringOdds_Low, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOdds", "$TransparentCStringNormalText", TransparentCStringOdds, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOddsHigh", "$TransparentCStringHighText", TransparentCStringOdds_High, "{0}%", 0)
 		
 		SetCursorPosition(1)
 		AddHeaderOption("$TransparentChestCurtainHeader")
@@ -1103,27 +1330,89 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_TransparentHotpantsOdds", "$TransparentHotpantsNormalText", TransparentHotpantsOdds, "{0}%", 0)
 		AddSliderOptionST("AND_TransparentHotpantsOddsHigh", "$TransparentHotpantsHighText", TransparentHotpantsOdds_High, "{0}%", 0)
 		
-		If PlayerBase.GetSex() == 0 ;Male
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOddsLow", "$TransparentHimboSkirtLowText", TransparentShowgirlSkirtOdds_Low, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "$TransparentHimboSkirtNormalText", TransparentShowgirlSkirtOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOddsHigh", "$TransparentHimboSkirtHighText", TransparentShowgirlSkirtOdds_High, "{0}%", 0)
-		Else
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOddsLow", "$TransparentShowgirlSkirtLowText", TransparentShowgirlSkirtOdds_Low, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "$TransparentShowgirlSkirtNormalText", TransparentShowgirlSkirtOdds, "{0}%", 0)
-			AddSliderOptionST("AND_TransparentShowgirlSkirtOddsHigh", "$TransparentShowgirlSkirtHighText", TransparentShowgirlSkirtOdds_High, "{0}%", 0)
-		EndIf
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsLow", "$TransparentShowgirlSkirtLowText", TransparentShowgirlSkirtOdds_Low, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOdds", "$TransparentShowgirlSkirtNormalText", TransparentShowgirlSkirtOdds, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsHigh", "$TransparentShowgirlSkirtHighText", TransparentShowgirlSkirtOdds_High, "{0}%", 0)
+	
+	ElseIf (page == "$MaleFlashChancesPage")
+		AddHeaderOption("$ChestCurtainText")
+		AddSliderOptionST("AND_ChestCurtainLowOddsMale", "$ChestCurtainLowText", TopCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainOddsMale", "$ChestCurtainNormalText", TopCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainHighOddsMale", "$ChestCurtainHighText", TopCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainExtremeOddsMale", "$ChestCurtainExtremeText", TopCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_ChestCurtainUltraOddsMale", "$ChestCurtainUltraText", TopCurtainOddsUltra_Male, "{0}%", 0)
 		
-		If FlashChanceInfoShown != 1
-			Debug.MessageBox("Changing the Flash Chances here will NOT immediately change your Flashing Status. The changes will take effect on all future checks.")
-			FlashChanceInfoShown = 1
-		EndIf
+		AddHeaderOption("$PelvicCurtainText")
+		AddSliderOptionST("AND_PelvicCurtainLowOddsMale", "$PelvicCurtainLowText", PelvicCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainOddsMale", "$PelvicCurtainNormalText", PelvicCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainHighOddsMale", "$PelvicCurtainHighText", PelvicCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainExtremeOddsMale", "$PelvicCurtainExtremeText", PelvicCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_PelvicCurtainUltraOddsMale", "$PelvicCurtainUltraText", PelvicCurtainOddsUltra_Male, "{0}%", 0)
+		
+		AddHeaderOption("$AssCurtainText")
+		AddSliderOptionST("AND_AssCurtainLowOddsMale", "$AssCurtainLowText", AssCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainOddsMale", "$AssCurtainNormalText", AssCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainHighOddsMale", "$AssCurtainHighText", AssCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainExtremeOddsMale", "$AssCurtainExtremeText", AssCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_AssCurtainUltraOddsMale", "$AssCurtainUltraText", AssCurtainOddsUltra_Male, "{0}%", 0)
+		
+		AddHeaderOption("$BananaHammockText")
+		AddSliderOptionST("AND_CStringOddsMale", "$BananaHammockText", CStringOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOddsLowMale", "$TransparentBananaHammockLowText", TransparentCStringOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOddsMale", "$TransparentBananaHammockNormalText", TransparentCStringOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentCStringOddsHighMale", "$TransparentBananaHammockHighText", TransparentCStringOdds_High_Male, "{0}%", 0)
+		
+		SetCursorPosition(1)
+		AddHeaderOption("$TransparentChestCurtainHeader")
+		AddSliderOptionST("AND_TransparentChestCurtainLowOddsMale", "$TransparentChestCurtainLowText", TransparentTopCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainOddsMale", "$TransparentChestCurtainNormalText", TransparentTopCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainHighOddsMale", "$TransparentChestCurtainHighText", TransparentTopCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainExtremeOddsMale", "$TransparentChestCurtainExtremeText", TransparentTopCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentChestCurtainUltraOddsMale", "$TransparentChestCurtainUltraText", TransparentTopCurtainOddsUltra_Male, "{0}%", 0)
+		
+		AddHeaderOption("$TransparentPelvicCurtainHeader")
+		AddSliderOptionST("AND_TransparentPelvicCurtainLowOddsMale", "$TransparentPelvicCurtainLowText", TransparentPelvicCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainOddsMale", "$TransparentPelvicCurtainNormalText", TransparentPelvicCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainHighOddsMale", "$TransparentPelvicCurtainHighText", TransparentPelvicCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainExtremeOddsMale", "$TransparentPelvicCurtainExtremeText", TransparentPelvicCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentPelvicCurtainUltraOddsMale", "$TransparentPelvicCurtainUltraText", TransparentPelvicCurtainOddsUltra_Male, "{0}%", 0)
+		
+		AddHeaderOption("$TransparentAssCurtainHeader")
+		AddSliderOptionST("AND_TransparentAssCurtainLowOddsMale", "$TransparentAssCurtainLowText", TransparentAssCurtainOddsLow_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainOddsMale", "$TransparentAssCurtainNormalText", TransparentAssCurtainOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainHighOddsMale", "$TransparentAssCurtainHighText", TransparentAssCurtainOddsHigh_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainExtremeOddsMale", "$TransparentAssCurtainExtremeText", TransparentAssCurtainOddsExtreme_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentAssCurtainUltraOddsMale", "$TransparentAssCurtainUltraText", TransparentAssCurtainOddsUltra_Male, "{0}%", 0)
+		
+		AddHeaderOption("$TransparentClothesHeader")
+		AddSliderOptionST("AND_TransparentTopArmorOddsLowMale", "$TransparentArmorTopLowText", TransparentTopArmorOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentTopArmorOddsMale", "$TransparentArmorTopNormalText", TransparentTopArmorOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentTopArmorOddsHighMale", "$TransparentArmorTopHighText", TransparentTopArmorOdds_High_Male, "{0}%", 0)
+		
+		AddSliderOptionST("AND_TransparentBottomArmorOddsLowMale", "$TransparentArmorBottomLowText", TransparentBottomArmorOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBottomArmorOddsMale", "$TransparentArmorBottomNormalText", TransparentBottomArmorOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBottomArmorOddsHighMale", "$TransparentArmorBottomHighText", TransparentBottomArmorOdds_High_Male, "{0}%", 0)
+		
+		AddSliderOptionST("AND_TransparentBraOddsLowMale", "$TransparentBraLowText", TransparentBraOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBraOddsMale", "$TransparentBraNormalText", TransparentBraOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentBraOddsHighMale", "$TransparentBraHighText", TransparentBraOdds_High_Male, "{0}%", 0)
+		
+		AddSliderOptionST("AND_TransparentUnderwearOddsLowMale", "$TransparentUnderwearLowText", TransparentUnderwearOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentUnderwearOddsMale", "$TransparentUnderwearNormalText", TransparentUnderwearOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentUnderwearOddsHighMale", "$TransparentUnderwearHighText", TransparentUnderwearOdds_High_Male, "{0}%", 0)
+		
+		AddSliderOptionST("AND_TransparentHotpantsOddsLowMale", "$TransparentHotpantsLowText", TransparentHotpantsOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentHotpantsOddsMale", "$TransparentHotpantsNormalText", TransparentHotpantsOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentHotpantsOddsHighMale", "$TransparentHotpantsHighText", TransparentHotpantsOdds_High_Male, "{0}%", 0)
+		
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsLowMale", "$TransparentHimboSkirtLowText", TransparentShowgirlSkirtOdds_Low_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsMale", "$TransparentHimboSkirtNormalText", TransparentShowgirlSkirtOdds_Male, "{0}%", 0)
+		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsHighMale", "$TransparentHimboSkirtHighText", TransparentShowgirlSkirtOdds_High_Male, "{0}%", 0)
 		
 	ElseIf (page == "$BakaKeywordsPage")
 		If Main.SLA_Found == False
 			AddTextOption("$SexlabArousedNotFound", None)
-		ElseIf PlayerBase.GetSex() == 0 ;Male
-			AddTextOption("", None)
-		ElseIf Main.SLA_Found == True
+		ElseIf Main.SLA_Found == True && PlayerBase.GetSex() == 1
 			AddToggleOptionST("IgnoreBakaState", "$IgnoreBakaKeywords", IgnoreBakaKeywords, 0)
 			AddEmptyOption()
 			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
@@ -1267,6 +1556,117 @@ Event OnPageReset(string page)
 				AddTextOption("SLA_ArmorHalfNaked", "$YesText")
 			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
 				AddTextOption("SLA_ArmorHalfNaked", "$NoText")
+			Else
+				AddTextOption("SLA_ArmorHalfNaked", "$IgnoredText")
+			EndIf
+		ElseIf Main.SLA_Found == True && PlayerBase.GetSex() == 0
+			AddToggleOptionST("IgnoreBakaState", "$IgnoreBakaKeywords", IgnoreBakaKeywords, 0)
+			AddEmptyOption()
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ArmorPartTop", "$ActiveText")
+			Else
+				AddTextOption("SLA_ArmorPartTop", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ArmorPartBottom", "$ActiveText")
+			Else
+				AddTextOption("SLA_ArmorPartBottom", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_Brabikini", "$ActiveText")
+			Else
+				AddTextOption("SLA_Brabikini", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_FullSkirt", "$ActiveText")
+			Else
+				AddTextOption("SLA_FullSkirt", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_MicroHotpants", "$ActiveText")
+			Else
+				AddTextOption("SLA_MicroHotpants", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_MicroSkirt", "$ActiveText")
+			Else
+				AddTextOption("SLA_MicroSkirt", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_MiniSkirt", "$ActiveText")
+			Else
+				AddTextOption("SLA_MiniSkirt", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_PantiesNormal", "$ActiveText")
+			Else
+				AddTextOption("SLA_PantiesNormal", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_PantsNormal", "$ActiveText")
+			Else
+				AddTextOption("SLA_PantsNormal", "$IgnoredText")
+			EndIf
+			
+			SetCursorPosition(5)
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_PastiesCrotch", "$ActiveText")
+			Else
+				AddTextOption("SLA_PastiesCrotch", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_PastiesNipple", "$ActiveText")
+			Else
+				AddTextOption("SLA_PastiesNipple", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_PelvicCurtain", "$ActiveText")
+			Else
+				AddTextOption("SLA_PelvicCurtain", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ShowgirlSkirt", "$ActiveText")
+			Else
+				AddTextOption("SLA_ShowgirlSkirt", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ThongCString", "$ActiveText")
+			Else
+				AddTextOption("SLA_ThongCString", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ThongGstring", "$ActiveText")
+			Else
+				AddTextOption("SLA_ThongGstring", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ThongLowleg", "$ActiveText")
+			Else
+				AddTextOption("SLA_ThongLowleg", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ThongT", "$ActiveText")
+			Else
+				AddTextOption("SLA_ThongT", "$IgnoredText")
+			EndIf
+			
+			If IgnoreBakaKeywords == False
+				AddTextOption("SLA_ArmorHalfNaked", "$ActiveText")
 			Else
 				AddTextOption("SLA_ArmorHalfNaked", "$IgnoredText")
 			EndIf
@@ -1599,6 +1999,39 @@ State AND_ChestCurtainLowOdds
 	EndEvent
 EndState
 
+State AND_ChestCurtainLowOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsLow_Male)
+		If TopCurtainOdds_Male >= 20
+			SetSliderDialogDefaultValue(20)
+		Else
+			SetSliderDialogDefaultValue(TopCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TopCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainLowOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TopCurtainOdds_Male >= 20
+			TopCurtainOddsLow_Male = 20
+			SetSliderOptionValueST(20, "{0}%", False, "AND_ChestCurtainLowOddsMale")
+		Else
+			TopCurtainOddsLow_Male = TopCurtainOdds_Male
+			SetSliderOptionValueST(TopCurtainOdds_Male, "{0}%", False, "AND_ChestCurtainLowOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_ChestCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
 State AND_ChestCurtainOdds
 
 	Event OnSliderOpenST()
@@ -1629,6 +2062,44 @@ State AND_ChestCurtainOdds
 		Else
 			TopCurtainOdds = TopCurtainOddsLow
 			SetSliderOptionValueST(TopCurtainOddsLow, "{0}%", False, "AND_ChestCurtainOdds")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_ChestCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
+State AND_ChestCurtainOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOdds_Male)
+		If TopCurtainOddsLow_Male <= 35 && TopCurtainOddsHigh_Male >= 35
+			SetSliderDialogDefaultValue(35)
+		ElseIf TopCurtainOddsHigh_Male < 35
+			SetSliderDialogDefaultValue(TopCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(TopCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(TopCurtainOddsLow_Male, TopCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TopCurtainOddsLow_Male <= 35 && TopCurtainOddsHigh_Male >= 35
+			TopCurtainOdds_Male = 35
+			SetSliderOptionValueST(35, "{0}%", False, "AND_ChestCurtainOddsMale")
+		ElseIf TopCurtainOddsHigh_Male < 35
+			TopCurtainOdds_Male = TopCurtainOddsHigh_Male
+			SetSliderOptionValueST(TopCurtainOddsHigh_Male, "{0}%", False, "AND_ChestCurtainOddsMale")
+		Else
+			TopCurtainOdds_Male = TopCurtainOddsLow_Male
+			SetSliderOptionValueST(TopCurtainOddsLow_Male, "{0}%", False, "AND_ChestCurtainOddsMale")
 		EndIf
 	EndEvent 
 	
@@ -1675,6 +2146,44 @@ State AND_ChestCurtainHighOdds
 	EndEvent
 EndState
 
+State AND_ChestCurtainHighOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsHigh_Male)
+		If TopCurtainOdds_Male <= 50 && TopCurtainOddsExtreme_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TopCurtainOddsExtreme_Male < 50
+			SetSliderDialogDefaultValue(TopCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(TopCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(TopCurtainOdds_Male, TopCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainHighOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TopCurtainOdds_Male <= 50 && TopCurtainOddsExtreme_Male >= 50
+			TopCurtainOddsHigh_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_ChestCurtainHighOddsMale")
+		ElseIf TopCurtainOddsExtreme_Male < 50
+			TopCurtainOddsHigh_Male = TopCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TopCurtainOddsExtreme_Male, "{0}%", False, "AND_ChestCurtainHighOddsMale")
+		Else
+			TopCurtainOddsHigh_Male = TopCurtainOdds_Male
+			SetSliderOptionValueST(TopCurtainOdds_Male, "{0}%", False, "AND_ChestCurtainHighOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_ChestCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_ChestCurtainExtremeOdds
 
 	Event OnSliderOpenST()
@@ -1705,6 +2214,44 @@ State AND_ChestCurtainExtremeOdds
 		Else
 			TopCurtainOddsExtreme = TopCurtainOddsHigh
 			SetSliderOptionValueST(TopCurtainOddsHigh, "{0}%", False, "AND_ChestCurtainExtremeOdds")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_ChestCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
+State AND_ChestCurtainExtremeOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsExtreme_Male)
+		If TopCurtainOddsHigh_Male <= 65 && TopCurtainOddsUltra_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf TopCurtainOddsUltra_Male < 65
+			SetSliderDialogDefaultValue(TopCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(TopCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(TopCurtainOddsHigh_Male, TopCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainExtremeOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TopCurtainOddsHigh_Male <= 65 && TopCurtainOddsUltra_Male >= 65
+			TopCurtainOddsExtreme_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_ChestCurtainExtremeOddsMale")
+		ElseIf TopCurtainOddsUltra_Male < 65
+			TopCurtainOddsExtreme_Male = TopCurtainOddsUltra_Male
+			SetSliderOptionValueST(TopCurtainOddsUltra_Male, "{0}%", False, "AND_ChestCurtainExtremeOddsMale")
+		Else
+			TopCurtainOddsExtreme_Male = TopCurtainOddsHigh_Male
+			SetSliderOptionValueST(TopCurtainOddsHigh_Male, "{0}%", False, "AND_ChestCurtainExtremeOddsMale")
 		EndIf
 	EndEvent 
 	
@@ -1746,6 +2293,39 @@ State AND_ChestCurtainUltraOdds
 	EndEvent
 EndState
 
+State AND_ChestCurtainUltraOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TopCurtainOddsUltra_Male)
+		If TopCurtainOddsExtreme_Male <= 80
+			SetSliderDialogDefaultValue(80)
+		Else
+			SetSliderDialogDefaultValue(TopCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(TopCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TopCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_ChestCurtainUltraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TopCurtainOddsExtreme_Male <= 80
+			TopCurtainOddsUltra_Male = 80
+			SetSliderOptionValueST(80, "{0}%", False, "AND_ChestCurtainUltraOddsMale")
+		Else
+			TopCurtainOddsUltra_Male = TopCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TopCurtainOddsExtreme_Male, "{0}%", False, "AND_ChestCurtainUltraOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_ChestCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentChestCurtainLowOdds
 
 	Event OnSliderOpenST()
@@ -1771,6 +2351,39 @@ State AND_TransparentChestCurtainLowOdds
 		Else
 			TransparentTopCurtainOddsLow = TransparentTopCurtainOdds
 			SetSliderOptionValueST(TransparentTopCurtainOdds, "{0}%", False, "AND_TransparentChestCurtainLowOdds")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentChestCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentChestCurtainLowOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsLow_Male)
+		If TransparentTopCurtainOdds_Male >= 55
+			SetSliderDialogDefaultValue(55)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentTopCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainLowOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopCurtainOdds_Male >= 55
+			TransparentTopCurtainOddsLow_Male = 55
+			SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentChestCurtainLowOddsMale")
+		Else
+			TransparentTopCurtainOddsLow_Male = TransparentTopCurtainOdds_Male
+			SetSliderOptionValueST(TransparentTopCurtainOdds_Male, "{0}%", False, "AND_TransparentChestCurtainLowOddsMale")
 		EndIf
 	EndEvent 
 	
@@ -1817,6 +2430,44 @@ State AND_TransparentChestCurtainOdds
 	EndEvent
 EndState
 
+State AND_TransparentChestCurtainOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOdds_Male)
+		If TransparentTopCurtainOddsLow_Male <= 65 && TransparentTopCurtainOddsHigh_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf TransparentTopCurtainOddsHigh_Male < 65
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopCurtainOddsLow_Male, TransparentTopCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopCurtainOddsLow_Male <= 65 && TransparentTopCurtainOddsHigh_Male >= 65
+			TransparentTopCurtainOdds_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentChestCurtainOddsMale")
+		ElseIf TransparentTopCurtainOddsHigh_Male < 65
+			TransparentTopCurtainOdds_Male = TransparentTopCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentChestCurtainOddsMale")
+		Else
+			TransparentTopCurtainOdds_Male = TransparentTopCurtainOddsLow_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsLow_Male, "{0}%", False, "AND_TransparentChestCurtainOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentChestCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentChestCurtainHighOdds
 
 	Event OnSliderOpenST()
@@ -1847,6 +2498,44 @@ State AND_TransparentChestCurtainHighOdds
 		Else
 			TransparentTopCurtainOddsHigh = TransparentTopCurtainOdds
 			SetSliderOptionValueST(TransparentTopCurtainOdds, "{0}%", False, "AND_TransparentChestCurtainHighOdds")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentChestCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentChestCurtainHighOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsHigh_Male)
+		If TransparentTopCurtainOdds_Male <= 75 && TransparentTopCurtainOddsExtreme_Male >= 75
+			SetSliderDialogDefaultValue(75)
+		ElseIf TransparentTopCurtainOddsExtreme_Male < 75
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopCurtainOdds_Male, TransparentTopCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainHighOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopCurtainOdds_Male <= 75 && TransparentTopCurtainOddsExtreme_Male >= 75
+			TransparentTopCurtainOddsHigh_Male = 75
+			SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentChestCurtainHighOddsMale")
+		ElseIf TransparentTopCurtainOddsExtreme_Male < 75
+			TransparentTopCurtainOddsHigh_Male = TransparentTopCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentChestCurtainHighOddsMale")
+		Else
+			TransparentTopCurtainOddsHigh_Male = TransparentTopCurtainOdds_Male
+			SetSliderOptionValueST(TransparentTopCurtainOdds_Male, "{0}%", False, "AND_TransparentChestCurtainHighOddsMale")
 		EndIf
 	EndEvent 
 	
@@ -1893,6 +2582,44 @@ State AND_TransparentChestCurtainExtremeOdds
 	EndEvent
 EndState
 
+State AND_TransparentChestCurtainExtremeOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsExtreme_Male)
+		If TransparentTopCurtainOddsHigh_Male <= 85 && TransparentTopCurtainOddsUltra_Male >= 85
+			SetSliderDialogDefaultValue(85)
+		ElseIf TransparentTopCurtainOddsUltra_Male < 85
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopCurtainOddsHigh_Male, TransparentTopCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainExtremeOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopCurtainOddsHigh_Male <= 85 && TransparentTopCurtainOddsUltra_Male >= 85
+			TransparentTopCurtainOddsExtreme_Male = 85
+			SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentChestCurtainExtremeOddsMale")
+		ElseIf TransparentTopCurtainOddsUltra_Male < 85
+			TransparentTopCurtainOddsExtreme_Male = TransparentTopCurtainOddsUltra_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsUltra_Male, "{0}%", False, "AND_TransparentChestCurtainExtremeOddsMale")
+		Else
+			TransparentTopCurtainOddsExtreme_Male = TransparentTopCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentChestCurtainExtremeOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentChestCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentChestCurtainUltraOdds
 
 	Event OnSliderOpenST()
@@ -1926,6 +2653,39 @@ State AND_TransparentChestCurtainUltraOdds
 	EndEvent
 EndState
 
+State AND_TransparentChestCurtainUltraOddsMale
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopCurtainOddsUltra_Male)
+		If TransparentTopCurtainOddsExtreme_Male <= 95
+			SetSliderDialogDefaultValue(95)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentChestCurtainUltraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopCurtainOddsExtreme_Male <= 95
+			TransparentTopCurtainOddsUltra_Male = 95
+			SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentChestCurtainUltraOddsMale")
+		Else
+			TransparentTopCurtainOddsUltra_Male = TransparentTopCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentTopCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentChestCurtainUltraOddsMale")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentChestCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
 State AND_PelvicCurtainLowOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(PelvicCurtainOddsLow)
@@ -1950,6 +2710,38 @@ State AND_PelvicCurtainLowOdds
 		Else
 			PelvicCurtainOddsLow = PelvicCurtainOdds
 			SetSliderOptionValueST(PelvicCurtainOdds, "{0}%", False, "AND_PelvicCurtainLowOdds")
+		EndIf
+	EndEvent 
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_PelvicCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_PelvicCurtainLowOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsLow_Male)
+		If PelvicCurtainOdds_Male >= 20
+			SetSliderDialogDefaultValue(20)
+		Else
+			SetSliderDialogDefaultValue(PelvicCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, PelvicCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainLowOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If PelvicCurtainOdds_Male >= 20
+			PelvicCurtainOddsLow_Male = 20
+			SetSliderOptionValueST(20, "{0}%", False, "AND_PelvicCurtainLowOddsMale")
+		Else
+			PelvicCurtainOddsLow_Male = PelvicCurtainOdds_Male
+			SetSliderOptionValueST(PelvicCurtainOdds_Male, "{0}%", False, "AND_PelvicCurtainLowOddsMale")
 		EndIf
 	EndEvent 
 	
@@ -1995,6 +2787,43 @@ State AND_PelvicCurtainOdds
 	EndEvent
 EndState
 
+State AND_PelvicCurtainOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOdds_Male)
+		If PelvicCurtainOddsLow_Male <= 35 && PelvicCurtainOddsHigh_Male >= 35
+			SetSliderDialogDefaultValue(35)
+		ElseIf PelvicCurtainOddsHigh_Male < 35
+			SetSliderDialogDefaultValue(PelvicCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(PelvicCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(PelvicCurtainOddsLow_Male, PelvicCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If PelvicCurtainOddsLow_Male <= 35 && PelvicCurtainOddsHigh_Male >= 35
+			PelvicCurtainOdds_Male = 35
+			SetSliderOptionValueST(35, "{0}%", False, "AND_PelvicCurtainOddsMale")
+		ElseIf PelvicCurtainOddsHigh_Male < 35
+			PelvicCurtainOdds_Male = PelvicCurtainOddsHigh_Male
+			SetSliderOptionValueST(PelvicCurtainOddsHigh_Male, "{0}%", False, "AND_PelvicCurtainOddsMale")
+		Else
+			PelvicCurtainOdds_Male = PelvicCurtainOddsLow_Male
+			SetSliderOptionValueST(PelvicCurtainOddsLow_Male, "{0}%", False, "AND_PelvicCurtainOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_PelvicCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_PelvicCurtainHighOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(PelvicCurtainOddsHigh)
@@ -2024,6 +2853,43 @@ State AND_PelvicCurtainHighOdds
 		Else
 			PelvicCurtainOddsHigh = PelvicCurtainOdds
 			SetSliderOptionValueST(PelvicCurtainOdds, "{0}%", False, "AND_PelvicCurtainHighOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_PelvicCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_PelvicCurtainHighOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsHigh_Male)
+		If PelvicCurtainOdds_Male <= 50 && PelvicCurtainOddsExtreme_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf PelvicCurtainOddsExtreme_Male < 50
+			SetSliderDialogDefaultValue(PelvicCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(PelvicCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(PelvicCurtainOdds_Male, PelvicCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainHighOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If PelvicCurtainOdds_Male <= 50 && PelvicCurtainOddsExtreme_Male >= 50
+			PelvicCurtainOddsHigh_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_PelvicCurtainHighOddsMale")
+		ElseIf PelvicCurtainOddsExtreme_Male < 50
+			PelvicCurtainOddsHigh_Male = PelvicCurtainOddsExtreme_Male
+			SetSliderOptionValueST(PelvicCurtainOddsExtreme_Male, "{0}%", False, "AND_PelvicCurtainHighOddsMale")
+		Else
+			PelvicCurtainOddsHigh_Male = PelvicCurtainOdds_Male
+			SetSliderOptionValueST(PelvicCurtainOdds_Male, "{0}%", False, "AND_PelvicCurtainHighOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2069,6 +2935,43 @@ State AND_PelvicCurtainExtremeOdds
 	EndEvent
 EndState
 
+State AND_PelvicCurtainExtremeOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsExtreme_Male)
+		If PelvicCurtainOddsHigh_Male <= 65 && PelvicCurtainOddsUltra_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf PelvicCurtainOddsUltra_Male < 65
+			SetSliderDialogDefaultValue(PelvicCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(PelvicCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(PelvicCurtainOddsHigh_Male, PelvicCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainExtremeOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If PelvicCurtainOddsHigh_Male <= 65 && PelvicCurtainOddsUltra_Male >= 65
+			PelvicCurtainOddsExtreme_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_PelvicCurtainExtremeOddsMale")
+		ElseIf PelvicCurtainOddsUltra_Male < 65
+			PelvicCurtainOddsExtreme_Male = PelvicCurtainOddsUltra_Male
+			SetSliderOptionValueST(PelvicCurtainOddsUltra_Male, "{0}%", False, "AND_PelvicCurtainExtremeOddsMale")
+		Else
+			PelvicCurtainOddsExtreme_Male = PelvicCurtainOddsHigh_Male
+			SetSliderOptionValueST(PelvicCurtainOddsHigh_Male, "{0}%", False, "AND_PelvicCurtainExtremeOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_PelvicCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
 State AND_PelvicCurtainUltraOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(PelvicCurtainOddsUltra)
@@ -2101,8 +3004,39 @@ State AND_PelvicCurtainUltraOdds
 	EndEvent
 EndState
 
-State AND_TransparentPelvicCurtainLowOdds
+State AND_PelvicCurtainUltraOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(PelvicCurtainOddsUltra_Male)
+		If PelvicCurtainOddsExtreme_Male <= 80
+			SetSliderDialogDefaultValue(80)
+		Else
+			SetSliderDialogDefaultValue(PelvicCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(PelvicCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		PelvicCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_PelvicCurtainUltraOddsMale")
+	EndEvent 
 
+	Event OnDefaultST()
+		If PelvicCurtainOddsExtreme_Male <= 80
+			PelvicCurtainOddsUltra_Male = 80
+			SetSliderOptionValueST(80, "{0}%", False, "AND_PelvicCurtainUltraOddsMale")
+		Else
+			PelvicCurtainOddsUltra_Male = PelvicCurtainOddsExtreme_Male
+			SetSliderOptionValueST(PelvicCurtainOddsExtreme_Male, "{0}%", False, "AND_PelvicCurtainUltraOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_PelvicCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainLowOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentPelvicCurtainOddsLow)
 		If TransparentPelvicCurtainOdds >= 55
@@ -2134,8 +3068,39 @@ State AND_TransparentPelvicCurtainLowOdds
 	EndEvent
 EndState
 
-State AND_TransparentPelvicCurtainOdds
+State AND_TransparentPelvicCurtainLowOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsLow_Male)
+		If TransparentPelvicCurtainOdds_Male >= 55
+			SetSliderDialogDefaultValue(55)
+		Else
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentPelvicCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainLowOddsMale")
+	EndEvent 
 
+	Event OnDefaultST()
+		If TransparentPelvicCurtainOdds_Male >= 55
+			TransparentPelvicCurtainOddsLow_Male = 55
+			SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentPelvicCurtainLowOddsMale")
+		Else
+			TransparentPelvicCurtainOddsLow_Male = TransparentPelvicCurtainOdds_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOdds_Male, "{0}%", False, "AND_TransparentPelvicCurtainLowOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentPelvicCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentPelvicCurtainOdds)
 		If TransparentPelvicCurtainOddsLow <= 65 && TransparentPelvicCurtainOddsHigh >= 65
@@ -2172,8 +3137,44 @@ State AND_TransparentPelvicCurtainOdds
 	EndEvent
 EndState
 
-State AND_TransparentPelvicCurtainHighOdds
+State AND_TransparentPelvicCurtainOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOdds_Male)
+		If TransparentPelvicCurtainOddsLow_Male <= 65 && TransparentPelvicCurtainOddsHigh_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf TransparentPelvicCurtainOddsHigh_Male < 65
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(TransparentPelvicCurtainOddsLow_Male, TransparentPelvicCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainOddsMale")
+	EndEvent 
 
+	Event OnDefaultST()
+		If TransparentPelvicCurtainOddsLow_Male <= 65 && TransparentPelvicCurtainOddsHigh_Male >= 65
+			TransparentPelvicCurtainOdds_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentPelvicCurtainOddsMale")
+		ElseIf TransparentPelvicCurtainOddsHigh_Male < 65
+			TransparentPelvicCurtainOdds_Male = TransparentPelvicCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentPelvicCurtainOddsMale")
+		Else
+			TransparentPelvicCurtainOdds_Male = TransparentPelvicCurtainOddsLow_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOddsLow_Male, "{0}%", False, "AND_TransparentPelvicCurtainOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentPelvicCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainHighOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentPelvicCurtainOddsHigh)
 		If TransparentPelvicCurtainOdds <= 75 && TransparentPelvicCurtainOddsExtreme >= 75
@@ -2210,8 +3211,44 @@ State AND_TransparentPelvicCurtainHighOdds
 	EndEvent
 EndState
 
-State AND_TransparentPelvicCurtainExtremeOdds
+State AND_TransparentPelvicCurtainHighOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsHigh_Male)
+		If TransparentPelvicCurtainOdds_Male <= 75 && TransparentPelvicCurtainOddsExtreme_Male >= 75
+			SetSliderDialogDefaultValue(75)
+		ElseIf TransparentPelvicCurtainOddsExtreme_Male < 75
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentPelvicCurtainOdds_Male, TransparentPelvicCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainHighOddsMale")
+	EndEvent 
 
+	Event OnDefaultST()
+		If TransparentPelvicCurtainOdds_Male <= 75 && TransparentPelvicCurtainOddsExtreme_Male >= 75
+			TransparentPelvicCurtainOddsHigh_Male = 75
+			SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentPelvicCurtainHighOddsMale")
+		ElseIf TransparentPelvicCurtainOddsExtreme_Male < 75
+			TransparentPelvicCurtainOddsHigh_Male = TransparentPelvicCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentPelvicCurtainHighOddsMale")
+		Else
+			TransparentPelvicCurtainOddsHigh_Male = TransparentPelvicCurtainOdds_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOdds_Male, "{0}%", False, "AND_TransparentPelvicCurtainHighOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentPelvicCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainExtremeOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentPelvicCurtainOddsExtreme)
 		If TransparentPelvicCurtainOddsHigh <= 85 && TransparentAssCurtainOddsUltra >= 85
@@ -2248,8 +3285,44 @@ State AND_TransparentPelvicCurtainExtremeOdds
 	EndEvent
 EndState
 
-State AND_TransparentPelvicCurtainUltraOdds
+State AND_TransparentPelvicCurtainExtremeOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsExtreme_Male)
+		If TransparentPelvicCurtainOddsHigh_Male <= 85 && TransparentAssCurtainOddsUltra_Male >= 85
+			SetSliderDialogDefaultValue(85)
+		ElseIf TransparentPelvicCurtainOddsUltra_Male < 85
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentPelvicCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(TransparentPelvicCurtainOddsHigh_Male, TransparentPelvicCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOddsMale")
+	EndEvent 
 
+	Event OnDefaultST()
+		If TransparentPelvicCurtainOddsHigh_Male <= 85 && TransparentAssCurtainOddsUltra_Male >= 85
+			TransparentPelvicCurtainOddsExtreme_Male = 85
+			SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOddsMale")
+		ElseIf TransparentPelvicCurtainOddsUltra_Male < 85
+			TransparentPelvicCurtainOddsExtreme_Male = TransparentAssCurtainOddsUltra_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsUltra_Male, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOddsMale")
+		Else
+			TransparentPelvicCurtainOddsExtreme_Male = TransparentPelvicCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentPelvicCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentPelvicCurtainExtremeOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentPelvicCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainUltraOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentPelvicCurtainOddsUltra)
 		If TransparentAssCurtainOddsExtreme <= 95
@@ -2273,6 +3346,38 @@ State AND_TransparentPelvicCurtainUltraOdds
 		Else
 			TransparentPelvicCurtainOddsUltra = TransparentAssCurtainOddsExtreme
 			SetSliderOptionValueST(TransparentAssCurtainOddsExtreme, "{0}%", False, "AND_TransparentPelvicCurtainUltraOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentPelvicCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentPelvicCurtainUltraOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentPelvicCurtainOddsUltra_Male)
+		If TransparentAssCurtainOddsExtreme_Male <= 95
+			SetSliderDialogDefaultValue(95)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(TransparentPelvicCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentPelvicCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentPelvicCurtainUltraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOddsExtreme_Male <= 95
+			TransparentPelvicCurtainOddsUltra_Male = 95
+			SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentPelvicCurtainUltraOddsMale")
+		Else
+			TransparentPelvicCurtainOddsUltra_Male = TransparentAssCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentPelvicCurtainUltraOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2305,6 +3410,38 @@ State AND_AssCurtainLowOdds
 		Else
 			AssCurtainOddsLow = AssCurtainOdds
 			SetSliderOptionValueST(AssCurtainOdds, "{0}%", False, "AND_AssCurtainLowOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_AssCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_AssCurtainLowOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsLow_Male)
+		If AssCurtainOdds_Male >= 20
+			SetSliderDialogDefaultValue(20)
+		Else
+			SetSliderDialogDefaultValue(AssCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, AssCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainLowOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If AssCurtainOdds_Male >= 20
+			AssCurtainOddsLow_Male = 20
+			SetSliderOptionValueST(20, "{0}%", False, "AND_AssCurtainLowOddsMale")
+		Else
+			AssCurtainOddsLow_Male = AssCurtainOdds_Male
+			SetSliderOptionValueST(AssCurtainOdds_Male, "{0}%", False, "AND_AssCurtainLowOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2350,6 +3487,43 @@ State AND_AssCurtainOdds
 	EndEvent
 EndState
 
+State AND_AssCurtainOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOdds_Male)
+		If AssCurtainOddsLow_Male <= 35 && AssCurtainOddsHigh_Male >= 35
+			SetSliderDialogDefaultValue(35)
+		ElseIf AssCurtainOddsHigh_Male < 35
+			SetSliderDialogDefaultValue(AssCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(AssCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(AssCurtainOddsLow_Male, AssCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If AssCurtainOddsLow_Male <= 35 && AssCurtainOddsHigh_Male >= 35
+			AssCurtainOdds_Male = 35
+			SetSliderOptionValueST(35, "{0}%", False, "AND_AssCurtainOddsMale")
+		ElseIf AssCurtainOddsHigh_Male < 35
+			AssCurtainOdds_Male = AssCurtainOddsHigh_Male
+			SetSliderOptionValueST(AssCurtainOddsHigh_Male, "{0}%", False, "AND_AssCurtainOddsMale")
+		Else
+			AssCurtainOdds_Male = AssCurtainOddsLow_Male
+			SetSliderOptionValueST(AssCurtainOddsLow_Male, "{0}%", False, "AND_AssCurtainOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_AssCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_AssCurtainHighOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(AssCurtainOddsHigh)
@@ -2379,6 +3553,43 @@ State AND_AssCurtainHighOdds
 		Else
 			AssCurtainOddsHigh = AssCurtainOdds
 			SetSliderOptionValueST(AssCurtainOdds, "{0}%", False, "AND_AssCurtainHighOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_AssCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_AssCurtainHighOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsHigh_Male)
+		If AssCurtainOdds_Male <= 50 && AssCurtainOddsExtreme_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf AssCurtainOddsExtreme_Male < 50
+			SetSliderDialogDefaultValue(AssCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(AssCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(AssCurtainOdds_Male, AssCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainHighOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If AssCurtainOdds_Male <= 50 && AssCurtainOddsExtreme_Male >= 50
+			AssCurtainOddsHigh_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_AssCurtainHighOddsMale")
+		ElseIf AssCurtainOddsExtreme_Male < 50
+			AssCurtainOddsHigh_Male = AssCurtainOddsExtreme_Male
+			SetSliderOptionValueST(AssCurtainOddsExtreme_Male, "{0}%", False, "AND_AssCurtainHighOddsMale")
+		Else
+			AssCurtainOddsHigh_Male = AssCurtainOdds_Male
+			SetSliderOptionValueST(AssCurtainOdds_Male, "{0}%", False, "AND_AssCurtainHighOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2424,6 +3635,43 @@ State AND_AssCurtainExtremeOdds
 	EndEvent
 EndState
 
+State AND_AssCurtainExtremeOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsExtreme_Male)
+		If AssCurtainOddsHigh_Male <= 65 && AssCurtainOddsUltra_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf AssCurtainOddsUltra_Male < 65
+			SetSliderDialogDefaultValue(AssCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(AssCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(AssCurtainOddsHigh_Male, AssCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainExtremeOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If AssCurtainOddsHigh_Male <= 65 && AssCurtainOddsUltra_Male >= 65
+			AssCurtainOddsExtreme_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_AssCurtainExtremeOddsMale")
+		ElseIf AssCurtainOddsUltra_Male < 65
+			AssCurtainOddsExtreme_Male = AssCurtainOddsUltra_Male
+			SetSliderOptionValueST(AssCurtainOddsUltra_Male, "{0}%", False, "AND_AssCurtainExtremeOddsMale")
+		Else
+			AssCurtainOddsExtreme_Male = AssCurtainOddsHigh_Male
+			SetSliderOptionValueST(AssCurtainOddsHigh_Male, "{0}%", False, "AND_AssCurtainExtremeOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_AssCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
 State AND_AssCurtainUltraOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(AssCurtainOddsUltra)
@@ -2456,6 +3704,38 @@ State AND_AssCurtainUltraOdds
 	EndEvent
 EndState
 
+State AND_AssCurtainUltraOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(AssCurtainOddsUltra_Male)
+		If AssCurtainOddsExtreme_Male <= 80
+			SetSliderDialogDefaultValue(80)
+		Else
+			SetSliderDialogDefaultValue(AssCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(AssCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		AssCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_AssCurtainUltraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If AssCurtainOddsExtreme_Male <= 80
+			AssCurtainOddsUltra_Male = 80
+			SetSliderOptionValueST(80, "{0}%", False, "AND_AssCurtainUltraOddsMale")
+		Else
+			AssCurtainOddsUltra_Male = AssCurtainOddsExtreme_Male
+			SetSliderOptionValueST(AssCurtainOddsExtreme_Male, "{0}%", False, "AND_AssCurtainUltraOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_AssCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentAssCurtainLowOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentAssCurtainOddsLow)
@@ -2480,6 +3760,38 @@ State AND_TransparentAssCurtainLowOdds
 		Else
 			TransparentAssCurtainOddsLow = TransparentAssCurtainOdds
 			SetSliderOptionValueST(TransparentAssCurtainOdds, "{0}%", False, "AND_TransparentAssCurtainLowOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentAssCurtainOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentAssCurtainLowOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsLow_Male)
+		If TransparentAssCurtainOdds_Male >= 55
+			SetSliderDialogDefaultValue(55)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentAssCurtainOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsLow_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainLowOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOdds_Male >= 55
+			TransparentAssCurtainOddsLow_Male = 55
+			SetSliderOptionValueST(55, "{0}%", False, "AND_TransparentAssCurtainLowOddsMale")
+		Else
+			TransparentAssCurtainOddsLow_Male = TransparentAssCurtainOdds_Male
+			SetSliderOptionValueST(TransparentAssCurtainOdds_Male, "{0}%", False, "AND_TransparentAssCurtainLowOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2525,6 +3837,43 @@ State AND_TransparentAssCurtainOdds
 	EndEvent
 EndState
 
+State AND_TransparentAssCurtainOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOdds_Male)
+		If TransparentAssCurtainOddsLow_Male <= 65 && TransparentAssCurtainOddsHigh_Male >= 65
+			SetSliderDialogDefaultValue(65)
+		ElseIf TransparentAssCurtainOddsHigh_Male < 65
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsHigh_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsLow_Male)
+		EndIf
+		SetSliderDialogRange(TransparentAssCurtainOddsLow_Male, TransparentAssCurtainOddsHigh_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOddsLow_Male <= 65 && TransparentAssCurtainOddsHigh_Male >= 65
+			TransparentAssCurtainOdds_Male = 65
+			SetSliderOptionValueST(65, "{0}%", False, "AND_TransparentAssCurtainOddsMale")
+		ElseIf TransparentAssCurtainOddsHigh_Male < 65
+			TransparentAssCurtainOdds_Male = TransparentAssCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentAssCurtainOddsMale")
+		Else
+			TransparentAssCurtainOdds_Male = TransparentAssCurtainOddsLow_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsLow_Male, "{0}%", False, "AND_TransparentAssCurtainOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentAssCurtainOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentAssCurtainHighOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentAssCurtainOddsHigh)
@@ -2554,6 +3903,43 @@ State AND_TransparentAssCurtainHighOdds
 		Else
 			TransparentAssCurtainOddsHigh = TransparentAssCurtainOdds
 			SetSliderOptionValueST(TransparentAssCurtainOdds, "{0}%", False, "AND_TransparentAssCurtainHighOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentAssCurtainOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentAssCurtainHighOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsHigh_Male)
+		If TransparentAssCurtainOdds_Male <= 75 && TransparentAssCurtainOddsExtreme_Male >= 75
+			SetSliderDialogDefaultValue(75)
+		ElseIf TransparentAssCurtainOddsExtreme_Male < 75
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsExtreme_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentAssCurtainOdds_Male, TransparentAssCurtainOddsExtreme_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsHigh_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainHighOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOdds_Male <= 75 && TransparentAssCurtainOddsExtreme_Male >= 75
+			TransparentAssCurtainOddsHigh_Male = 75
+			SetSliderOptionValueST(75, "{0}%", False, "AND_TransparentAssCurtainHighOddsMale")
+		ElseIf TransparentAssCurtainOddsExtreme_Male < 75
+			TransparentAssCurtainOddsHigh_Male = TransparentAssCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentAssCurtainHighOddsMale")
+		Else
+			TransparentAssCurtainOddsHigh_Male = TransparentAssCurtainOdds_Male
+			SetSliderOptionValueST(TransparentAssCurtainOdds_Male, "{0}%", False, "AND_TransparentAssCurtainHighOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2599,6 +3985,43 @@ State AND_TransparentAssCurtainExtremeOdds
 	EndEvent
 EndState
 
+State AND_TransparentAssCurtainExtremeOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsExtreme_Male)
+		If TransparentAssCurtainOddsHigh_Male <= 85 && TransparentAssCurtainOddsUltra_Male >= 85
+			SetSliderDialogDefaultValue(85)
+		ElseIf TransparentAssCurtainOddsUltra_Male < 85
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsUltra_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsHigh_Male)
+		EndIf
+		SetSliderDialogRange(TransparentAssCurtainOddsHigh_Male, TransparentAssCurtainOddsUltra_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsExtreme_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainExtremeOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOddsHigh_Male <= 85 && TransparentAssCurtainOddsUltra_Male >= 85
+			TransparentAssCurtainOddsExtreme_Male = 85
+			SetSliderOptionValueST(85, "{0}%", False, "AND_TransparentAssCurtainExtremeOddsMale")
+		ElseIf TransparentAssCurtainOddsUltra_Male < 85
+			TransparentAssCurtainOddsExtreme_Male = TransparentAssCurtainOddsUltra_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsUltra_Male, "{0}%", False, "AND_TransparentAssCurtainExtremeOddsMale")
+		Else
+			TransparentAssCurtainOddsExtreme_Male = TransparentAssCurtainOddsHigh_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsHigh_Male, "{0}%", False, "AND_TransparentAssCurtainExtremeOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentAssCurtainOddsExtreme_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentAssCurtainUltraOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentAssCurtainOddsUltra)
@@ -2631,6 +4054,38 @@ State AND_TransparentAssCurtainUltraOdds
 	EndEvent
 EndState
 
+State AND_TransparentAssCurtainUltraOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentAssCurtainOddsUltra_Male)
+		If TransparentAssCurtainOddsExtreme_Male <= 95
+			SetSliderDialogDefaultValue(95)
+		Else
+			SetSliderDialogDefaultValue(TransparentAssCurtainOddsExtreme_Male)
+		EndIf
+		SetSliderDialogRange(TransparentAssCurtainOddsExtreme_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentAssCurtainOddsUltra_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentAssCurtainUltraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentAssCurtainOddsExtreme_Male <= 95
+			TransparentAssCurtainOddsUltra_Male = 95
+			SetSliderOptionValueST(95, "{0}%", False, "AND_TransparentAssCurtainUltraOddsMale")
+		Else
+			TransparentAssCurtainOddsUltra_Male = TransparentAssCurtainOddsExtreme_Male
+			SetSliderOptionValueST(TransparentAssCurtainOddsExtreme_Male, "{0}%", False, "AND_TransparentAssCurtainUltraOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentAssCurtainOddsUltra_Tooltip")
+	EndEvent
+EndState
+
 State AND_CStringOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(CStringOdds)
@@ -2655,6 +4110,38 @@ State AND_CStringOdds
 		Else
 			CStringOdds = TransparentCStringOdds_Low
 			SetSliderOptionValueST(TransparentCStringOdds_Low, "{0}%", False, "AND_CStringOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_CstringOdds_Tooltip")
+	EndEvent
+EndState
+
+State AND_CStringOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(CStringOdds_Male)
+		If TransparentCStringOdds_Low_Male >= 60
+			SetSliderDialogDefaultValue(60)
+		Else
+			SetSliderDialogDefaultValue(TransparentCStringOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentCStringOdds_Low_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		CStringOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_CStringOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentCStringOdds_Low_Male >= 60
+			CStringOdds_Male = 60
+			SetSliderOptionValueST(60, "{0}%", False, "AND_CStringOddsMale")
+		Else
+			CStringOdds_Male = TransparentCStringOdds_Low_Male
+			SetSliderOptionValueST(TransparentCStringOdds_Low_Male, "{0}%", False, "AND_CStringOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2700,6 +4187,43 @@ State AND_TransparentCStringOddsLow
 	EndEvent
 EndState
 
+State AND_TransparentCStringOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentCStringOdds_Low_Male)
+		If CStringOdds_Male <= 70 && TransparentCStringOdds_Male >= 70
+			SetSliderDialogDefaultValue(70)
+		ElseIf TransparentCStringOdds_Male < 70
+			SetSliderDialogDefaultValue(TransparentCStringOdds_Male)
+		Else
+			SetSliderDialogDefaultValue(CStringOdds_Male)
+		EndIf
+		SetSliderDialogRange(CStringOdds_Male, TransparentCStringOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentCStringOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentCStringOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If CStringOdds_Male <= 70 && TransparentCStringOdds_Male >= 70
+			TransparentCStringOdds_Low_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentCStringOddsLowMale")
+		ElseIf TransparentCStringOdds_Male < 70
+			TransparentCStringOdds_Low_Male = TransparentCStringOdds_Male
+			SetSliderOptionValueST(TransparentCStringOdds_Male, "{0}%", False, "AND_TransparentCStringOddsLowMale")
+		Else
+			TransparentCStringOdds_Low_Male = CStringOdds_Male
+			SetSliderOptionValueST(CStringOdds_Male, "{0}%", False, "AND_TransparentCStringOddsLowMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentCstringOddsLow_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentCStringOdds
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentCStringOdds)
@@ -2729,6 +4253,43 @@ State AND_TransparentCStringOdds
 		Else
 			TransparentCStringOdds = TransparentCStringOdds_Low
 			SetSliderOptionValueST(TransparentCStringOdds_Low, "{0}%", False, "AND_TransparentCStringOdds")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentCstringOdds_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentCStringOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentCStringOdds_Male)
+		If TransparentCStringOdds_Low_Male <= 80 && TransparentCStringOdds_High_Male >= 80
+			SetSliderDialogDefaultValue(80)
+		ElseIf TransparentCStringOdds_High_Male < 80
+			SetSliderDialogDefaultValue(TransparentCStringOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentCStringOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentCStringOdds_Low_Male, TransparentCStringOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentCStringOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentCStringOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentCStringOdds_Low_Male <= 80 && TransparentCStringOdds_High_Male >= 80
+			TransparentCStringOdds_Male = 80
+			SetSliderOptionValueST(80, "{0}%", False, "AND_TransparentCStringOddsMale")
+		ElseIf TransparentCStringOdds_High_Male < 80
+			TransparentCStringOdds_Male = TransparentCStringOdds_High_Male
+			SetSliderOptionValueST(TransparentCStringOdds_High_Male, "{0}%", False, "AND_TransparentCStringOddsMale")
+		Else
+			TransparentCStringOdds_Male = TransparentCStringOdds_Low_Male
+			SetSliderOptionValueST(TransparentCStringOdds_Low_Male, "{0}%", False, "AND_TransparentCStringOddsMale")
 		EndIf
 	EndEvent
 	
@@ -2769,6 +4330,38 @@ State AND_TransparentCStringOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentCStringOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentCStringOdds_High_Male)
+		If TransparentCStringOdds_Male <= 90
+			SetSliderDialogDefaultValue(90)
+		Else
+			SetSliderDialogDefaultValue(TransparentCStringOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentCStringOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentCStringOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentCStringOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentCStringOdds_Male <= 90
+			TransparentCStringOdds_High_Male = 90
+			SetSliderOptionValueST(90, "{0}%", False, "AND_TransparentCStringOddsHighMale")
+		Else
+			TransparentCStringOdds_High_Male = TransparentCStringOdds_Male
+			SetSliderOptionValueST(TransparentCStringOdds_Male, "{0}%", False, "AND_TransparentCStringOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentCstringOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentTopArmorOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopArmorOdds_Low)
@@ -2793,6 +4386,38 @@ State AND_TransparentTopArmorOddsLow
 		Else
 			TransparentTopArmorOdds_Low = TransparentTopArmorOdds
 			SetSliderOptionValueST(TransparentTopArmorOdds, "{0}%", False, "AND_TransparentTopArmorOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorTopOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentTopArmorOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopArmorOdds_Low_Male)
+		If TransparentTopArmorOdds_Male >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopArmorOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentTopArmorOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopArmorOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentTopArmorOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopArmorOdds_Male >= 30
+			TransparentTopArmorOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentTopArmorOddsLowMale")
+		Else
+			TransparentTopArmorOdds_Low_Male = TransparentTopArmorOdds_Male
+			SetSliderOptionValueST(TransparentTopArmorOdds_Male, "{0}%", False, "AND_TransparentTopArmorOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -2838,6 +4463,43 @@ State AND_TransparentTopArmorOdds
 	EndEvent
 EndState
 
+State AND_TransparentTopArmorOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopArmorOdds_Male)
+		If TransparentTopArmorOdds_Low_Male <= 50 && TransparentTopArmorOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentTopArmorOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentTopArmorOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopArmorOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopArmorOdds_Low_Male, TransparentTopArmorOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopArmorOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentTopArmorOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopArmorOdds_Low_Male <= 50 && TransparentTopArmorOdds_High_Male >= 50
+			TransparentTopArmorOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentTopArmorOddsMale")
+		ElseIf TransparentTopArmorOdds_High_Male < 50
+			TransparentTopArmorOdds_Male = TransparentTopArmorOdds_High_Male
+			SetSliderOptionValueST(TransparentTopArmorOdds_High_Male, "{0}%", False, "AND_TransparentTopArmorOddsMale")
+		Else
+			TransparentTopArmorOdds_Male = TransparentTopArmorOdds_Low_Male
+			SetSliderOptionValueST(TransparentTopArmorOdds_Low_Male, "{0}%", False, "AND_TransparentTopArmorOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorTopOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentTopArmorOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopArmorOdds_High)
@@ -2870,6 +4532,38 @@ State AND_TransparentTopArmorOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentTopArmorOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentTopArmorOdds_High_Male)
+		If TransparentTopArmorOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentTopArmorOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentTopArmorOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentTopArmorOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentTopArmorOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentTopArmorOdds_Male <= 70
+			TransparentTopArmorOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentTopArmorOddsHighMale")
+		Else
+			TransparentTopArmorOdds_High_Male = TransparentTopArmorOdds_Male
+			SetSliderOptionValueST(TransparentTopArmorOdds_Male, "{0}%", False, "AND_TransparentTopArmorOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorTopOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentBottomArmorOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentBottomArmorOdds_Low)
@@ -2894,6 +4588,38 @@ State AND_TransparentBottomArmorOddsLow
 		Else
 			TransparentBottomArmorOdds_Low = TransparentBottomArmorOdds
 			SetSliderOptionValueST(TransparentBottomArmorOdds, "{0}%", False, "AND_TransparentBottomArmorOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorBottomOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentBottomArmorOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBottomArmorOdds_Low_Male)
+		If TransparentBottomArmorOdds_Male >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentBottomArmorOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentBottomArmorOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBottomArmorOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBottomArmorOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBottomArmorOdds_Male >= 30
+			TransparentBottomArmorOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentBottomArmorOddsLowMale")
+		Else
+			TransparentBottomArmorOdds_Low_Male = TransparentBottomArmorOdds_Male
+			SetSliderOptionValueST(TransparentBottomArmorOdds_Male, "{0}%", False, "AND_TransparentBottomArmorOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -2939,6 +4665,43 @@ State AND_TransparentBottomArmorOdds
 	EndEvent
 EndState
 
+State AND_TransparentBottomArmorOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBottomArmorOdds_Male)
+		If TransparentBottomArmorOdds_Low_Male <= 50 && TransparentBottomArmorOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentBottomArmorOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentBottomArmorOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentBottomArmorOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentBottomArmorOdds_Low_Male, TransparentBottomArmorOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBottomArmorOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBottomArmorOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBottomArmorOdds_Low_Male <= 50 && TransparentBottomArmorOdds_High_Male >= 50
+			TransparentBottomArmorOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentBottomArmorOddsMale")
+		ElseIf TransparentBottomArmorOdds_High_Male < 50
+			TransparentBottomArmorOdds_Male = TransparentBottomArmorOdds_High_Male
+			SetSliderOptionValueST(TransparentBottomArmorOdds_High_Male, "{0}%", False, "AND_TransparentBottomArmorOddsMale")
+		Else
+			TransparentBottomArmorOdds_Male = TransparentBottomArmorOdds_Low_Male
+			SetSliderOptionValueST(TransparentBottomArmorOdds_Low_Male, "{0}%", False, "AND_TransparentBottomArmorOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorBottomOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentBottomArmorOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentBottomArmorOdds_High)
@@ -2971,6 +4734,38 @@ State AND_TransparentBottomArmorOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentBottomArmorOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBottomArmorOdds_High_Male)
+		If TransparentBottomArmorOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentBottomArmorOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentBottomArmorOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBottomArmorOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBottomArmorOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBottomArmorOdds_Male <= 70
+			TransparentBottomArmorOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentBottomArmorOddsHighMale")
+		Else
+			TransparentBottomArmorOdds_High_Male = TransparentBottomArmorOdds_Male
+			SetSliderOptionValueST(TransparentBottomArmorOdds_Male, "{0}%", False, "AND_TransparentBottomArmorOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentArmorBottomOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentBraOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentBraOdds_Low)
@@ -2995,6 +4790,38 @@ State AND_TransparentBraOddsLow
 		Else
 			TransparentBraOdds_Low = TransparentBraOdds
 			SetSliderOptionValueST(TransparentBraOdds, "{0}%", False, "AND_TransparentBraOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentBraOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentBraOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBraOdds_Low_Male)
+		If TransparentBraOdds_Male >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentBraOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentBraOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBraOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBraOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBraOdds_Male >= 30
+			TransparentBraOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentBraOddsLowMale")
+		Else
+			TransparentBraOdds_Low_Male = TransparentBraOdds_Male
+			SetSliderOptionValueST(TransparentBraOdds_Male, "{0}%", False, "AND_TransparentBraOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -3040,6 +4867,43 @@ State AND_TransparentBraOdds
 	EndEvent
 EndState
 
+State AND_TransparentBraOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBraOdds_Male)
+		If TransparentBraOdds_Low_Male <= 50 && TransparentBraOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentBraOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentBraOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentBraOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentBraOdds_Low_Male, TransparentBraOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBraOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBraOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBraOdds_Low_Male <= 50 && TransparentBraOdds_High_Male >= 50
+			TransparentBraOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentBraOddsMale")
+		ElseIf TransparentBraOdds_High_Male < 50
+			TransparentBraOdds_Male = TransparentBraOdds_High_Male
+			SetSliderOptionValueST(TransparentBraOdds_High_Male, "{0}%", False, "AND_TransparentBraOddsMale")
+		Else
+			TransparentBraOdds_Male = TransparentBraOdds_Low_Male
+			SetSliderOptionValueST(TransparentBraOdds_Low_Male, "{0}%", False, "AND_TransparentBraOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentBraOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentBraOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentBraOdds_High)
@@ -3072,6 +4936,38 @@ State AND_TransparentBraOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentBraOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentBraOdds_High_Male)
+		If TransparentBraOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentBraOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentBraOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentBraOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentBraOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentBraOdds_Male <= 70
+			TransparentBraOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentBraOddsHighMale")
+		Else
+			TransparentBraOdds_High_Male = TransparentBraOdds_Male
+			SetSliderOptionValueST(TransparentBraOdds_Male, "{0}%", False, "AND_TransparentBraOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentBraOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentUnderwearOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentUnderwearOdds_Low)
@@ -3096,6 +4992,38 @@ State AND_TransparentUnderwearOddsLow
 		Else
 			TransparentUnderwearOdds_Low = TransparentUnderwearOdds
 			SetSliderOptionValueST(TransparentUnderwearOdds, "{0}%", False, "AND_TransparentUnderwearOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentUnderwearOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentUnderwearOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentUnderwearOdds_Low_Male)
+		If TransparentUnderwearOdds >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentUnderwearOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentUnderwearOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentUnderwearOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentUnderwearOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentUnderwearOdds_Male >= 30
+			TransparentUnderwearOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentUnderwearOddsLowMale")
+		Else
+			TransparentUnderwearOdds_Low_Male = TransparentUnderwearOdds_Male
+			SetSliderOptionValueST(TransparentUnderwearOdds_Male, "{0}%", False, "AND_TransparentUnderwearOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -3141,6 +5069,43 @@ State AND_TransparentUnderwearOdds
 	EndEvent
 EndState
 
+State AND_TransparentUnderwearOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentUnderwearOdds_Male)
+		If TransparentUnderwearOdds_Low_Male <= 50 && TransparentUnderwearOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentUnderwearOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentUnderwearOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentUnderwearOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentUnderwearOdds_Low_Male, TransparentUnderwearOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentUnderwearOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentUnderwearOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentUnderwearOdds_Low_Male <= 50 && TransparentUnderwearOdds_High_Male >= 50
+			TransparentUnderwearOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentUnderwearOddsMale")
+		ElseIf TransparentUnderwearOdds_High_Male < 50
+			TransparentUnderwearOdds_Male = TransparentUnderwearOdds_High_Male
+			SetSliderOptionValueST(TransparentUnderwearOdds_High_Male, "{0}%", False, "AND_TransparentUnderwearOddsMale")
+		Else
+			TransparentUnderwearOdds_Male = TransparentUnderwearOdds_Low_Male
+			SetSliderOptionValueST(TransparentUnderwearOdds_Low_Male, "{0}%", False, "AND_TransparentUnderwearOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentUnderwearOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentUnderwearOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentUnderwearOdds_High)
@@ -3173,6 +5138,38 @@ State AND_TransparentUnderwearOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentUnderwearOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentUnderwearOdds_High_Male)
+		If TransparentUnderwearOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentUnderwearOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentUnderwearOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentUnderwearOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentUnderwearOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentUnderwearOdds_Male <= 70
+			TransparentUnderwearOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentUnderwearOddsHighMale")
+		Else
+			TransparentUnderwearOdds_High_Male = TransparentUnderwearOdds_Male
+			SetSliderOptionValueST(TransparentUnderwearOdds_Male, "{0}%", False, "AND_TransparentUnderwearOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentUnderwearOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentHotpantsOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentHotpantsOdds_Low)
@@ -3197,6 +5194,38 @@ State AND_TransparentHotpantsOddsLow
 		Else
 			TransparentHotpantsOdds_Low = TransparentHotpantsOdds
 			SetSliderOptionValueST(TransparentHotpantsOdds, "{0}%", False, "AND_TransparentHotpantsOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentHotpantsOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentHotpantsOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentHotpantsOdds_Low_Male)
+		If TransparentHotpantsOdds_Male >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentHotpantsOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentHotpantsOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentHotpantsOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentHotpantsOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentHotpantsOdds_Male >= 30
+			TransparentHotpantsOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentHotpantsOddsLowMale")
+		Else
+			TransparentHotpantsOdds_Low_Male = TransparentHotpantsOdds_Male
+			SetSliderOptionValueST(TransparentHotpantsOdds_Male, "{0}%", False, "AND_TransparentHotpantsOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -3242,6 +5271,43 @@ State AND_TransparentHotpantsOdds
 	EndEvent
 EndState
 
+State AND_TransparentHotpantsOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentHotpantsOdds_Male)
+		If TransparentHotpantsOdds_Low_Male <= 50 && TransparentHotpantsOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentHotpantsOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentHotpantsOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentHotpantsOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentHotpantsOdds_Low_Male, TransparentHotpantsOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentHotpantsOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentHotpantsOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentHotpantsOdds_Low_Male <= 50 && TransparentHotpantsOdds_High_Male >= 50
+			TransparentHotpantsOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentHotpantsOddsMale")
+		ElseIf TransparentHotpantsOdds_High_Male < 50
+			TransparentHotpantsOdds_Male = TransparentHotpantsOdds_High_Male
+			SetSliderOptionValueST(TransparentHotpantsOdds_High_Male, "{0}%", False, "AND_TransparentHotpantsOddsMale")
+		Else
+			TransparentHotpantsOdds_Male = TransparentHotpantsOdds_Low_Male
+			SetSliderOptionValueST(TransparentHotpantsOdds_Low_Male, "{0}%", False, "AND_TransparentHotpantsOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentHotpantsOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentHotpantsOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentHotpantsOdds_High)
@@ -3274,6 +5340,38 @@ State AND_TransparentHotpantsOddsHigh
 	EndEvent
 EndState
 
+State AND_TransparentHotpantsOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentHotpantsOdds_High_Male)
+		If TransparentHotpantsOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentHotpantsOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentHotpantsOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentHotpantsOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentHotpantsOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentHotpantsOdds_Male <= 70
+			TransparentHotpantsOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentHotpantsOddsHighMale")
+		Else
+			TransparentHotpantsOdds_High_Male = TransparentHotpantsOdds_Male
+			SetSliderOptionValueST(TransparentHotpantsOdds_Male, "{0}%", False, "AND_TransparentHotpantsOddsHighMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentHotpantsOddsHigh_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentShowgirlSkirtOddsLow
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds_Low)
@@ -3298,6 +5396,38 @@ State AND_TransparentShowgirlSkirtOddsLow
 		Else
 			TransparentShowgirlSkirtOdds_Low = TransparentShowgirlSkirtOdds
 			SetSliderOptionValueST(TransparentShowgirlSkirtOdds, "{0}%", False, "AND_TransparentShowgirlSkirtOddsLow")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentShowgirlSkirtOddsLow_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentShowgirlSkirtOddsLowMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds_Low_Male)
+		If TransparentShowgirlSkirtOdds_Male >= 30
+			SetSliderDialogDefaultValue(30)
+		Else
+			SetSliderDialogDefaultValue(TransparentShowgirlSkirtOdds_Male)
+		EndIf
+		SetSliderDialogRange(1, TransparentShowgirlSkirtOdds_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentShowgirlSkirtOdds_Low_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentShowgirlSkirtOddsLowMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentShowgirlSkirtOdds_Male >= 30
+			TransparentShowgirlSkirtOdds_Low_Male = 30
+			SetSliderOptionValueST(30, "{0}%", False, "AND_TransparentShowgirlSkirtOddsLowMale")
+		Else
+			TransparentShowgirlSkirtOdds_Low_Male = TransparentShowgirlSkirtOdds_Male
+			SetSliderOptionValueST(TransparentShowgirlSkirtOdds_Male, "{0}%", False, "AND_TransparentShowgirlSkirtOddsLowMale")
 		EndIf
 	EndEvent
 	
@@ -3343,6 +5473,43 @@ State AND_TransparentShowgirlSkirtOdds
 	EndEvent
 EndState
 
+State AND_TransparentShowgirlSkirtOddsMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds_Male)
+		If TransparentShowgirlSkirtOdds_Low_Male <= 50 && TransparentShowgirlSkirtOdds_High_Male >= 50
+			SetSliderDialogDefaultValue(50)
+		ElseIf TransparentShowgirlSkirtOdds_High_Male < 50
+			SetSliderDialogDefaultValue(TransparentShowgirlSkirtOdds_High_Male)
+		Else
+			SetSliderDialogDefaultValue(TransparentShowgirlSkirtOdds_Low_Male)
+		EndIf
+		SetSliderDialogRange(TransparentShowgirlSkirtOdds_Low_Male, TransparentShowgirlSkirtOdds_High_Male)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentShowgirlSkirtOdds_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentShowgirlSkirtOddsMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentShowgirlSkirtOdds_Low_Male <= 50 && TransparentShowgirlSkirtOdds_High_Male >= 50
+			TransparentShowgirlSkirtOdds_Male = 50
+			SetSliderOptionValueST(50, "{0}%", False, "AND_TransparentShowgirlSkirtOddsMale")
+		ElseIf TransparentShowgirlSkirtOdds_High_Male < 50
+			TransparentShowgirlSkirtOdds = TransparentShowgirlSkirtOdds_High_Male
+			SetSliderOptionValueST(TransparentShowgirlSkirtOdds_High_Male, "{0}%", False, "AND_TransparentShowgirlSkirtOddsMale")
+		Else
+			TransparentShowgirlSkirtOdds_Male = TransparentShowgirlSkirtOdds_Low_Male
+			SetSliderOptionValueST(TransparentShowgirlSkirtOdds_Low_Male, "{0}%", False, "AND_TransparentShowgirlSkirtOddsMale")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentShowgirlSkirtOdds_Tooltip")
+	EndEvent
+EndState
+
 State AND_TransparentShowgirlSkirtOddsHigh
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds_High)
@@ -3367,6 +5534,38 @@ State AND_TransparentShowgirlSkirtOddsHigh
 		Else
 			TransparentShowgirlSkirtOdds_High = TransparentShowgirlSkirtOdds
 			SetSliderOptionValueST(TransparentShowgirlSkirtOdds, "{0}%", False, "AND_TransparentShowgirlSkirtOddsHigh")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfotext("$AND_TransparentShowgirlSkirtOddsHigh_Tooltip")
+	EndEvent
+EndState
+
+State AND_TransparentShowgirlSkirtOddsHighMale
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(TransparentShowgirlSkirtOdds_High_Male)
+		If TransparentShowgirlSkirtOdds_Male <= 70
+			SetSliderDialogDefaultValue(70)
+		Else
+			SetSliderDialogDefaultValue(TransparentShowgirlSkirtOdds_Male)
+		EndIf
+		SetSliderDialogRange(TransparentShowgirlSkirtOdds_Male, 99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		TransparentShowgirlSkirtOdds_High_Male = value as Int
+		SetSliderOptionValueST(value, "{0}%", False, "AND_TransparentShowgirlSkirtOddsHighMale")
+	EndEvent 
+
+	Event OnDefaultST()
+		If TransparentShowgirlSkirtOdds_Male <= 70
+			TransparentShowgirlSkirtOdds_High_Male = 70
+			SetSliderOptionValueST(70, "{0}%", False, "AND_TransparentShowgirlSkirtOddsHighMale")
+		Else
+			TransparentShowgirlSkirtOdds_High_Male = TransparentShowgirlSkirtOdds_Male
+			SetSliderOptionValueST(TransparentShowgirlSkirtOdds_Male, "{0}%", False, "AND_TransparentShowgirlSkirtOddsHighMale")
 		EndIf
 	EndEvent
 	

@@ -593,6 +593,43 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 			If AND_Underwear_Cover == True
 				AND_BottomGenital_Cover = True
 				AND_BottomAss_Cover = True
+			Else
+				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || (AND_Main.SLA_PantiesNormal != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_PantiesNormal))
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = True
+					AND_BottomGenital_Cover = True
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+					AND_BottomGenital_Cover = AND_BottomAss_Cover
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong) || (AND_Main.SLA_ThongGstring != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_ThongGstring)) || (AND_Main.SLA_ThongLowleg != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_ThongLowleg)) || (AND_Main.SLA_ThongT != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_ThongT))
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = True
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
+					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)\ 
+					|| (AND_Main.SLA_ThongCString != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_ThongCString))
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+					
+					If AND_BottomGenital_Cover == True
+						AND_Underwear_Cover = False
+					Else
+						AND_Underwear_Cover = True
+					EndIf
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = False
+				Else
+					AND_Underwear_Cover = True
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = False
+				EndIf
 			EndIf
 		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover)
 			If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || (AND_Main.SLA_PantiesNormal != None && AND_Config.IgnoreBakaKeywords == False && ScannedActor.WornHasKeyword(AND_Main.SLA_PantiesNormal))

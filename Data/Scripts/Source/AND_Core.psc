@@ -146,6 +146,22 @@ Keyword Property AND_AssFlashRiskHigh Auto
 Keyword Property AND_AssFlashRiskExtreme Auto
 Keyword Property AND_AssFlashRiskUltra Auto
 
+Keyword Property AND_ChestFlashRiskLow_Male Auto
+Keyword Property AND_ChestFlashRisk_Male Auto
+Keyword Property AND_ChestFlashRiskHigh_Male Auto
+Keyword Property AND_ChestFlashRiskExtreme_Male Auto
+Keyword Property AND_ChestFlashRiskUltra_Male Auto
+Keyword Property AND_PelvicFlashRiskLow_Male Auto
+Keyword Property AND_PelvicFlashRisk_Male Auto
+Keyword Property AND_PelvicFlashRiskHigh_Male Auto
+Keyword Property AND_PelvicFlashRiskExtreme_Male Auto
+Keyword Property AND_PelvicFlashRiskUltra_Male Auto
+Keyword Property AND_AssFlashRiskLow_Male Auto
+Keyword Property AND_AssFlashRisk_Male Auto
+Keyword Property AND_AssFlashRiskHigh_Male Auto
+Keyword Property AND_AssFlashRiskExtreme_Male Auto
+Keyword Property AND_AssFlashRiskUltra_Male Auto
+
 Keyword Property SLA_Brabikini Auto Hidden
 Keyword Property SLA_ThongT Auto Hidden
 Keyword Property SLA_ThongGstring Auto Hidden

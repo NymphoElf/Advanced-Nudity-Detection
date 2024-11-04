@@ -18,42 +18,42 @@ GlobalVariable Property AND_DebugMode Auto
 
 Bool Function TopCurtainCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtain_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -62,42 +62,42 @@ Bool Function TopCurtainCheck(Actor ScannedActor)
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtainT_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <=  AND_Config.TransparentTopCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <=  AND_Config.TransparentTopCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -110,25 +110,25 @@ EndFunction
 
 Bool Function TopTransparentArmorCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_Low_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_High_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High_Male
 			return False
 		Else
 			return True
@@ -138,25 +138,25 @@ EndFunction
 
 Bool Function TransparentBraCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_BraT_Low_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT_High_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_High_Male
 			return False
 		Else
 			return True
@@ -166,42 +166,42 @@ EndFunction
 
 Bool Function PelvicCurtainCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtain_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -210,42 +210,42 @@ Bool Function PelvicCurtainCheck(Actor ScannedActor)
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtainT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -258,42 +258,42 @@ EndFunction
 
 Bool Function AssCurtainCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtain_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -302,42 +302,42 @@ Bool Function AssCurtainCheck(Actor ScannedActor)
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtainT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT_Male)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow
+		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOdds
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOdds_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh
-				return False
-			Else
-				return True
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOdds_Male
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh_Male
 				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme_Male
+				return False
+			Else
+				return True
+			EndIf
+		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra_Male)
+			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra_Male
+				return False
+			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra_Male
 				return False
 			Else
 				return True
@@ -350,25 +350,25 @@ EndFunction
 
 Bool Function BottomTransparentArmorCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_Low_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_High_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High_Male
 			return False
 		Else
 			return True
@@ -378,25 +378,25 @@ EndFunction
 
 Bool Function TransparentHotpantsCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High_Male
 			return False
 		Else
 			return True
@@ -406,25 +406,25 @@ EndFunction
 
 Bool Function TransparentShowgirlCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirtT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirtT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirtT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High_Male
 			return False
 		Else
 			return True
@@ -434,25 +434,25 @@ EndFunction
 
 Bool Function TransparentUnderwearCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High_Male)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High_Male
 			return False
 		Else
 			return True
@@ -462,33 +462,33 @@ EndFunction
 
 Bool Function CStringCheck(Actor ScannedActor)
 	If ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammock)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.CStringOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.CStringOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.CStringOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.CStringOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_Low
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_Low_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_Low
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_Low_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_Male
 			return False
 		Else
 			return True
 		EndIf
 	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_High
+		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_High_Male
 			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_High
+		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_High_Male
 			return False
 		Else
 			return True
@@ -593,6 +593,42 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 			If AND_Underwear_Cover == True
 				AND_BottomGenital_Cover = True
 				AND_BottomAss_Cover = True
+			Else
+				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = True
+					AND_BottomGenital_Cover = True
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High_Male)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+					AND_BottomGenital_Cover = AND_BottomAss_Cover
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong_Male)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = True
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High_Male)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammock)\ 
+					|| ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT) || ScannedActor.WornHasKeyword(AND_Main.AND_BananaHammockT_High)
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+					
+					If AND_BottomGenital_Cover == True
+						AND_Underwear_Cover = False
+					Else
+						AND_Underwear_Cover = True
+					EndIf
+				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover_Male)
+					AND_Underwear_Cover = False
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = False
+				Else
+					AND_Underwear_Cover = True
+					AND_BottomAss_Cover = False
+					AND_BottomGenital_Cover = False
+				EndIf
 			EndIf
 		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover_Male)
 			If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male)
