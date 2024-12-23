@@ -1,7 +1,5 @@
 ScriptName AND_MotionTimer extends Quest
 
-And_PlayerScript Property AND_Player Auto
-
 Int Property RunTimer Auto Hidden
 Int Property SprintTimer Auto Hidden
 Int Property ClockIterations Auto Hidden

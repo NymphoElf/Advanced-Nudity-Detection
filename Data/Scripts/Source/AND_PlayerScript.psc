@@ -8,6 +8,8 @@ Actor Property PlayerRef Auto
 
 GlobalVariable Property AND_DebugMode Auto
 
+Bool MainRollActive = False
+
 Event OnInit()
 	Startup()
 EndEvent
@@ -58,7 +60,7 @@ Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 	If AND_Config.AllowMotionFlash == True
 		If akReference == PlayerRef
 			If akEventName == "FootLeft"
-				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0
+				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0 && MainRollActive == False
 					AND_Main.AND_MovementDiceRoll()
 					AND_MotionClock.RunTimer = 3
 					AND_MotionClock.StartClock()
@@ -66,13 +68,13 @@ Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 			EndIf
 			
 			If akEventName == "tailSprint"
-				If AND_MotionClock.SprintTimer == 0
+				If AND_MotionClock.SprintTimer == 0 && MainRollActive == False
 					AND_Main.AND_MovementDiceRoll()
 				EndIf
 			EndIf
 			
 			If akEventName == "EndAnimatedCameraDelta"
-				If AND_MotionClock.SprintTimer == 0
+				If AND_MotionClock.SprintTimer == 0 && MainRollActive == False
 					AND_Main.AND_MovementDiceRoll()
 					AND_MotionClock.SprintTimer = 3
 					AND_MotionClock.StartClock()
@@ -114,5 +116,7 @@ Event OnUpdateGameTime()
 	If AND_DebugMode.GetValue() == 1
 		Debug.Notification("AND Update Game Time")
 	EndIf
+	MainRollActive = True
 	AND_Main.AND_DiceRoll()
+	MainRollActive = False
 EndEvent
