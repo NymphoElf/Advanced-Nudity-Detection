@@ -807,7 +807,7 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 				EndIf
 			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirt)
 				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male)
+				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_Male)
 					AND_Underwear_Cover = False
 					AND_BottomGenital_Cover = True
 				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High_Male)\ 
@@ -1154,7 +1154,7 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 				EndIf
 			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HimboSkirt)
 				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male)
+				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_Male)
 					AND_Underwear_Cover = False
 					AND_BottomGenital_Cover = True
 				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Male) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High_Male)\ 
