@@ -4,11 +4,14 @@ AND_MCM Property AND_Config Auto
 AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 AND_PlayerScript Property AND_Player Auto
+AND_Modesty_Manager Property ModestyManager Auto
 
 SLSF_Reloaded_MCM Property SLSFR_Config Auto Hidden
 SLSF_Reloaded_ModIntegration Property SLSFR_Mods Auto Hidden
 
 ActorBase Property PlayerBase Auto Hidden
+
+Bool Property MainRollRunning Auto Hidden
 
 Faction Property AND_ShowingAssFaction Auto
 Faction Property AND_ShowingChestFaction Auto
@@ -208,6 +211,7 @@ Spell Property NPCScanSpell Auto
 GlobalVariable Property AND_DebugMode Auto
 Bool Property SLA_Found Auto Hidden
 Bool Property SLSFR_Found Auto Hidden
+Bool Property DFFMA_Found Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
@@ -312,6 +316,19 @@ Function SLSF_Reloaded_Check()
 	EndIf
 EndFunction
 
+Function DFFMA_Check()
+	If Game.GetModByName("Modesty_Keyword.esp") != 255
+		DFFMA_Found = True
+		
+		If ModestyManager.RegisteredForUpdate == False
+			ModestyManager.RegisterForUpdateGameTime(1.0)
+			ModestyManager.RegisteredForUpdate = True
+		EndIf
+	Else
+		DFFMA_Found = False
+	EndIf
+EndFunction
+
 Function AND_MovementDiceRoll()
 	If AND_DebugMode.GetValue() == 1
 		Debug.Notification("AND Movement Dice Roll")
@@ -354,65 +371,71 @@ Function AND_MovementDiceRoll()
 EndFunction
 
 Function AND_DiceRoll()
-	If AND_DebugMode.GetValue() == 1
-		Debug.Notification("AND Dice Roll")
-	EndIf
-	
-	Int MaxRoll = 0
-	Int RunMod = AND_Config.RunningModifier
-	Int SprintMod = AND_Config.SprintingModifier
-	
-	If AND_Config.AllowMotionFlash == True
-		If AND_Player.PlayerRef.IsSprinting()
-			MaxRoll = (100 - SprintMod)
-		ElseIf AND_Player.PlayerRef.IsRunning()
-			MaxRoll = (100 - RunMod)
+	If MainRollRunning == False
+		MainRollRunning = True
+		If AND_DebugMode.GetValue() == 1
+			Debug.Notification("AND Dice Roll")
+		EndIf
+		
+		Int MaxRoll = 0
+		Int RunMod = AND_Config.RunningModifier
+		Int SprintMod = AND_Config.SprintingModifier
+		
+		If AND_Config.AllowMotionFlash == True
+			If AND_Player.PlayerRef.IsSprinting()
+				MaxRoll = (100 - SprintMod)
+			ElseIf AND_Player.PlayerRef.IsRunning()
+				MaxRoll = (100 - RunMod)
+			Else
+				MaxRoll = 100
+			EndIf
 		Else
 			MaxRoll = 100
 		EndIf
-	Else
-		MaxRoll = 100
-	EndIf
-	
-	;Player Flash Odds
-	TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
-	PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
-	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
-	CStringRoll = Utility.RandomInt(1,100)
-	TopTransparentRoll = Utility.RandomInt(1,100)
-	BottomTransparentRoll = Utility.RandomInt(1,100)
-	BraTransparentRoll = Utility.RandomInt(1,100)
-	UnderwearTransparentRoll = Utility.RandomInt(1,100)
-	HotpantsTransparentRoll = Utility.RandomInt(1,100)
-	ShowgirlTransparentRoll = Utility.RandomInt(1,100)
+		
+		;Player Flash Odds
+		TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
+		PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
+		AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
+		CStringRoll = Utility.RandomInt(1,100)
+		TopTransparentRoll = Utility.RandomInt(1,100)
+		BottomTransparentRoll = Utility.RandomInt(1,100)
+		BraTransparentRoll = Utility.RandomInt(1,100)
+		UnderwearTransparentRoll = Utility.RandomInt(1,100)
+		HotpantsTransparentRoll = Utility.RandomInt(1,100)
+		ShowgirlTransparentRoll = Utility.RandomInt(1,100)
 
-	;NPC Flash Odds
-	NPCTopCurtainRoll = Utility.RandomInt(1,100)
-	NPCPelvicCurtainRoll = Utility.RandomInt(1,100)
-	NPCAssCurtainRoll = Utility.RandomInt(1,100)
-	NPCCStringRoll = Utility.RandomInt(1,100)
-	NPCTopTransparentRoll = Utility.RandomInt(1,100)
-	NPCBottomTransparentRoll = Utility.RandomInt(1,100)
-	NPCBraTransparentRoll = Utility.RandomInt(1,100)
-	NPCUnderwearTransparentRoll = Utility.RandomInt(1,100)
-	NPCHotpantsTransparentRoll = Utility.RandomInt(1,100)
-	NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
-	
-	If PlayerBase.GetSex() == 0 ;Male
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Send Male Scan")
+		;NPC Flash Odds
+		NPCTopCurtainRoll = Utility.RandomInt(1,100)
+		NPCPelvicCurtainRoll = Utility.RandomInt(1,100)
+		NPCAssCurtainRoll = Utility.RandomInt(1,100)
+		NPCCStringRoll = Utility.RandomInt(1,100)
+		NPCTopTransparentRoll = Utility.RandomInt(1,100)
+		NPCBottomTransparentRoll = Utility.RandomInt(1,100)
+		NPCBraTransparentRoll = Utility.RandomInt(1,100)
+		NPCUnderwearTransparentRoll = Utility.RandomInt(1,100)
+		NPCHotpantsTransparentRoll = Utility.RandomInt(1,100)
+		NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
+		
+		If PlayerBase.GetSex() == 0 ;Male
+			If AND_DebugMode.GetValue() == 1
+				Debug.Notification("AND - Send Male Scan")
+			EndIf
+			AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+			AND_Config.SetMaleCoverage()
+		Else
+			If AND_DebugMode.GetValue() == 1
+				Debug.Notification("AND - Send Female Scan")
+			EndIf
+			AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+			AND_Config.SetFemaleCoverage()
 		EndIf
-		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
-		AND_Config.SetMaleCoverage()
-	Else
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Send Female Scan")
+		
+		If AND_Config.ScanNPC == True
+			NPCScanSpell.Cast(AND_Player.PlayerRef)
 		EndIf
-		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
-		AND_Config.SetFemaleCoverage()
+		MainRollRunning = False
 	EndIf
-	
-	NPCScanSpell.Cast(AND_Player.PlayerRef)
 EndFunction
 
 Function SLSFR_NakedCommentPreCheck()

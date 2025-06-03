@@ -1,6 +1,8 @@
 Scriptname AND_MCM extends SKI_Configbase
 
-AND_Core property Main Auto
+AND_Core Property Main Auto
+AND_PlayerScript Property PlayerScript Auto
+AND_Modesty_Manager Property ModestyManager Auto 
 AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 
@@ -116,10 +118,22 @@ Bool Property GenderlessWording Auto Hidden
 Bool Property IgnoreBakaKeywords Auto Hidden
 Bool Property AllowMotionFlash Auto Hidden
 Bool Property DisableNakedComments Auto Hidden
+Bool Property UseDynamicModesty Auto Hidden
+Bool Property ShamelessCanBePermanent Auto Hidden
+
+Bool Property Rank1Jump Auto Hidden
+Bool Property Rank2Jump Auto Hidden
+Bool Property Rank3Jump Auto Hidden
+Bool Property Rank4Jump Auto Hidden
+Bool Property Rank5Jump Auto Hidden
+Bool Property Rank6Jump Auto Hidden
+Bool Property ResetModesty Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
 Bool Property AssCurtain_Cover Auto Hidden
+
+Bool Property ScanNPC Auto Hidden
 
 Int Property RunningModifier Auto Hidden
 Int Property SprintingModifier Auto Hidden
@@ -132,6 +146,16 @@ Int Property GenitalsFactionCommentChance Auto Hidden
 Int Property AssFactionCommentChance Auto Hidden
 Int Property BraFactionCommentChance Auto Hidden
 Int Property UnderwearFactionCommentChance Auto Hidden
+
+Int Property MinimumModestyRank Auto Hidden
+Int Property ImmodestyTimeNeeded Auto Hidden
+
+GlobalVariable Property ModestyArousalThreshold Auto
+GlobalVariable Property AND_DynamicModesty Auto
+
+Int[] Property OptionID Auto Hidden
+
+String Property ScanFrequency Auto Hidden
 
 Event OnConfigInit()
 	Utility.Wait(1)
@@ -260,9 +284,17 @@ Function SetDefaults()
 	TransparentShowgirlSkirtOdds_Low_Male = 30
 	TransparentShowgirlSkirtOdds_High_Male = 70
 	
+	IgnoreBakaKeywords = True
 	AllowMotionFlash = True
+	ScanNPC = True
+	ScanFrequency = "Normal"
 	RunningModifier = 10
 	SprintingModifier = 20
+	UseDynamicModesty = False
+	ResetModesty = False
+	ShamelessCanBePermanent = False
+	MinimumModestyRank = 0
+	ImmodestyTimeNeeded = 168
 	
 	NudeFactionCommentChance = 10
 	ToplessFactionCommentChance = 10
@@ -272,6 +304,8 @@ Function SetDefaults()
 	AssFactionCommentChance = 15
 	BraFactionCommentChance = 5
 	UnderwearFactionCommentChance = 5
+	
+	ModestyArousalThreshold.SetValue(70)
 EndFunction
 
 Event OnUpdate()
@@ -282,7 +316,7 @@ EndEvent
 
 Function InstallMCM()
 	ModName = "Advanced Nudity"
-	Pages = New String[10]
+	Pages = New String[11]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -293,6 +327,7 @@ Function InstallMCM()
 	Pages[7] = "$FemaleFlashChancesPage"
 	Pages[8] = "$MaleFlashChancesPage"
 	Pages[9] = "$NakedCommentsPage"
+	Pages[10] = "Dynamic Modesty"
 EndFunction
 
 Function SetMaleCoverage()
@@ -308,7 +343,7 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[10]
+	Pages = New String[11]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -319,13 +354,120 @@ Event OnConfigOpen()
 	Pages[7] = "$FemaleFlashChancesPage"
 	Pages[8] = "$MaleFlashChancesPage"
 	Pages[9] = "$NakedCommentsPage"
+	Pages[10] = "Dynamic Modesty"
+EndEvent
+
+Event OnConfigClose()
+	If Rank6Jump == True
+		ModestyManager.RankJump(6)
+	ElseIf Rank5Jump == True
+		ModestyManager.RankJump(5)
+	ElseIf Rank4Jump == True
+		ModestyManager.RankJump(4)
+	ElseIf Rank3Jump == True
+		ModestyManager.RankJump(3)
+	ElseIf Rank2Jump == True
+		ModestyManager.RankJump(2)
+	ElseIf Rank1Jump == True
+		ModestyManager.RankJump(1)
+	ElseIf ResetModesty == True
+		ModestyManager.RankJump(0)
+	EndIf
+	
+	Rank6Jump = False
+	Rank5Jump = False
+	Rank4Jump = False
+	Rank3Jump = False
+	Rank2Jump = False
+	Rank1Jump = False
+	ResetModesty = False
+	
+	ModestyManager.TimerUpdate(ImmodestyTimeNeeded)
+	
+	If ScanFrequency == "Very Fast"
+		PlayerScript.MaxTimeScale = 40
+		PlayerScript.GameTimeUpdateSpeed = 0.1
+		If PlayerScript.ScanSetting != ScanFrequency
+			PlayerScript.ScanSetting = ScanFrequency
+			PlayerScript.UnregisterForUpdateGameTime()
+			PlayerScript.RegisterForUpdateGameTime(0.1)
+		EndIf
+	ElseIf ScanFrequency == "Fast"
+		PlayerScript.MaxTimeScale = 60
+		PlayerScript.GameTimeUpdateSpeed = 0.15
+		If PlayerScript.ScanSetting != ScanFrequency
+			PlayerScript.ScanSetting = ScanFrequency
+			PlayerScript.UnregisterForUpdateGameTime()
+			PlayerScript.RegisterForUpdateGameTime(0.15)
+		EndIf
+	ElseIf ScanFrequency == "Normal"
+		PlayerScript.MaxTimeScale = 100
+		PlayerScript.GameTimeUpdateSpeed = 0.25
+		If PlayerScript.ScanSetting != ScanFrequency
+			PlayerScript.ScanSetting = ScanFrequency
+			PlayerScript.UnregisterForUpdateGameTime()
+			PlayerScript.RegisterForUpdateGameTime(0.25)
+		EndIf
+	ElseIf ScanFrequency == "Slow"
+		PlayerScript.MaxTimeScale = 200
+		PlayerScript.GameTimeUpdateSpeed = 0.5
+		If PlayerScript.ScanSetting != ScanFrequency
+			PlayerScript.ScanSetting = ScanFrequency
+			PlayerScript.UnregisterForUpdateGameTime()
+			PlayerScript.RegisterForUpdateGameTime(0.5)
+		EndIf
+	ElseIf ScanFrequency == "Very Slow"
+		PlayerScript.MaxTimeScale = 300
+		PlayerScript.GameTimeUpdateSpeed = 0.75
+		If PlayerScript.ScanSetting != ScanFrequency
+			PlayerScript.ScanSetting = ScanFrequency
+			PlayerScript.UnregisterForUpdateGameTime()
+			PlayerScript.RegisterForUpdateGameTime(0.75)
+		EndIf
+	Else
+		ScanFrequency = "Normal"
+		PlayerScript.MaxTimeScale = 100
+		PlayerScript.GameTimeUpdateSpeed = 0.25
+		PlayerScript.ScanSetting = "Normal"
+		PlayerScript.UnregisterForUpdateGameTime()
+		PlayerScript.RegisterForUpdateGameTime(0.25)
+	EndIf
 EndEvent
 
 Event OnPageReset(string page)
+	If (page == "")
+		Int Screen = Utility.RandomInt(1,8)
+		
+		Int xPos = 155
+		Int yPos = 0
+		
+		If Screen == 1
+			LoadCustomContent("Advanced Nudity Detection/ANDSplash.dds", xPos, yPos)
+		ElseIf Screen == 2
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashAlmostNude.dds", xPos, yPos)
+		ElseIf Screen == 3
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashBraPanties.dds", xPos, yPos)
+		ElseIf Screen == 4
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashCovered.dds", xPos, yPos)
+		ElseIf Screen == 5
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashNude.dds", xPos, yPos)
+		ElseIf Screen == 6
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashPanties.dds", xPos, yPos)
+		ElseIf Screen == 7
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashTopless.dds", xPos, yPos)
+		ElseIf Screen == 8
+			LoadCustomContent("Advanced Nudity Detection/ANDSplashThanks.dds", xPos, yPos)
+		EndIf
+		
+		return
+	Else
+		UnloadCustomContent()
+	EndIf
+	
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
 	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
-	If (page == "" || page == "$NudityStatesPage") ;default page
+	If (page == "$NudityStatesPage") ;default page
 		AddHeaderOption("$NudityConditionsHeader")
 		If PlayerRef.GetFactionRank(Main.AND_NudeActorFaction) == 1
 			AddTextOption("$NudeText", "$YesText")
@@ -437,11 +579,13 @@ Event OnPageReset(string page)
 			AddTextOption("$AssCurtainText", "$NotWearingText")
 		EndIf
 		
-		AddEmptyOption()
 		AddHeaderOption("$MotionSettingsHeader")
 		AddToggleOptionST("AND_AllowMotionFlashState", "$AllowMotionFlashText", AllowMotionFlash, 0)
 		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
 		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
+		AddHeaderOption("Scan Settings")
+		AddToggleOptionST("AND_ScanNPCToggle_State", "Scan NPCs", ScanNPC, 0)
+		AddMenuOptionST("AND_ScanFrequency_State", "Scan Frequency", ScanFrequency, 0)
 		
 	ElseIf (page == "$FlashingStatesPage")
 		AddHeaderOption("$CurtainRiskHeader")
@@ -1687,6 +1831,42 @@ Event OnPageReset(string page)
 		
 		SetCursorPosition(1)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
+	
+	ElseIf (page == "Dynamic Modesty")
+		If Main.DFFMA_Found == True
+			OptionID = New Int[9]
+			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
+			
+			AddHeaderOption("Modesty Settings")
+			OptionID[0] = AddToggleOption("Use Dynamic Modesty", UseDynamicModesty, 0)
+			OptionID[1] = AddToggleOption("'Shameless' Can Be Permanent", ShamelessCanBePermanent, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			AddSliderOptionST("AND_ModestyUpgradeTimeState", "Immodesty Upgrade Time:", ImmodestyTimeNeeded, "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			AddSliderOptionST("AND_ModestyArousalThresholdState", "Modesty Arousal Cutoff", ModestyArousalThreshold.GetValue(), "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			
+			SetCursorPosition(1)
+			
+			AddHeaderOption("Current Modesty")
+			AddTextOption("Modesty Rank:", ModestyRank as String)
+			AddTextOption("Modesty Title:", ModestyManager.ModestyTitle[ModestyRank])
+			AddHeaderOption("Modesty Timers")
+			AddTextOption("Rank 0:", ModestyManager.ModestyTimer[0])
+			AddTextOption("Rank 1:", ModestyManager.ModestyTimer[1])
+			AddTextOption("Rank 2:", ModestyManager.ModestyTimer[2])
+			AddTextOption("Rank 3:", ModestyManager.ModestyTimer[3])
+			AddTextOption("Rank 4:", ModestyManager.ModestyTimer[4])
+			AddTextOption("Rank 5:", ModestyManager.ModestyTimer[5])
+			AddTextOption("Rank 6:", ModestyManager.ModestyTimer[6])
+		Else
+			AddTextOption("Dynamic Feminine Female Modesty Animations Not Found", None)
+		EndIf
 	EndIf
 EndEvent
 
@@ -1697,6 +1877,212 @@ Int Function GetDisabledOptionFlagIf(Bool Condition)
 		return 0
 	EndIf
 EndFunction
+
+Event OnOptionSelect(Int Option)
+	If Option == OptionID[0]
+		If UseDynamicModesty == False
+			UseDynamicModesty = True
+			AND_DynamicModesty.SetValue(1)
+		Else
+			UseDynamicModesty = False
+			AND_DynamicModesty.SetValue(0)
+		EndIf
+		SetToggleOptionValue(Option, UseDynamicModesty)
+		ForcePageReset()
+		
+	ElseIf Option == OptionID[1]
+		If ShamelessCanBePermanent == False
+			ShamelessCanBePermanent = True
+		Else
+			ShamelessCanBePermanent = False
+		EndIf
+		SetToggleOptionValue(Option, ShamelessCanBePermanent)
+	
+	ElseIf Option == OptionID[2]
+		If Rank1Jump == False
+			Rank1Jump = True
+			Rank2Jump = False
+			Rank3Jump = False
+			Rank4Jump = False
+			Rank5Jump = False
+			Rank6Jump = False
+			ResetModesty = False
+		Else
+			Rank1Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank1Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[3]
+		If Rank2Jump == False
+			Rank1Jump = False
+			Rank2Jump = True
+			Rank3Jump = False
+			Rank4Jump = False
+			Rank5Jump = False
+			Rank6Jump = False
+			ResetModesty = False
+		Else
+			Rank2Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank2Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[4]
+		If Rank3Jump == False
+			Rank1Jump = False
+			Rank2Jump = False
+			Rank3Jump = True
+			Rank4Jump = False
+			Rank5Jump = False
+			Rank6Jump = False
+			ResetModesty = False
+		Else
+			Rank3Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank3Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[5]
+		If Rank4Jump == False
+			Rank1Jump = False
+			Rank2Jump = False
+			Rank3Jump = False
+			Rank4Jump = True
+			Rank5Jump = False
+			Rank6Jump = False
+			ResetModesty = False
+		Else
+			Rank4Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank4Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[6]
+		If Rank5Jump == False
+			Rank1Jump = False
+			Rank2Jump = False
+			Rank3Jump = False
+			Rank4Jump = False
+			Rank5Jump = True
+			Rank6Jump = False
+			ResetModesty = False
+		Else
+			Rank5Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank5Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[7]
+		If Rank6Jump == False
+			Rank1Jump = False
+			Rank2Jump = False
+			Rank3Jump = False
+			Rank4Jump = False
+			Rank5Jump = False
+			Rank6Jump = True
+			ResetModesty = False
+		Else
+			Rank6Jump = False
+		EndIf
+		SetToggleOptionValue(Option, Rank6Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[8]
+		If ResetModesty == False
+			Rank1Jump = False
+			Rank2Jump = False
+			Rank3Jump = False
+			Rank4Jump = False
+			Rank5Jump = False
+			Rank6Jump = False
+			ResetModesty = True
+		Else
+			ResetModesty = False
+		EndIf
+		SetToggleOptionValue(Option, ResetModesty)
+		ForcePageReset()
+	EndIf
+EndEvent
+
+State AND_ScanNPCToggle_State
+	Event OnSelectST()
+		If ScanNPC == False
+			ScanNPC = True
+		Else
+			ScanNPC = False
+		EndIf
+		
+		SetToggleOptionValueST(ScanNPC, False, "AND_ScanNPCToggle_State")
+	EndEvent
+EndState
+
+State AND_ScanFrequency_State
+	Event OnMenuOpenST()
+		String[] Options = new String[5]
+		
+		Options[0] = "Very Slow" ;0.75 Game Time (45 minutes) - TimeScale Limit: 300
+		Options[1] = "Slow" ;0.5 Game Time (30 Minutes) - TimeScale Limit: 200
+		Options[2] = "Normal" ;0.25 Game Time (15 Minutes) - TimeScale Limit: 100
+		Options[3] = "Fast" ;0.15 Game Time (9 Minutes) - TimeScale Limit: 60
+		Options[4] = "Very Fast" ;0.1 Game Time (6 Minutes) - TimeScale Limit: 40
+		
+		Int StartIndex = Options.Find(ScanFrequency)
+		
+		SetMenuDialogOptions(Options)
+		SetMenuDialogStartIndex(StartIndex)
+		SetMenuDialogDefaultIndex(2)
+	EndEvent
+	
+	Event OnMenuAcceptST(Int AcceptedIndex)
+		String[] Options = new String[5]
+		
+		Options[0] = "Very Slow" ;0.75 Game Time (45 minutes) - TimeScale Limit: 300
+		Options[1] = "Slow" ;0.5 Game Time (30 Minutes) - TimeScale Limit: 200
+		Options[2] = "Normal" ;0.25 Game Time (15 Minutes) - TimeScale Limit: 100
+		Options[3] = "Fast" ;0.15 Game Time (9 Minutes) - TimeScale Limit: 60
+		Options[4] = "Very Fast" ;0.1 Game Time (6 Minutes) - TimeScale Limit: 40
+		
+		ScanFrequency = Options[AcceptedIndex]
+		SetMenuOptionValueST(ScanFrequency, False, "AND_ScanFrequency_State")
+	EndEvent
+EndState
+
+State AND_ModestyArousalThresholdState
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(ModestyArousalThreshold.GetValue())
+		SetSliderDialogDefaultValue(70)
+		SetSliderDialogRange(0,99)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		ModestyArousalThreshold.SetValue(value)
+		SetSliderOptionValueST(ModestyArousalThreshold.GetValue() as Int, "{0}", False, "AND_ModestyArousalThresholdState")
+	EndEvent
+EndState
+
+State AND_ModestyUpgradeTimeState
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(ImmodestyTimeNeeded)
+		SetSliderDialogDefaultValue(168)
+		SetSliderDialogRange(24, 1440)
+		SetSliderDialogInterval(24)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		ImmodestyTimeNeeded = value as Int
+		SetSliderOptionValueST(ImmodestyTimeNeeded, "{0}", False, "AND_ModestyUpgradeTimeState")
+	EndEvent
+EndState
+
+State AND_MinimumRankState
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(MinimumModestyRank)
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(0,5)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		MinimumModestyRank = value as Int
+		SetSliderOptionValueST(MinimumModestyRank, "{0}", False, "AND_MinimumRankState")
+	EndEvent
+EndState
 
 State AND_DisableNakedCommentsState
 	Event OnSelectST()

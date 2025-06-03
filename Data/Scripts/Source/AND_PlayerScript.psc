@@ -3,10 +3,18 @@ ScriptName AND_PlayerScript extends ReferenceAlias
 AND_Core Property AND_Main Auto
 AND_MotionTimer Property AND_MotionClock Auto
 AND_MCM Property AND_Config Auto
+AND_Modesty_Manager Property ModestyManager Auto
 
 Actor Property PlayerRef Auto
 
+Float Property GameTimeUpdateSpeed Auto Hidden
+
 GlobalVariable Property AND_DebugMode Auto
+GlobalVariable Property TimeScale Auto
+
+Int Property MaxTimeScale = 100 Auto Hidden
+
+String Property ScanSetting Auto Hidden
 
 Bool MainRollActive = False
 
@@ -15,30 +23,14 @@ Event OnInit()
 EndEvent
 
 Function Startup()
-	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingAssFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ShowingAssFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingChestFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ShowingChestFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingGenitalsFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ShowingGenitalsFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingBraFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ShowingBraFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_ShowingUnderwearFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ShowingUnderwearFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_ToplessFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_ToplessFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_BottomlessFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_BottomlessFaction)
-	EndIf
-	If !PlayerRef.IsInFaction(AND_Main.AND_NudeActorFaction)
-		PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
-	EndIf
+	PlayerRef.AddToFaction(AND_Main.AND_ShowingAssFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_ShowingChestFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_ShowingGenitalsFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_ShowingBraFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_ShowingUnderwearFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_ToplessFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_BottomlessFaction)
+	PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")
@@ -50,6 +42,11 @@ EndFunction
 Event OnPlayerLoadGame()
 	AND_Main.SLA_Check()
 	AND_Main.SLSF_Reloaded_Check()
+	AND_Main.DFFMA_Check()
+	
+	If AND_Main.DFFMA_Found == True && ModestyManager.PlayerIsInFaction == False
+		ModestyManager.AddPlayerToFaction()
+	EndIf
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")
@@ -113,6 +110,13 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnUpdateGameTime()
+	If Timescale.GetValue() > MaxTimeScale
+		UnregisterForUpdateGameTime()
+		Utility.Wait(30.0)
+		RegisterForUpdateGameTime(GameTimeUpdateSpeed)
+		return
+	EndIf
+	
 	If AND_DebugMode.GetValue() == 1
 		Debug.Notification("AND Update Game Time")
 	EndIf
