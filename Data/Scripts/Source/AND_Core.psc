@@ -165,25 +165,6 @@ Keyword Property AND_AssFlashRiskHigh_Male Auto
 Keyword Property AND_AssFlashRiskExtreme_Male Auto
 Keyword Property AND_AssFlashRiskUltra_Male Auto
 
-Keyword Property SLA_Brabikini Auto Hidden
-Keyword Property SLA_ThongT Auto Hidden
-Keyword Property SLA_ThongGstring Auto Hidden
-Keyword Property SLA_ThongLowleg Auto Hidden
-Keyword Property SLA_ThongCString Auto Hidden
-Keyword Property SLA_ArmorPartTop Auto Hidden
-Keyword Property SLA_ArmorPartBottom Auto Hidden
-Keyword Property SLA_FullSkirt Auto Hidden
-Keyword Property SLA_MicroHotpants Auto Hidden
-Keyword Property SLA_MicroSkirt Auto Hidden
-Keyword Property SLA_MiniSkirt Auto Hidden
-Keyword Property SLA_PantiesNormal Auto Hidden
-Keyword Property SLA_PantsNormal Auto Hidden
-Keyword Property SLA_PastiesCrotch Auto Hidden
-Keyword Property SLA_PastiesNipple Auto Hidden
-Keyword Property SLA_ArmorHalfNaked Auto Hidden
-Keyword Property SLA_PelvicCurtain Auto Hidden
-Keyword Property SLA_ShowgirlSkirt Auto Hidden
-
 Int Property TopCurtainRoll Auto Hidden
 Int Property PelvicCurtainRoll Auto Hidden
 Int Property AssCurtainRoll Auto Hidden
@@ -209,7 +190,6 @@ Int Property NPCShowgirlTransparentRoll Auto Hidden
 Spell Property NPCScanSpell Auto
 
 GlobalVariable Property AND_DebugMode Auto
-Bool Property SLA_Found Auto Hidden
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
 
@@ -218,8 +198,8 @@ GlobalVariable Property WICommentChanceNaked Auto
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	
-	SLA_Check()
 	SLSF_Reloaded_Check()
+	DFFMA_Check()
 	
 	PlayerBase = Game.GetPlayer().GetActorBase()
 	
@@ -249,60 +229,6 @@ Event OnUpdate()
 		WICommentChanceNaked.SetValue(NakedCommentChance(False))
 	EndIf
 EndEvent
-
-Function SLA_Check()
-	If Game.GetModByName("SexLabAroused.esm") != 255
-		SLA_ArmorHalfNaked = Game.GetFormFromFile(0x8E855, "SexLabAroused.esm") as Keyword
-		SLA_Brabikini = Game.GetFormFromFile(0x8E856, "SexLabAroused.esm") as Keyword
-		SLA_ThongT = Game.GetFormFromFile(0x8E857, "SexLabAroused.esm") as Keyword
-		SLA_ThongGstring = Game.GetFormFromFile(0x8F3F5, "SexLabAroused.esm") as Keyword
-		SLA_ThongLowleg = Game.GetFormFromFile(0x8EDC2, "SexLabAroused.esm") as Keyword
-		SLA_ThongCString = Game.GetFormFromFile(0x8EDC3, "SexLabAroused.esm") as Keyword
-		SLA_ArmorPartTop = Game.GetFormFromFile(0x8FEA0, "SexLabAroused.esm") as Keyword
-		SLA_ArmorPartBottom = Game.GetFormFromFile(0x8FEA1, "SexLabAroused.esm") as Keyword
-		SLA_FullSkirt = Game.GetFormFromFile(0x8F40D, "SexLabAroused.esm") as Keyword
-		SLA_MicroHotpants = Game.GetFormFromFile(0x8F3F4, "SexLabAroused.esm") as Keyword
-		SLA_MicroSkirt = Game.GetFormFromFile(0x8F40F, "SexLabAroused.esm") as Keyword
-		SLA_MiniSkirt = Game.GetFormFromFile(0x8F40E, "SexLabAroused.esm") as Keyword
-		SLA_PantiesNormal = Game.GetFormFromFile(0x8EDC1, "SexLabAroused.esm") as Keyword
-		SLA_PantsNormal = Game.GetFormFromFile(0x8F3F3, "SexLabAroused.esm") as Keyword
-		SLA_PastiesCrotch = Game.GetFormFromFile(0x8F409, "SexLabAroused.esm") as Keyword
-		SLA_PastiesNipple = Game.GetFormFromFile(0x8F40A, "SexLabAroused.esm") as Keyword
-		SLA_PelvicCurtain = Game.GetFormFromFile(0x8F402, "SexLabAroused.esm") as Keyword
-		SLA_ShowgirlSkirt = Game.GetFormFromFile(0x8F403, "SexLabAroused.esm") as Keyword
-		
-		SLA_Found = True
-		
-		If AND_DebugMode.GetValue() == 1
-			Debug.MessageBox("Advanced Nudity Detection - SexLab Aroused Found. Extra Keywords Enabled.")
-		EndIf
-	Else
-		SLA_Brabikini = None
-		SLA_ThongT = None
-		SLA_ThongGstring = None
-		SLA_ThongLowleg = None
-		SLA_ThongCString = None
-		SLA_ArmorPartTop = None
-		SLA_ArmorPartBottom = None
-		SLA_FullSkirt = None
-		SLA_MicroHotpants = None
-		SLA_MicroSkirt = None
-		SLA_MiniSkirt = None
-		SLA_PantiesNormal = None
-		SLA_PantsNormal = None
-		SLA_PastiesCrotch = None
-		SLA_PastiesNipple = None
-		SLA_ArmorHalfNaked = None
-		SLA_PelvicCurtain = None
-		SLA_ShowgirlSkirt = None
-		
-		SLA_Found = False
-		
-		If AND_DebugMode.GetValue() == 1
-			Debug.MessageBox("Advanced Nudity Detection - SexLab Aroused NOT Found. Extra Keywords NOT Enabled.")
-		EndIf
-	EndIf
-EndFunction
 
 Function SLSF_Reloaded_Check()
 	If Game.GetModByName("SLSF Reloaded.esp") != 255

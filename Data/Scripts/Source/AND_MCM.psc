@@ -115,7 +115,7 @@ Int Property TransparentShowgirlSkirtOdds_Low_Male Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_High_Male Auto Hidden
 
 Bool Property GenderlessWording Auto Hidden
-Bool Property IgnoreBakaKeywords Auto Hidden
+;Bool Property IgnoreBakaKeywords Auto Hidden
 Bool Property AllowMotionFlash Auto Hidden
 Bool Property DisableNakedComments Auto Hidden
 Bool Property UseDynamicModesty Auto Hidden
@@ -284,7 +284,6 @@ Function SetDefaults()
 	TransparentShowgirlSkirtOdds_Low_Male = 30
 	TransparentShowgirlSkirtOdds_High_Male = 70
 	
-	IgnoreBakaKeywords = True
 	AllowMotionFlash = True
 	ScanNPC = True
 	ScanFrequency = "Normal"
@@ -323,11 +322,10 @@ Function InstallMCM()
 	Pages[3] = "$ArmorAndUnderwearKeywordsPage"
 	Pages[4] = "$GeneralKeywordsPage"
 	Pages[5] = "$FlashRiskKeywordsPage"
-	Pages[6] = "$BakaKeywordsPage"
-	Pages[7] = "$FemaleFlashChancesPage"
-	Pages[8] = "$MaleFlashChancesPage"
-	Pages[9] = "$NakedCommentsPage"
-	Pages[10] = "Dynamic Modesty"
+	Pages[6] = "$FemaleFlashChancesPage"
+	Pages[7] = "$MaleFlashChancesPage"
+	Pages[8] = "$NakedCommentsPage"
+	Pages[9] = "Dynamic Modesty"
 EndFunction
 
 Function SetMaleCoverage()
@@ -343,18 +341,17 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[11]
+	Pages = New String[10]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
 	Pages[3] = "$ArmorAndUnderwearKeywordsPage"
 	Pages[4] = "$GeneralKeywordsPage"
 	Pages[5] = "$FlashRiskKeywordsPage"
-	Pages[6] = "$BakaKeywordsPage"
-	Pages[7] = "$FemaleFlashChancesPage"
-	Pages[8] = "$MaleFlashChancesPage"
-	Pages[9] = "$NakedCommentsPage"
-	Pages[10] = "Dynamic Modesty"
+	Pages[6] = "$FemaleFlashChancesPage"
+	Pages[7] = "$MaleFlashChancesPage"
+	Pages[8] = "$NakedCommentsPage"
+	Pages[9] = "Dynamic Modesty"
 EndEvent
 
 Event OnConfigClose()
@@ -1552,271 +1549,6 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsLowMale", "$TransparentHimboSkirtLowText", TransparentShowgirlSkirtOdds_Low_Male, "{0}%", 0)
 		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsMale", "$TransparentHimboSkirtNormalText", TransparentShowgirlSkirtOdds_Male, "{0}%", 0)
 		AddSliderOptionST("AND_TransparentShowgirlSkirtOddsHighMale", "$TransparentHimboSkirtHighText", TransparentShowgirlSkirtOdds_High_Male, "{0}%", 0)
-		
-	ElseIf (page == "$BakaKeywordsPage")
-		If Main.SLA_Found == False
-			AddTextOption("$SexlabArousedNotFound", None)
-		ElseIf Main.SLA_Found == True && PlayerBase.GetSex() == 1
-			AddToggleOptionST("IgnoreBakaState", "$IgnoreBakaKeywords", IgnoreBakaKeywords, 0)
-			AddEmptyOption()
-			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartTop", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartTop) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartTop", "$NoText")
-			Else
-				AddTextOption("SLA_ArmorPartTop", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartBottom", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorPartBottom) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartBottom", "$NoText")
-			Else
-				AddTextOption("SLA_ArmorPartBottom", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_Brabikini", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_Brabikini) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_Brabikini", "$NoText")
-			Else
-				AddTextOption("SLA_Brabikini", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_FullSkirt", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_FullSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_FullSkirt", "$NoText")
-			Else
-				AddTextOption("SLA_FullSkirt", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroHotpants", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroHotpants) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroHotpants", "$NoText")
-			Else
-				AddTextOption("SLA_MicroHotpants", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroSkirt", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MicroSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroSkirt", "$NoText")
-			Else
-				AddTextOption("SLA_MicroSkirt", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MiniSkirt", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_MiniSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_MiniSkirt", "$NoText")
-			Else
-				AddTextOption("SLA_MiniSkirt", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantiesNormal", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantiesNormal) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantiesNormal", "$NoText")
-			Else
-				AddTextOption("SLA_PantiesNormal", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantsNormal", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PantsNormal) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantsNormal", "$NoText")
-			Else
-				AddTextOption("SLA_PantsNormal", "$IgnoredText")
-			EndIf
-			
-			SetCursorPosition(5)
-			If PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesCrotch", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesCrotch) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesCrotch", "$NoText")
-			Else
-				AddTextOption("SLA_PastiesCrotch", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesNipple", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PastiesNipple) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesNipple", "$NoText")
-			Else
-				AddTextOption("SLA_PastiesNipple", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PelvicCurtain", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_PelvicCurtain) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_PelvicCurtain", "$NoText")
-			Else
-				AddTextOption("SLA_PelvicCurtain", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ShowgirlSkirt", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ShowgirlSkirt) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ShowgirlSkirt", "$NoText")
-			Else
-				AddTextOption("SLA_ShowgirlSkirt", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongCString", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongCString) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongCString", "$NoText")
-			Else
-				AddTextOption("SLA_ThongCString", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongGstring", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongGstring) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongGstring", "$NoText")
-			Else
-				AddTextOption("SLA_ThongGstring", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongLowleg", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongLowleg) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongLowleg", "$NoText")
-			Else
-				AddTextOption("SLA_ThongLowleg", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongT", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ThongT) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongT", "$NoText")
-			Else
-				AddTextOption("SLA_ThongT", "$IgnoredText")
-			EndIf
-			
-			If PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorHalfNaked", "$YesText")
-			ElseIf !PlayerRef.WornHasKeyword(Main.SLA_ArmorHalfNaked) && IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorHalfNaked", "$NoText")
-			Else
-				AddTextOption("SLA_ArmorHalfNaked", "$IgnoredText")
-			EndIf
-		ElseIf Main.SLA_Found == True && PlayerBase.GetSex() == 0
-			AddToggleOptionST("IgnoreBakaState", "$IgnoreBakaKeywords", IgnoreBakaKeywords, 0)
-			AddEmptyOption()
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartTop", "$ActiveText")
-			Else
-				AddTextOption("SLA_ArmorPartTop", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorPartBottom", "$ActiveText")
-			Else
-				AddTextOption("SLA_ArmorPartBottom", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_Brabikini", "$ActiveText")
-			Else
-				AddTextOption("SLA_Brabikini", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_FullSkirt", "$ActiveText")
-			Else
-				AddTextOption("SLA_FullSkirt", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroHotpants", "$ActiveText")
-			Else
-				AddTextOption("SLA_MicroHotpants", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_MicroSkirt", "$ActiveText")
-			Else
-				AddTextOption("SLA_MicroSkirt", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_MiniSkirt", "$ActiveText")
-			Else
-				AddTextOption("SLA_MiniSkirt", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantiesNormal", "$ActiveText")
-			Else
-				AddTextOption("SLA_PantiesNormal", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_PantsNormal", "$ActiveText")
-			Else
-				AddTextOption("SLA_PantsNormal", "$IgnoredText")
-			EndIf
-			
-			SetCursorPosition(5)
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesCrotch", "$ActiveText")
-			Else
-				AddTextOption("SLA_PastiesCrotch", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_PastiesNipple", "$ActiveText")
-			Else
-				AddTextOption("SLA_PastiesNipple", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_PelvicCurtain", "$ActiveText")
-			Else
-				AddTextOption("SLA_PelvicCurtain", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ShowgirlSkirt", "$ActiveText")
-			Else
-				AddTextOption("SLA_ShowgirlSkirt", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongCString", "$ActiveText")
-			Else
-				AddTextOption("SLA_ThongCString", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongGstring", "$ActiveText")
-			Else
-				AddTextOption("SLA_ThongGstring", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongLowleg", "$ActiveText")
-			Else
-				AddTextOption("SLA_ThongLowleg", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ThongT", "$ActiveText")
-			Else
-				AddTextOption("SLA_ThongT", "$IgnoredText")
-			EndIf
-			
-			If IgnoreBakaKeywords == False
-				AddTextOption("SLA_ArmorHalfNaked", "$ActiveText")
-			Else
-				AddTextOption("SLA_ArmorHalfNaked", "$IgnoredText")
-			EndIf
-		Else
-			Debug.MessageBox("$UnexpectedError")
-		EndIf
 	ElseIf (page == "$NakedCommentsPage")
 		AddToggleOptionST("AND_DisableNakedCommentsState", "$DisableNakedCommentsText", DisableNakedComments, 0)
 		AddEmptyOption()
@@ -1865,7 +1597,7 @@ Event OnPageReset(string page)
 			AddTextOption("Rank 5:", ModestyManager.ModestyTimer[5])
 			AddTextOption("Rank 6:", ModestyManager.ModestyTimer[6])
 		Else
-			AddTextOption("Dynamic Feminine Female Modesty Animations Not Found", None)
+			AddTextOption("DFFMA Not Found", None)
 		EndIf
 	EndIf
 EndEvent
@@ -2333,22 +2065,6 @@ State UseGenderlessState
 	
 	Event OnHighlightST()
 		SetInfotext("$AND_Genderless_Tooltip")
-	EndEvent
-EndState
-
-State IgnoreBakaState
-	Event OnSelectST()
-		If IgnoreBakaKeywords == False
-			IgnoreBakaKeywords = True
-		Else
-			IgnoreBakaKeywords = False
-		EndIf
-		SetToggleOptionValueST(IgnoreBakaKeywords, False, "IgnoreBakaState")
-		ForcePageReset()
-	EndEvent
-	
-	Event OnHighlightST()
-		SetInfotext("$AND_IgnoreBaka_Tooltip")
 	EndEvent
 EndState
 

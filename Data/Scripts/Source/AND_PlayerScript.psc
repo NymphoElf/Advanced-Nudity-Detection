@@ -40,7 +40,6 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
-	AND_Main.SLA_Check()
 	AND_Main.SLSF_Reloaded_Check()
 	AND_Main.DFFMA_Check()
 	
