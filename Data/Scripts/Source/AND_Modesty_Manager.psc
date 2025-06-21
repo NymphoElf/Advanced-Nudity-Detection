@@ -16,7 +16,6 @@ Int[] Property ModestyTimer Auto
 String[] Property ModestyTitle Auto
 
 Event OnInit()
-	AddPlayerToFaction()
 	RegisterForUpdateGameTime(1.0)
 	RegisteredForUpdate = True
 	Debug.Trace("AND - Modesty Manager Initialized")
@@ -26,6 +25,7 @@ Event OnUpdateGameTime()
 	If AND_Main.DFFMA_Found == False
 		UnregisterForUpdateGameTime()
 		RegisteredForUpdate = False
+		return
 	EndIf
 	
 	If Config.UseDynamicModesty == False
@@ -37,12 +37,6 @@ Event OnUpdateGameTime()
 	EndIf
 	ModestyUpgrade()
 EndEvent
-
-Function AddPlayerToFaction()
-	PlayerRef.AddToFaction(ModestyFaction)
-	PlayerRef.SetFactionRank(ModestyFaction, 0)
-	PlayerIsInFaction = True
-EndFunction
 
 Function ModestyUpgrade()
 	Int ModestyRank = PlayerRef.GetFactionRank(ModestyFaction)

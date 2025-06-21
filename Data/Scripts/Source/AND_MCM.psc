@@ -562,7 +562,7 @@ Event OnPageReset(string page)
 			AddTextOption("$TopCurtainText", "$NotWearingText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT)
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 			If PelvicCurtain_Cover == True
 				AddTextOption("$PelvicCurtainText", "$CoveringText")
 			Else
@@ -572,7 +572,7 @@ Event OnPageReset(string page)
 			AddTextOption("$PelvicCurtainText", "$NotWearingText")
 		EndIf
 			
-		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_AssCurtainT)
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 			If AssCurtain_Cover == True
 				AddTextOption("$AssCurtainText", "$CoveringText")
 			Else

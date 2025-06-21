@@ -31,6 +31,8 @@ Function Startup()
 	PlayerRef.AddToFaction(AND_Main.AND_ToplessFaction)
 	PlayerRef.AddToFaction(AND_Main.AND_BottomlessFaction)
 	PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
+	PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
+	PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")
@@ -40,11 +42,11 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
-	AND_Main.SLSF_Reloaded_Check()
-	AND_Main.DFFMA_Check()
+	AND_Main.ModCheck()
 	
-	If AND_Main.DFFMA_Found == True && ModestyManager.PlayerIsInFaction == False
-		ModestyManager.AddPlayerToFaction()
+	If AND_Main.DFFMA_Found == True && PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
+		PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
+		PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
 	EndIf
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
@@ -109,9 +111,13 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnUpdateGameTime()
-	If Timescale.GetValue() > MaxTimeScale
+	If TimeScale.GetValue() as Int > MaxTimeScale
 		UnregisterForUpdateGameTime()
-		Utility.Wait(30.0)
+		Debug.MessageBox("A.N.D. Warning - Time Scale too high. Current: " + TimeScale.GetValue() as Int + ". Maximum: " + MaxTimeScale + ". Either choose a slower AND scan frequency or change the settings on your Time Scale mod.")
+		While TimeScale.GetValue() as Int > MaxTimeScale
+			Debug.Trace("AND - Time Scale too high: " + TimeScale.GetValue() as Int + ". Waiting for Time Scale to go below: " + MaxTimeScale)
+			Utility.Wait(30.0)
+		EndWhile
 		RegisterForUpdateGameTime(GameTimeUpdateSpeed)
 		return
 	EndIf

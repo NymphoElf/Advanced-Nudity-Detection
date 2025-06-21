@@ -197,12 +197,8 @@ GlobalVariable Property WICommentChanceNaked Auto
 
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
-	
-	SLSF_Reloaded_Check()
-	DFFMA_Check()
-	
+	ModCheck()
 	PlayerBase = Game.GetPlayer().GetActorBase()
-	
 	Debug.Notification("A.N.D. Initialized")
 EndEvent
 
@@ -230,7 +226,7 @@ Event OnUpdate()
 	EndIf
 EndEvent
 
-Function SLSF_Reloaded_Check()
+Function ModCheck()
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
 		SLSFR_Found = True
 		SLSFR_Config = Game.GetFormFromFile(0x809, "SLSF Reloaded.esp") as SLSF_Reloaded_MCM
@@ -240,9 +236,7 @@ Function SLSF_Reloaded_Check()
 		SLSFR_Config = None
 		SLSFR_Mods = None
 	EndIf
-EndFunction
-
-Function DFFMA_Check()
+	
 	If Game.GetModByName("Modesty_Keyword.esp") != 255
 		DFFMA_Found = True
 		
