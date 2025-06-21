@@ -115,7 +115,6 @@ Int Property TransparentShowgirlSkirtOdds_Low_Male Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_High_Male Auto Hidden
 
 Bool Property GenderlessWording Auto Hidden
-;Bool Property IgnoreBakaKeywords Auto Hidden
 Bool Property AllowMotionFlash Auto Hidden
 Bool Property DisableNakedComments Auto Hidden
 Bool Property UseDynamicModesty Auto Hidden
@@ -128,6 +127,9 @@ Bool Property Rank4Jump Auto Hidden
 Bool Property Rank5Jump Auto Hidden
 Bool Property Rank6Jump Auto Hidden
 Bool Property ResetModesty Auto Hidden
+
+Bool Property UseHardcoreModesty = False Auto Hidden
+Bool Property HardcoreLockdown = False Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
@@ -429,6 +431,10 @@ Event OnConfigClose()
 		PlayerScript.UnregisterForUpdateGameTime()
 		PlayerScript.RegisterForUpdateGameTime(0.25)
 	EndIf
+	
+	If HardcoreLockdown == False && UseHardcoreModesty == True
+		HardcoreLockdown = True
+	EndIf
 EndEvent
 
 Event OnPageReset(string page)
@@ -578,8 +584,8 @@ Event OnPageReset(string page)
 		
 		AddHeaderOption("$MotionSettingsHeader")
 		AddToggleOptionST("AND_AllowMotionFlashState", "$AllowMotionFlashText", AllowMotionFlash, 0)
-		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
-		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", GetDisabledOptionFlagIf(AllowMotionFlash == False))
+		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", DisabledIf(AllowMotionFlash == False))
+		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", DisabledIf(AllowMotionFlash == False))
 		AddHeaderOption("Scan Settings")
 		AddToggleOptionST("AND_ScanNPCToggle_State", "Scan NPCs", ScanNPC, 0)
 		AddMenuOptionST("AND_ScanFrequency_State", "Scan Frequency", ScanFrequency, 0)
@@ -1552,36 +1558,37 @@ Event OnPageReset(string page)
 	ElseIf (page == "$NakedCommentsPage")
 		AddToggleOptionST("AND_DisableNakedCommentsState", "$DisableNakedCommentsText", DisableNakedComments, 0)
 		AddEmptyOption()
-		AddSliderOptionST("AND_NudeFactionCommentChanceState", "$NudeFactionCommentChanceText", NudeFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_ToplessFactionCommentChanceState", "$ToplessFactionCommentChanceText", ToplessFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_BottomlessFactionCommentChanceState", "$BottomlessFactionCommentChanceText", BottomlessFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_ChestFactionCommentChanceState", "$ChestFactionCommentChanceText", ChestFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_GenitalsFactionCommentChanceState", "$GenitalsFactionCommentChanceText", GenitalsFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_AssFactionCommentChanceState", "$AssFactionCommentChanceText", AssFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_BraFactionCommentChanceState", "$BraFactionCommentChanceText", BraFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_UnderwearFactionCommentChanceState", "$UnderwearFactionCommentChanceText", UnderwearFactionCommentChance, "{0}%", GetDisabledOptionFlagIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_NudeFactionCommentChanceState", "$NudeFactionCommentChanceText", NudeFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_ToplessFactionCommentChanceState", "$ToplessFactionCommentChanceText", ToplessFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_BottomlessFactionCommentChanceState", "$BottomlessFactionCommentChanceText", BottomlessFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_ChestFactionCommentChanceState", "$ChestFactionCommentChanceText", ChestFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_GenitalsFactionCommentChanceState", "$GenitalsFactionCommentChanceText", GenitalsFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_AssFactionCommentChanceState", "$AssFactionCommentChanceText", AssFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_BraFactionCommentChanceState", "$BraFactionCommentChanceText", BraFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_UnderwearFactionCommentChanceState", "$UnderwearFactionCommentChanceText", UnderwearFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
 		
 		SetCursorPosition(1)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
 	
 	ElseIf (page == "Dynamic Modesty")
 		If Main.DFFMA_Found == True
-			OptionID = New Int[9]
+			OptionID = New Int[10]
 			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
 			
 			AddHeaderOption("Modesty Settings")
-			OptionID[0] = AddToggleOption("Use Dynamic Modesty", UseDynamicModesty, 0)
-			OptionID[1] = AddToggleOption("'Shameless' Can Be Permanent", ShamelessCanBePermanent, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			AddSliderOptionST("AND_ModestyUpgradeTimeState", "Immodesty Upgrade Time:", ImmodestyTimeNeeded, "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			AddSliderOptionST("AND_ModestyArousalThresholdState", "Modesty Arousal Cutoff", ModestyArousalThreshold.GetValue(), "{0}", GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, GetDisabledOptionFlagIf(UseDynamicModesty == False))
-			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, GetDisabledOptionFlagIf(UseDynamicModesty == False))
+			OptionID[0] = AddToggleOption("Use Dynamic Modesty", UseDynamicModesty, DisabledIf(HardcoreLockdown == True))
+			OptionID[9] = AddToggleOption("Hardcore Mode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[1] = AddToggleOption("'Shameless' Can Be Permanent", ShamelessCanBePermanent, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_ModestyUpgradeTimeState", "Immodesty Upgrade Time:", ImmodestyTimeNeeded, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_ModestyArousalThresholdState", "Modesty Arousal Cutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
 			
@@ -1602,7 +1609,7 @@ Event OnPageReset(string page)
 	EndIf
 EndEvent
 
-Int Function GetDisabledOptionFlagIf(Bool Condition)
+Int Function DisabledIf(Bool Condition)
 	If (Condition)
 		return OPTION_FLAG_DISABLED
 	Else
@@ -1727,6 +1734,19 @@ Event OnOptionSelect(Int Option)
 			ResetModesty = False
 		EndIf
 		SetToggleOptionValue(Option, ResetModesty)
+		ForcePageReset()
+	ElseIf Option == OptionID[9]
+		If UseHardcoreModesty == False
+			UseHardcoreModesty = True
+		Else
+			UseHardcoreModesty = False
+		EndIf
+		SetToggleOptionValue(Option, UseHardcoreModesty)
+		
+		If UseHardcoreModesty == True
+			Debug.MessageBox("WARNING: This will lock all Dynamic Modesty Settings when leaving the MCM! This CANNOT BE UNDONE UNLESS YOU HAVE AN OLDER SAVE TO REVERT TO!!!")
+		EndIf
+		
 		ForcePageReset()
 	EndIf
 EndEvent

@@ -136,7 +136,7 @@ Function ModestyUpgrade()
 EndFunction
 
 Function ModestyDowngrade(Int FactionRank)
-	If PermanentShameless == True
+	If PermanentShameless == True && PlayerRef.GetFactionRank(ModestyFaction) == 7
 		return
 	EndIf
 	
