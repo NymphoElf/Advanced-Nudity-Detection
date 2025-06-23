@@ -22,7 +22,7 @@ Event OnInit()
 EndEvent
 
 Event OnUpdateGameTime()
-	If AND_Main.DFFMA_Found == False
+	If AND_Main.DFFMA_Found == False && AND_Main.BARE_Found == False
 		UnregisterForUpdateGameTime()
 		RegisteredForUpdate = False
 		return

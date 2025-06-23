@@ -1571,7 +1571,7 @@ Event OnPageReset(string page)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
 	
 	ElseIf (page == "Dynamic Modesty")
-		If Main.DFFMA_Found == True
+		If Main.DFFMA_Found == True || Main.BARE_Found == True
 			OptionID = New Int[10]
 			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
 			
@@ -1604,7 +1604,7 @@ Event OnPageReset(string page)
 			AddTextOption("Rank 5:", ModestyManager.ModestyTimer[5])
 			AddTextOption("Rank 6:", ModestyManager.ModestyTimer[6])
 		Else
-			AddTextOption("DFFMA Not Found", None)
+			AddTextOption("Dynamic Modesty Disabled", None)
 		EndIf
 	EndIf
 EndEvent

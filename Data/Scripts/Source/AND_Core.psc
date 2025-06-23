@@ -192,6 +192,7 @@ Spell Property NPCScanSpell Auto
 GlobalVariable Property AND_DebugMode Auto
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
+Bool Property BARE_Found Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
@@ -246,6 +247,12 @@ Function ModCheck()
 		EndIf
 	Else
 		DFFMA_Found = False
+	EndIf
+	
+	If Game.GetModByName("BARE_ArousalUndress.esp") != 255
+		BARE_Found = True
+	Else
+		BARE_Found = False
 	EndIf
 EndFunction
 
