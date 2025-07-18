@@ -1892,6 +1892,7 @@
                 {
                     "condition": "LocationHasKeyword",
                     "requiredVersion": "2.0.0.0",
+                    "disabled": true,
                     "negated": true,
                     "Keyword": {
                         "editorID": "NoModesty"
@@ -1980,6 +1981,56 @@
                                     "Value B": {
                                         "value": 1.0
                                     }
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "CompareValues",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Value A": {
+                                        "form": {
+                                            "pluginName": "Advanced Nudity Detection.esp",
+                                            "formID": "86F"
+                                        }
+                                    },
+                                    "Comparison": "==",
+                                    "Value B": {
+                                        "value": 2.0
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A3"
+                                            },
+                                            "Comparison": "<",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A4"
+                                            },
+                                            "Comparison": "<",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         }

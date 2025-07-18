@@ -1464,115 +1464,7 @@
                             "requiredVersion": "1.0.0.0",
                             "Faction": {
                                 "pluginName": "Advanced Nudity Detection.esp",
-                                "formID": "86D"
-                            },
-                            "Comparison": "==",
-                            "Numeric value": {
-                                "value": 0.0
-                            }
-                        },
-                        {
-                            "condition": "AND",
-                            "requiredVersion": "1.0.0.0",
-                            "Conditions": [
-                                {
-                                    "condition": "OR",
-                                    "requiredVersion": "1.0.0.0",
-                                    "Conditions": [
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "832"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        },
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "82F"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        },
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "834"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "condition": "OR",
-                                    "requiredVersion": "1.0.0.0",
-                                    "Conditions": [
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "833"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        },
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "830"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        },
-                                        {
-                                            "condition": "FactionRank",
-                                            "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "835"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "condition": "AND",
-                    "requiredVersion": "1.0.0.0",
-                    "Conditions": [
-                        {
-                            "condition": "FactionRank",
-                            "requiredVersion": "1.0.0.0",
-                            "Faction": {
-                                "pluginName": "Advanced Nudity Detection.esp",
-                                "formID": "86D"
+                                "formID": "82F"
                             },
                             "Comparison": "==",
                             "Numeric value": {
@@ -1580,11 +1472,57 @@
                             }
                         },
                         {
-                            "condition": "AND",
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Advanced Nudity Detection.esp",
+                                "formID": "830"
+                            },
+                            "Comparison": "==",
+                            "Numeric value": {
+                                "value": 1.0
+                            }
+                        },
+                        {
+                            "condition": "CompareValues",
+                            "requiredVersion": "1.0.0.0",
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
+                            },
+                            "Comparison": "==",
+                            "Value B": {
+                                "value": 0.0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "CompareValues",
+                            "requiredVersion": "1.0.0.0",
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
+                            },
+                            "Comparison": "==",
+                            "Value B": {
+                                "value": 1.0
+                            }
+                        },
+                        {
+                            "condition": "OR",
                             "requiredVersion": "1.0.0.0",
                             "Conditions": [
                                 {
-                                    "condition": "OR",
+                                    "condition": "AND",
                                     "requiredVersion": "1.0.0.0",
                                     "Conditions": [
                                         {
@@ -1592,29 +1530,107 @@
                                             "requiredVersion": "1.0.0.0",
                                             "Faction": {
                                                 "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "832"
+                                                "formID": "86D"
                                             },
                                             "Comparison": "==",
                                             "Numeric value": {
-                                                "value": 1.0
+                                                "value": 0.0
                                             }
                                         },
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "82F"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "832"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "82F"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "834"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "835"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
                                 {
-                                    "condition": "OR",
+                                    "condition": "AND",
                                     "requiredVersion": "1.0.0.0",
                                     "Conditions": [
                                         {
@@ -1622,7 +1638,7 @@
                                             "requiredVersion": "1.0.0.0",
                                             "Faction": {
                                                 "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "833"
+                                                "formID": "86D"
                                             },
                                             "Comparison": "==",
                                             "Numeric value": {
@@ -1630,28 +1646,280 @@
                                             }
                                         },
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "830"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
-                                        },
+                                            "Conditions": [
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "832"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "82F"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "835"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
                                         {
                                             "condition": "FactionRank",
                                             "requiredVersion": "1.0.0.0",
                                             "Faction": {
                                                 "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "835"
+                                                "formID": "86D"
                                             },
                                             "Comparison": "==",
                                             "Numeric value": {
-                                                "value": 1.0
+                                                "value": 2.0
                                             }
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "832"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "82F"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "833"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -1664,194 +1932,316 @@
                     "requiredVersion": "1.0.0.0",
                     "Conditions": [
                         {
-                            "condition": "FactionRank",
+                            "condition": "CompareValues",
                             "requiredVersion": "1.0.0.0",
-                            "Faction": {
-                                "pluginName": "Advanced Nudity Detection.esp",
-                                "formID": "86D"
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
                             },
                             "Comparison": "==",
-                            "Numeric value": {
+                            "Value B": {
                                 "value": 2.0
                             }
                         },
                         {
-                            "condition": "AND",
+                            "condition": "OR",
                             "requiredVersion": "1.0.0.0",
                             "Conditions": [
                                 {
-                                    "condition": "OR",
+                                    "condition": "AND",
                                     "requiredVersion": "1.0.0.0",
                                     "Conditions": [
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "832"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A3"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
                                         },
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "82F"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A4"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "833"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
                                 {
-                                    "condition": "OR",
+                                    "condition": "AND",
                                     "requiredVersion": "1.0.0.0",
                                     "Conditions": [
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "833"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A3"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "82F"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "832"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         },
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "830"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A4"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "condition": "AND",
-                    "requiredVersion": "1.0.0.0",
-                    "Conditions": [
-                        {
-                            "condition": "FactionRank",
-                            "requiredVersion": "1.0.0.0",
-                            "Faction": {
-                                "pluginName": "Advanced Nudity Detection.esp",
-                                "formID": "86D"
-                            },
-                            "Comparison": "==",
-                            "Numeric value": {
-                                "value": 3.0
-                            }
-                        },
-                        {
-                            "condition": "AND",
-                            "requiredVersion": "1.0.0.0",
-                            "Conditions": [
-                                {
-                                    "condition": "FactionRank",
-                                    "requiredVersion": "1.0.0.0",
-                                    "Faction": {
-                                        "pluginName": "Advanced Nudity Detection.esp",
-                                        "formID": "832"
-                                    },
-                                    "Comparison": "==",
-                                    "Numeric value": {
-                                        "value": 1.0
-                                    }
                                 },
                                 {
-                                    "condition": "OR",
+                                    "condition": "AND",
                                     "requiredVersion": "1.0.0.0",
                                     "Conditions": [
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "833"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A3"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 0.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "834"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "82F"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "832"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         },
                                         {
-                                            "condition": "FactionRank",
+                                            "condition": "AND",
                                             "requiredVersion": "1.0.0.0",
-                                            "Faction": {
-                                                "pluginName": "Advanced Nudity Detection.esp",
-                                                "formID": "830"
-                                            },
-                                            "Comparison": "==",
-                                            "Numeric value": {
-                                                "value": 1.0
-                                            }
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "8A4"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 0.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "835"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "830"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "FactionRank",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Faction": {
+                                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                                "formID": "833"
+                                                            },
+                                                            "Comparison": "==",
+                                                            "Numeric value": {
+                                                                "value": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "condition": "AND",
-                    "requiredVersion": "1.0.0.0",
-                    "Conditions": [
-                        {
-                            "condition": "FactionRank",
-                            "requiredVersion": "1.0.0.0",
-                            "Faction": {
-                                "pluginName": "Advanced Nudity Detection.esp",
-                                "formID": "86D"
-                            },
-                            "Comparison": "==",
-                            "Numeric value": {
-                                "value": 4.0
-                            }
-                        },
-                        {
-                            "condition": "AND",
-                            "requiredVersion": "1.0.0.0",
-                            "Conditions": [
-                                {
-                                    "condition": "FactionRank",
-                                    "requiredVersion": "1.0.0.0",
-                                    "Faction": {
-                                        "pluginName": "Advanced Nudity Detection.esp",
-                                        "formID": "832"
-                                    },
-                                    "Comparison": "==",
-                                    "Numeric value": {
-                                        "value": 1.0
-                                    }
-                                },
-                                {
-                                    "condition": "FactionRank",
-                                    "requiredVersion": "1.0.0.0",
-                                    "Faction": {
-                                        "pluginName": "Advanced Nudity Detection.esp",
-                                        "formID": "833"
-                                    },
-                                    "Comparison": "==",
-                                    "Numeric value": {
-                                        "value": 1.0
-                                    }
                                 }
                             ]
                         }

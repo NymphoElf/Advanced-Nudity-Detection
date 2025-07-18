@@ -126,10 +126,20 @@ Bool Property Rank3Jump Auto Hidden
 Bool Property Rank4Jump Auto Hidden
 Bool Property Rank5Jump Auto Hidden
 Bool Property Rank6Jump Auto Hidden
+
+Bool Property TopRank1Jump Auto Hidden
+Bool Property TopRank2Jump Auto Hidden
+Bool Property TopRank3Jump Auto Hidden
+
+Bool Property BottomRank1Jump Auto Hidden
+Bool Property BottomRank2Jump Auto Hidden
+Bool Property BottomRank3Jump Auto Hidden
+
 Bool Property ResetModesty Auto Hidden
 
 Bool Property UseHardcoreModesty = False Auto Hidden
 Bool Property HardcoreLockdown = False Auto Hidden
+Bool Property StrictModestyRules = False Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
@@ -357,6 +367,22 @@ Event OnConfigOpen()
 EndEvent
 
 Event OnConfigClose()
+	If TopRank1Jump == True
+		ModestyManager.TopRankJump(1)
+	ElseIf TopRank2Jump == True
+		ModestyManager.TopRankJump(2)
+	ElseIf TopRank3Jump == True
+		ModestyManager.TopRankJump(3)
+	EndIf
+	
+	If BottomRank1Jump == True
+		ModestyManager.BottomRankJump(1)
+	ElseIf BottomRank2Jump == True
+		ModestyManager.BottomRankJump(2)
+	ElseIf BottomRank3Jump == True
+		ModestyManager.BottomRankJump(3)
+	EndIf
+	
 	If Rank6Jump == True
 		ModestyManager.RankJump(6)
 	ElseIf Rank5Jump == True
@@ -371,7 +397,17 @@ Event OnConfigClose()
 		ModestyManager.RankJump(1)
 	ElseIf ResetModesty == True
 		ModestyManager.RankJump(0)
+		ModestyManager.TopRankJump(0)
+		ModestyManager.BottomRankJump(0)
 	EndIf
+	
+	TopRank1Jump = False
+	TopRank2Jump = False
+	TopRank3Jump = False
+	
+	BottomRank1Jump = False
+	BottomRank2Jump = False
+	BottomRank3Jump = False
 	
 	Rank6Jump = False
 	Rank5Jump = False
@@ -379,6 +415,7 @@ Event OnConfigClose()
 	Rank3Jump = False
 	Rank2Jump = False
 	Rank1Jump = False
+	
 	ResetModesty = False
 	
 	ModestyManager.TimerUpdate(ImmodestyTimeNeeded)
@@ -1572,37 +1609,70 @@ Event OnPageReset(string page)
 	
 	ElseIf (page == "Dynamic Modesty")
 		If Main.DFFMA_Found == True || Main.BARE_Found == True
-			OptionID = New Int[10]
+			OptionID = New Int[17]
 			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
+			Int TopModestyRank = (PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) as Int)
+			Int BottomModestyRank = (PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) as Int)
 			
 			AddHeaderOption("Modesty Settings")
 			OptionID[0] = AddToggleOption("Use Dynamic Modesty", UseDynamicModesty, DisabledIf(HardcoreLockdown == True))
+			OptionID[10] = AddToggleOption("Use Strict Rules", StrictModestyRules, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			OptionID[9] = AddToggleOption("Hardcore Mode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			OptionID[1] = AddToggleOption("'Shameless' Can Be Permanent", ShamelessCanBePermanent, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == False))
 			AddSliderOptionST("AND_ModestyUpgradeTimeState", "Immodesty Upgrade Time:", ImmodestyTimeNeeded, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddSliderOptionST("AND_ModestyArousalThresholdState", "Modesty Arousal Cutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			
+			If StrictModestyRules == True
+				OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Else
+				OptionID[11] = AddToggleOption("(Top) Jump to Comfortable", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[12] = AddToggleOption("(Top) Jump to Bold", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[13] = AddToggleOption("(Top) Jump to Shameless", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[14] = AddToggleOption("(Bottom) Jump to Comfortable", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[15] = AddToggleOption("(Bottom) Jump to Bold", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				OptionID[16] = AddToggleOption("(Bottom) Jump to Shameless", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			EndIf
 			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
 			
-			AddHeaderOption("Current Modesty")
-			AddTextOption("Modesty Rank:", ModestyRank as String)
-			AddTextOption("Modesty Title:", ModestyManager.ModestyTitle[ModestyRank])
-			AddHeaderOption("Modesty Timers")
-			AddTextOption("Rank 0:", ModestyManager.ModestyTimer[0])
-			AddTextOption("Rank 1:", ModestyManager.ModestyTimer[1])
-			AddTextOption("Rank 2:", ModestyManager.ModestyTimer[2])
-			AddTextOption("Rank 3:", ModestyManager.ModestyTimer[3])
-			AddTextOption("Rank 4:", ModestyManager.ModestyTimer[4])
-			AddTextOption("Rank 5:", ModestyManager.ModestyTimer[5])
-			AddTextOption("Rank 6:", ModestyManager.ModestyTimer[6])
+			If StrictModestyRules == True
+				AddHeaderOption("Current Modesty")
+				AddTextOption("Modesty Rank:", ModestyRank as String)
+				AddTextOption("Modesty Title:", ModestyManager.ModestyTitle[ModestyRank])
+				
+				AddHeaderOption("Modesty Timers")
+				AddTextOption("Modest:", ModestyManager.ModestyTimer[0])
+				AddTextOption("Reasonable:", ModestyManager.ModestyTimer[1])
+				AddTextOption("Relaxed:", ModestyManager.ModestyTimer[2])
+				AddTextOption("Comfortable:", ModestyManager.ModestyTimer[3])
+				AddTextOption("Tease:", ModestyManager.ModestyTimer[4])
+				AddTextOption("Brazen:", ModestyManager.ModestyTimer[5])
+				AddTextOption("Shameless:", ModestyManager.ModestyTimer[6])
+			Else
+				AddHeaderOption("Top Modesty")
+				AddTextOption("Top Modesty Rank:", TopModestyRank as String)
+				AddTextOption("Top Modesty Title:", ModestyManager.TopModestyTitle[TopModestyRank])
+				AddHeaderOption("Top Modesty Timers")
+				AddTextOption("Shy:", ModestyManager.TopModestyTimer[0])
+				AddTextOption("Comfortable:", ModestyManager.TopModestyTimer[1])
+				AddTextOption("Bold:", ModestyManager.TopModestyTimer[2])
+				AddTextOption("Shameless:", ModestyManager.TopModestyTimer[3])
+				AddHeaderOption("Bottom Modesty")
+				AddTextOption("Bottom Modesty Rank:", BottomModestyRank as String)
+				AddTextOption("Bottom Modesty Title:", ModestyManager.BottomModestyTitle[BottomModestyRank])
+				AddHeaderOption("Bottom Modesty Timers")
+				AddTextOption("Shy:", ModestyManager.BottomModestyTimer[0])
+				AddTextOption("Comfortable:", ModestyManager.BottomModestyTimer[1])
+				AddTextOption("Bold:", ModestyManager.BottomModestyTimer[2])
+				AddTextOption("Shameless:", ModestyManager.BottomModestyTimer[3])
+			EndIf
 		Else
 			AddTextOption("Dynamic Modesty Disabled", None)
 		EndIf
@@ -1621,7 +1691,7 @@ Event OnOptionSelect(Int Option)
 	If Option == OptionID[0]
 		If UseDynamicModesty == False
 			UseDynamicModesty = True
-			AND_DynamicModesty.SetValue(1)
+			AND_DynamicModesty.SetValue(2)
 		Else
 			UseDynamicModesty = False
 			AND_DynamicModesty.SetValue(0)
@@ -1747,6 +1817,77 @@ Event OnOptionSelect(Int Option)
 			Debug.MessageBox("WARNING: This will lock all Dynamic Modesty Settings when leaving the MCM! This CANNOT BE UNDONE UNLESS YOU HAVE AN OLDER SAVE TO REVERT TO!!!")
 		EndIf
 		
+		ForcePageReset()
+	ElseIf Option == 10
+		If StrictModestyRules == False
+			StrictModestyRules == True
+			AND_DynamicModesty.SetValue(1)
+		Else
+			StrictModestyRules == False
+			AND_DynamicModesty.SetValue(2)
+		EndIf
+		SetToggleOptionValue(Option, StrictModestyRules)
+		
+		ForcePageReset()
+	ElseIf Option == 11
+		If TopRank1Jump == False
+			TopRank1Jump = True
+			TopRank2Jump = False
+			TopRank3Jump = False
+		Else
+			TopRank1Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank1Jump)
+		ForcePageReset()
+	ElseIf Option == 12
+		If TopRank2Jump == False
+			TopRank1Jump = False
+			TopRank2Jump = True
+			TopRank3Jump = False
+		Else
+			TopRank2Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank2Jump)
+		ForcePageReset()
+	ElseIf Option == 13
+		If TopRank3Jump == False
+			TopRank1Jump = False
+			TopRank2Jump = False
+			TopRank3Jump = True
+		Else
+			TopRank3Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank3Jump)
+		ForcePageReset()
+	ElseIf Option == 14
+		If BottomRank1Jump == False
+			BottomRank1Jump = True
+			BottomRank2Jump = False
+			BottomRank3Jump = False
+		Else
+			BottomRank1Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank1Jump)
+		ForcePageReset()
+	ElseIf Option == 15
+		If BottomRank2Jump == False
+			BottomRank1Jump = False
+			BottomRank2Jump = True
+			BottomRank3Jump = False
+		Else
+			BottomRank2Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank2Jump)
+		ForcePageReset()
+	ElseIf Option == 16
+		If BottomRank1Jump == False
+			BottomRank1Jump = False
+			BottomRank2Jump = False
+			BottomRank3Jump = True
+		Else
+			BottomRank3Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank3Jump)
 		ForcePageReset()
 	EndIf
 EndEvent

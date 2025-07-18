@@ -4,6 +4,7 @@ AND_Core Property AND_Main Auto
 AND_MotionTimer Property AND_MotionClock Auto
 AND_MCM Property AND_Config Auto
 AND_Modesty_Manager Property ModestyManager Auto
+AND_ModEventListener Property ModEventListener Auto
 
 Actor Property PlayerRef Auto
 
@@ -44,10 +45,18 @@ EndFunction
 Event OnPlayerLoadGame()
 	AND_Main.ModCheck()
 	
-	If AND_Main.DFFMA_Found == True && PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
+	If (AND_Main.DFFMA_Found == True || AND_Main.BARE_Found == True) && PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
 		PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
 		PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
+		
+		PlayerRef.AddToFaction(ModestyManager.TopModestyFaction)
+		PlayerRef.SetFactionRank(ModestyManager.TopModestyFaction, 0)
+		
+		PlayerRef.AddToFaction(ModestyManager.BottomModestyFaction)
+		PlayerRef.SetFactionRank(ModestyManager.BottomModestyFaction, 0)
 	EndIf
+	
+	ModEventListener.InitializeModEvents()
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")

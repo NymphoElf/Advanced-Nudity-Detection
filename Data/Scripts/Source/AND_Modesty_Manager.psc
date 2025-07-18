@@ -11,9 +11,17 @@ Bool Property RegisteredForUpdate Auto Hidden
 
 Faction Property ModestyFaction Auto
 
+Faction Property TopModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
+Faction Property BottomModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
+
 Int[] Property ModestyTimer Auto
 
+Int[] Property TopModestyTimer Auto ; 0 = ShowingBra, 1 = ShowingChest, 2 = Topless, 3 = Permanent
+Int[] Property BottomModestyTimer Auto ; 0 = ShowingBra, 1 = ShowingChest, 2 = Topless, 3 = Permanent
+
 String[] Property ModestyTitle Auto
+String[] Property TopModestyTitle Auto
+String[] Property BottomModestyTitle Auto
 
 Event OnInit()
 	RegisterForUpdateGameTime(1.0)
@@ -32,22 +40,275 @@ Event OnUpdateGameTime()
 		return
 	EndIf
 	
-	If PermanentShameless == True && Config.ShamelessCanBePermanent == False
-		PermanentShameless = False
+	;If PermanentShameless == True && Config.ShamelessCanBePermanent == False
+	;	PermanentShameless = False
+	;EndIf
+	
+	If Config.ShamelessCanBePermanent == False
+		If PlayerRef.GetFactionRank(TopModestyFaction) > 3
+			PlayerRef.SetFactionRank(TopModestyFaction, 3)
+		EndIf
+		
+		If PlayerRef.GetFactionRank(BottomModestyFaction) > 3
+			PlayerRef.SetFactionRank(BottomModestyFaction, 3)
+		EndIf
+		
+		If PlayerRef.GetFactionRank(ModestyFaction) > 6
+			PlayerRef.SetFactionRank(ModestyFaction, 6)
+		EndIf
 	EndIf
-	ModestyUpgrade()
+	
+	If Config.StrictModestyRules == True
+		ModestyUpgrade()
+	Else
+		TopModestyUpgrade()
+		BottomModestyUpgrade()
+	EndIf
 EndEvent
+
+Function TopModestyUpgrade()
+	Int TopModestyRank = PlayerRef.GetFactionRank(TopModestyFaction)
+	
+	Int UpgradeTime = Config.ImmodestyTimeNeeded
+	
+	Bool IsShowingBra = PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
+	Bool IsShowingChest = PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
+	Bool IsTopless = PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
+	
+	If TopModestyRank >= 4
+		return
+	Else
+		If TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
+			TopModestyTimer[0] = TopModestyTimer[0] + 1
+		ElseIf TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)
+			TopModestyTimer[1] = TopModestyTimer[1] + 1
+		ElseIf TopModestyRank <= 2 && IsShowingChest == True
+			TopModestyTimer[2] = TopModestyTimer[2] + 1
+		ElseIf TopModestyRank <= 3 && IsTopless == True
+			TopModestyTimer[3] = TopModestyTimer[3] + 1
+		Else
+			TopModestyDowngrade(TopModestyRank, IsShowingBra, IsShowingChest, IsTopless)
+			return
+		EndIf
+	EndIf
+	
+	If TopModestyRank <= 0
+		If TopModestyTimer[0] >= UpgradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 1)
+			TopModestyRankChange(True, 1)
+		ElseIf TopModestyTimer[1] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(TopModestyFaction, 1)
+			TopModestyRankChange(True, 1)
+		ElseIf TopModestyTimer[2] >= (UpgradeTime * 4)
+			PlayerRef.SetFactionRank(TopModestyFaction, 1)
+			TopModestyRankChange(True, 1)
+		ElseIf TopModestyTimer[3] >= (UpgradeTime * 8)
+			PlayerRef.SetFactionRank(TopModestyFaction, 1)
+			TopModestyRankChange(True, 1)
+		EndIf
+	ElseIf TopModestyRank == 1
+		If TopModestyTimer[1] >= UpgradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 2)
+			TopModestyRankChange(True, 2)
+		ElseIf TopModestyTimer[2] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(TopModestyFaction, 2)
+			TopModestyRankChange(True, 2)
+		ElseIf TopModestyTimer[3] >= (UpgradeTime * 4)
+			PlayerRef.SetFactionRank(TopModestyFaction, 2)
+			TopModestyRankChange(True, 2)
+		EndIf
+	ElseIf TopModestyRank == 2
+		If TopModestyTimer[2] >= UpgradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 3)
+			TopModestyRankChange(True, 3)
+		ElseIf TopModestyTimer[3] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(TopModestyFaction, 3)
+			TopModestyRankChange(True, 3)
+		EndIf
+	ElseIf TopModestyRank == 3 
+		If TopModestyTimer[3] >= UpgradeTime && Config.ShamelessCanBePermanent == True
+			PlayerRef.SetFactionRank(TopModestyFaction, 4)
+			TopModestyRankChange(True, 4)
+		ElseIf TopModestyTimer[3] > UpgradeTime
+			TopModestyTimer[3] = UpgradeTime
+		EndIf
+	EndIf
+EndFunction
+
+Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowingChest, Bool IsTopless)
+	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	
+	If TopModestyRank <= 0 && (IsShowingBra == False && IsShowingChest == False)
+		Int Index = 0
+		While Index < 4
+			TopModestyTimer[Index] = TopModestyTimer[Index] - 1
+			
+			If TopModestyTimer[Index] < 0
+				TopModestyTimer[Index] = 0
+			EndIf
+			Index += 1
+		EndWhile
+	ElseIf TopModestyRank == 1 && (IsShowingBra == False && IsShowingChest == False)
+		TopModestyTimer[1] = TopModestyTimer[1] - 1
+		TopModestyTimer[2] = TopModestyTimer[2] - 1
+		TopModestyTimer[3] = TopModestyTimer[3] - 1
+	ElseIf TopModestyRank == 2 && IsShowingChest == False
+		TopModestyTimer[2] = TopModestyTimer[2] - 1
+		TopModestyTimer[3] = TopModestyTimer[3] - 1
+	ElseIf TopModestyRank == 3 && IsTopless == False
+		TopModestyTimer[3] = TopModestyTimer[3] - 1
+	Else
+		Debug.Trace("Advanced Nudity Detection: Could not upgrade nor downgrade Top Modesty.")
+		return
+	EndIf
+	
+	If TopModestyRank == 1
+		If TopModestyTimer[1] <= DowngradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 0)
+			TopModestyRankChange(False, 0)
+		EndIf
+	ElseIf TopModestyRank == 2
+		If TopModestyTimer[2] <= DowngradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 1)
+			TopModestyRankChange(False, 1)
+		EndIf
+	ElseIf TopModestyRank == 3
+		If TopModestyTimer[3] <= DowngradeTime
+			PlayerRef.SetFactionRank(TopModestyFaction, 2)
+			TopModestyRankChange(False, 2)
+		EndIf
+	EndIf
+EndFunction
+
+Function BottomModestyUpgrade()
+	Int BottomModestyRank = PlayerRef.GetFactionRank(BottomModestyFaction)
+	
+	Int UpgradeTime = Config.ImmodestyTimeNeeded
+	
+	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
+	Bool IsShowingGenitals = PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
+	Bool IsBottomless = PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
+	
+	If BottomModestyRank >= 4
+		return
+	Else
+		If BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
+			BottomModestyTimer[0] = BottomModestyTimer[0] + 1
+		ElseIf BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)
+			BottomModestyTimer[1] = BottomModestyTimer[1] + 1
+		ElseIf BottomModestyRank <= 2 && IsShowingGenitals == True
+			BottomModestyTimer[2] = BottomModestyTimer[2] + 1
+		ElseIf BottomModestyRank <= 3 && IsBottomless == True
+			BottomModestyTimer[3] = BottomModestyTimer[3] + 1
+		Else
+			BottomModestyDowngrade(BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless)
+			return
+		EndIf
+	EndIf
+	
+	If BottomModestyRank <= 0
+		If BottomModestyTimer[0] >= UpgradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 1)
+			BottomModestyRankChange(True, 1)
+		ElseIf BottomModestyTimer[1] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 1)
+			BottomModestyRankChange(True, 1)
+		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 4)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 1)
+			BottomModestyRankChange(True, 1)
+		ElseIf BottomModestyTimer[3] >= (UpgradeTime * 8)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 1)
+			BottomModestyRankChange(True, 1)
+		EndIf
+	ElseIf BottomModestyRank == 1
+		If BottomModestyTimer[1] >= UpgradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 2)
+			BottomModestyRankChange(True, 2)
+		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 2)
+			BottomModestyRankChange(True, 2)
+		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 4)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 2)
+			BottomModestyRankChange(True, 2)
+		EndIf
+	ElseIf BottomModestyRank == 2
+		If BottomModestyTimer[2] >= UpgradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 3)
+			BottomModestyRankChange(True, 3)
+		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 2)
+			PlayerRef.SetFactionRank(BottomModestyFaction, 3)
+			BottomModestyRankChange(True, 3)
+		EndIf
+	ElseIf BottomModestyRank == 3 && Config.ShamelessCanBePermanent == True
+		If BottomModestyTimer[3] >= UpgradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 4)
+			BottomModestyRankChange(True, 4)
+		EndIf
+	EndIf
+EndFunction
+
+Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, Bool IsShowingGenitals, Bool IsBottomless)
+	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	
+	If BottomModestyRank <= 0 && (IsShowingUnderwear == False && IsShowingGenitals == False && IsBottomless == False)
+		Int Index = 0
+		While Index < 4
+			BottomModestyTimer[Index] = BottomModestyTimer[Index] - 1
+			
+			If BottomModestyTimer[Index] < 0
+				BottomModestyTimer[Index] = 0
+			EndIf
+			Index += 1
+		EndWhile
+	ElseIf BottomModestyRank == 1 && (IsShowingGenitals == False && IsBottomless == False)
+		BottomModestyTimer[1] = BottomModestyTimer[1] - 1
+	ElseIf BottomModestyRank == 2 && IsShowingGenitals == False
+		BottomModestyTimer[2] = BottomModestyTimer[2] - 1
+	ElseIf BottomModestyRank == 3 && IsBottomless == False
+		BottomModestyTimer[3] = BottomModestyTimer[3] - 1
+	EndIf
+	
+	If BottomModestyRank == 1
+		If BottomModestyTimer[1] <= DowngradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 0)
+			BottomModestyRankChange(False, 0)
+		EndIf
+	ElseIf BottomModestyRank == 2
+		If BottomModestyTimer[2] <= DowngradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 1)
+			BottomModestyRankChange(False, 1)
+		EndIf
+	ElseIf BottomModestyRank == 3
+		If BottomModestyTimer[3] <= DowngradeTime
+			PlayerRef.SetFactionRank(BottomModestyFaction, 2)
+			BottomModestyRankChange(False, 2)
+		EndIf
+	EndIf
+EndFunction
 
 Function ModestyUpgrade()
 	Int ModestyRank = PlayerRef.GetFactionRank(ModestyFaction)
+	
+	Int UpgradeTime = Config.ImmodestyTimeNeeded
+	Int ShamelessTime = UpgradeTime * 2
+	
+	Bool IsShowingBra = PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
+	Bool IsShowingChest = PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
+	Bool IsTopless = PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
+	
+	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
+	Bool IsShowingGenitals = PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
+	Bool IsBottomless = PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
+	
+	Bool IsNude = PlayerRef.GetFactionRank(AND_Main.AND_NudeActorFaction) as Bool
 	
 	If Config.MinimumModestyRank > ModestyRank
 		RankJump(Config.MinimumModestyRank)
 	EndIf
 	
 	If ModestyRank <= 0
-		If PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 0
-			If ModestyTimer[0] < Config.ImmodestyTimeNeeded
+		If IsShowingBra == True && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
+			If ModestyTimer[0] < UpgradeTime
 				ModestyTimer[0] = ModestyTimer[0] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 1)
@@ -58,85 +319,106 @@ Function ModestyUpgrade()
 		EndIf
 		
 	ElseIf ModestyRank == 1
-		If PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 0
-			If ModestyTimer[1] < Config.ImmodestyTimeNeeded
+		If IsShowingUnderwear == True && IsShowingGenitals == False && IsShowingChest == False
+			If ModestyTimer[1] < UpgradeTime
 				ModestyTimer[1] = ModestyTimer[1] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 2)
 				ModestyRankChange(True, 2)
 			EndIf
-		ElseIf PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) == 0 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 0
+		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			ModestyDowngrade(1)
 		EndIf
 	
 	ElseIf ModestyRank == 2
-		If PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) == 0
-			If ModestyTimer[2] < Config.ImmodestyTimeNeeded
+		If IsShowingChest == True && IsTopless == False && IsShowingGenitals == False
+			If ModestyTimer[2] < UpgradeTime
 				ModestyTimer[2] = ModestyTimer[2] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 3)
 				ModestyRankChange(True, 3)
 			EndIf
-		ElseIf PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) == 0 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 0
+		ElseIf IsShowingUnderwear == False && IsShowingGenitals == False && IsShowingChest == False
 			ModestyDowngrade(2)
 		EndIf
 		
 	ElseIf ModestyRank == 3
-		If PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) == 0
-			If ModestyTimer[3] < Config.ImmodestyTimeNeeded
+		If IsShowingGenitals == True && IsBottomless == False && IsTopless == False
+			If ModestyTimer[3] < UpgradeTime
 				ModestyTimer[3] = ModestyTimer[3] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 4)
 				ModestyRankChange(True, 4)
 			EndIf
-		ElseIf PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 0
+		ElseIf IsShowingChest == False && IsShowingGenitals == False
 			ModestyDowngrade(3)
 		EndIf
 		
 	ElseIf ModestyRank == 4
-		If PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) == 0
-			If ModestyTimer[4] < Config.ImmodestyTimeNeeded
+		If IsTopless == True && IsBottomless == False
+			If ModestyTimer[4] < UpgradeTime
 				ModestyTimer[4] = ModestyTimer[4] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 5)
 				ModestyRankChange(True, 5)
 			EndIf
-		ElseIf PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 0
+		ElseIf IsShowingGenitals == False && IsTopless == False
 			ModestyDowngrade(4)
 		EndIf
 		
 	ElseIf ModestyRank == 5
-		If PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) == 1
-			If ModestyTimer[5] < Config.ImmodestyTimeNeeded
+		If IsBottomless == True
+			If ModestyTimer[5] < UpgradeTime
 				ModestyTimer[5] = ModestyTimer[5] + 1
 			Else
 				PlayerRef.SetFactionRank(ModestyFaction, 6)
 				ModestyRankChange(True, 6)
 			EndIf
-		ElseIf PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) == 0
+		ElseIf IsTopless == False
 			ModestyDowngrade(5)
 		EndIf
 		
-	ElseIf ModestyRank >= 6
-		If PlayerRef.GetFactionRank(AND_Main.AND_NudeActorFaction) == 0
+	ElseIf ModestyRank == 6
+		If IsNude == False
 			ModestyDowngrade(6)
-		ElseIf ModestyTimer[6] < (Config.ImmodestyTimeNeeded * 2)
+		ElseIf ModestyTimer[6] < ShamelessTime
 			ModestyTimer[6] = ModestyTimer[6] + 1
-		ElseIf ModestyTimer[6] == (Config.ImmodestyTimeNeeded * 2) && Config.ShamelessCanBePermanent == True
-			PermanentShameless = True
+		ElseIf ModestyTimer[6] >= ShamelessTime && Config.ShamelessCanBePermanent == True
+			;PermanentShameless = True
 			ModestyRankChange(True, 7)
+		EndIf
+	ElseIf ModestyRank >= 7
+		If ModestyTimer[6] > ShamelessTime
+			ModestyTimer[6] = ShamelessTime
 		EndIf
 	EndIf
 EndFunction
 
 Function ModestyDowngrade(Int FactionRank)
-	If PermanentShameless == True && PlayerRef.GetFactionRank(ModestyFaction) == 7
+	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	Int FactionRankDown = FactionRank - 1
+
+	If PlayerRef.GetFactionRank(ModestyFaction) == 7 ;PermanentShameless == True && PlayerRef.GetFactionRank(ModestyFaction) == 7
 		return
 	EndIf
 	
 	If PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) == 0 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) == 0\ 
 	&& PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 0 && PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 0
 		
+		If Config.MinimumModestyRank < FactionRank
+			If ModestyTimer[FactionRank] > 0
+				ModestyTimer[FactionRank] = ModestyTimer[FactionRank] - 1
+			Else
+				ModestyTimer[FactionRankDown] = ModestyTimer[FactionRankDown] - 1
+				
+				If ModestyTimer[FactionRankDown] <= (Config.ImmodestyTimeNeeded / 2)
+					PlayerRef.SetFactionRank(ModestyFaction, FactionRankDown)
+					ModestyRankChange(False, FactionRankDown)
+				EndIf
+			EndIf
+		EndIf
+		
+		;/
 		If FactionRank >= 6
 			If ModestyTimer[6] > 0
 				ModestyTimer[6] = ModestyTimer[6] - 1
@@ -209,7 +491,75 @@ Function ModestyDowngrade(Int FactionRank)
 				EndIf
 			EndIf
 		EndIf
-		
+		/;
+	EndIf
+EndFunction
+
+Function TopModestyRankChange(Bool IsRankUpgrade, Int Rank)
+	TopModestyTimer[0] = 0
+	TopModestyTimer[1] = 0
+	TopModestyTimer[2] = 0
+	TopModestyTimer[3] = 0
+	
+	If IsRankUpgrade == True
+		If Rank == 1
+			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 1 (Comfortable)")
+			Debug.MessageBox("Plenty of women show their cleavage. Why would anyone care that I do too?")
+		ElseIf Rank == 2
+			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 2 (Bold)")
+			Debug.MessageBox("I mean, I'm not going to just walk around completely topless, but I don't mind if anyone gets a peek at my boobs.")
+		ElseIf Rank == 3
+			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 3 (Shameless)")
+			Debug.MessageBox("Go ahead, look at my tits! If I wanted to cover them I wouldn't be topless.")
+		ElseIf Rank == 4
+			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 4 (Permanently Shameless)")
+			Debug.MessageBox("Chest, Breast, Pectoral. Same things in different forms. It doesn't matter if you stare or squeeze, I couldn't care less.")
+		EndIf
+	Else
+		If Rank == 0
+			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 0 (Modest)")
+			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
+		ElseIf Rank == 1
+			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 1 (Comfortable)")
+			Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
+		ElseIf Rank == 2
+			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 2 (Bold)")
+			Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")
+		EndIf
+	EndIf
+EndFunction
+
+Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
+	BottomModestyTimer[0] = 0
+	BottomModestyTimer[1] = 0
+	BottomModestyTimer[2] = 0
+	BottomModestyTimer[3] = 0
+	
+	If IsRankUpgrade == True
+		If Rank == 1
+			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 1 (Comfortable)")
+			Debug.MessageBox("Plenty of women show their cleavage. Why would anyone care that I do too?")
+		ElseIf Rank == 2
+			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 2 (Bold)")
+			Debug.MessageBox("I mean, I'm not going to just walk around completely topless, but I don't mind if anyone gets a peek at my boobs.")
+		ElseIf Rank == 3
+			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 3 (Shameless)")
+			Debug.MessageBox("Go ahead, look at my tits! If I wanted to cover them I wouldn't be topless.")
+		ElseIf Rank == 4
+			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 4 (Permanently Shameless)")
+			Debug.MessageBox("Chest, Breast, Pectoral. Same things in different forms. It doesn't matter if you stare or squeeze, I couldn't care less.")
+		EndIf
+	Else
+		If Rank == 0
+			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 0 (Modest)")
+			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
+		ElseIf Rank == 1
+			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 1 (Comfortable)")
+			Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
+		ElseIf Rank == 2
+			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 2 (Bold)")
+			Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")
+		EndIf
 	EndIf
 EndFunction
 
@@ -261,7 +611,7 @@ Function ModestyRankChange(Bool IsRankUpgrade, Int Rank)
 EndFunction
 
 ;/
-Modesty Faction Ranks
+Modesty Faction Ranks (Strict Mode)
 
 0 = Modest (Bra & Underwear will be covered)
 1 = Reasonable (Bra not covered)
@@ -370,4 +720,12 @@ Function TimerUpdate(Int NewTimeNeeded)
 		ModestyTimer[4] = NewTimeNeeded
 		ModestyTimer[5] = NewTimeNeeded
 	EndIf
+EndFunction
+
+Function TopRankJump(Int Rank)
+	PlayerRef.SetFactionRank(TopModestyFaction, Rank)
+EndFunction
+
+Function BottomRankJump(Int Rank)
+	PlayerRef.SetFactionRank(BottomModestyFaction, Rank)
 EndFunction

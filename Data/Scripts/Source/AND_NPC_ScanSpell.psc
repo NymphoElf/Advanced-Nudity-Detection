@@ -33,19 +33,26 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		AND_FemaleScan.AND_LayerAnalyze(akTarget)
 	EndIf
 	
-	If TargetSex == 1 && !akTarget.IsInFaction(ModestyFaction)
-		Int Confidence = akTarget.GetActorValue("Confidence") as Int
-		
-		akTarget.AddToFaction(ModestyFaction)
-		
-		If Confidence <= 1
-			akTarget.SetFactionRank(ModestyFaction, 0) ;Modest
-		ElseIf Confidence == 2
-			akTarget.SetFactionRank(ModestyFaction, 2) ;Relaxed
-		ElseIf Confidence == 3
-			akTarget.SetFactionRank(ModestyFaction, 4) ;Tease
-		ElseIf Confidence >= 4
-			akTarget.SetFactionRank(ModestyFaction, 6) ;Shameless
+	If AND_Config.UseDynamicModesty == True
+		If TargetSex == 1 && !akTarget.IsInFaction(ModestyFaction)
+			Int Confidence = akTarget.GetActorValue("Confidence") as Int
+			
+			akTarget.AddToFaction(ModestyFaction)
+			
+			If Confidence <= 1
+				akTarget.SetFactionRank(ModestyFaction, 0) ;Modest
+			ElseIf Confidence == 2
+				akTarget.SetFactionRank(ModestyFaction, 2) ;Relaxed
+			ElseIf Confidence == 3
+				akTarget.SetFactionRank(ModestyFaction, 4) ;Tease
+			ElseIf Confidence >= 4
+				akTarget.SetFactionRank(ModestyFaction, 6) ;Shameless
+			EndIf
+		EndIf
+	Else
+		If TargetSex == 1 && akTarget.IsInFaction(ModestyFaction)
+			akTarget.RemoveFromFaction(ModestyFaction)
 		EndIf
 	EndIf
 EndEvent
+
