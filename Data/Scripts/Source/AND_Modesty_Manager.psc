@@ -266,6 +266,9 @@ Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, 
 		BottomModestyTimer[2] = BottomModestyTimer[2] - 1
 	ElseIf BottomModestyRank == 3 && IsBottomless == False
 		BottomModestyTimer[3] = BottomModestyTimer[3] - 1
+	Else
+		Debug.Trace("Advanced Nudity Detection: Could not upgrade nor downgrade Bottom Modesty.")
+		return
 	EndIf
 	
 	If BottomModestyRank == 1
@@ -417,81 +420,6 @@ Function ModestyDowngrade(Int FactionRank)
 				EndIf
 			EndIf
 		EndIf
-		
-		;/
-		If FactionRank >= 6
-			If ModestyTimer[6] > 0
-				ModestyTimer[6] = ModestyTimer[6] - 1
-			Else
-				ModestyTimer[5] = ModestyTimer[5] - 1
-				
-				If ModestyTimer[5] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 5)
-					ModestyRankChange(False, 5)
-				EndIf
-			EndIf
-		
-		ElseIf FactionRank == 5 && Config.MinimumModestyRank < 5
-			If ModestyTimer[5] > 0
-				ModestyTimer[5] = ModestyTimer[5] - 1
-			Else
-				ModestyTimer[4] = ModestyTimer[4] - 1
-				
-				If ModestyTimer[4] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 4)
-					ModestyRankChange(False, 4)
-				EndIf
-			EndIf
-		
-		ElseIf FactionRank == 4 && Config.MinimumModestyRank < 4
-			If ModestyTimer[4] > 0
-				ModestyTimer[4] = ModestyTimer[4] - 1
-			Else
-				ModestyTimer[3] = ModestyTimer[3] - 1
-				
-				If ModestyTimer[3] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 3)
-					ModestyRankChange(False, 3)
-				EndIf
-			EndIf
-		
-		ElseIf FactionRank == 3 && Config.MinimumModestyRank < 3
-			If ModestyTimer[3] > 0
-				ModestyTimer[3] = ModestyTimer[3] - 1
-			Else
-				ModestyTimer[2] = ModestyTimer[2] - 1
-				
-				If ModestyTimer[2] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 2)
-					ModestyRankChange(False, 2)
-				EndIf
-			EndIf
-		
-		ElseIf FactionRank == 2 && Config.MinimumModestyRank < 2
-			If ModestyTimer[2] > 0
-				ModestyTimer[2] = ModestyTimer[2] - 1
-			Else
-				ModestyTimer[1] = ModestyTimer[1] - 1
-				
-				If ModestyTimer[1] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 1)
-					ModestyRankChange(False, 1)
-				EndIf
-			EndIf
-		
-		ElseIf FactionRank == 1 && Config.MinimumModestyRank < 1
-			If ModestyTimer[1] > 0
-				ModestyTimer[1] = ModestyTimer[1] - 1
-			Else
-				ModestyTimer[0] = ModestyTimer[0] - 1
-				
-				If ModestyTimer[0] <= (Config.ImmodestyTimeNeeded / 2)
-					PlayerRef.SetFactionRank(ModestyFaction, 0)
-					ModestyRankChange(False, 0)
-				EndIf
-			EndIf
-		EndIf
-		/;
 	EndIf
 EndFunction
 
@@ -538,16 +466,16 @@ Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	If IsRankUpgrade == True
 		If Rank == 1
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("Plenty of women show their cleavage. Why would anyone care that I do too?")
+			Debug.MessageBox("Showing a little leg never hurt anybody.")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 2 (Bold)")
-			Debug.MessageBox("I mean, I'm not going to just walk around completely topless, but I don't mind if anyone gets a peek at my boobs.")
+			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 3
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 3 (Shameless)")
-			Debug.MessageBox("Go ahead, look at my tits! If I wanted to cover them I wouldn't be topless.")
+			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 4
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 4 (Permanently Shameless)")
-			Debug.MessageBox("Chest, Breast, Pectoral. Same things in different forms. It doesn't matter if you stare or squeeze, I couldn't care less.")
+			Debug.MessageBox("[WIP]")
 		EndIf
 	Else
 		If Rank == 0
@@ -555,7 +483,7 @@ Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
 			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
 		ElseIf Rank == 1
 			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
+			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 2 (Bold)")
 			Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")

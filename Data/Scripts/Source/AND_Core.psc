@@ -9,6 +9,7 @@ AND_Modesty_Manager Property ModestyManager Auto
 SLSF_Reloaded_MCM Property SLSFR_Config Auto Hidden
 SLSF_Reloaded_ModIntegration Property SLSFR_Mods Auto Hidden
 
+Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto Hidden
 
 Bool Property MainRollRunning Auto Hidden
@@ -193,6 +194,7 @@ GlobalVariable Property AND_DebugMode Auto
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
 Bool Property BARE_Found Auto Hidden
+Bool Property RosaExists Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
@@ -253,6 +255,14 @@ Function ModCheck()
 		BARE_Found = True
 	Else
 		BARE_Found = False
+	EndIf
+	
+	If Game.GetModByName("RosaFollower.esp") != 255
+		RosaExists = True
+		Rosa = Game.GetFormFromFile(0xD62, "RosaFollower.esp") as Actor
+	Else
+		RosaExists = False
+		Rosa = None
 	EndIf
 EndFunction
 
