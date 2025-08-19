@@ -34,6 +34,10 @@ Function Startup()
 	PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
 	PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
 	PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
+	PlayerRef.AddToFaction(ModestyManager.TopModestyFaction)
+	PlayerRef.SetFactionRank(ModestyManager.TopModestyFaction, 0)
+	PlayerRef.AddToFaction(ModestyManager.BottomModestyFaction)
+	PlayerRef.SetFactionRank(ModestyManager.BottomModestyFaction, 0)
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")
@@ -45,15 +49,21 @@ EndFunction
 Event OnPlayerLoadGame()
 	AND_Main.ModCheck()
 	
-	If (AND_Main.DFFMA_Found == True || AND_Main.BARE_Found == True) && PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
-		PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
-		PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
+	If (AND_Main.DFFMA_Found == True || AND_Main.BARE_Found == True)
+		If PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
+			PlayerRef.AddToFaction(ModestyManager.ModestyFaction)
+			PlayerRef.SetFactionRank(ModestyManager.ModestyFaction, 0)
+		EndIf
 		
-		PlayerRef.AddToFaction(ModestyManager.TopModestyFaction)
-		PlayerRef.SetFactionRank(ModestyManager.TopModestyFaction, 0)
+		If PlayerRef.IsInFaction(ModestyManager.TopModestyFaction) == False
+			PlayerRef.AddToFaction(ModestyManager.TopModestyFaction)
+			PlayerRef.SetFactionRank(ModestyManager.TopModestyFaction, 0)
+		EndIf
 		
-		PlayerRef.AddToFaction(ModestyManager.BottomModestyFaction)
-		PlayerRef.SetFactionRank(ModestyManager.BottomModestyFaction, 0)
+		If PlayerRef.IsInFaction(ModestyManager.BottomModestyFaction) == False
+			PlayerRef.AddToFaction(ModestyManager.BottomModestyFaction)
+			PlayerRef.SetFactionRank(ModestyManager.BottomModestyFaction, 0)
+		EndIf
 	EndIf
 	
 	ModEventListener.InitializeModEvents()

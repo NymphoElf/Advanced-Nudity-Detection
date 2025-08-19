@@ -5,169 +5,202 @@ AND_PlayerScript Property PlayerScript Auto
 AND_Modesty_Manager Property ModestyManager Auto 
 AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
+AND_NPC_Modesty_Manager Property NPCModesty Auto
+AND_ModestyRandomizer Property ModestyRandomizer Auto
 
 Actor Property PlayerRef Auto
 
-Int Property TopCurtainOddsLow Auto Hidden
-Int Property TopCurtainOdds Auto Hidden
-Int Property TopCurtainOddsHigh Auto Hidden
-Int Property TopCurtainOddsExtreme Auto Hidden
-Int Property TopCurtainOddsUltra Auto Hidden
-Int Property TransparentTopCurtainOddsLow Auto Hidden
-Int Property TransparentTopCurtainOdds Auto Hidden
-Int Property TransparentTopCurtainOddsHigh Auto Hidden
-Int Property TransparentTopCurtainOddsExtreme Auto Hidden
-Int Property TransparentTopCurtainOddsUltra Auto Hidden
-Int Property PelvicCurtainOddsLow Auto Hidden
-Int Property PelvicCurtainOdds Auto Hidden
-Int Property PelvicCurtainOddsHigh Auto Hidden
-Int Property PelvicCurtainOddsExtreme Auto Hidden
-Int Property PelvicCurtainOddsUltra Auto Hidden
-Int Property TransparentPelvicCurtainOddsLow Auto Hidden
-Int Property TransparentPelvicCurtainOdds Auto Hidden
-Int Property TransparentPelvicCurtainOddsHigh Auto Hidden
-Int Property TransparentPelvicCurtainOddsExtreme Auto Hidden
-Int Property TransparentPelvicCurtainOddsUltra Auto Hidden
-Int Property AssCurtainOddsLow Auto Hidden
-Int Property AssCurtainOdds Auto Hidden
-Int Property AssCurtainOddsHigh Auto Hidden
-Int Property AssCurtainOddsExtreme Auto Hidden
-Int Property AssCurtainOddsUltra Auto Hidden
-Int Property TransparentAssCurtainOddsLow Auto Hidden
-Int Property TransparentAssCurtainOdds Auto Hidden
-Int Property TransparentAssCurtainOddsHigh Auto Hidden
-Int Property TransparentAssCurtainOddsExtreme Auto Hidden
-Int Property TransparentAssCurtainOddsUltra Auto Hidden
-Int Property CStringOdds Auto Hidden
-Int Property TransparentCStringOdds Auto Hidden
-Int Property TransparentCStringOdds_Low Auto Hidden
-Int Property TransparentCStringOdds_High Auto Hidden
-Int Property TransparentTopArmorOdds Auto Hidden
-Int Property TransparentTopArmorOdds_Low Auto Hidden
-Int Property TransparentTopArmorOdds_High Auto Hidden
-Int Property TransparentBottomArmorOdds Auto Hidden
-Int Property TransparentBottomArmorOdds_Low Auto Hidden
-Int Property TransparentBottomArmorOdds_High Auto Hidden
-Int Property TransparentBraOdds Auto Hidden
-Int Property TransparentBraOdds_Low Auto Hidden
-Int Property TransparentBraOdds_High Auto Hidden
-Int Property TransparentUnderwearOdds Auto Hidden
-Int Property TransparentUnderwearOdds_Low Auto Hidden
-Int Property TransparentUnderwearOdds_High Auto Hidden
-Int Property TransparentHotpantsOdds Auto Hidden
-Int Property TransparentHotpantsOdds_Low Auto Hidden
-Int Property TransparentHotpantsOdds_High Auto Hidden
-Int Property TransparentShowgirlSkirtOdds Auto Hidden
-Int Property TransparentShowgirlSkirtOdds_Low Auto Hidden
-Int Property TransparentShowgirlSkirtOdds_High Auto Hidden
+Int Property TopCurtainOddsLow = 20 Auto Hidden
+Int Property TopCurtainOdds = 35 Auto Hidden
+Int Property TopCurtainOddsHigh = 50 Auto Hidden
+Int Property TopCurtainOddsExtreme = 65 Auto Hidden
+Int Property TopCurtainOddsUltra = 80 Auto Hidden
 
-Int Property TopCurtainOddsLow_Male Auto Hidden
-Int Property TopCurtainOdds_Male Auto Hidden
-Int Property TopCurtainOddsHigh_Male Auto Hidden
-Int Property TopCurtainOddsExtreme_Male Auto Hidden
-Int Property TopCurtainOddsUltra_Male Auto Hidden
-Int Property TransparentTopCurtainOddsLow_Male Auto Hidden
-Int Property TransparentTopCurtainOdds_Male Auto Hidden
-Int Property TransparentTopCurtainOddsHigh_Male Auto Hidden
-Int Property TransparentTopCurtainOddsExtreme_Male Auto Hidden
-Int Property TransparentTopCurtainOddsUltra_Male Auto Hidden
-Int Property PelvicCurtainOddsLow_Male Auto Hidden
-Int Property PelvicCurtainOdds_Male Auto Hidden
-Int Property PelvicCurtainOddsHigh_Male Auto Hidden
-Int Property PelvicCurtainOddsExtreme_Male Auto Hidden
-Int Property PelvicCurtainOddsUltra_Male Auto Hidden
-Int Property TransparentPelvicCurtainOddsLow_Male Auto Hidden
-Int Property TransparentPelvicCurtainOdds_Male Auto Hidden
-Int Property TransparentPelvicCurtainOddsHigh_Male Auto Hidden
-Int Property TransparentPelvicCurtainOddsExtreme_Male Auto Hidden
-Int Property TransparentPelvicCurtainOddsUltra_Male Auto Hidden
-Int Property AssCurtainOddsLow_Male Auto Hidden
-Int Property AssCurtainOdds_Male Auto Hidden
-Int Property AssCurtainOddsHigh_Male Auto Hidden
-Int Property AssCurtainOddsExtreme_Male Auto Hidden
-Int Property AssCurtainOddsUltra_Male Auto Hidden
-Int Property TransparentAssCurtainOddsLow_Male Auto Hidden
-Int Property TransparentAssCurtainOdds_Male Auto Hidden
-Int Property TransparentAssCurtainOddsHigh_Male Auto Hidden
-Int Property TransparentAssCurtainOddsExtreme_Male Auto Hidden
-Int Property TransparentAssCurtainOddsUltra_Male Auto Hidden
-Int Property CStringOdds_Male Auto Hidden
-Int Property TransparentCStringOdds_Male Auto Hidden
-Int Property TransparentCStringOdds_Low_Male Auto Hidden
-Int Property TransparentCStringOdds_High_Male Auto Hidden
-Int Property TransparentTopArmorOdds_Male Auto Hidden
-Int Property TransparentTopArmorOdds_Low_Male Auto Hidden
-Int Property TransparentTopArmorOdds_High_Male Auto Hidden
-Int Property TransparentBottomArmorOdds_Male Auto Hidden
-Int Property TransparentBottomArmorOdds_Low_Male Auto Hidden
-Int Property TransparentBottomArmorOdds_High_Male Auto Hidden
-Int Property TransparentBraOdds_Male Auto Hidden
-Int Property TransparentBraOdds_Low_Male Auto Hidden
-Int Property TransparentBraOdds_High_Male Auto Hidden
-Int Property TransparentUnderwearOdds_Male Auto Hidden
-Int Property TransparentUnderwearOdds_Low_Male Auto Hidden
-Int Property TransparentUnderwearOdds_High_Male Auto Hidden
-Int Property TransparentHotpantsOdds_Male Auto Hidden
-Int Property TransparentHotpantsOdds_Low_Male Auto Hidden
-Int Property TransparentHotpantsOdds_High_Male Auto Hidden
-Int Property TransparentShowgirlSkirtOdds_Male Auto Hidden
-Int Property TransparentShowgirlSkirtOdds_Low_Male Auto Hidden
-Int Property TransparentShowgirlSkirtOdds_High_Male Auto Hidden
+Int Property TransparentTopCurtainOddsLow = 55 Auto Hidden
+Int Property TransparentTopCurtainOdds = 65 Auto Hidden
+Int Property TransparentTopCurtainOddsHigh = 75 Auto Hidden
+Int Property TransparentTopCurtainOddsExtreme = 85 Auto Hidden
+Int Property TransparentTopCurtainOddsUltra = 95 Auto Hidden
 
-Bool Property GenderlessWording Auto Hidden
-Bool Property AllowMotionFlash Auto Hidden
-Bool Property DisableNakedComments Auto Hidden
-Bool Property UseDynamicModesty Auto Hidden
-Bool Property ShamelessCanBePermanent Auto Hidden
+Int Property PelvicCurtainOddsLow = 20 Auto Hidden
+Int Property PelvicCurtainOdds = 35 Auto Hidden
+Int Property PelvicCurtainOddsHigh = 50 Auto Hidden
+Int Property PelvicCurtainOddsExtreme = 65 Auto Hidden
+Int Property PelvicCurtainOddsUltra = 80 Auto Hidden
 
-Bool Property Rank1Jump Auto Hidden
-Bool Property Rank2Jump Auto Hidden
-Bool Property Rank3Jump Auto Hidden
-Bool Property Rank4Jump Auto Hidden
-Bool Property Rank5Jump Auto Hidden
-Bool Property Rank6Jump Auto Hidden
+Int Property TransparentPelvicCurtainOddsLow = 55 Auto Hidden
+Int Property TransparentPelvicCurtainOdds = 65 Auto Hidden
+Int Property TransparentPelvicCurtainOddsHigh = 75 Auto Hidden
+Int Property TransparentPelvicCurtainOddsExtreme = 85 Auto Hidden
+Int Property TransparentPelvicCurtainOddsUltra = 95 Auto Hidden
 
-Bool Property TopRank1Jump Auto Hidden
-Bool Property TopRank2Jump Auto Hidden
-Bool Property TopRank3Jump Auto Hidden
+Int Property AssCurtainOddsLow = 20 Auto Hidden
+Int Property AssCurtainOdds = 35 Auto Hidden
+Int Property AssCurtainOddsHigh = 50 Auto Hidden
+Int Property AssCurtainOddsExtreme = 65 Auto Hidden
+Int Property AssCurtainOddsUltra = 80 Auto Hidden
 
-Bool Property BottomRank1Jump Auto Hidden
-Bool Property BottomRank2Jump Auto Hidden
-Bool Property BottomRank3Jump Auto Hidden
+Int Property TransparentAssCurtainOddsLow = 55 Auto Hidden
+Int Property TransparentAssCurtainOdds = 65 Auto Hidden
+Int Property TransparentAssCurtainOddsHigh = 75 Auto Hidden
+Int Property TransparentAssCurtainOddsExtreme = 85 Auto Hidden
+Int Property TransparentAssCurtainOddsUltra = 95 Auto Hidden
 
-Bool Property ResetModesty Auto Hidden
+Int Property CStringOdds = 60 Auto Hidden
+
+Int Property TransparentCStringOdds = 80 Auto Hidden
+Int Property TransparentCStringOdds_Low = 70 Auto Hidden
+Int Property TransparentCStringOdds_High = 90 Auto Hidden
+
+Int Property TransparentTopArmorOdds = 50 Auto Hidden
+Int Property TransparentTopArmorOdds_Low = 30 Auto Hidden
+Int Property TransparentTopArmorOdds_High = 70 Auto Hidden
+
+Int Property TransparentBottomArmorOdds = 50 Auto Hidden
+Int Property TransparentBottomArmorOdds_Low = 30 Auto Hidden
+Int Property TransparentBottomArmorOdds_High = 70 Auto Hidden
+
+Int Property TransparentBraOdds = 50 Auto Hidden
+Int Property TransparentBraOdds_Low = 30 Auto Hidden
+Int Property TransparentBraOdds_High = 70 Auto Hidden
+
+Int Property TransparentUnderwearOdds = 50 Auto Hidden
+Int Property TransparentUnderwearOdds_Low = 30 Auto Hidden
+Int Property TransparentUnderwearOdds_High = 70 Auto Hidden
+
+Int Property TransparentHotpantsOdds = 50 Auto Hidden
+Int Property TransparentHotpantsOdds_Low = 30 Auto Hidden
+Int Property TransparentHotpantsOdds_High = 70 Auto Hidden
+
+Int Property TransparentShowgirlSkirtOdds = 50 Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_Low = 30 Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_High = 70 Auto Hidden
+
+Int Property TopCurtainOddsLow_Male = 20 Auto Hidden
+Int Property TopCurtainOdds_Male = 35 Auto Hidden
+Int Property TopCurtainOddsHigh_Male = 50 Auto Hidden
+Int Property TopCurtainOddsExtreme_Male = 65 Auto Hidden
+Int Property TopCurtainOddsUltra_Male = 80 Auto Hidden
+
+Int Property TransparentTopCurtainOddsLow_Male = 55 Auto Hidden
+Int Property TransparentTopCurtainOdds_Male = 65 Auto Hidden
+Int Property TransparentTopCurtainOddsHigh_Male = 75 Auto Hidden
+Int Property TransparentTopCurtainOddsExtreme_Male = 85 Auto Hidden
+Int Property TransparentTopCurtainOddsUltra_Male = 95 Auto Hidden
+
+Int Property PelvicCurtainOddsLow_Male = 20 Auto Hidden
+Int Property PelvicCurtainOdds_Male = 35 Auto Hidden
+Int Property PelvicCurtainOddsHigh_Male = 50 Auto Hidden
+Int Property PelvicCurtainOddsExtreme_Male = 65 Auto Hidden
+Int Property PelvicCurtainOddsUltra_Male = 80 Auto Hidden
+
+Int Property TransparentPelvicCurtainOddsLow_Male = 55 Auto Hidden
+Int Property TransparentPelvicCurtainOdds_Male = 65 Auto Hidden
+Int Property TransparentPelvicCurtainOddsHigh_Male = 75 Auto Hidden
+Int Property TransparentPelvicCurtainOddsExtreme_Male = 85 Auto Hidden
+Int Property TransparentPelvicCurtainOddsUltra_Male = 95 Auto Hidden
+
+Int Property AssCurtainOddsLow_Male = 20 Auto Hidden
+Int Property AssCurtainOdds_Male = 35 Auto Hidden
+Int Property AssCurtainOddsHigh_Male = 50 Auto Hidden
+Int Property AssCurtainOddsExtreme_Male = 65 Auto Hidden
+Int Property AssCurtainOddsUltra_Male = 80 Auto Hidden
+
+Int Property TransparentAssCurtainOddsLow_Male = 55 Auto Hidden
+Int Property TransparentAssCurtainOdds_Male = 65 Auto Hidden
+Int Property TransparentAssCurtainOddsHigh_Male = 75 Auto Hidden
+Int Property TransparentAssCurtainOddsExtreme_Male = 85 Auto Hidden
+Int Property TransparentAssCurtainOddsUltra_Male = 95 Auto Hidden
+
+Int Property CStringOdds_Male = 60 Auto Hidden
+
+Int Property TransparentCStringOdds_Male = 80 Auto Hidden
+Int Property TransparentCStringOdds_Low_Male = 70 Auto Hidden
+Int Property TransparentCStringOdds_High_Male = 90 Auto Hidden
+
+Int Property TransparentTopArmorOdds_Male = 50 Auto Hidden
+Int Property TransparentTopArmorOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentTopArmorOdds_High_Male = 70 Auto Hidden
+
+Int Property TransparentBottomArmorOdds_Male = 50 Auto Hidden
+Int Property TransparentBottomArmorOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentBottomArmorOdds_High_Male = 70 Auto Hidden
+
+Int Property TransparentBraOdds_Male = 50 Auto Hidden
+Int Property TransparentBraOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentBraOdds_High_Male = 70 Auto Hidden
+
+Int Property TransparentUnderwearOdds_Male = 50 Auto Hidden
+Int Property TransparentUnderwearOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentUnderwearOdds_High_Male = 70 Auto Hidden
+
+Int Property TransparentHotpantsOdds_Male = 50 Auto Hidden
+Int Property TransparentHotpantsOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentHotpantsOdds_High_Male = 70 Auto Hidden
+
+Int Property TransparentShowgirlSkirtOdds_Male = 50 Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_Low_Male = 30 Auto Hidden
+Int Property TransparentShowgirlSkirtOdds_High_Male = 70 Auto Hidden
+
+Bool Property GenderlessWording = False Auto Hidden
+Bool Property AllowMotionFlash = True Auto Hidden
+Bool Property DisableNakedComments = False Auto Hidden
+Bool Property UseDynamicModesty = False Auto Hidden
+Bool Property ShamelessCanBePermanent = False Auto Hidden
+
+Bool Property Rank1Jump = False Auto Hidden
+Bool Property Rank2Jump = False Auto Hidden
+Bool Property Rank3Jump = False Auto Hidden
+Bool Property Rank4Jump = False Auto Hidden
+Bool Property Rank5Jump = False Auto Hidden
+Bool Property Rank6Jump = False Auto Hidden
+
+Bool Property TopRank1Jump = False Auto Hidden
+Bool Property TopRank2Jump = False Auto Hidden
+Bool Property TopRank3Jump = False Auto Hidden
+
+Bool Property BottomRank1Jump = False Auto Hidden
+Bool Property BottomRank2Jump = False Auto Hidden
+Bool Property BottomRank3Jump = False Auto Hidden
+
+Bool Property ResetModesty = False Auto Hidden
+Bool Property RandomizePlayer = False Auto Hidden
 
 Bool Property UseHardcoreModesty = False Auto Hidden
 Bool Property HardcoreLockdown = False Auto Hidden
 Bool Property StrictModestyRules = False Auto Hidden
+Bool Property DynamicRosa = False Auto Hidden
+Bool Property ResetRosa = False Auto Hidden
+Bool Property ResetNPCs = False Auto Hidden
+Bool Property DeleteNPCs = False Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
 Bool Property AssCurtain_Cover Auto Hidden
 
-Bool Property ScanNPC Auto Hidden
+Bool Property ScanNPC = True Auto Hidden
 
-Int Property RunningModifier Auto Hidden
-Int Property SprintingModifier Auto Hidden
+Int Property RunningModifier = 10 Auto Hidden
+Int Property SprintingModifier = 20 Auto Hidden
 
-Int Property NudeFactionCommentChance Auto Hidden
-Int Property ToplessFactionCommentChance Auto Hidden
-Int Property BottomlessFactionCommentChance Auto Hidden
-Int Property ChestFactionCommentChance Auto Hidden
-Int Property GenitalsFactionCommentChance Auto Hidden
-Int Property AssFactionCommentChance Auto Hidden
-Int Property BraFactionCommentChance Auto Hidden
-Int Property UnderwearFactionCommentChance Auto Hidden
+Int Property NudeFactionCommentChance = 10 Auto Hidden
+Int Property ToplessFactionCommentChance = 10 Auto Hidden
+Int Property BottomlessFactionCommentChance = 10 Auto Hidden
+Int Property ChestFactionCommentChance = 20 Auto Hidden
+Int Property GenitalsFactionCommentChance = 25 Auto Hidden
+Int Property AssFactionCommentChance = 15 Auto Hidden
+Int Property BraFactionCommentChance = 5 Auto Hidden
+Int Property UnderwearFactionCommentChance = 5 Auto Hidden
 
-Int Property MinimumModestyRank Auto Hidden
-Int Property ImmodestyTimeNeeded Auto Hidden
+Int Property MinimumModestyRank = 0 Auto Hidden
+Int Property ImmodestyTimeNeeded = 168 Auto Hidden
 
 GlobalVariable Property ModestyArousalThreshold Auto
 GlobalVariable Property AND_DynamicModesty Auto
 
 Int[] Property OptionID Auto Hidden
 
-String Property ScanFrequency Auto Hidden
+String Property ScanFrequency = "Normal" Auto Hidden
 
 Event OnConfigInit()
 	Utility.Wait(1)
@@ -176,146 +209,6 @@ Event OnConfigInit()
 EndEvent
 
 Function SetDefaults()
-	TopCurtainOddsLow = 20
-	TopCurtainOdds = 35
-	TopCurtainOddsHigh = 50
-	TopCurtainOddsExtreme = 65
-	TopCurtainOddsUltra = 80
-	TransparentTopCurtainOddsLow = 55
-	TransparentTopCurtainOdds = 65
-	TransparentTopCurtainOddsHigh = 75
-	TransparentTopCurtainOddsExtreme = 85
-	TransparentTopCurtainOddsUltra = 95
-	PelvicCurtainOddsLow = 20
-	PelvicCurtainOdds = 35
-	PelvicCurtainOddsHigh = 50
-	PelvicCurtainOddsExtreme = 65
-	PelvicCurtainOddsUltra = 80
-	TransparentPelvicCurtainOddsLow = 55
-	TransparentPelvicCurtainOdds = 65
-	TransparentPelvicCurtainOddsHigh = 75
-	TransparentPelvicCurtainOddsExtreme = 85
-	TransparentPelvicCurtainOddsUltra = 95
-	AssCurtainOddsLow = 20
-	AssCurtainOdds = 35
-	AssCurtainOddsHigh = 50
-	AssCurtainOddsExtreme = 65
-	AssCurtainOddsUltra = 80
-	TransparentAssCurtainOddsLow = 55
-	TransparentAssCurtainOdds = 65
-	TransparentAssCurtainOddsHigh = 75
-	TransparentAssCurtainOddsExtreme = 85
-	TransparentAssCurtainOddsUltra = 95
-	CStringOdds = 60
-	
-	TransparentCStringOdds = 80
-	TransparentCStringOdds_Low = 70
-	TransparentCStringOdds_High = 90
-	
-	TransparentTopArmorOdds = 50
-	TransparentTopArmorOdds_Low = 30
-	TransparentTopArmorOdds_High = 70
-	
-	TransparentBottomArmorOdds = 50
-	TransparentBottomArmorOdds_Low = 30
-	TransparentBottomArmorOdds_High = 70
-	
-	TransparentBraOdds = 50
-	TransparentBraOdds_Low = 30
-	TransparentBraOdds_High = 70
-	
-	TransparentUnderwearOdds = 50
-	TransparentUnderwearOdds_Low = 30
-	TransparentUnderwearOdds_High = 70
-
-	TransparentHotpantsOdds = 50
-	TransparentHotpantsOdds_Low = 30
-	TransparentHotpantsOdds_High = 70
-
-	TransparentShowgirlSkirtOdds = 50
-	TransparentShowgirlSkirtOdds_Low = 30
-	TransparentShowgirlSkirtOdds_High = 70
-	
-	TopCurtainOddsLow_Male = 20
-	TopCurtainOdds_Male = 35
-	TopCurtainOddsHigh_Male = 50
-	TopCurtainOddsExtreme_Male = 65
-	TopCurtainOddsUltra_Male = 80
-	TransparentTopCurtainOddsLow_Male = 55
-	TransparentTopCurtainOdds_Male = 65
-	TransparentTopCurtainOddsHigh_Male = 75
-	TransparentTopCurtainOddsExtreme_Male = 85
-	TransparentTopCurtainOddsUltra_Male = 95
-	PelvicCurtainOddsLow_Male = 20
-	PelvicCurtainOdds_Male = 35
-	PelvicCurtainOddsHigh_Male = 50
-	PelvicCurtainOddsExtreme_Male = 65
-	PelvicCurtainOddsUltra_Male = 80
-	TransparentPelvicCurtainOddsLow_Male = 55
-	TransparentPelvicCurtainOdds_Male = 65
-	TransparentPelvicCurtainOddsHigh_Male = 75
-	TransparentPelvicCurtainOddsExtreme_Male = 85
-	TransparentPelvicCurtainOddsUltra_Male = 95
-	AssCurtainOddsLow_Male = 20
-	AssCurtainOdds_Male = 35
-	AssCurtainOddsHigh_Male = 50
-	AssCurtainOddsExtreme_Male = 65
-	AssCurtainOddsUltra_Male = 80
-	TransparentAssCurtainOddsLow_Male = 55
-	TransparentAssCurtainOdds_Male = 65
-	TransparentAssCurtainOddsHigh_Male = 75
-	TransparentAssCurtainOddsExtreme_Male = 85
-	TransparentAssCurtainOddsUltra_Male = 95
-	CStringOdds_Male = 60
-	
-	TransparentCStringOdds_Male = 80
-	TransparentCStringOdds_Low_Male = 70
-	TransparentCStringOdds_High_Male = 90
-	
-	TransparentTopArmorOdds_Male = 50
-	TransparentTopArmorOdds_Low_Male = 30
-	TransparentTopArmorOdds_High_Male = 70
-	
-	TransparentBottomArmorOdds_Male = 50
-	TransparentBottomArmorOdds_Low_Male = 30
-	TransparentBottomArmorOdds_High_Male = 70
-	
-	TransparentBraOdds_Male = 50
-	TransparentBraOdds_Low_Male = 30
-	TransparentBraOdds_High_Male = 70
-	
-	TransparentUnderwearOdds_Male = 50
-	TransparentUnderwearOdds_Low_Male = 30
-	TransparentUnderwearOdds_High_Male = 70
-
-	TransparentHotpantsOdds_Male = 50
-	TransparentHotpantsOdds_Low_Male = 30
-	TransparentHotpantsOdds_High_Male = 70
-
-	TransparentShowgirlSkirtOdds_Male = 50
-	TransparentShowgirlSkirtOdds_Low_Male = 30
-	TransparentShowgirlSkirtOdds_High_Male = 70
-	
-	AllowMotionFlash = True
-	ScanNPC = True
-	ScanFrequency = "Normal"
-	RunningModifier = 10
-	SprintingModifier = 20
-	UseDynamicModesty = False
-	ResetModesty = False
-	ShamelessCanBePermanent = False
-	MinimumModestyRank = 0
-	ImmodestyTimeNeeded = 168
-	
-	NudeFactionCommentChance = 10
-	ToplessFactionCommentChance = 10
-	BottomlessFactionCommentChance = 10
-	ChestFactionCommentChance = 20
-	GenitalsFactionCommentChance = 25
-	AssFactionCommentChance = 15
-	BraFactionCommentChance = 5
-	UnderwearFactionCommentChance = 5
-	
 	ModestyArousalThreshold.SetValue(70)
 EndFunction
 
@@ -338,6 +231,7 @@ Function InstallMCM()
 	Pages[7] = "$MaleFlashChancesPage"
 	Pages[8] = "$NakedCommentsPage"
 	Pages[9] = "Dynamic Modesty"
+	Pages[10] = "NPC Modesty"
 EndFunction
 
 Function SetMaleCoverage()
@@ -353,7 +247,7 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[10]
+	Pages = New String[11]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -364,6 +258,7 @@ Event OnConfigOpen()
 	Pages[7] = "$MaleFlashChancesPage"
 	Pages[8] = "$NakedCommentsPage"
 	Pages[9] = "Dynamic Modesty"
+	Pages[10] = "NPC Modesty"
 EndEvent
 
 Event OnConfigClose()
@@ -472,9 +367,60 @@ Event OnConfigClose()
 	If HardcoreLockdown == False && UseHardcoreModesty == True
 		HardcoreLockdown = True
 	EndIf
+	
+	If DeleteNPCs == True
+		Int RemoveFemaleID = (NPCModesty.TrackedFemales - 1)
+		While RemoveFemaleID > -1
+			NPCModesty.RemoveFemale(None, RemoveFemaleID)
+			RemoveFemaleID -= 1
+		EndWhile
+	ElseIf ResetNPCs == True
+		Int ResetFemaleID = (NPCModesty.TrackedFemales - 1)
+		While ResetFemaleID > -1
+			NPCModesty.ResetFemale(None, ResetFemaleID)
+			ResetFemaleID -= 1
+		EndWhile
+	ElseIf Main.RosaExists == True && ResetRosa == True
+		NPCModesty.ResetFemale(Main.Rosa)
+	EndIf
+	
+	If RandomizePlayer == True
+		Int PlayerModesty = ModestyRandomizer.GetRandomizedModesty(PlayerRef, True)
+		
+		If PlayerModesty <= 0
+			ModestyManager.RankJump(0)
+			ModestyManager.TopRankJump(0)
+			ModestyManager.BottomRankJump(0)
+		ElseIf PlayerModesty == 1
+			ModestyManager.RankJump(1)
+			ModestyManager.TopRankJump(1)
+			ModestyManager.BottomRankJump(0)
+		ElseIf PlayerModesty == 2
+			ModestyManager.RankJump(2)
+			ModestyManager.TopRankJump(1)
+			ModestyManager.BottomRankJump(1)
+		ElseIf PlayerModesty == 3
+			ModestyManager.RankJump(3)
+			ModestyManager.TopRankJump(2)
+			ModestyManager.BottomRankJump(1)
+		ElseIf PlayerModesty == 4
+			ModestyManager.RankJump(4)
+			ModestyManager.TopRankJump(2)
+			ModestyManager.BottomRankJump(2)
+		ElseIf PlayerModesty == 5
+			ModestyManager.RankJump(5)
+			ModestyManager.TopRankJump(3)
+			ModestyManager.BottomRankJump(2)
+		ElseIf PlayerModesty >= 6
+			ModestyManager.RankJump(6)
+			ModestyManager.TopRankJump(3)
+			ModestyManager.BottomRankJump(3)
+		EndIf
+	EndIf
 EndEvent
 
 Event OnPageReset(string page)
+	OptionID = New Int[22]
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
 		
@@ -665,33 +611,33 @@ Event OnPageReset(string page)
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$AssText", AssCurtainOddsLow_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$AssText", TransparentAssCurtainOddsLow_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$AssText", AssCurtainOdds_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$AssText", TransparentAssCurtainOdds_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$AssText", AssCurtainOddsHigh_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$AssText", TransparentAssCurtainOddsHigh_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$AssText", AssCurtainOddsExtreme_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$AssText", TransparentAssCurtainOddsExtreme_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$AssText", AssCurtainOddsUltra_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$AssText", TransparentAssCurtainOddsUltra_Male as String + "%")
 				EndIf
 			Else
@@ -699,33 +645,33 @@ Event OnPageReset(string page)
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$PelvicText", PelvicCurtainOddsLow_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsLow_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$PelvicText", PelvicCurtainOdds_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOdds_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$PelvicText", PelvicCurtainOddsHigh_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsHigh_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$PelvicText", PelvicCurtainOddsExtreme_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsExtreme_Male as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra_Male)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male || Main.AND_Miniskirt_Male)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 					AddTextOption("$PelvicText", PelvicCurtainOddsUltra_Male as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male || Main.AND_MiniskirtT_Male)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsUltra_Male as String + "%")
 				EndIf
 			Else
@@ -767,33 +713,33 @@ Event OnPageReset(string page)
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$AssText", AssCurtainOddsLow as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$AssText", TransparentAssCurtainOddsLow as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$AssText", AssCurtainOdds as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$AssText", TransparentAssCurtainOdds as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$AssText", AssCurtainOddsHigh as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$AssText", TransparentAssCurtainOddsHigh as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$AssText", AssCurtainOddsExtreme as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$AssText", TransparentAssCurtainOddsExtreme as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$AssText", AssCurtainOddsUltra as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$AssText", TransparentAssCurtainOddsUltra as String + "%")
 				EndIf
 			Else
@@ -801,33 +747,33 @@ Event OnPageReset(string page)
 			EndIf
 			
 			If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$PelvicText", PelvicCurtainOddsLow as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsLow as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$PelvicText", PelvicCurtainOdds as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOdds as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$PelvicText", PelvicCurtainOddsHigh as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsHigh as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$PelvicText", PelvicCurtainOddsExtreme as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsExtreme as String + "%")
 				EndIf
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra)
-				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain || Main.AND_Miniskirt)
+				If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Main.AND_Miniskirt)
 					AddTextOption("$PelvicText", PelvicCurtainOddsUltra as String + "%")
-				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT || Main.AND_MiniskirtT)
+				ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Main.AND_MiniskirtT)
 					AddTextOption("$PelvicText", TransparentPelvicCurtainOddsUltra as String + "%")
 				EndIf
 			Else
@@ -1609,7 +1555,7 @@ Event OnPageReset(string page)
 	
 	ElseIf (page == "Dynamic Modesty")
 		If Main.DFFMA_Found == True || Main.BARE_Found == True
-			OptionID = New Int[17]
+			
 			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
 			Int TopModestyRank = (PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) as Int)
 			Int BottomModestyRank = (PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) as Int)
@@ -1639,6 +1585,7 @@ Event OnPageReset(string page)
 				OptionID[16] = AddToggleOption("(Bottom) Jump to Shameless", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			EndIf
 			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[21] = AddToggleOption("Randomize Player Modesty", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
 			
@@ -1675,6 +1622,18 @@ Event OnPageReset(string page)
 			EndIf
 		Else
 			AddTextOption("Dynamic Modesty Disabled", None)
+		EndIf
+	ElseIf (page == "NPC Modesty")
+		If (Main.DFFMA_Found == False && Main.BARE_Found == False) || UseDynamicModesty == False
+			AddTextOption("Dynamic Modesty Disabled", None)
+		Else
+			AddHeaderOption("Rosa Round-Bottom")
+			OptionID[17] = AddToggleOption("Dynamic Rosa Modesty", DynamicRosa, DisabledIf(Main.RosaExists == False || ResetRosa == True || DeleteNPCs == True || HardcoreLockdown == True))
+			OptionID[18] = AddToggleOption("Reset Rosa Modesty", ResetRosa, DisabledIf(Main.RosaExists == False || DynamicRosa == False || DeleteNPCs == True || ResetNPCs == True || HardcoreLockdown == True))
+			
+			AddHeaderOption("All NPCs")
+			OptionID[19] = AddToggleOption("Reset All NPC Modesty", ResetNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || DeleteNPCs == True || HardcoreLockdown == True))
+			OptionID[20] = AddToggleOption("Delete All NPC Modesty", DeleteNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || HardcoreLockdown == True))
 		EndIf
 	EndIf
 EndEvent
@@ -1818,18 +1777,17 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		
 		ForcePageReset()
-	ElseIf Option == 10
+	ElseIf Option == OptionID[10]
 		If StrictModestyRules == False
-			StrictModestyRules == True
+			StrictModestyRules = True
 			AND_DynamicModesty.SetValue(1)
 		Else
-			StrictModestyRules == False
+			StrictModestyRules = False
 			AND_DynamicModesty.SetValue(2)
 		EndIf
 		SetToggleOptionValue(Option, StrictModestyRules)
-		
 		ForcePageReset()
-	ElseIf Option == 11
+	ElseIf Option == OptionID[11]
 		If TopRank1Jump == False
 			TopRank1Jump = True
 			TopRank2Jump = False
@@ -1839,7 +1797,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank1Jump)
 		ForcePageReset()
-	ElseIf Option == 12
+	ElseIf Option == OptionID[12]
 		If TopRank2Jump == False
 			TopRank1Jump = False
 			TopRank2Jump = True
@@ -1849,7 +1807,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank2Jump)
 		ForcePageReset()
-	ElseIf Option == 13
+	ElseIf Option == OptionID[13]
 		If TopRank3Jump == False
 			TopRank1Jump = False
 			TopRank2Jump = False
@@ -1859,7 +1817,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank3Jump)
 		ForcePageReset()
-	ElseIf Option == 14
+	ElseIf Option == OptionID[14]
 		If BottomRank1Jump == False
 			BottomRank1Jump = True
 			BottomRank2Jump = False
@@ -1869,7 +1827,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, BottomRank1Jump)
 		ForcePageReset()
-	ElseIf Option == 15
+	ElseIf Option == OptionID[15]
 		If BottomRank2Jump == False
 			BottomRank1Jump = False
 			BottomRank2Jump = True
@@ -1879,7 +1837,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, BottomRank2Jump)
 		ForcePageReset()
-	ElseIf Option == 16
+	ElseIf Option == OptionID[16]
 		If BottomRank1Jump == False
 			BottomRank1Jump = False
 			BottomRank2Jump = False
@@ -1888,6 +1846,46 @@ Event OnOptionSelect(Int Option)
 			BottomRank3Jump = False
 		EndIf
 		SetToggleOptionValue(Option, BottomRank3Jump)
+		ForcePageReset()
+	ElseIf Option == OptionID[17]
+		If DynamicRosa == False
+			DynamicRosa = True
+		Else
+			DynamicRosa = False
+		EndIf
+		SetToggleOptionValue(Option, DynamicRosa)
+		ForcePageReset()
+	ElseIf Option == OptionID[18]
+		If ResetRosa == False
+			ResetRosa = True
+		Else
+			ResetRosa = False
+		EndIf
+		SetToggleOptionValue(Option, ResetRosa)
+		ForcePageReset()
+	ElseIf Option == OptionID[19]
+		If ResetNPCs == False
+			ResetNPCs = True
+		Else
+			ResetNPCs = False
+		EndIf
+		SetToggleOptionValue(Option, ResetNPCs)
+		ForcePageReset()
+	ElseIf Option == OptionID[20]
+		If DeleteNPCs == False
+			DeleteNPCs = True
+		Else
+			DeleteNPCs = False
+		EndIf
+		SetToggleOptionValue(Option, DeleteNPCs)
+		ForcePageReset()
+	ElseIf Option == OptionID[21]
+		If RandomizePlayer == False
+			RandomizePlayer = True
+		Else
+			RandomizePlayer = False
+		EndIf
+		SetToggleOptionValue(Option, RandomizePlayer)
 		ForcePageReset()
 	EndIf
 EndEvent

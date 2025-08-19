@@ -11,13 +11,14 @@ Faction Property BottomModestyFaction Auto
 
 Int Property TrackedFemales = 0 Auto Hidden
 
-String Property JsonFileName = "Advanced Nudity Detection NPC Data" AutoReadOnly
+String Property JsonFileName = "Advanced Nudity Detection/NPC Modesty Data" AutoReadOnly
 
 Function RegisterFemale(Actor femaleActor)
 	String npcName = femaleActor.GetName()
 	
-	Debug.Trace("Registering Female: " + femaleActor + " (" + npcName + ")")
+	Debug.Trace("[A.N.D.] Registering Female: " + femaleActor + " (" + npcName + ")")
 	
+	SetFormValue(JsonFileName, TrackedFemales, femaleActor)
 	SetIntValue(JsonFileName, femaleActor, TrackedFemales)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " ModestyTimer[0]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " ModestyTimer[1]", 0)
@@ -37,6 +38,95 @@ Function RegisterFemale(Actor femaleActor)
 	
 	TrackedFemales += 1
 	Debug.Trace("Number of Registered Females: " + TrackedFemales)
+EndFunction
+
+Function RemoveFemale(Actor femaleActor = None, Int FemaleID = -1)
+	If femaleActor == None && FemaleID < 0
+		Debug.Trace("[A.N.D.] RemoveFemale ERROR - Both femaleActor and FemaleID are invalid!")
+		return
+	EndIf
+	
+	If femaleActor != None
+		FemaleID = GetIntValue(JsonFileName, femaleActor)
+	ElseIf FemaleID >= 0
+		femaleActor = GetFormValue(JsonFileName, FemaleID) as Actor
+	EndIf
+	
+	UnsetIntValue(JsonFileName, femaleActor)
+	Int nextFemaleID = FemaleID + 1
+	While nextFemaleID < TrackedFemales
+		Actor nextFemaleActor = GetFormValue(JsonFileName, nextFemaleID) as Actor
+	
+		SetFormValue(JsonFileName, FemaleID, nextFemaleActor)
+		SetIntValue(JsonFileName, nextFemaleActor, FemaleID)
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[0]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[0]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[1]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[1]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[2]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[2]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[3]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[3]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[4]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[4]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[5]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[5]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[6]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[6]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[0]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[0]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[1]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[1]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[2]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[2]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[3]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[3]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[0]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[0]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[1]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[2]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[3]"))
+		
+		FemaleID += 1
+		nextFemaleID += 1
+	EndWhile
+	
+	UnsetFormValue(JsonFileName, FemaleID)
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[0]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[1]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[2]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[3]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[4]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[5]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[6]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[0]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[1]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[2]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[3]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[0]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]")
+	
+	TrackedFemales -= 1
+	Debug.Trace("Number of Registered Females: " + TrackedFemales)
+EndFunction
+
+Function ResetFemale(Actor femaleActor = None, Int FemaleID = -1)
+	If femaleActor == None && FemaleID < 0
+		Debug.Trace("[A.N.D.] ResetFemale ERROR - Both femaleActor and FemaleID are invalid!")
+		return
+	EndIf
+	
+	If femaleActor != None
+		FemaleID = GetIntValue(JsonFileName, femaleActor)
+	ElseIf FemaleID >= 0
+		femaleActor = GetFormValue(JsonFileName, FemaleID) as Actor
+	EndIf
+	
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[0]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[1]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[2]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[3]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[4]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[5]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[6]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[0]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[1]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[2]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[3]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[0]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]", 0)
+	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]", 0)
 EndFunction
 
 Function ProcessNPCModesty(Actor target, Bool Strict)
