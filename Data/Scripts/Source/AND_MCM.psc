@@ -169,7 +169,8 @@ Bool Property RandomizePlayer = False Auto Hidden
 Bool Property UseHardcoreModesty = False Auto Hidden
 Bool Property HardcoreLockdown = False Auto Hidden
 Bool Property StrictModestyRules = False Auto Hidden
-Bool Property DynamicRosa = False Auto Hidden
+Bool Property DynamicFollowers = False Auto Hidden
+Bool Property ShamelessRosa = True Auto Hidden
 Bool Property ResetRosa = False Auto Hidden
 Bool Property ResetNPCs = False Auto Hidden
 Bool Property DeleteNPCs = False Auto Hidden
@@ -193,7 +194,11 @@ Int Property BraFactionCommentChance = 5 Auto Hidden
 Int Property UnderwearFactionCommentChance = 5 Auto Hidden
 
 Int Property MinimumModestyRank = 0 Auto Hidden
+Int Property MinimumFollowerRank = 0 Auto Hidden
+Int Property MinimumRosaRank = 0 Auto Hidden
 Int Property ImmodestyTimeNeeded = 168 Auto Hidden
+
+String Property PlayerConfidence = "Average" Auto Hidden
 
 GlobalVariable Property ModestyArousalThreshold Auto
 GlobalVariable Property AND_DynamicModesty Auto
@@ -420,7 +425,7 @@ Event OnConfigClose()
 EndEvent
 
 Event OnPageReset(string page)
-	OptionID = New Int[22]
+	OptionID = New Int[23]
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
 		
@@ -1586,6 +1591,7 @@ Event OnPageReset(string page)
 			EndIf
 			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			OptionID[21] = AddToggleOption("Randomize Player Modesty", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddMenuOptionST("AND_PlayerConfidence_State", "Player's Confidence", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
 			
@@ -1594,31 +1600,49 @@ Event OnPageReset(string page)
 				AddTextOption("Modesty Rank:", ModestyRank as String)
 				AddTextOption("Modesty Title:", ModestyManager.ModestyTitle[ModestyRank])
 				
-				AddHeaderOption("Modesty Timers")
-				AddTextOption("Modest:", ModestyManager.ModestyTimer[0])
-				AddTextOption("Reasonable:", ModestyManager.ModestyTimer[1])
-				AddTextOption("Relaxed:", ModestyManager.ModestyTimer[2])
-				AddTextOption("Comfortable:", ModestyManager.ModestyTimer[3])
-				AddTextOption("Tease:", ModestyManager.ModestyTimer[4])
-				AddTextOption("Brazen:", ModestyManager.ModestyTimer[5])
-				AddTextOption("Shameless:", ModestyManager.ModestyTimer[6])
+				AddHeaderOption("Modesty Timer")
+				If PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) <= 0
+					AddTextOption("Modest:", ModestyManager.ModestyTimer[0])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 1
+					AddTextOption("Reasonable:", ModestyManager.ModestyTimer[1])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 2
+					AddTextOption("Relaxed:", ModestyManager.ModestyTimer[2])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 3
+					AddTextOption("Comfortable:", ModestyManager.ModestyTimer[3])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 4
+					AddTextOption("Tease:", ModestyManager.ModestyTimer[4])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 5
+					AddTextOption("Brazen:", ModestyManager.ModestyTimer[5])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) >= 6
+					AddTextOption("Shameless:", ModestyManager.ModestyTimer[6])
+				EndIf
 			Else
 				AddHeaderOption("Top Modesty")
 				AddTextOption("Top Modesty Rank:", TopModestyRank as String)
 				AddTextOption("Top Modesty Title:", ModestyManager.TopModestyTitle[TopModestyRank])
-				AddHeaderOption("Top Modesty Timers")
-				AddTextOption("Shy:", ModestyManager.TopModestyTimer[0])
-				AddTextOption("Comfortable:", ModestyManager.TopModestyTimer[1])
-				AddTextOption("Bold:", ModestyManager.TopModestyTimer[2])
-				AddTextOption("Shameless:", ModestyManager.TopModestyTimer[3])
+				AddHeaderOption("Top Modesty Timer")
+				If PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) <= 0
+					AddTextOption("Shy:", ModestyManager.TopModestyTimer[0])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) == 1
+					AddTextOption("Comfortable:", ModestyManager.TopModestyTimer[1])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) == 2
+					AddTextOption("Bold:", ModestyManager.TopModestyTimer[2])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) >= 3
+					AddTextOption("Shameless:", ModestyManager.TopModestyTimer[3])
+				EndIf
 				AddHeaderOption("Bottom Modesty")
 				AddTextOption("Bottom Modesty Rank:", BottomModestyRank as String)
 				AddTextOption("Bottom Modesty Title:", ModestyManager.BottomModestyTitle[BottomModestyRank])
-				AddHeaderOption("Bottom Modesty Timers")
-				AddTextOption("Shy:", ModestyManager.BottomModestyTimer[0])
-				AddTextOption("Comfortable:", ModestyManager.BottomModestyTimer[1])
-				AddTextOption("Bold:", ModestyManager.BottomModestyTimer[2])
-				AddTextOption("Shameless:", ModestyManager.BottomModestyTimer[3])
+				AddHeaderOption("Bottom Modesty Timer")
+				If PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) <= 0
+					AddTextOption("Shy:", ModestyManager.BottomModestyTimer[0])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) == 1
+					AddTextOption("Comfortable:", ModestyManager.BottomModestyTimer[1])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) == 2
+					AddTextOption("Bold:", ModestyManager.BottomModestyTimer[2])
+				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) >= 3
+					AddTextOption("Shameless:", ModestyManager.BottomModestyTimer[3])
+				EndIf
 			EndIf
 		Else
 			AddTextOption("Dynamic Modesty Disabled", None)
@@ -1627,13 +1651,20 @@ Event OnPageReset(string page)
 		If (Main.DFFMA_Found == False && Main.BARE_Found == False) || UseDynamicModesty == False
 			AddTextOption("Dynamic Modesty Disabled", None)
 		Else
-			AddHeaderOption("Rosa Round-Bottom")
-			OptionID[17] = AddToggleOption("Dynamic Rosa Modesty", DynamicRosa, DisabledIf(Main.RosaExists == False || ResetRosa == True || DeleteNPCs == True || HardcoreLockdown == True))
-			OptionID[18] = AddToggleOption("Reset Rosa Modesty", ResetRosa, DisabledIf(Main.RosaExists == False || DynamicRosa == False || DeleteNPCs == True || ResetNPCs == True || HardcoreLockdown == True))
-			
 			AddHeaderOption("All NPCs")
-			OptionID[19] = AddToggleOption("Reset All NPC Modesty", ResetNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || DeleteNPCs == True || HardcoreLockdown == True))
-			OptionID[20] = AddToggleOption("Delete All NPC Modesty", DeleteNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || HardcoreLockdown == True))
+			OptionID[19] = AddToggleOption("Reset All NPC Modesty", ResetNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || DeleteNPCs == True))
+			OptionID[20] = AddToggleOption("Delete All NPC Modesty", DeleteNPCs, DisabledIf(NPCModesty.TrackedFemales < 1))
+			
+			AddHeaderOption("All Followers")
+			OptionID[22] = AddToggleOption("Followers use Dynamic Modesty", DynamicFollowers, 0)
+			AddSliderOptionST("AND_MinimumFollowerRank_State", "Minimum Follower Rank", MinimumFollowerRank, "{0}", DisabledIf(DynamicFollowers == False))
+			
+			If Main.RosaExists == True
+				AddHeaderOption("Rosa Round-Bottom")
+				OptionID[17] = AddToggleOption("Rosa is Shameless", ShamelessRosa, DisabledIf(Main.RosaExists == False || ResetRosa == True || DeleteNPCs == True))
+				AddSliderOptionST("AND_MinimumRosaRank_State", "Minimum Rosa Rank", MinimumRosaRank, "{0}", DisabledIf(DynamicFollowers == False || ShamelessRosa == True))
+				OptionID[18] = AddToggleOption("Reset Rosa Modesty", ResetRosa, DisabledIf(Main.RosaExists == False || ShamelessRosa == True || DeleteNPCs == True || ResetNPCs == True))
+			EndIf
 		EndIf
 	EndIf
 EndEvent
@@ -1848,12 +1879,12 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, BottomRank3Jump)
 		ForcePageReset()
 	ElseIf Option == OptionID[17]
-		If DynamicRosa == False
-			DynamicRosa = True
+		If ShamelessRosa == False
+			ShamelessRosa = True
 		Else
-			DynamicRosa = False
+			ShamelessRosa = False
 		EndIf
-		SetToggleOptionValue(Option, DynamicRosa)
+		SetToggleOptionValue(Option, ShamelessRosa)
 		ForcePageReset()
 	ElseIf Option == OptionID[18]
 		If ResetRosa == False
@@ -1887,8 +1918,76 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, RandomizePlayer)
 		ForcePageReset()
+	ElseIf Option == OptionID[22]
+		If DynamicFollowers == False
+			DynamicFollowers = True
+		Else
+			DynamicFollowers = False
+		EndIf
+		SetToggleOptionValue(Option, DynamicFollowers)
 	EndIf
 EndEvent
+
+State AND_MinimumFollowerRank_State
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(MinimumFollowerRank)
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(0,6)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		MinimumFollowerRank = value as Int
+		SetSliderOptionValueST(MinimumFollowerRank, "{0}", False, "AND_MinimumFollowerRank_State")
+	EndEvent
+EndState
+
+State AND_MinimumRosaRank_State
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(MinimumRosaRank)
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(0,6)
+		SetSliderDialogInterval(1)
+	EndEvent
+	
+	Event OnSliderAcceptST(float value)
+		MinimumRosaRank = value as Int
+		SetSliderOptionValueST(MinimumRosaRank, "{0}", False, "AND_MinimumRosaRank_State")
+	EndEvent
+EndState
+
+State AND_PlayerConfidence_State
+	Event OnMenuOpenST()
+		String[] Options = new String[6]
+		
+		Options[0] = "Cowardly"
+		Options[1] = "Cautious"
+		Options[2] = "Average"
+		Options[3] = "Brave"
+		Options[4] = "Foolhardy"
+		Options[5] = "Random"
+		
+		Int StartIndex = Options.Find(PlayerConfidence)
+		
+		SetMenuDialogOptions(Options)
+		SetMenuDialogStartIndex(StartIndex)
+		SetMenuDialogDefaultIndex(2)
+	EndEvent
+	
+	Event OnMenuAcceptST(Int AcceptedIndex)
+		String[] Options = new String[6]
+		
+		Options[0] = "Cowardly"
+		Options[1] = "Cautious"
+		Options[2] = "Average"
+		Options[3] = "Brave"
+		Options[4] = "Foolhardy"
+		Options[5] = "Random"
+		
+		PlayerConfidence = Options[AcceptedIndex]
+		SetMenuOptionValueST(PlayerConfidence, False, "AND_PlayerConfidence_State")
+	EndEvent
+EndState
 
 State AND_ScanNPCToggle_State
 	Event OnSelectST()

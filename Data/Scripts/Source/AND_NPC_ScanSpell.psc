@@ -31,6 +31,10 @@ Race[] Property ActorRace Auto
 GlobalVariable Property AND_DebugMode Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
+	If akTarget == None
+		return
+	EndIf
+	
 	akTarget.AddToFaction(AND_Factions[0])
 	akTarget.AddToFaction(AND_Factions[1])
 	akTarget.AddToFaction(AND_Factions[2])
@@ -53,57 +57,62 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		AND_FemaleScan.AND_LayerAnalyze(akTarget)
 		
 		If AND_Config.UseDynamicModesty == True
-			If !akTarget.IsInFaction(ModestyFaction)
-				AND_NPCModesty.RegisterFemale(akTarget)
+			If AND_NPCModesty.FemaleExists(akTarget) == False
 				akTarget.AddToFaction(ModestyFaction)
 				akTarget.AddToFaction(TopModestyFaction)
 				akTarget.AddToFaction(BottomModestyFaction)
 				
-				If akTarget == AND_Main.Rosa && AND_Config.DynamicRosa == False
+				If akTarget == AND_Main.Rosa && AND_Config.ShamelessRosa == True
 					akTarget.SetFactionRank(ModestyFaction, 7)
 					akTarget.SetFactionRank(TopModestyFaction, 4)
 					akTarget.SetFactionRank(BottomModestyFaction, 4)
-					return
+				Else
+					Int Modesty = ModestyRandomizer.GetRandomizedModesty(akTarget, False)
+					Int TopModesty = 0
+					Int BottomModesty = 0
+					
+					If Modesty < 0
+						Modesty = 0
+					ElseIf Modesty == 1
+						TopModesty = 1
+					ElseIf Modesty == 2
+						TopModesty = 1
+						BottomModesty = 1
+					ElseIf Modesty == 3
+						TopModesty = 2
+						BottomModesty = 1
+					ElseIf Modesty == 4
+						TopModesty = 2
+						BottomModesty = 2
+					ElseIf Modesty == 5
+						TopModesty = 3
+						BottomModesty = 2
+					ElseIf Modesty >= 6
+						Modesty = 6
+						TopModesty = 3
+						BottomModesty = 3
+					EndIf
+					
+					akTarget.SetFactionRank(ModestyFaction, Modesty)
+					akTarget.SetFactionRank(TopModestyFaction, TopModesty)
+					akTarget.SetFactionRank(BottomModestyFaction, BottomModesty)
 				EndIf
 				
-				Int Modesty = ModestyRandomizer.GetRandomizedModesty(akTarget, False)
-				Int TopModesty = 0
-				Int BottomModesty = 0
-				
-				If Modesty < 0
-					Modesty = 0
-				ElseIf Modesty == 1
-					TopModesty = 1
-				ElseIf Modesty == 2
-					TopModesty = 1
-					BottomModesty = 1
-				ElseIf Modesty == 3
-					TopModesty = 2
-					BottomModesty = 1
-				ElseIf Modesty == 4
-					TopModesty = 2
-					BottomModesty = 2
-				ElseIf Modesty == 5
-					TopModesty = 3
-					BottomModesty = 2
-				ElseIf Modesty == 6
-					TopModesty = 3
-					BottomModesty = 3
+				AND_NPCModesty.RegisterFemale(akTarget)
+			Else
+				If akTarget.GetFactionRank(FollowerFaction) >= 0 && AND_Config.DynamicFollowers == True
+					AND_NPCModesty.ProcessNPCModesty(akTarget, AND_Config.StrictModestyRules)
 				EndIf
-				
-				akTarget.SetFactionRank(ModestyFaction, Modesty)
-				akTarget.SetFactionRank(TopModestyFaction, TopModesty)
-				akTarget.SetFactionRank(BottomModestyFaction, BottomModesty)
-			EndIf
-			
-			If akTarget.GetFactionRank(FollowerFaction) >= 0
-				AND_NPCModesty.ProcessNPCModesty(akTarget, AND_Config.StrictModestyRules)
 			EndIf
 		Else
 			If akTarget.IsInFaction(ModestyFaction)
 				akTarget.RemoveFromFaction(ModestyFaction)
 				akTarget.RemoveFromFaction(TopModestyFaction)
 				akTarget.RemoveFromFaction(BottomModestyFaction)
+			EndIf
+			
+			If AND_NPCModesty.FemaleExists(akTarget) == True
+				AND_NPCModesty.RemoveFemale(akTarget)
 			EndIf
 		EndIf
 	EndIf

@@ -27,17 +27,32 @@ Function RegisterFemale(Actor femaleActor)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " ModestyTimer[4]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " ModestyTimer[5]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " ModestyTimer[6]", 0)
+	SetIntValue(JsonFileName, "Female " + TrackedFemales + " DefaultRankStrict", femaleActor.GetFactionRank(ModestyFaction))
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " TopModestyTimer[0]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " TopModestyTimer[1]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " TopModestyTimer[2]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " TopModestyTimer[3]", 0)
+	SetIntValue(JsonFileName, "Female " + TrackedFemales + " DefaultRankTop", femaleActor.GetFactionRank(TopModestyFaction))
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " BottomModestyTimer[0]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " BottomModestyTimer[1]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " BottomModestyTimer[2]", 0)
 	SetIntValue(JsonFileName, "Female " + TrackedFemales + " BottomModestyTimer[3]", 0)
+	SetIntValue(JsonFileName, "Female " + TrackedFemales + " DefaultRankBottom", femaleActor.GetFactionRank(BottomModestyFaction))
 	
 	TrackedFemales += 1
 	Debug.Trace("Number of Registered Females: " + TrackedFemales)
+EndFunction
+
+Bool Function FemaleExists(Actor femaleActor)
+	If femaleActor == None
+		return False
+	EndIf
+	
+	If GetIntValue(JsonFileName, femaleActor) >= 0
+		return True
+	Else
+		return False
+	EndIf
 EndFunction
 
 Function RemoveFemale(Actor femaleActor = None, Int FemaleID = -1)
@@ -66,14 +81,17 @@ Function RemoveFemale(Actor femaleActor = None, Int FemaleID = -1)
 		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[4]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[4]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[5]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[5]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[6]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " ModestyTimer[6]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankStrict", GetIntValue(JsonFileName, "Female " + nextFemaleID + " DefaultRankStrict"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[0]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[0]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[1]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[1]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[2]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[2]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[3]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " TopModestyTimer[3]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankTop", GetIntValue(JsonFileName, "Female " + nextFemaleID + " DefaultRankTop"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[0]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[0]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[1]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[2]"))
 		SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]", GetIntValue(JsonFileName, "Female " + nextFemaleID + " BottomModestyTimer[3]"))
+		SetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankBottom", GetIntValue(JsonFileName, "Female " + nextFemaleID + " DefaultRankBottom"))
 		
 		FemaleID += 1
 		nextFemaleID += 1
@@ -87,14 +105,17 @@ Function RemoveFemale(Actor femaleActor = None, Int FemaleID = -1)
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[4]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[5]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[6]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankStrict")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[0]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[1]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[2]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " TopModestyTimer[3]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankTop")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[0]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]")
 	UnsetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]")
+	UnsetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankBottom")
 	
 	TrackedFemales -= 1
 	Debug.Trace("Number of Registered Females: " + TrackedFemales)
@@ -112,6 +133,10 @@ Function ResetFemale(Actor femaleActor = None, Int FemaleID = -1)
 		femaleActor = GetFormValue(JsonFileName, FemaleID) as Actor
 	EndIf
 	
+	Int DefaultRankStrict = GetIntValue(JsonFileName, "Female" + FemaleID + " DefaultRankStrict")
+	Int DefaultRankTop = GetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankTop")
+	Int DefaultRankBottom = GetIntValue(JsonFileName, "Female " + FemaleID + " DefaultRankBottom")
+	
 	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[0]", 0)
 	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[1]", 0)
 	SetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[2]", 0)
@@ -127,9 +152,26 @@ Function ResetFemale(Actor femaleActor = None, Int FemaleID = -1)
 	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[1]", 0)
 	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[2]", 0)
 	SetIntValue(JsonFileName, "Female " + FemaleID + " BottomModestyTimer[3]", 0)
+	
+	femaleActor.SetFactionRank(ModestyFaction, DefaultRankStrict)
+	femaleActor.SetFactionRank(TopModestyFaction, DefaultRankTop)
+	femaleActor.SetFactionRank(BottomModestyFaction, DefaultRankBottom)
 EndFunction
 
 Function ProcessNPCModesty(Actor target, Bool Strict)
+	If target == AND_Main.Rosa && Config.ShamelessRosa == True
+		If target.GetFactionRank(ModestyFaction) != 7
+			target.SetFactionRank(ModestyFaction, 7)
+		EndIf
+		If target.GetFactionRank(TopModestyFaction) != 4
+			target.SetFactionRank(TopModestyFaction, 4)
+		EndIf
+		If target.GetFactionRank(BottomModestyFaction) != 4
+			target.SetFactionRank(BottomModestyFaction, 4)
+		EndIf
+		return
+	EndIf
+
 	Int FemaleID = GetIntValue(JsonFileName, target)
 	Int UpgradeTime = Config.ImmodestyTimeNeeded
 	
@@ -143,7 +185,7 @@ EndFunction
 
 Function StrictNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 	Int ModestyRank = target.GetFactionRank(ModestyFaction)
-	Int MinimumModesty = Config.MinimumModestyRank
+	Int MinimumModesty = 0
 	Int ShamelessTime = UpgradeTime * 2
 	Int[] ModestyTimer = new Int[7]
 	
@@ -162,6 +204,12 @@ Function StrictNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		ModestyTimer[Index] = GetIntValue(JsonFileName, "Female " + FemaleID + " ModestyTimer[" + Index + "]")
 		Index += 1
 	EndWhile
+	
+	If target == AND_Main.Rosa
+		MinimumModesty = Config.MinimumRosaRank
+	Else
+		MinimumModesty = Config.MinimumFollowerRank
+	EndIf
 	
 	If MinimumModesty > ModestyRank
 		NPCModestyRankChange(target, MinimumModesty)
@@ -245,12 +293,16 @@ Function StrictNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		ElseIf ModestyTimer[6] < ShamelessTime
 			ModestyTimer[6] = ModestyTimer[6] + 1
 		ElseIf ModestyTimer[6] >= ShamelessTime && Config.ShamelessCanBePermanent == True
-			;PermanentShameless = True
+			target.SetFactionRank(ModestyFaction, 7)
 			NPCModestyRankChange(target, 7)
 		EndIf
 	ElseIf ModestyRank >= 7
 		If ModestyTimer[6] > ShamelessTime
 			ModestyTimer[6] = ShamelessTime
+		EndIf
+		If Config.ShamelessCanBePermanent == False
+			target.SetFactionRank(ModestyFaction, 6)
+			NPCModestyRankChange(target, 6)
 		EndIf
 	EndIf
 	
@@ -312,11 +364,14 @@ Function TopNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		return
 	Else
 		If TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
-			TopModestyTimer[0] = TopModestyTimer[0] + 1
+			TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2) + 1
 		ElseIf TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)
-			TopModestyTimer[1] = TopModestyTimer[1] + 1
+			TopModestyTimer[1] = TopModestyTimer[1] + (TopModestyTimer[2]/2) + 1
+			TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2)
 		ElseIf TopModestyRank <= 2 && IsShowingChest == True
 			TopModestyTimer[2] = TopModestyTimer[2] + 1
+			TopModestyTimer[1] = TopModestyTimer[1] + (TopModestyTimer[2]/2)
+			TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2)
 		ElseIf TopModestyRank <= 3 && IsTopless == True
 			TopModestyTimer[3] = TopModestyTimer[3] + 1
 		ElseIf TopModestyRank < 4
@@ -329,32 +384,14 @@ Function TopNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		If TopModestyTimer[0] >= UpgradeTime
 			target.SetFactionRank(TopModestyFaction, 1)
 			NPCTopModestyRankChange(target, 1)
-		ElseIf TopModestyTimer[1] >= (UpgradeTime * 2)
-			target.SetFactionRank(TopModestyFaction, 1)
-			NPCTopModestyRankChange(target, 1)
-		ElseIf TopModestyTimer[2] >= (UpgradeTime * 4)
-			target.SetFactionRank(TopModestyFaction, 1)
-			NPCTopModestyRankChange(target, 1)
-		ElseIf TopModestyTimer[3] >= (UpgradeTime * 8)
-			target.SetFactionRank(TopModestyFaction, 1)
-			NPCTopModestyRankChange(target, 1)
 		EndIf
 	ElseIf TopModestyRank == 1
 		If TopModestyTimer[1] >= UpgradeTime
 			target.SetFactionRank(TopModestyFaction, 2)
 			NPCTopModestyRankChange(target, 2)
-		ElseIf TopModestyTimer[2] >= (UpgradeTime * 2)
-			target.SetFactionRank(TopModestyFaction, 2)
-			NPCTopModestyRankChange(target, 2)
-		ElseIf TopModestyTimer[3] >= (UpgradeTime * 4)
-			target.SetFactionRank(TopModestyFaction, 2)
-			NPCTopModestyRankChange(target, 2)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer[2] >= UpgradeTime
-			target.SetFactionRank(TopModestyFaction, 3)
-			NPCTopModestyRankChange(target, 3)
-		ElseIf TopModestyTimer[3] >= (UpgradeTime * 2)
 			target.SetFactionRank(TopModestyFaction, 3)
 			NPCTopModestyRankChange(target, 3)
 		EndIf
@@ -393,11 +430,14 @@ Function BottomNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		return
 	Else
 		If BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
-			BottomModestyTimer[0] = BottomModestyTimer[0] + 1
+			BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2) + 1
 		ElseIf BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)
-			BottomModestyTimer[1] = BottomModestyTimer[1] + 1
+			BottomModestyTimer[1] = BottomModestyTimer[1] + (BottomModestyTimer[2]/2) + 1
+			BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2)
 		ElseIf BottomModestyRank <= 2 && IsShowingGenitals == True
 			BottomModestyTimer[2] = BottomModestyTimer[2] + 1
+			BottomModestyTimer[1] = BottomModestyTimer[1] + (BottomModestyTimer[2]/2)
+			BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2)
 		ElseIf BottomModestyRank <= 3 && IsBottomless == True
 			BottomModestyTimer[3] = BottomModestyTimer[3] + 1
 		Else
@@ -410,32 +450,14 @@ Function BottomNPCModesty(Actor target, Int FemaleID, Int UpgradeTime)
 		If BottomModestyTimer[0] >= UpgradeTime
 			target.SetFactionRank(BottomModestyFaction, 1)
 			NPCBottomModestyRankChange(target, 1)
-		ElseIf BottomModestyTimer[1] >= (UpgradeTime * 2)
-			target.SetFactionRank(BottomModestyFaction, 1)
-			NPCBottomModestyRankChange(target, 1)
-		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 4)
-			target.SetFactionRank(BottomModestyFaction, 1)
-			NPCBottomModestyRankChange(target, 1)
-		ElseIf BottomModestyTimer[3] >= (UpgradeTime * 8)
-			target.SetFactionRank(BottomModestyFaction, 1)
-			NPCBottomModestyRankChange(target, 1)
 		EndIf
 	ElseIf BottomModestyRank == 1
 		If BottomModestyTimer[1] >= UpgradeTime
 			target.SetFactionRank(BottomModestyFaction, 2)
 			NPCBottomModestyRankChange(target, 2)
-		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 2)
-			target.SetFactionRank(BottomModestyFaction, 2)
-			NPCBottomModestyRankChange(target, 2)
-		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 4)
-			target.SetFactionRank(BottomModestyFaction, 2)
-			NPCBottomModestyRankChange(target, 2)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer[2] >= UpgradeTime
-			target.SetFactionRank(BottomModestyFaction, 3)
-			NPCBottomModestyRankChange(target, 3)
-		ElseIf BottomModestyTimer[2] >= (UpgradeTime * 2)
 			target.SetFactionRank(BottomModestyFaction, 3)
 			NPCBottomModestyRankChange(target, 3)
 		EndIf

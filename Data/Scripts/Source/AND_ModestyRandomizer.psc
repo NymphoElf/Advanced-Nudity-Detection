@@ -1,5 +1,7 @@
 ScriptName AND_ModestyRandomizer extends Quest
 
+AND_MCM Property Config Auto
+
 Race[] Property ActorRace Auto
 
 Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
@@ -9,7 +11,31 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 	If IsPlayer == False
 		Confidence = targetActor.GetActorValue("Confidence") as Int
 	Else
-		Confidence = Utility.RandomInt(0,4)
+		If Config.PlayerConfidence == "Random"
+			Confidence = Utility.RandomInt(0,4)
+			
+			If Confidence == 0
+				Config.PlayerConfidence = "Cowardly"
+			ElseIf Confidence == 1
+				Config.PlayerConfidence = "Cautious"
+			ElseIf Confidence == 2
+				Config.PlayerConfidence = "Average"
+			ElseIf Confidence == 3
+				Config.PlayerConfidence = "Brave"
+			ElseIf Confidence == 4
+				Config.PlayerConfidence = "Foolhardy"
+			EndIf
+		ElseIf Config.PlayerConfidence == "Cowardly"
+			Confidence = 0
+		ElseIf Config.PlayerConfidence == "Cautious"
+			Confidence = 1
+		ElseIf Config.PlayerConfidence == "Average"
+			Confidence = 2
+		ElseIf Config.PlayerConfidence == "Brave"
+			Confidence = 3
+		ElseIf Config.PlayerConfidence == "Foolhardy"
+			Confidence = 4
+		EndIf
 	EndIf
 	Int BaseModesty = 0
 	Int FinalModesty = 0
@@ -42,18 +68,20 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 			BaseModesty = 1
 		ElseIf ModestyRoll <= 15
 			BaseModesty = 2
-		ElseIf ModestyRoll <= 65
+		ElseIf ModestyRoll <= 55
 			BaseModesty = 3
-		Else
+		ElseIf ModestyRoll <= 85
 			BaseModesty = 4
+		Else
+			BaseModesty = 5
 		EndIf
 	ElseIf targetRace == ActorRace[6] || targetRace == ActorRace[7] ;Bosmer
-		If ModestyRoll <= 15
-			BaseModesty = 2
-		ElseIf ModestyRoll <= 50
+		If ModestyRoll <= 35
 			BaseModesty = 3
-		Else
+		ElseIf ModestyRoll <= 80
 			BaseModesty = 4
+		Else
+			BaseModesty = 5
 		EndIf
 	ElseIf targetRace == ActorRace[8] || targetRace == ActorRace[9] ;Dunmer
 		If ModestyRoll <= 30
@@ -88,12 +116,14 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 			BaseModesty = 4
 		EndIf
 	ElseIf targetRace == ActorRace[14] || targetRace == ActorRace[15] ;Nord
-		If ModestyRoll <= 50
+		If ModestyRoll <= 45
 			BaseModesty = 0
-		ElseIf ModestyRoll <= 85
+		ElseIf ModestyRoll <= 80
 			BaseModesty = 1
-		Else
+		ElseIf ModestyRoll <= 95
 			BaseModesty = 2
+		Else
+			BaseModesty = 3
 		EndIf
 	ElseIf targetRace == ActorRace[16] || targetRace == ActorRace[17] ;Orsimer
 		If ModestyRoll <= 10
@@ -112,11 +142,15 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 			BaseModesty = 1
 		ElseIf ModestyRoll <= 15
 			BaseModesty = 2
-		ElseIf ModestyRoll <= 75
+		ElseIf ModestyRoll <= 65
 			BaseModesty = 3
-		Else
+		ElseIf ModestyRoll <= 90
 			BaseModesty = 4
+		Else
+			BaseModesty = 5
 		EndIf
+	Else ;Custom Race
+		return 0
 	EndIf
 	
 	If Confidence == 0
