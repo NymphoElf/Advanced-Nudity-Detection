@@ -416,28 +416,25 @@ Function TopModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	If IsRankUpgrade == True
 		If Rank == 1
 			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("Plenty of women show their cleavage. Why would anyone care that I do too?")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 2 (Bold)")
-			Debug.MessageBox("I mean, I'm not going to just walk around completely topless, but I don't mind if anyone gets a peek at my boobs.")
 		ElseIf Rank == 3
 			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 3 (Shameless)")
-			Debug.MessageBox("Go ahead, look at my tits! If I wanted to cover them I wouldn't be topless.")
 		ElseIf Rank == 4
 			Debug.MessageBox("AND - Top Immodesty Upgrade: Rank 4 (Permanently Shameless)")
-			Debug.MessageBox("Chest, Breast, Pectoral. Same things in different forms. It doesn't matter if you stare or squeeze, I couldn't care less.")
 		EndIf
 	Else
 		If Rank == 0
 			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 0 (Modest)")
-			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
 		ElseIf Rank == 1
 			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Top Immodesty Downgrade: Rank 2 (Bold)")
-			Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")
 		EndIf
+	EndIf
+	
+	If Config.ModestyMonologue == True
+		ModestyInnerMonologue(IsRankUpgrade, Rank, 2)
 	EndIf
 EndFunction
 
@@ -450,28 +447,25 @@ Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	If IsRankUpgrade == True
 		If Rank == 1
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("Showing a little leg never hurt anybody.")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 2 (Bold)")
-			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 3
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 3 (Shameless)")
-			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 4
 			Debug.MessageBox("AND - Bottom Immodesty Upgrade: Rank 4 (Permanently Shameless)")
-			Debug.MessageBox("[WIP]")
 		EndIf
 	Else
 		If Rank == 0
 			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 0 (Modest)")
-			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
 		ElseIf Rank == 1
 			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 1 (Comfortable)")
-			Debug.MessageBox("[WIP]")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Bottom Immodesty Downgrade: Rank 2 (Bold)")
-			Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")
 		EndIf
+	EndIf
+	
+	If Config.ModestyMonologue == True
+		ModestyInnerMonologue(IsRankUpgrade, Rank, 3)
 	EndIf
 EndFunction
 
@@ -479,45 +473,114 @@ Function ModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	If IsRankUpgrade == True
 		If Rank == 1
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 1 (Reasonable)")
-			Debug.MessageBox("I guess showing a little skin couldn't hurt... It's not like I'm flashing people.")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 2 (Relaxed)")
-			Debug.MessageBox("Showing some leg isn't that big of a deal. I probably go swimming in less clothes.")
 		ElseIf Rank == 3
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 3 (Comfortable)")
-			Debug.MessageBox("Yes, I have boobs. Yes, I'm showing a lot of cleavage. Who cares?")
 		ElseIf Rank == 4
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 4 (Tease)")
-			Debug.MessageBox("It's kind of fun to see if anyone can catch a glimpse of my pussy through my skimpy clothes! I can tell who saw because they turn red, so cute!")
 		ElseIf Rank == 5
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 5 (Brazen)")
-			Debug.MessageBox("I wonder how many stares I'll get if I walk through town with my tits out?")
 		ElseIf Rank == 6
 			Debug.MessageBox("AND - Immodesty Upgrade: Rank 6 (Shameless)")
-			Debug.MessageBox("Modesty is annoying. I've shown off so much of my body that covering it seems pointless, and I just don't care anymore. Plus, running around naked just sounds FUN!")
 		ElseIf Rank == 7
-			Debug.MessageBox("AND - Permanently Shameless")
-			Debug.MessageBox("I reject the concept of modesty entirely. How much of my body you can see doesn't matter, and I will never care about it again.")
+			Debug.MessageBox("AND - Immodesty Upgrade: Permanently Shameless")
 		EndIf
 	Else
 		If Rank == 0
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 0 (Modest)")
-			Debug.MessageBox("I should really wear normal, proper clothes. I don't want to turn into one of those slutty adventurer girls!")
 		ElseIf Rank == 1
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 1 (Reasonable)")
-			Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
 		ElseIf Rank == 2
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 2 (Relaxed)")
-			Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
 		ElseIf Rank == 3
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 3 (Comfortable)")
-			Debug.MessageBox("How did I let myself get excited from teasing peeks at my vagina? That has to stop. It won't lead to anything good.")
 		ElseIf Rank == 4
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 4 (Tease)")
-			Debug.MessageBox("Ok, I guess letting myself walk around Topless isn't smart.")
 		ElseIf Rank == 5
 			Debug.MessageBox("AND - Immodesty Downgrade: Rank 5 (Brazen)")
-			Debug.MessageBox("Hmm, maybe a little modesty is necessary... I'm not as comfortable as I used to be.")
+		EndIf
+	EndIf
+	
+	If Config.ModestyMonologue == True
+		ModestyInnerMonologue(IsRankUpgrade, Rank, 1)
+	EndIf
+EndFunction
+
+Function ModestyInnerMonologue(Bool IsRankUpgrade, Int Rank, Int Type = 0) ; Type (1) = Strict, (2) = Top, (3) = Bottom, 0 = Null
+	If IsRankUpgrade == True
+		If Type == 1
+			If Rank == 1
+				Debug.MessageBox("I guess showing a little skin couldn't hurt... It's not like I'm flashing people.")
+			ElseIf Rank == 2
+				Debug.MessageBox("Showing some leg isn't that big of a deal. I probably go swimming in less clothes.")
+			ElseIf Rank == 3
+				Debug.MessageBox("Yes, I have boobs. Yes, I'm showing a lot of cleavage. Who cares?")
+			ElseIf Rank == 4
+				Debug.MessageBox("It's kind of fun to see if anyone can catch a glimpse of my pussy through my skimpy clothes! I can tell who saw because they turn red, so cute!")
+			ElseIf Rank == 5
+				Debug.MessageBox("I wonder how many stares I'll get if I walk through town with my tits out?")
+			ElseIf Rank == 6
+				Debug.MessageBox("Modesty is annoying. I've shown off so much of my body that covering it seems pointless, and I just don't care anymore. Plus, running around naked just sounds FUN!")
+			ElseIf Rank == 7
+				Debug.MessageBox("I reject the concept of modesty entirely. How much of my body you can see doesn't matter, and I will never care about it again.")
+			EndIf
+		ElseIf Type == 2
+			If Rank == 1
+				Debug.MessageBox("Plenty of women show their cleavage. Why would anyone care that I do too?")
+			ElseIf Rank == 2
+				Debug.MessageBox("I mean, I'm not going to just walk around completely topless, but I don't mind if anyone gets a peek at my boobs.")
+			ElseIf Rank == 3
+				Debug.MessageBox("Go ahead, look at my tits! If I wanted to cover them, I wouldn't be topless.")
+			ElseIf Rank == 4
+				Debug.MessageBox("Chest, Breast, Pectoral. Same things in different forms. It doesn't matter if you stare or squeeze, I couldn't care less.")
+			EndIf
+		ElseIf Type == 3
+			If Rank == 1
+				Debug.MessageBox("Showing a little leg never hurt anybody.")
+			ElseIf Rank == 2
+				Debug.MessageBox("It's nice to let my pussy breathe. If someone catches a glimpse, then oh well.")
+			ElseIf Rank == 3
+				Debug.MessageBox("Being bottomless isn't just convenient, it's fun!")
+			ElseIf Rank == 4
+				Debug.MessageBox("Ugh... Yes, I have a vagina. If you don't want to see it, don't look.")
+			EndIf
+		Else
+			Debug.Trace("AND ModestyInnerMonologue Type is invalid. Type is: " + Type)
+		EndIf
+	Else
+		If Type == 1
+			If Rank == 0
+				Debug.MessageBox("I should really wear normal, proper clothes. I don't want to turn into one of those slutty adventurer girls!")
+			ElseIf Rank == 1
+				Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
+			ElseIf Rank == 2
+				Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
+			ElseIf Rank == 3
+				Debug.MessageBox("How did I let myself get excited from teasing peeks at my vagina? That has to stop. It won't lead to anything good.")
+			ElseIf Rank == 4
+				Debug.MessageBox("Ok, I guess letting myself walk around Topless isn't smart.")
+			ElseIf Rank == 5
+				Debug.MessageBox("Hmm, maybe a little modesty is necessary... I'm not as comfortable as I used to be.")
+			EndIf
+		ElseIf Type == 2
+			If Rank == 0
+				Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
+			ElseIf Rank == 1
+				Debug.MessageBox("I probably shouldn't keep shaking my near-naked tits in everyone's face. Plus not wearing a proper bra kind of hurts.")
+			ElseIf Rank == 2
+				Debug.MessageBox("Hmm. Maybe SOME modesty would be good... Some men are barely able to resist the urge to grope me...")
+			EndIf
+		ElseIf Type == 3
+			If Rank == 0
+				Debug.MessageBox("Swimsuits are for swimming, not for walking around in public all day!")
+			ElseIf Rank == 1
+				Debug.MessageBox("I guess I should probably go back to keeping my vagina covered.")
+			ElseIf Rank == 2
+				Debug.MessageBox("Ok, maybe this isn't as fun as I thought... I should cover myself a bit.")
+			EndIf
+		Else
+			Debug.Trace("AND ModestyInnerMonologue Type is invalid. Type is: " + Type)
 		EndIf
 	EndIf
 EndFunction

@@ -11,7 +11,11 @@ Faction Property BottomModestyFaction Auto
 
 Int Property TrackedFemales = 0 Auto Hidden
 
-String Property JsonFileName = "Advanced Nudity Detection/NPC Modesty Data" AutoReadOnly
+String Property JsonFileName Auto Hidden
+
+Function SetFileName(String PlayerName)
+	JsonFileName = "Advanced Nudity Detection/NPC Modesty Data " + PlayerName
+EndFunction
 
 Function RegisterFemale(Actor femaleActor)
 	String npcName = femaleActor.GetName()

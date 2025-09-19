@@ -174,6 +174,7 @@ Bool Property ShamelessRosa = True Auto Hidden
 Bool Property ResetRosa = False Auto Hidden
 Bool Property ResetNPCs = False Auto Hidden
 Bool Property DeleteNPCs = False Auto Hidden
+Bool Property ModestyMonologue = True Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
@@ -425,7 +426,7 @@ Event OnConfigClose()
 EndEvent
 
 Event OnPageReset(string page)
-	OptionID = New Int[23]
+	OptionID = New Int[24]
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
 		
@@ -1592,6 +1593,7 @@ Event OnPageReset(string page)
 			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			OptionID[21] = AddToggleOption("Randomize Player Modesty", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddMenuOptionST("AND_PlayerConfidence_State", "Player's Confidence", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			OptionID[23] = AddToggleOption("Modesty Monologue", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
 			
 			SetCursorPosition(1)
 			
@@ -1925,6 +1927,13 @@ Event OnOptionSelect(Int Option)
 			DynamicFollowers = False
 		EndIf
 		SetToggleOptionValue(Option, DynamicFollowers)
+	ElseIf Option == OptionID[23]
+		If ModestyMonologue == False
+			ModestyMonologue = True
+		Else
+			ModestyMonologue = False
+		EndIf
+		SetToggleOptionValue(Option, ModestyMonologue)
 	EndIf
 EndEvent
 

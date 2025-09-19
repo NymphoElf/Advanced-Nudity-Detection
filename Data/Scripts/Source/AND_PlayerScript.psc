@@ -4,6 +4,7 @@ AND_Core Property AND_Main Auto
 AND_MotionTimer Property AND_MotionClock Auto
 AND_MCM Property AND_Config Auto
 AND_Modesty_Manager Property ModestyManager Auto
+AND_NPC_Modesty_Manager Property NPCModestyManager Auto
 AND_ModEventListener Property ModEventListener Auto
 
 Actor Property PlayerRef Auto
@@ -48,6 +49,10 @@ EndFunction
 
 Event OnPlayerLoadGame()
 	AND_Main.ModCheck()
+	
+	String PlayerName = PlayerRef.GetName()
+	
+	NPCModestyManager.SetFileName(PlayerName)
 	
 	If (AND_Main.DFFMA_Found == True || AND_Main.BARE_Found == True)
 		If PlayerRef.IsInFaction(ModestyManager.ModestyFaction) == False
