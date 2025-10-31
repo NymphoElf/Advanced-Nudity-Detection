@@ -5,9 +5,12 @@ AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 AND_PlayerScript Property AND_Player Auto
 AND_Modesty_Manager Property ModestyManager Auto
+AND_Logger Property Logger Auto
 
-SLSF_Reloaded_MCM Property SLSFR_Config Auto Hidden
-SLSF_Reloaded_ModIntegration Property SLSFR_Mods Auto Hidden
+SLSF_Reloaded_MCM Property SLSFR_Config = None Auto Hidden
+SLSF_Reloaded_ModIntegration Property SLSFR_Mods = None Auto Hidden
+
+sslActorStats Property SexlabStats = None Auto
 
 Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto Hidden
@@ -22,6 +25,14 @@ Faction Property AND_ShowingUnderwearFaction Auto
 Faction Property AND_ToplessFaction Auto
 Faction Property AND_BottomlessFaction Auto
 Faction Property AND_NudeActorFaction Auto
+
+Faction Property ModestyFaction Auto
+
+Faction Property TopModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
+Faction Property BottomModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
+
+Faction Property ShyWithMale Auto ;0 = No, 1 = Yes
+Faction Property ShyWithFemale Auto ;0 = No, 1 = Yes
 
 Keyword Property AND_ArmorTop Auto
 Keyword Property AND_ArmorTopT_Low Auto
@@ -190,35 +201,31 @@ Int Property NPCShowgirlTransparentRoll Auto Hidden
 
 Spell Property NPCScanSpell Auto
 
-GlobalVariable Property AND_DebugMode Auto
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
 Bool Property BARE_Found Auto Hidden
 Bool Property RosaExists Auto Hidden
+Bool Property SexlabInstalled Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	ModCheck()
-	PlayerBase = Game.GetPlayer().GetActorBase()
+	PlayerBase = AND_Player.PlayerRef.GetActorBase()
 	Debug.Notification("A.N.D. Initialized")
 EndEvent
 
 Event OnUpdate()
 	If PlayerBase.GetSex() == 0 ;Male
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Start Male Scan")
-		EndIf
+		Logger.Log("<Core> [OnUpdate] Send Male Scan")
 		
-		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_MaleScan.AND_LayerAnalyze()
 		AND_Config.SetMaleCoverage()
 	Else
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Start Female Scan")
-		EndIf
+		Logger.Log("<Core> [OnUpdate] Send Female Scan")
 		
-		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		AND_FemaleScan.AND_LayerAnalyze()
 		AND_Config.SetFemaleCoverage()
 	EndIf
 	
@@ -230,17 +237,30 @@ Event OnUpdate()
 EndEvent
 
 Function ModCheck()
+	If Game.GetModByName("SexLab.esm") != 255
+		Logger.Log("<Core> [Mod Check] SexLab.esm Found")
+		SexlabInstalled = True
+		SexlabStats = Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats ;GetSexlabStats()
+	Else
+		Logger.Log("<Core> [Mod Check] SexLab.esm NOT Found")
+		SexlabInstalled = False
+		SexlabStats = None
+	EndIf
+	
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
+		Logger.Log("<Core> [Mod Check] SLSF Reloaded.esp Found")
 		SLSFR_Found = True
 		SLSFR_Config = Game.GetFormFromFile(0x809, "SLSF Reloaded.esp") as SLSF_Reloaded_MCM
 		SLSFR_Mods = Game.GetFormFromFile(0x808, "SLSF Reloaded.esp") as SLSF_Reloaded_ModIntegration
 	Else
+		Logger.Log("<Core> [Mod Check] SLSF Reloaded.esp NOT Found")
 		SLSFR_Found = False
 		SLSFR_Config = None
 		SLSFR_Mods = None
 	EndIf
 	
 	If Game.GetModByName("Modesty_Keyword.esp") != 255
+		Logger.Log("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) Found")
 		DFFMA_Found = True
 		
 		If ModestyManager.RegisteredForUpdate == False
@@ -248,28 +268,31 @@ Function ModCheck()
 			ModestyManager.RegisteredForUpdate = True
 		EndIf
 	Else
+		Logger.Log("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) NOT Found")
 		DFFMA_Found = False
 	EndIf
 	
 	If Game.GetModByName("BARE_ArousalUndress.esp") != 255
+		Logger.Log("<Core> [Mod Check] BARE_ArousalUndress.esp Found")
 		BARE_Found = True
 	Else
+		Logger.Log("<Core> [Mod Check] BARE_ArousalUndress.esp NOT Found")
 		BARE_Found = False
 	EndIf
 	
 	If Game.GetModByName("RosaFollower.esp") != 255
+		Logger.Log("<Core> [Mod Check] RosaFollower.esp Found")
 		RosaExists = True
 		Rosa = Game.GetFormFromFile(0xD62, "RosaFollower.esp") as Actor
 	Else
+		Logger.Log("<Core> [Mod Check] RosaFollower.esp NOT Found")
 		RosaExists = False
 		Rosa = None
 	EndIf
 EndFunction
 
 Function AND_MovementDiceRoll()
-	If AND_DebugMode.GetValue() == 1
-		Debug.Notification("AND Movement Dice Roll")
-	EndIf
+	Logger.Log("<Core> [AND_MovementDiceRoll]")
 	
 	Int MaxRoll = 0
 	Int RunMod = AND_Config.RunningModifier
@@ -293,16 +316,12 @@ Function AND_MovementDiceRoll()
 	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
 	
 	If PlayerBase.GetSex() == 0 ;Male
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Send Male Scan")
-		EndIf
-		AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		Logger.Log("<Core> [Movement Dice Roll] Send Male Scan")
+		AND_MaleScan.AND_LayerAnalyze()
 		AND_Config.SetMaleCoverage()
 	Else
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND - Send Female Scan")
-		EndIf
-		AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+		Logger.Log("<Core> [Movement Dice Roll] Send Female Scan")
+		AND_FemaleScan.AND_LayerAnalyze()
 		AND_Config.SetFemaleCoverage()
 	EndIf
 EndFunction
@@ -310,9 +329,7 @@ EndFunction
 Function AND_DiceRoll()
 	If MainRollRunning == False
 		MainRollRunning = True
-		If AND_DebugMode.GetValue() == 1
-			Debug.Notification("AND Dice Roll")
-		EndIf
+		Logger.Log("<Core> [AND_DiceRoll]")
 		
 		Int MaxRoll = 0
 		Int RunMod = AND_Config.RunningModifier
@@ -355,16 +372,12 @@ Function AND_DiceRoll()
 		NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
 		
 		If PlayerBase.GetSex() == 0 ;Male
-			If AND_DebugMode.GetValue() == 1
-				Debug.Notification("AND - Send Male Scan")
-			EndIf
-			AND_MaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+			Logger.Log("<Core> [Dice Roll] Send Male Scan")
+			AND_MaleScan.AND_LayerAnalyze()
 			AND_Config.SetMaleCoverage()
 		Else
-			If AND_DebugMode.GetValue() == 1
-				Debug.Notification("AND - Send Female Scan")
-			EndIf
-			AND_FemaleScan.AND_LayerAnalyze(AND_Player.PlayerRef)
+			Logger.Log("<Core> [Dice Roll] Send Female Scan")
+			AND_FemaleScan.AND_LayerAnalyze()
 			AND_Config.SetFemaleCoverage()
 		EndIf
 		
@@ -429,4 +442,16 @@ Int Function NakedCommentChance(Bool IsMCMRequest)
 	EndIf
 	
 	return CommentChance
+EndFunction
+;/
+sslActorStats Function GetSexlabStats() Global
+	return Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats
+EndFunction
+/;
+Int Function FindSexuality(Actor target)
+	If SexlabInstalled == True
+		return SexlabStats.GetSexuality(target)
+	Else
+		return 100
+	EndIf
 EndFunction

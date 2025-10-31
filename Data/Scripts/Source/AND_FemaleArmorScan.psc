@@ -2,7 +2,9 @@ ScriptName AND_FemaleArmorScan extends Quest
 
 AND_Core Property AND_Main Auto
 AND_MCM Property AND_Config Auto
-AND_PlayerScript Property AND_Player Auto
+AND_Logger Property Logger Auto
+
+Actor Property PlayerRef Auto
 
 Bool Property AND_TopCurtainLayer_Cover Auto Hidden
 Bool Property AND_BraLayer_Cover Auto Hidden
@@ -14,46 +16,34 @@ Bool Property AND_BottomGenital_Cover Auto Hidden
 Bool Property AND_BottomAss_Cover Auto Hidden
 Bool Property AND_Underwear_Cover Auto Hidden
 
-GlobalVariable Property AND_DebugMode Auto
-
-Bool Function TopCurtainCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtain)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsLow
+Bool Function TopCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_ChestCurtain)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
+			If AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
+			If AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
+			If AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
+			If AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TopCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
+			If AND_Main.TopCurtainRoll <= AND_Config.TopCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -61,43 +51,33 @@ Bool Function TopCurtainCheck(Actor ScannedActor)
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtainT)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestCurtainT)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskLow)
+			If AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRisk)
+			If AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <=  AND_Config.TransparentTopCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskHigh)
+			If AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskExtreme)
+			If AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ChestFlashRiskUltra)
+			If AND_Main.TopCurtainRoll <= AND_Config.TransparentTopCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -108,27 +88,21 @@ Bool Function TopCurtainCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function TopTransparentArmorCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low
+Bool Function TopTransparentArmorCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_Low)
+		If AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT)
+		If AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCTopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_High)
+		If AND_Main.TopTransparentRoll <= AND_Config.TransparentTopArmorOdds_High
 			return False
 		Else
 			return True
@@ -136,27 +110,21 @@ Bool Function TopTransparentArmorCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function TransparentBraCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_BraT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_Low
+Bool Function TransparentBraCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_BraT_Low)
+		If AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_BraT)
+		If AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBraTransparentRoll <= AND_Config.TransparentBraOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_BraT_High)
+		If AND_Main.BraTransparentRoll <= AND_Config.TransparentBraOdds_High
 			return False
 		Else
 			return True
@@ -164,44 +132,34 @@ Bool Function TransparentBraCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function PelvicCurtainCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtain) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow
+Bool Function PelvicCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(AND_Main.AND_Miniskirt)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.PelvicCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -209,43 +167,33 @@ Bool Function PelvicCurtainCheck(Actor ScannedActor)
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtainT) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(AND_Main.AND_MiniskirtT)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskLow)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRisk)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskHigh)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskExtreme)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCPelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_PelvicFlashRiskUltra)
+			If AND_Main.PelvicCurtainRoll <= AND_Config.TransparentPelvicCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -256,44 +204,34 @@ Bool Function PelvicCurtainCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function AssCurtainCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtain) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsLow
+Bool Function AssCurtainCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(AND_Main.AND_Miniskirt)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
+			If AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRisk)
+			If AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
+			If AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
+			If AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.AssCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
+			If AND_Main.AssCurtainRoll <= AND_Config.AssCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -301,43 +239,33 @@ Bool Function AssCurtainCheck(Actor ScannedActor)
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtainT) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT)
-		If ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(AND_Main.AND_MiniskirtT)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskLow)
+			If AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsLow
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRisk)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOdds
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOdds
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRisk)
+			If AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOdds
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskHigh)
+			If AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsHigh
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskExtreme)
+			If AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsExtreme
 				return False
 			Else
 				return True
 			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
-			If ScannedActor == AND_Player.PlayerRef && AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra
-				return False
-			ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCAssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_AssFlashRiskUltra)
+			If AND_Main.AssCurtainRoll <= AND_Config.TransparentAssCurtainOddsUltra
 				return False
 			Else
 				return True
@@ -348,27 +276,21 @@ Bool Function AssCurtainCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function BottomTransparentArmorCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low
+Bool Function BottomTransparentArmorCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT_Low)
+		If AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT)
+		If AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCBottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT_High)
+		If AND_Main.BottomTransparentRoll <= AND_Config.TransparentBottomArmorOdds_High
 			return False
 		Else
 			return True
@@ -376,27 +298,21 @@ Bool Function BottomTransparentArmorCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function TransparentHotpantsCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low
+Bool Function TransparentHotpantsCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_Low)
+		If AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT)
+		If AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCHotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_High)
+		If AND_Main.HotpantsTransparentRoll <= AND_Config.TransparentHotpantsOdds_High
 			return False
 		Else
 			return True
@@ -404,27 +320,21 @@ Bool Function TransparentHotpantsCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function TransparentShowgirlCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low
+Bool Function TransparentShowgirlCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low)
+		If AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT)
+		If AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)
+		If AND_Main.ShowgirlTransparentRoll <= AND_Config.TransparentShowgirlSkirtOdds_High
 			return False
 		Else
 			return True
@@ -432,27 +342,21 @@ Bool Function TransparentShowgirlCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function TransparentUnderwearCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low
+Bool Function TransparentUnderwearCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low)
+		If AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT)
+		If AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCUnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
+		If AND_Main.UnderwearTransparentRoll <= AND_Config.TransparentUnderwearOdds_High
 			return False
 		Else
 			return True
@@ -460,35 +364,27 @@ Bool Function TransparentUnderwearCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Bool Function CStringCheck(Actor ScannedActor)
-	If ScannedActor.WornHasKeyword(AND_Main.AND_CString)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.CStringOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.CStringOdds
+Bool Function CStringCheck()
+	If PlayerRef.WornHasKeyword(AND_Main.AND_CString)
+		If AND_Main.CStringRoll <= AND_Config.CStringOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_Low
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_Low
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low)
+		If AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_Low
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CStringT)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CStringT)
+		If AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds
 			return False
 		Else
 			return True
 		EndIf
-	ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-		If ScannedActor == AND_Player.PlayerRef && AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_High
-			return False
-		ElseIf ScannedActor != AND_Player.PlayerRef && AND_Main.NPCCstringRoll <= AND_Config.TransparentCStringOdds_High
+	ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
+		If AND_Main.CStringRoll <= AND_Config.TransparentCStringOdds_High
 			return False
 		Else
 			return True
@@ -496,49 +392,43 @@ Bool Function CStringCheck(Actor ScannedActor)
 	EndIf
 EndFunction
 
-Function AND_LayerAnalyze(Actor ScannedActor)
-	If AND_DebugMode.GetValue() == 1
-		If ScannedActor == AND_Player.PlayerRef
-			Debug.Notification("AND - Layer Analyze (PC)")
-		Else
-			Debug.Trace("AND - Layer Analyze (NPC)")
-		EndIf
-	EndIf
+Function AND_LayerAnalyze()
+	Logger.Log("<Female Armor Scan> [Layer Analyze] Female Armor Scan Started for Player")
 
-	Armor AND_Slot32 = ScannedActor.GetEquippedArmorInSlot(32)
+	Armor AND_Slot32 = PlayerRef.GetEquippedArmorInSlot(32)
 	
-	If !ScannedActor.WornHasKeyword(AND_Main.AND_CoversAll)
+	If !PlayerRef.WornHasKeyword(AND_Main.AND_CoversAll)
 	
 		;/--------------/;
 		;/---TOP SCAN---/;
 		;/--------------/;
 		
 		;Curtain Layer
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtain) || ScannedActor.WornHasKeyword(AND_Main.AND_ChestCurtainT)
-			AND_TopCurtainLayer_Cover = TopCurtainCheck(ScannedActor)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_ChestCurtain) || PlayerRef.WornHasKeyword(AND_Main.AND_ChestCurtainT)
+			AND_TopCurtainLayer_Cover = TopCurtainCheck()
 		Else
 			AND_TopCurtainLayer_Cover = False
 		EndIf
 			
 		;Armor Layer
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTop)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTop)
 			AND_BraLayer_Cover = True
 			AND_Chest_Cover = True
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_High)
-			Bool TopCovering = TopTransparentArmorCheck(ScannedActor)
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_High)
+			Bool TopCovering = TopTransparentArmorCheck()
 			
 			If TopCovering == True
 				AND_BraLayer_Cover = True
 				AND_Chest_Cover = True
 			Else
 				;Bra Layer
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Bra)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Bra)
 					AND_BraLayer_Cover = False
 					AND_Chest_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_BraT) || ScannedActor.WornHasKeyword(AND_Main.AND_BraT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_BraT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_BraT) || PlayerRef.WornHasKeyword(AND_Main.AND_BraT_High)
 					AND_BraLayer_Cover = False
-					AND_Chest_Cover = TransparentBraCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Bra_NoCover)
+					AND_Chest_Cover = TransparentBraCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Bra_NoCover)
 					AND_BraLayer_Cover = False
 					AND_Chest_Cover = False
 				Else
@@ -548,13 +438,13 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 			EndIf
 		Else
 			;Bra Layer
-			If ScannedActor.WornHasKeyword(AND_Main.AND_Bra)
+			If PlayerRef.WornHasKeyword(AND_Main.AND_Bra)
 				AND_BraLayer_Cover = False
 				AND_Chest_Cover = True
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_BraT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_BraT) || ScannedActor.WornHasKeyword(AND_Main.AND_BraT_High)
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_BraT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_BraT) || PlayerRef.WornHasKeyword(AND_Main.AND_BraT_High)
 				AND_BraLayer_Cover = False
-				AND_Chest_Cover = TransparentBraCheck(ScannedActor)
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Bra_NoCover)
+				AND_Chest_Cover = TransparentBraCheck()
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Bra_NoCover)
 				AND_BraLayer_Cover = False
 				AND_Chest_Cover = False
 			Else
@@ -569,409 +459,58 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 		;/-----------------/;
 		
 		;Pelvic Curtain Layer
-		If ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtain) || ScannedActor.WornHasKeyword(AND_Main.AND_PelvicCurtainT) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT)
-			AND_PelvicCurtain_Cover = PelvicCurtainCheck(ScannedActor)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(AND_Main.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(AND_Main.AND_Miniskirt) || PlayerRef.WornHasKeyword(AND_Main.AND_MiniskirtT)
+			AND_PelvicCurtain_Cover = PelvicCurtainCheck()
 		Else
 			AND_PelvicCurtain_Cover = False
 		EndIf
 		
 		;Ass Curtain Layer
-		If ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtain) || ScannedActor.WornHasKeyword(AND_Main.AND_AssCurtainT) || ScannedActor.WornHasKeyword(AND_Main.AND_Miniskirt) || ScannedActor.WornHasKeyword(AND_Main.AND_MiniskirtT)
-			AND_AssCurtain_Cover = AssCurtainCheck(ScannedActor)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_AssCurtain) || PlayerRef.WornHasKeyword(AND_Main.AND_AssCurtainT) || PlayerRef.WornHasKeyword(AND_Main.AND_Miniskirt) || PlayerRef.WornHasKeyword(AND_Main.AND_MiniskirtT)
+			AND_AssCurtain_Cover = AssCurtainCheck()
 		Else
 			AND_AssCurtain_Cover = False
 		EndIf
 			
 		;Bottom Armor Layer
-		If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom)
+		If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottom)
 			AND_BottomAss_Cover = True
 			AND_BottomGenital_Cover = True
 			AND_Underwear_Cover = True
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottomT_High)
-			AND_Underwear_Cover = BottomTransparentArmorCheck(ScannedActor)
+		ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottomT_High)
+			AND_Underwear_Cover = BottomTransparentArmorCheck()
 			
 			If AND_Underwear_Cover == True
 				AND_BottomGenital_Cover = True
 				AND_BottomAss_Cover = True
 			Else
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = True
 					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+					AND_BottomAss_Cover = TransparentUnderwearCheck()
 					AND_BottomGenital_Cover = AND_BottomAss_Cover
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
 					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
+					AND_BottomGenital_Cover = TransparentUnderwearCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
 					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+					AND_BottomGenital_Cover = CStringCheck()
 					
 					If AND_BottomGenital_Cover == True
 						AND_Underwear_Cover = False
 					Else
 						AND_Underwear_Cover = True
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = False
-				Else
-					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = False
-				EndIf
-			EndIf
-		ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover)
-			If ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants) && ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
-				AND_BottomAss_Cover = True
-				AND_BottomGenital_Cover = True
-				AND_Underwear_Cover = True				
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants) &&\ 
-			(ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
-				AND_BottomGenital_Cover = True
-				
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-					AND_BottomAss_Cover = True
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
-					If AND_Underwear_Cover == True
-						AND_BottomAss_Cover = True
-					Else
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
-					If AND_Underwear_Cover == True
-						AND_BottomAss_Cover = True
-					Else
-						AND_BottomAss_Cover = False
-					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = TransparentShowgirlCheck(ScannedActor)
-				Else
-					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = TransparentShowgirlCheck(ScannedActor)
-				EndIf
-				
-			ElseIf (ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
-				&& ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
-				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-					AND_BottomGenital_Cover = True
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
-					If AND_Underwear_Cover == True
-						AND_BottomGenital_Cover = True
-					Else
-						If ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-							AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-						Else
-							AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-							If AND_BottomGenital_Cover == True
-								AND_Underwear_Cover = False
-							Else
-								AND_Underwear_Cover = True
-							EndIf
-						EndIf
-					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
-					If AND_Underwear_Cover == True
-						AND_BottomGenital_Cover = True
-					Else
-						AND_BottomGenital_Cover = False
-					EndIf
-				Else
-					AND_Underwear_Cover = True
-					AND_BottomGenital_Cover = TransparentHotpantsCheck(ScannedActor)
-				EndIf
-					
-			ElseIf (ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
-				&& (ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
-				Bool Hotpants_Covering = TransparentHotpantsCheck(ScannedActor)
-				Bool Showgirl_Covering = TransparentShowgirlCheck(ScannedActor)
-				
-				If Hotpants_Covering == True && Showgirl_Covering == True
-					AND_BottomAss_Cover = True
-					AND_BottomGenital_Cover = True
-					AND_Underwear_Cover = True
-				ElseIf Hotpants_Covering == True && Showgirl_Covering == False
-					AND_BottomGenital_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomAss_Cover = False
-					EndIf
-				ElseIf Hotpants_Covering == False && Showgirl_Covering == True
-					AND_BottomAss_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-						If AND_BottomGenital_Cover == True
-							AND_Underwear_Cover = False
-						Else
-							AND_Underwear_Cover = True
-						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomGenital_Cover = False
-					EndIf
-				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = True
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-						If AND_BottomGenital_Cover == True
-							AND_Underwear_Cover = False
-						Else
-							AND_Underwear_Cover = True
-						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					EndIf
-				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants)
-				AND_BottomGenital_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = False
-				Else
-					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = False
-				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
-				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-					AND_Underwear_Cover = False
-					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-					
-					AND_Underwear_Cover = False
-					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-					AND_Underwear_Cover = False
-					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-					If AND_BottomGenital_Cover == True
-						AND_Underwear_Cover = False
-					Else
-						AND_Underwear_Cover = True
-					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-					AND_Underwear_Cover = False
-					AND_BottomGenital_Cover = False
-				Else
-					AND_Underwear_Cover = True
-					AND_BottomGenital_Cover = False
-				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High)
-				Bool Hotpants_Covering = TransparentHotpantsCheck(ScannedActor)
-				If Hotpants_Covering == True
-					AND_BottomGenital_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomAss_Cover = False
-					EndIf
-				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = True
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-						If AND_BottomGenital_Cover == True
-							AND_Underwear_Cover = False
-						Else
-							AND_Underwear_Cover = True
-						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					EndIf
-				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)
-				Bool Showgirl_Covering = TransparentShowgirlCheck(ScannedActor)
-				If Showgirl_Covering == True
-					AND_BottomAss_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-						If AND_BottomGenital_Cover == True
-							AND_Underwear_Cover = False
-						Else
-							AND_Underwear_Cover = True
-						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = False
-					EndIf
-				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = True
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-						If AND_BottomGenital_Cover == True
-							AND_Underwear_Cover = False
-						Else
-							AND_Underwear_Cover = True
-						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					Else
-						AND_Underwear_Cover = True
-						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = False
-					EndIf
-				EndIf
-			Else
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = True
-					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					AND_BottomGenital_Cover = AND_BottomAss_Cover
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
-					If AND_BottomGenital_Cover == True
-						AND_Underwear_Cover = False
-					Else
-						AND_Underwear_Cover = True
-					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
 					AND_BottomGenital_Cover = False
@@ -982,62 +521,62 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 				EndIf
 			EndIf
 		Else
-			If ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants) && ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
+			If PlayerRef.WornHasKeyword(AND_Main.AND_Hotpants) && PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
 				AND_BottomAss_Cover = True
 				AND_BottomGenital_Cover = True
 				AND_Underwear_Cover = True				
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants)\ 
-			&& (ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Hotpants)\ 
+			&& (PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
 				AND_BottomGenital_Cover = True
 				
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 					AND_BottomAss_Cover = True
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
+					AND_Underwear_Cover = TransparentShowgirlCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					AND_Underwear_Cover = TransparentShowgirlCheck()
 					If AND_Underwear_Cover == True
 						AND_BottomAss_Cover = True
 					Else
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
-					AND_Underwear_Cover = TransparentShowgirlCheck(ScannedActor)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
+					AND_Underwear_Cover = TransparentShowgirlCheck()
 					If AND_Underwear_Cover == True
 						AND_BottomAss_Cover = True
 					Else
 						AND_BottomAss_Cover = False
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = TransparentShowgirlCheck(ScannedActor)
+					AND_BottomAss_Cover = TransparentShowgirlCheck()
 				Else
 					AND_Underwear_Cover = True
-					AND_BottomAss_Cover = TransparentShowgirlCheck(ScannedActor)
+					AND_BottomAss_Cover = TransparentShowgirlCheck()
 				EndIf
 				
-			ElseIf (ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
-				&& ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
+			ElseIf (PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
+				&& PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
 				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 					AND_BottomGenital_Cover = True
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
+					AND_Underwear_Cover = TransparentHotpantsCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
+					AND_Underwear_Cover = TransparentHotpantsCheck()
 					If AND_Underwear_Cover == True
 						AND_BottomGenital_Cover = True
 					Else
-						If ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
-							AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
+						If PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
+							AND_BottomGenital_Cover = TransparentUnderwearCheck()
 						Else
-							AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+							AND_BottomGenital_Cover = CStringCheck()
 							If AND_BottomGenital_Cover == True
 								AND_Underwear_Cover = False
 							Else
@@ -1045,8 +584,8 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 							EndIf
 						EndIf
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
-					AND_Underwear_Cover = TransparentHotpantsCheck(ScannedActor)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					AND_Underwear_Cover = TransparentHotpantsCheck()
 					If AND_Underwear_Cover == True
 						AND_BottomGenital_Cover = True
 					Else
@@ -1054,13 +593,13 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 					EndIf
 				Else
 					AND_Underwear_Cover = True
-					AND_BottomGenital_Cover = TransparentHotpantsCheck(ScannedActor)
+					AND_BottomGenital_Cover = TransparentHotpantsCheck()
 				EndIf
 					
-			ElseIf (ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
-				&& (ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
-				Bool Hotpants_Covering = TransparentHotpantsCheck(ScannedActor)
-				Bool Showgirl_Covering = TransparentShowgirlCheck(ScannedActor)
+			ElseIf (PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_High))\ 
+				&& (PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High))
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				
 				If Hotpants_Covering == True && Showgirl_Covering == True
 					AND_BottomAss_Cover = True
@@ -1068,13 +607,13 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 					AND_Underwear_Cover = True
 				ElseIf Hotpants_Covering == True && Showgirl_Covering == False
 					AND_BottomGenital_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 					Else
@@ -1083,22 +622,22 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 					EndIf
 				ElseIf Hotpants_Covering == False && Showgirl_Covering == True
 					AND_BottomAss_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 						AND_Underwear_Cover = False
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+						AND_BottomGenital_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
+						AND_BottomGenital_Cover = CStringCheck()
 						If AND_BottomGenital_Cover == True
 							AND_Underwear_Cover = False
 						Else
 							AND_Underwear_Cover = True
 						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomGenital_Cover = False
 					Else
@@ -1106,32 +645,32 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 						AND_BottomGenital_Cover = False
 					EndIf
 				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = True
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
 						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
+						AND_BottomGenital_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+						AND_BottomGenital_Cover = CStringCheck()
 						If AND_BottomGenital_Cover == True
 							AND_Underwear_Cover = False
 						Else
 							AND_Underwear_Cover = True
 						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = False
@@ -1141,61 +680,61 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 						AND_BottomGenital_Cover = False
 					EndIf
 				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Hotpants)
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Hotpants)
 				AND_BottomGenital_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
+					AND_BottomAss_Cover = TransparentUnderwearCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
 				Else
 					AND_Underwear_Cover = True
 					AND_BottomAss_Cover = False
 				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirt)
 				AND_BottomAss_Cover = True
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 					AND_Underwear_Cover = False
 					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 					
 					AND_Underwear_Cover = False
 					AND_BottomGenital_Cover = True
 					
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 					AND_Underwear_Cover = False
-					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+					AND_BottomGenital_Cover = TransparentUnderwearCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
+					AND_BottomGenital_Cover = CStringCheck()
 					If AND_BottomGenital_Cover == True
 						AND_Underwear_Cover = False
 					Else
 						AND_Underwear_Cover = True
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 					AND_Underwear_Cover = False
 					AND_BottomGenital_Cover = False
 				Else
 					AND_Underwear_Cover = True
 					AND_BottomGenital_Cover = False
 				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High)
-				Bool Hotpants_Covering = TransparentHotpantsCheck(ScannedActor)
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_High)
+				Bool Hotpants_Covering = TransparentHotpantsCheck()
 				If Hotpants_Covering == True
 					AND_BottomGenital_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 					Else
@@ -1203,32 +742,32 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 						AND_BottomAss_Cover = False
 					EndIf
 				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = True
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
 						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
+						AND_BottomGenital_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+						AND_BottomGenital_Cover = CStringCheck()
 						If AND_BottomGenital_Cover == True
 							AND_Underwear_Cover = False
 						Else
 							AND_Underwear_Cover = True
 						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = False
@@ -1238,56 +777,56 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 						AND_BottomGenital_Cover = False
 					EndIf
 				EndIf
-			ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)
-				Bool Showgirl_Covering = TransparentShowgirlCheck(ScannedActor)
+			ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)
+				Bool Showgirl_Covering = TransparentShowgirlCheck()
 				If Showgirl_Covering == True
 					AND_BottomAss_Cover = True
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 						AND_Underwear_Cover = False
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 						AND_Underwear_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+						AND_BottomGenital_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
+						AND_BottomGenital_Cover = CStringCheck()
 						If AND_BottomGenital_Cover == True
 							AND_Underwear_Cover = False
 						Else
 							AND_Underwear_Cover = True
 						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomGenital_Cover = False
 					EndIf
 				Else
-					If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+					If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = True
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 						AND_Underwear_Cover = False
-						AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+						AND_BottomAss_Cover = TransparentUnderwearCheck()
 						AND_BottomGenital_Cover = AND_BottomAss_Cover
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = True
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-						|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
+						AND_BottomGenital_Cover = TransparentUnderwearCheck()
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+						|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
 						AND_BottomAss_Cover = False
-						AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+						AND_BottomGenital_Cover = CStringCheck()
 						If AND_BottomGenital_Cover == True
 							AND_Underwear_Cover = False
 						Else
 							AND_Underwear_Cover = True
 						EndIf
-					ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+					ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 						AND_Underwear_Cover = False
 						AND_BottomAss_Cover = False
 						AND_BottomGenital_Cover = False
@@ -1298,32 +837,32 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 					EndIf
 				EndIf
 			Else
-				If ScannedActor.WornHasKeyword(AND_Main.AND_Underwear)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_Underwear)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = True
 					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT) || ScannedActor.WornHasKeyword(AND_Main.AND_UnderwearT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(AND_Main.AND_UnderwearT_High)
 					AND_Underwear_Cover = False
-					AND_BottomAss_Cover = TransparentUnderwearCheck(ScannedActor)
+					AND_BottomAss_Cover = TransparentUnderwearCheck()
 					AND_BottomGenital_Cover = AND_BottomAss_Cover
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Thong)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Thong)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
 					AND_BottomGenital_Cover = True
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT) || ScannedActor.WornHasKeyword(AND_Main.AND_ThongT_High)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT) || PlayerRef.WornHasKeyword(AND_Main.AND_ThongT_High)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = TransparentUnderwearCheck(ScannedActor)
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_CString)\ 
-					|| ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT) || ScannedActor.WornHasKeyword(AND_Main.AND_CStringT_High)
+					AND_BottomGenital_Cover = TransparentUnderwearCheck()
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_CString)\ 
+					|| PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT) || PlayerRef.WornHasKeyword(AND_Main.AND_CStringT_High)
 					AND_BottomAss_Cover = False
-					AND_BottomGenital_Cover = CStringCheck(ScannedActor)
+					AND_BottomGenital_Cover = CStringCheck()
 					If AND_BottomGenital_Cover == True
 						AND_Underwear_Cover = False
 					Else
 						AND_Underwear_Cover = True
 					EndIf
-				ElseIf ScannedActor.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_Thong_NoCover)
+				ElseIf PlayerRef.WornHasKeyword(AND_Main.AND_Underwear_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_Thong_NoCover)
 					AND_Underwear_Cover = False
 					AND_BottomAss_Cover = False
 					AND_BottomGenital_Cover = False
@@ -1412,158 +951,150 @@ Function AND_LayerAnalyze(Actor ScannedActor)
 		
 		;Top conditions
 		If AND_TopCurtainLayer_Cover == True
-			ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
 		Else
 			If AND_BraLayer_Cover == True && AND_Chest_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
 			ElseIf AND_BraLayer_Cover == False && AND_Chest_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
 			ElseIf AND_BraLayer_Cover == False && AND_Chest_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
 			ElseIf AND_BraLayer_Cover == True && AND_Chest_Cover == False
-				If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT) || ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTopT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_ArmorTop_NoCover) || ScannedActor.WornHasKeyword(AND_Main.AND_NipplePasties)
-					ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT) || PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTopT_High)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_ArmorTop_NoCover) || PlayerRef.WornHasKeyword(AND_Main.AND_NipplePasties)
+					PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
 				Else
-					ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 1)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 1)
 				EndIf
 			EndIf
 		EndIf
 		
 		;Bottom conditions
 		If AND_PelvicCurtain_Cover == True && AND_AssCurtain_Cover == True
-			ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 		ElseIf AND_PelvicCurtain_Cover == True && AND_AssCurtain_Cover == False
-			ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 			If AND_Underwear_Cover == True && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomAss_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover == True && AND_BottomAss_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			EndIf
 		ElseIf AND_PelvicCurtain_Cover == False && AND_AssCurtain_Cover == True
-			ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-			ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			If AND_Underwear_Cover == True && AND_BottomGenital_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
 			ElseIf AND_Underwear_Cover == True && AND_BottomGenital_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
 			EndIf
 		Else
 			If AND_Underwear_Cover == True && AND_BottomGenital_Cover == True && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == True && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == False && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == True && AND_BottomAss_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover == False && AND_BottomGenital_Cover == False && AND_BottomAss_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover == True && AND_BottomGenital_Cover == False && AND_BottomAss_Cover == True
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
 			ElseIf AND_Underwear_Cover == True && AND_BottomGenital_Cover == True && AND_BottomAss_Cover == False
-				ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
-				ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+				PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 			ElseIf AND_Underwear_Cover == True && AND_BottomGenital_Cover == False && AND_BottomAss_Cover == False
-				If ScannedActor.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT) || ScannedActor.WornHasKeyword(AND_Main.AND_HotpantsT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || ScannedActor.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)\ 
-				|| ScannedActor.WornHasKeyword(AND_Main.AND_Microskirt) || ScannedActor.WornHasKeyword(AND_Main.AND_VaginaPasties)
-					ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+				If PlayerRef.WornHasKeyword(AND_Main.AND_ArmorBottom_NoCover)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(AND_Main.AND_HotpantsT_High)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(AND_Main.AND_ShowgirlSkirtT_High)\ 
+				|| PlayerRef.WornHasKeyword(AND_Main.AND_Microskirt) || PlayerRef.WornHasKeyword(AND_Main.AND_VaginaPasties)
+					PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 				Else
-					ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 1)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
-					ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 1)
+					PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 1)
 				EndIf
 			EndIf
 		EndIf
 		
 		;Nudity Check
-		If ScannedActor.GetFactionRank(AND_Main.AND_BottomlessFaction) == 1 && ScannedActor.GetFactionRank(AND_Main.AND_ToplessFaction) == 1 && !ScannedActor.WornHasKeyword(AND_Main.AND_NearlyNaked)
-			ScannedActor.SetFactionRank(AND_Main.AND_NudeActorFaction, 1)
+		If PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) == 1 && PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) == 1 && !PlayerRef.WornHasKeyword(AND_Main.AND_NearlyNaked)
+			PlayerRef.SetFactionRank(AND_Main.AND_NudeActorFaction, 1)
 		Else
-			ScannedActor.SetFactionRank(AND_Main.AND_NudeActorFaction, 0)
+			PlayerRef.SetFactionRank(AND_Main.AND_NudeActorFaction, 0)
 		EndIf
 		
 	Else
-		ScannedActor.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
-		ScannedActor.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ShowingBraFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ShowingChestFaction, 0)
 		
-		ScannedActor.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
-		ScannedActor.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
-		ScannedActor.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ShowingUnderwearFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ShowingAssFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ShowingGenitalsFaction, 0)
 		
-		ScannedActor.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
-		ScannedActor.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
-		ScannedActor.SetFactionRank(AND_Main.AND_NudeActorFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_ToplessFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_BottomlessFaction, 0)
+		PlayerRef.SetFactionRank(AND_Main.AND_NudeActorFaction, 0)
 	EndIf
 	
-	If ScannedActor == AND_Player.PlayerRef
-		Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
-		ModEvent.Send(EventHandle)
-	EndIf
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+	ModEvent.Send(EventHandle)
 
-	If AND_DebugMode.GetValue() == 1
-		If ScannedActor == AND_Player.PlayerRef
-			Debug.Notification("AND - Female (PC) Update Finished.")
-		Else
-			Debug.Trace("AND - Female (NPC) Update Finished.")
-		EndIf
-	EndIf
+	Logger.Log("<Female Armor Scan> [Layer Analyze] Female Armor Scan Finished for Player")
 EndFunction

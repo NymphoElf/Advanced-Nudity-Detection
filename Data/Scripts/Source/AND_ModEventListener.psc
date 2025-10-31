@@ -1,7 +1,6 @@
 ScriptName AND_ModEventListener extends Quest
 
 AND_Core Property Core Auto
-AND_Modesty_Manager Property ModestyManager Auto
 
 Event OnInit()
 	InitializeModEvents()
@@ -44,21 +43,21 @@ EndEvent
 /;
 
 Event OnGetModestyRank(Actor actorRef)
-	Int Rank = actorRef.GetFactionRank(ModestyManager.ModestyFaction)
+	Int Rank = actorRef.GetFactionRank(Core.ModestyFaction)
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
 	ModEvent.Send(EventHandle)
 EndEvent
 
 Event OnGetTopModestyRank(Actor actorRef)
-	Int Rank = actorRef.GetFactionRank(ModestyManager.TopModestyFaction)
+	Int Rank = actorRef.GetFactionRank(Core.TopModestyFaction)
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnTopModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
 	ModEvent.Send(EventHandle)
 EndEvent
 
 Event OnGetBottomModestyRank(Actor actorRef)
-	Int Rank = actorRef.GetFactionRank(ModestyManager.BottomModestyFaction)
+	Int Rank = actorRef.GetFactionRank(Core.BottomModestyFaction)
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnBottomModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
 	ModEvent.Send(EventHandle)

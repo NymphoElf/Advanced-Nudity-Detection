@@ -10,6 +10,7 @@
                 {
                     "condition": "OR",
                     "requiredVersion": "1.0.0.0",
+                    "disabled": true,
                     "Conditions": [
                         {
                             "condition": "IsReplacerEnabled",
@@ -1827,6 +1828,160 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsReplacerEnabled",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                            "Submod name": "Female PC Detection ON/OFF"
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DETECTED_BY",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "editorID": "ActorTypeCreature"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Distance": {
+                                                        "value": 1000.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": false,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "870"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DETECTED_BY",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0"
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "editorID": "ActorTypeCreature"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Distance": {
+                                                        "value": 1000.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": false,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "871"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -2042,6 +2197,56 @@
                             "formID": "86E"
                         }
                     }
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Assets.esm",
+                                    "formID": "3DF9"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Assets.esm",
+                                    "formID": "CA3A"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Integration.esm",
+                                    "formID": "63AD9"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Integration.esm",
+                                    "formID": "62539"
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         },

@@ -1,5 +1,7 @@
 Scriptname AND_MCM extends SKI_Configbase
 
+Import JsonUtil
+
 AND_Core Property Main Auto
 AND_PlayerScript Property PlayerScript Auto
 AND_Modesty_Manager Property ModestyManager Auto 
@@ -7,8 +9,14 @@ AND_MaleArmorScan Property AND_MaleScan Auto
 AND_FemaleArmorScan Property AND_FemaleScan Auto
 AND_NPC_Modesty_Manager Property NPCModesty Auto
 AND_ModestyRandomizer Property ModestyRandomizer Auto
+AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
+Actor Property SelectedFemaleActor Auto Hidden
+
+Float Property StrictRank = 0.0 Auto Hidden
+Float Property TopRank = 0.0 Auto Hidden
+Float Property BottomRank = 0.0 Auto Hidden
 
 Int Property TopCurtainOddsLow = 20 Auto Hidden
 Int Property TopCurtainOdds = 35 Auto Hidden
@@ -146,7 +154,9 @@ Bool Property GenderlessWording = False Auto Hidden
 Bool Property AllowMotionFlash = True Auto Hidden
 Bool Property DisableNakedComments = False Auto Hidden
 Bool Property UseDynamicModesty = False Auto Hidden
-Bool Property ShamelessCanBePermanent = False Auto Hidden
+Bool Property ModestyCorruption = False Auto Hidden
+Bool Property NPCModestyCorruption = False Auto Hidden
+Bool Property ConfirmSelection = False Auto Hidden
 
 Bool Property Rank1Jump = False Auto Hidden
 Bool Property Rank2Jump = False Auto Hidden
@@ -164,6 +174,7 @@ Bool Property BottomRank2Jump = False Auto Hidden
 Bool Property BottomRank3Jump = False Auto Hidden
 
 Bool Property ResetModesty = False Auto Hidden
+Bool Property ResetFemaleModesty = False Auto Hidden 
 Bool Property RandomizePlayer = False Auto Hidden
 
 Bool Property UseHardcoreModesty = False Auto Hidden
@@ -171,7 +182,6 @@ Bool Property HardcoreLockdown = False Auto Hidden
 Bool Property StrictModestyRules = False Auto Hidden
 Bool Property DynamicFollowers = False Auto Hidden
 Bool Property ShamelessRosa = True Auto Hidden
-Bool Property ResetRosa = False Auto Hidden
 Bool Property ResetNPCs = False Auto Hidden
 Bool Property DeleteNPCs = False Auto Hidden
 Bool Property ModestyMonologue = True Auto Hidden
@@ -181,6 +191,12 @@ Bool Property PelvicCurtain_Cover Auto Hidden
 Bool Property AssCurtain_Cover Auto Hidden
 
 Bool Property ScanNPC = True Auto Hidden
+
+Bool Property ApplyTweak = False Auto Hidden
+Bool Property ApplyAsDefault = False Auto Hidden
+
+Bool Property Logging = True Auto Hidden ;Default TRUE in Beta Builds | Default FALSE in non-Beta Builds
+Bool Property AddToMainLog = False Auto Hidden 
 
 Int Property RunningModifier = 10 Auto Hidden
 Int Property SprintingModifier = 20 Auto Hidden
@@ -197,16 +213,42 @@ Int Property UnderwearFactionCommentChance = 5 Auto Hidden
 Int Property MinimumModestyRank = 0 Auto Hidden
 Int Property MinimumFollowerRank = 0 Auto Hidden
 Int Property MinimumRosaRank = 0 Auto Hidden
-Int Property ImmodestyTimeNeeded = 168 Auto Hidden
+Int Property ImmodestyTimeNeeded = 14 Auto Hidden
+Int Property PlayerConfidenceValue = 2 Auto Hidden
 
 String Property PlayerConfidence = "Average" Auto Hidden
+String Property ShySex = "Males" Auto Hidden
+String Property NPCShySex = "Males" Auto Hidden
+String Property NPCShyTweak = "Males" Auto Hidden
+String[] Property Sexes Auto
+String[] Property NPCSexes Auto
 
 GlobalVariable Property ModestyArousalThreshold Auto
+GlobalVariable Property NPCModestyArousalThreshold Auto
 GlobalVariable Property AND_DynamicModesty Auto
 
-Int[] Property OptionID Auto Hidden
+Int[] Property Page9ToggleID Auto Hidden
+Int[] Property Page10ToggleID Auto Hidden
+Int[] Property Page11ToggleID Auto Hidden
+
+Int[] Property Page9SliderID Auto Hidden
+Int[] Property Page10SliderID Auto Hidden
+
+Int[] Property Page9MenuID Auto Hidden
+Int[] Property Page10MenuID Auto Hidden
 
 String Property ScanFrequency = "Normal" Auto Hidden
+
+String[] Property DisplayFemaleName Auto Hidden
+Int Property DisplayIndex = 0 Auto Hidden
+String Property SelectedFemale = "---" Auto Hidden
+Bool Property MakeFemalePermanent = False Auto Hidden
+Bool Property DeleteFemale = False Auto Hidden
+
+String[] Property PermFemales Auto Hidden
+Int Property PermIndex = 0 Auto Hidden
+String Property SelectedPermFemale = "---" Auto Hidden
+Bool Property DeletePermFemale = False Auto Hidden
 
 Event OnConfigInit()
 	Utility.Wait(1)
@@ -214,19 +256,18 @@ Event OnConfigInit()
 	Debug.Notification("Advanced Nudity MCM Initializing...")
 EndEvent
 
-Function SetDefaults()
-	ModestyArousalThreshold.SetValue(70)
-EndFunction
-
 Event OnUpdate()
 	InstallMCM()
-	SetDefaults()
+	ModestyArousalThreshold.SetValue(70)
+	NPCModestyArousalThreshold.SetValue(70)
+	DisplayFemaleName = Utility.CreateStringArray(1, "---")
+	PermFemales = Utility.CreateStringArray(1, "---")
 	Debug.Notification("Advanced Nudity MCM Ready!")
 EndEvent
 
 Function InstallMCM()
 	ModName = "Advanced Nudity"
-	Pages = New String[11]
+	Pages = New String[12]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -236,8 +277,9 @@ Function InstallMCM()
 	Pages[6] = "$FemaleFlashChancesPage"
 	Pages[7] = "$MaleFlashChancesPage"
 	Pages[8] = "$NakedCommentsPage"
-	Pages[9] = "Dynamic Modesty"
-	Pages[10] = "NPC Modesty"
+	Pages[9] = "$DynamicModestyPage"
+	Pages[10] = "$NPCModestyPage"
+	Pages[11] = "$DebugPage"
 EndFunction
 
 Function SetMaleCoverage()
@@ -253,7 +295,9 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Pages = New String[11]
+	Logger.Log("==CONFIG OPEN==")
+	
+	Pages = New String[12]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -263,8 +307,68 @@ Event OnConfigOpen()
 	Pages[6] = "$FemaleFlashChancesPage"
 	Pages[7] = "$MaleFlashChancesPage"
 	Pages[8] = "$NakedCommentsPage"
-	Pages[9] = "Dynamic Modesty"
-	Pages[10] = "NPC Modesty"
+	Pages[9] = "$DynamicModestyPage"
+	Pages[10] = "$NPCModestyPage"
+	Pages[11] = "$DebugPage"
+	
+	Int TrackedFemales = NPCModesty.TrackedFemales
+	Int PermanentFemales = NPCModesty.PermanentFemales
+	Int Index = 0
+	Bool Grow = False
+	
+	Logger.Log("<MCM> [Config Open] Tracked Females = " + TrackedFemales)
+	Logger.Log("<MCM> [Config Open] DisplayFemaleName Array Length: " + DisplayFemaleName.Length)
+	Logger.Log("<MCM> [Config Open] Permanent Females = " + PermanentFemales)
+	Logger.Log("<MCM> [Config Open] PermFemales Array Length: " + PermFemales.Length)
+	
+	If (TrackedFemales > 1) && (TrackedFemales != DisplayFemaleName.Length)
+		If TrackedFemales > DisplayFemaleName.Length
+			Grow = True
+			Index = DisplayFemaleName.Length
+		EndIf
+		
+		DisplayFemaleName = Utility.ResizeStringArray(DisplayFemaleName, TrackedFemales, "---")
+		
+		If Grow == True
+			While Index < TrackedFemales
+				Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " in NPCModesty.FemaleName Array: " + NPCModesty.FemaleName[Index])
+				DisplayFemaleName[Index] = NPCModesty.FemaleName[Index]
+				Logger.Log("<MCM> [Config Open] DisplayFemaleName[" + Index + "] = " + DisplayFemaleName[Index])
+				Index += 1
+			EndWhile
+		EndIf
+	ElseIf TrackedFemales == 1
+		DisplayFemaleName[0] = NPCModesty.FemaleName[0]
+	ElseIf TrackedFemales == 0
+		If DisplayFemaleName[0] != "---"
+			DisplayFemaleName[0] = "---"
+		EndIf
+	EndIf
+	
+	Index = 0
+	Grow = False
+	If (PermanentFemales > 1) && (PermanentFemales != PermFemales.Length)
+		If PermanentFemales > PermFemales.Length
+			Grow = True
+			Index = PermFemales.Length
+		EndIf
+		PermFemales = Utility.ResizeStringArray(PermFemales, PermanentFemales, "---")
+		
+		If Grow == True
+			While Index < PermanentFemales
+				Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " for PermFemales: " + GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name"))
+				PermFemales[Index] = GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name")
+				Logger.Log("<MCM> [Config Open] PermFemales[" + Index + "] = " + PermFemales[Index])
+				Index += 1
+			EndWhile
+		EndIf
+	ElseIf PermanentFemales == 1
+		PermFemales[0] = GetStringValue(NPCModesty.PermJsonName, "Female " + 0 + " Name")
+	ElseIf PermanentFemales == 0
+		If PermFemales[0] != "---"
+			PermFemales[0] = "---"
+		EndIf
+	EndIf
 EndEvent
 
 Event OnConfigClose()
@@ -321,48 +425,48 @@ Event OnConfigClose()
 	
 	ModestyManager.TimerUpdate(ImmodestyTimeNeeded)
 	
-	If ScanFrequency == "Very Fast"
+	If ScanFrequency == "$VFScan"
 		PlayerScript.MaxTimeScale = 40
 		PlayerScript.GameTimeUpdateSpeed = 0.1
-		If PlayerScript.ScanSetting != ScanFrequency
-			PlayerScript.ScanSetting = ScanFrequency
+		If PlayerScript.ScanSetting != "Very Fast"
+			PlayerScript.ScanSetting = "Very Fast"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.1)
 		EndIf
-	ElseIf ScanFrequency == "Fast"
+	ElseIf ScanFrequency == "$FScan"
 		PlayerScript.MaxTimeScale = 60
 		PlayerScript.GameTimeUpdateSpeed = 0.15
-		If PlayerScript.ScanSetting != ScanFrequency
-			PlayerScript.ScanSetting = ScanFrequency
+		If PlayerScript.ScanSetting != "Fast"
+			PlayerScript.ScanSetting = "Fast"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.15)
 		EndIf
-	ElseIf ScanFrequency == "Normal"
+	ElseIf ScanFrequency == "$NScan"
 		PlayerScript.MaxTimeScale = 100
 		PlayerScript.GameTimeUpdateSpeed = 0.25
-		If PlayerScript.ScanSetting != ScanFrequency
-			PlayerScript.ScanSetting = ScanFrequency
+		If PlayerScript.ScanSetting != "Normal"
+			PlayerScript.ScanSetting = "Normal"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.25)
 		EndIf
-	ElseIf ScanFrequency == "Slow"
+	ElseIf ScanFrequency == "$SScan"
 		PlayerScript.MaxTimeScale = 200
 		PlayerScript.GameTimeUpdateSpeed = 0.5
-		If PlayerScript.ScanSetting != ScanFrequency
-			PlayerScript.ScanSetting = ScanFrequency
+		If PlayerScript.ScanSetting != "Slow"
+			PlayerScript.ScanSetting = "Slow"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.5)
 		EndIf
-	ElseIf ScanFrequency == "Very Slow"
+	ElseIf ScanFrequency == "$VSScan"
 		PlayerScript.MaxTimeScale = 300
 		PlayerScript.GameTimeUpdateSpeed = 0.75
-		If PlayerScript.ScanSetting != ScanFrequency
-			PlayerScript.ScanSetting = ScanFrequency
+		If PlayerScript.ScanSetting != "Very Slow"
+			PlayerScript.ScanSetting = "Very Slow"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.75)
 		EndIf
 	Else
-		ScanFrequency = "Normal"
+		ScanFrequency = "$NScan"
 		PlayerScript.MaxTimeScale = 100
 		PlayerScript.GameTimeUpdateSpeed = 0.25
 		PlayerScript.ScanSetting = "Normal"
@@ -372,22 +476,6 @@ Event OnConfigClose()
 	
 	If HardcoreLockdown == False && UseHardcoreModesty == True
 		HardcoreLockdown = True
-	EndIf
-	
-	If DeleteNPCs == True
-		Int RemoveFemaleID = (NPCModesty.TrackedFemales - 1)
-		While RemoveFemaleID > -1
-			NPCModesty.RemoveFemale(None, RemoveFemaleID)
-			RemoveFemaleID -= 1
-		EndWhile
-	ElseIf ResetNPCs == True
-		Int ResetFemaleID = (NPCModesty.TrackedFemales - 1)
-		While ResetFemaleID > -1
-			NPCModesty.ResetFemale(None, ResetFemaleID)
-			ResetFemaleID -= 1
-		EndWhile
-	ElseIf Main.RosaExists == True && ResetRosa == True
-		NPCModesty.ResetFemale(Main.Rosa)
 	EndIf
 	
 	If RandomizePlayer == True
@@ -423,10 +511,28 @@ Event OnConfigClose()
 			ModestyManager.BottomRankJump(3)
 		EndIf
 	EndIf
+	
+	RandomizePlayer = False
+	
+	ApplyTweak = False
+	ApplyAsDefault = False
+	ResetNPCs = False
+	DeleteNPCs = False
+	MakeFemalePermanent = False
+	DeleteFemale = False
+	ResetFemaleModesty = False
+	DeletePermFemale = False
 EndEvent
 
 Event OnPageReset(string page)
-	OptionID = New Int[24]
+	Page9ToggleID = new Int[50]
+	Page10ToggleID = new Int[50]
+	Page11ToggleID = new Int[10]
+	Page9SliderID = new Int[50]
+	Page10SliderID = new Int[50]
+	Page9MenuID = new Int[50]
+	Page10MenuID = new Int[50]
+	
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
 		
@@ -575,9 +681,9 @@ Event OnPageReset(string page)
 		AddToggleOptionST("AND_AllowMotionFlashState", "$AllowMotionFlashText", AllowMotionFlash, 0)
 		AddSliderOptionST("AND_RunningFlashIncreaseState", "$RunningModifierText", RunningModifier, "{0}", DisabledIf(AllowMotionFlash == False))
 		AddSliderOptionST("AND_SprintingFlashIncreaseState", "$SprintingModifierText", SprintingModifier, "{0}", DisabledIf(AllowMotionFlash == False))
-		AddHeaderOption("Scan Settings")
-		AddToggleOptionST("AND_ScanNPCToggle_State", "Scan NPCs", ScanNPC, 0)
-		AddMenuOptionST("AND_ScanFrequency_State", "Scan Frequency", ScanFrequency, 0)
+		AddHeaderOption("$ScanSettingsHeader")
+		AddToggleOptionST("AND_ScanNPCToggle_State", "$ScanNPCText", ScanNPC, 0)
+		AddMenuOptionST("AND_ScanFrequency_State", "$ScanFrequencyText", ScanFrequency, 0)
 		
 	ElseIf (page == "$FlashingStatesPage")
 		AddHeaderOption("$CurtainRiskHeader")
@@ -1559,115 +1665,188 @@ Event OnPageReset(string page)
 		SetCursorPosition(1)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
 	
-	ElseIf (page == "Dynamic Modesty")
+	ElseIf (page == "$DynamicModestyPage") ;Page 9
 		If Main.DFFMA_Found == True || Main.BARE_Found == True
 			
-			Int ModestyRank = (PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) as Int)
-			Int TopModestyRank = (PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) as Int)
-			Int BottomModestyRank = (PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) as Int)
+			Int ModestyRank = (PlayerRef.GetFactionRank(Main.ModestyFaction) as Int)
+			Int TopModestyRank = (PlayerRef.GetFactionRank(Main.TopModestyFaction) as Int)
+			Int BottomModestyRank = (PlayerRef.GetFactionRank(Main.BottomModestyFaction) as Int)
 			
-			AddHeaderOption("Modesty Settings")
-			OptionID[0] = AddToggleOption("Use Dynamic Modesty", UseDynamicModesty, DisabledIf(HardcoreLockdown == True))
-			OptionID[10] = AddToggleOption("Use Strict Rules", StrictModestyRules, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[9] = AddToggleOption("Hardcore Mode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[1] = AddToggleOption("'Shameless' Can Be Permanent", ShamelessCanBePermanent, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			AddSliderOptionST("AND_MinimumRankState", "Minimum Rank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == False))
-			AddSliderOptionST("AND_ModestyUpgradeTimeState", "Immodesty Upgrade Time:", ImmodestyTimeNeeded, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			AddSliderOptionST("AND_ModestyArousalThresholdState", "Modesty Arousal Cutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddHeaderOption("$ModestySettingsHeader")
+			Page9ToggleID[0] = AddToggleOption("$EnableModesty", UseDynamicModesty, DisabledIf(HardcoreLockdown == True))
+			Page9ToggleID[1] = AddToggleOption("$StrictRules", StrictModestyRules, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[2] = AddToggleOption("$ModestyCorruptionText", ModestyCorruption, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[3] = AddToggleOption("$HardcoreMode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_MinimumRankState", "$MinimumRank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == False))
+			AddSliderOptionST("AND_ModestyUpgradeTimeState", "$ImmodestyTime", ImmodestyTimeNeeded, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddSliderOptionST("AND_ModestyArousalThresholdState", "$ArousalCutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			If StrictModestyRules == True
-				OptionID[2] = AddToggleOption("Jump to Rank 1 (Reasonable)", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[3] = AddToggleOption("Jump to Rank 2 (Relaxed)", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[4] = AddToggleOption("Jump to Rank 3 (Comfortable)", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[5] = AddToggleOption("Jump to Rank 4 (Tease)", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[6] = AddToggleOption("Jump to Rank 5 (Brazen)", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[7] = AddToggleOption("Jump to Rank 6 (Shameless)", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[4] = AddToggleOption("$JumpRank1", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[5] = AddToggleOption("$JumpRank2", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[6] = AddToggleOption("$JumpRank3", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[7] = AddToggleOption("$JumpRank4", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[8] = AddToggleOption("$JumpRank5", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[9] = AddToggleOption("$JumpRank6", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			Else
-				OptionID[11] = AddToggleOption("(Top) Jump to Comfortable", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[12] = AddToggleOption("(Top) Jump to Bold", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[13] = AddToggleOption("(Top) Jump to Shameless", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[14] = AddToggleOption("(Bottom) Jump to Comfortable", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[15] = AddToggleOption("(Bottom) Jump to Bold", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				OptionID[16] = AddToggleOption("(Bottom) Jump to Shameless", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[10] = AddToggleOption("$JumpTopRank1", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[11] = AddToggleOption("$JumpTopRank2", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[12] = AddToggleOption("$JumpTopRank3", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[13] = AddToggleOption("$JumpBottomRank1", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[14] = AddToggleOption("$JumpBottomRank2", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[15] = AddToggleOption("$JumpBottomRank3", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			EndIf
-			OptionID[8] = AddToggleOption("Reset Modesty", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[21] = AddToggleOption("Randomize Player Modesty", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			AddMenuOptionST("AND_PlayerConfidence_State", "Player's Confidence", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			OptionID[23] = AddToggleOption("Modesty Monologue", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
+			Page9ToggleID[16] = AddToggleOption("$ResetModestyText", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[17] = AddToggleOption("$RandomizePlayerText", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			AddMenuOptionST("AND_PlayerConfidence_State", "$PlayerConfidenceText", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[18] = AddToggleOption("$ModestyMonologueText", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
+			Page9MenuID[0] = AddMenuOption("$ShyWhenSeen", ShySex, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
 			
 			If StrictModestyRules == True
-				AddHeaderOption("Current Modesty")
-				AddTextOption("Modesty Rank:", ModestyRank as String)
-				AddTextOption("Modesty Title:", ModestyManager.ModestyTitle[ModestyRank])
+				AddHeaderOption("$CurrentModestyHeader")
+				AddTextOption("$ModestyRank", ModestyRank as String)
+				AddTextOption("$ModestyTitle", ModestyManager.ModestyTitle[ModestyRank])
 				
-				AddHeaderOption("Modesty Timer")
-				If PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) <= 0
-					AddTextOption("Modest:", ModestyManager.ModestyTimer[0])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 1
-					AddTextOption("Reasonable:", ModestyManager.ModestyTimer[1])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 2
-					AddTextOption("Relaxed:", ModestyManager.ModestyTimer[2])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 3
-					AddTextOption("Comfortable:", ModestyManager.ModestyTimer[3])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 4
-					AddTextOption("Tease:", ModestyManager.ModestyTimer[4])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) == 5
-					AddTextOption("Brazen:", ModestyManager.ModestyTimer[5])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.ModestyFaction) >= 6
-					AddTextOption("Shameless:", ModestyManager.ModestyTimer[6])
+				AddHeaderOption("$ModestyTimer")
+				If PlayerRef.GetFactionRank(Main.ModestyFaction) <= 0
+					AddTextOption("$Modest", ModestyManager.ModestyTimer[0])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) == 1
+					AddTextOption("$Reasonable", ModestyManager.ModestyTimer[1])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) == 2
+					AddTextOption("$Relaxed", ModestyManager.ModestyTimer[2])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) == 3
+					AddTextOption("$Comfortable", ModestyManager.ModestyTimer[3])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) == 4
+					AddTextOption("$Tease", ModestyManager.ModestyTimer[4])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) == 5
+					AddTextOption("$Brazen", ModestyManager.ModestyTimer[5])
+				ElseIf PlayerRef.GetFactionRank(Main.ModestyFaction) >= 6
+					AddTextOption("$Shameless", ModestyManager.ModestyTimer[6])
 				EndIf
 			Else
 				AddHeaderOption("Top Modesty")
 				AddTextOption("Top Modesty Rank:", TopModestyRank as String)
 				AddTextOption("Top Modesty Title:", ModestyManager.TopModestyTitle[TopModestyRank])
-				AddHeaderOption("Top Modesty Timer")
-				If PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) <= 0
-					AddTextOption("Shy:", ModestyManager.TopModestyTimer[0])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) == 1
-					AddTextOption("Comfortable:", ModestyManager.TopModestyTimer[1])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) == 2
-					AddTextOption("Bold:", ModestyManager.TopModestyTimer[2])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.TopModestyFaction) >= 3
-					AddTextOption("Shameless:", ModestyManager.TopModestyTimer[3])
+				AddHeaderOption("$TopModestyTimer")
+				If TopModestyRank <= 0
+					AddTextOption("$Shy", ModestyManager.TopModestyTimer[0])
+				ElseIf TopModestyRank == 1
+					AddTextOption("$Comfortable", ModestyManager.TopModestyTimer[1])
+				ElseIf TopModestyRank == 2
+					AddTextOption("$Bold", ModestyManager.TopModestyTimer[2])
+				ElseIf TopModestyRank >= 3
+					AddTextOption("$Shameless", ModestyManager.TopModestyTimer[3])
 				EndIf
-				AddHeaderOption("Bottom Modesty")
-				AddTextOption("Bottom Modesty Rank:", BottomModestyRank as String)
-				AddTextOption("Bottom Modesty Title:", ModestyManager.BottomModestyTitle[BottomModestyRank])
-				AddHeaderOption("Bottom Modesty Timer")
-				If PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) <= 0
-					AddTextOption("Shy:", ModestyManager.BottomModestyTimer[0])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) == 1
-					AddTextOption("Comfortable:", ModestyManager.BottomModestyTimer[1])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) == 2
-					AddTextOption("Bold:", ModestyManager.BottomModestyTimer[2])
-				ElseIf PlayerRef.GetFactionRank(ModestyManager.BottomModestyFaction) >= 3
-					AddTextOption("Shameless:", ModestyManager.BottomModestyTimer[3])
+				AddHeaderOption("$BottomModestyHeader")
+				AddTextOption("$BottomModestyRank", BottomModestyRank as String)
+				AddTextOption("$BottomModestyTitle", ModestyManager.BottomModestyTitle[BottomModestyRank])
+				AddHeaderOption("$BottomModestyTimer")
+				If BottomModestyRank <= 0
+					AddTextOption("$Shy", ModestyManager.BottomModestyTimer[0])
+				ElseIf BottomModestyRank == 1
+					AddTextOption("$Comfortable", ModestyManager.BottomModestyTimer[1])
+				ElseIf BottomModestyRank == 2
+					AddTextOption("$Bold", ModestyManager.BottomModestyTimer[2])
+				ElseIf BottomModestyRank >= 3
+					AddTextOption("$Shameless", ModestyManager.BottomModestyTimer[3])
 				EndIf
 			EndIf
 		Else
-			AddTextOption("Dynamic Modesty Disabled", None)
+			AddTextOption("$ModestyDisabled", None)
 		EndIf
-	ElseIf (page == "NPC Modesty")
+	ElseIf (page == "$NPCModestyPage") ;Page 10
 		If (Main.DFFMA_Found == False && Main.BARE_Found == False) || UseDynamicModesty == False
-			AddTextOption("Dynamic Modesty Disabled", None)
+			AddTextOption("$ModestyDisabled", None)
 		Else
-			AddHeaderOption("All NPCs")
-			OptionID[19] = AddToggleOption("Reset All NPC Modesty", ResetNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || DeleteNPCs == True))
-			OptionID[20] = AddToggleOption("Delete All NPC Modesty", DeleteNPCs, DisabledIf(NPCModesty.TrackedFemales < 1))
+			AddHeaderOption("$AllNPCHeader")
 			
-			AddHeaderOption("All Followers")
-			OptionID[22] = AddToggleOption("Followers use Dynamic Modesty", DynamicFollowers, 0)
-			AddSliderOptionST("AND_MinimumFollowerRank_State", "Minimum Follower Rank", MinimumFollowerRank, "{0}", DisabledIf(DynamicFollowers == False))
+			Page10MenuID[0] = AddMenuOption("$NPCShyWhenSeen", NPCShySex, 0)
+			Page10SliderID[0] = AddSliderOption("$NPCArousalCutoff", NPCModestyArousalThreshold.GetValue(), "{0}", 0)
+			If ResetNPCs == False
+				Page10ToggleID[0] = AddToggleOption("$ResetAllNPC", ResetNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || DeleteNPCs == True))
+			Else
+				Page10ToggleID[1] = AddToggleOption("$ResetAllNPCConfirm", ConfirmSelection, 0)
+			EndIf
+			
+			If DeleteNPCs == False
+				Page10ToggleID[2] = AddToggleOption("$DeleteAllNPC", DeleteNPCs, DisabledIf(NPCModesty.TrackedFemales < 1 || ResetNPCs == True))
+			Else
+				Page10ToggleID[3] = AddToggleOption("$DeleteAllNPCConfirm", ConfirmSelection, 0)
+			EndIf
+			
+			AddHeaderOption("$AllFollowerHeader")
+			Page10ToggleID[4] = AddToggleOption("$FollowersAreDynamic", DynamicFollowers, 0)
+			Page10ToggleID[5] = AddToggleOption("$FollowerCorruption", NPCModestyCorruption, DisabledIf(DynamicFollowers == False))
+			AddSliderOptionST("AND_MinimumFollowerRank_State", "$MinFollowerRank", MinimumFollowerRank, "{0}", DisabledIf(DynamicFollowers == False))
 			
 			If Main.RosaExists == True
-				AddHeaderOption("Rosa Round-Bottom")
-				OptionID[17] = AddToggleOption("Rosa is Shameless", ShamelessRosa, DisabledIf(Main.RosaExists == False || ResetRosa == True || DeleteNPCs == True))
-				AddSliderOptionST("AND_MinimumRosaRank_State", "Minimum Rosa Rank", MinimumRosaRank, "{0}", DisabledIf(DynamicFollowers == False || ShamelessRosa == True))
-				OptionID[18] = AddToggleOption("Reset Rosa Modesty", ResetRosa, DisabledIf(Main.RosaExists == False || ShamelessRosa == True || DeleteNPCs == True || ResetNPCs == True))
+				AddHeaderOption("$RosaHeader")
+				Page10ToggleID[6] = AddToggleOption("$RosaShameless", ShamelessRosa, DisabledIf(Main.RosaExists == False || ResetNPCs == True || DeleteNPCs == True))
+				AddSliderOptionST("AND_MinimumRosaRank_State", "$RosaMinRank", MinimumRosaRank, "{0}", DisabledIf(Main.RosaExists == False || DynamicFollowers == False || ShamelessRosa == True))
+			EndIf
+			
+			SetCursorPosition(1)
+			
+			AddHeaderOption("$TrackedFemalesHeader")
+			Page10MenuID[1] = AddMenuOption("$SelectedFemaleText", SelectedFemale, 0)
+			If MakeFemalePermanent == False
+				Page10ToggleID[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermFemales.Find(SelectedFemale) >= 0))
+			Else
+				Page10ToggleID[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, 0)
+			EndIf
+			
+			If DeleteFemale == False
+				Page10ToggleID[9] = AddToggleOption("$DeleteFemale", DeleteFemale, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || ResetFemaleModesty == True || MakeFemalePermanent == True))
+			Else
+				Page10ToggleID[10] = AddToggleOption("$DeleteFemaleConfirm", ConfirmSelection, 0)
+			EndIf
+			
+			If ResetFemaleModesty == False
+				Page10ToggleID[11] = AddToggleOption("$ResetFemale", ResetFemaleModesty, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || MakeFemalePermanent == True))
+			Else
+				Page10ToggleID[12] = AddToggleOption("$ResetFemaleConfirm", ConfirmSelection, 0)
+			EndIf
+			
+			If SelectedFemale != "---" && SelectedFemale != ""
+				Logger.Log("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
+				StrictRank = SelectedFemaleActor.GetFactionRank(Main.ModestyFaction) as Float
+				TopRank = SelectedFemaleActor.GetFactionRank(Main.TopModestyFaction) as Float
+				BottomRank = SelectedFemaleActor.GetFactionRank(Main.BottomModestyFaction) as Float
+				Int FemaleID = NPCModesty.FemaleActor.Find(SelectedFemaleActor)
+				Int Index = NPCModesty.ShynessMode[FemaleID]
+				NPCShyTweak = Sexes[Index]
+			Else
+				StrictRank = 0 as Float
+				TopRank = 0 as Float
+				BottomRank = 0 as Float
+				NPCShyTweak = Sexes[0]
+				ApplyTweak = False
+				ApplyAsDefault = False
+			EndIf
+			Page10SliderID[1] = AddSliderOption("$NPCStrictRank", StrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[2] = AddSliderOption("$NPCTopRank", TopRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[3] = AddSliderOption("$NPCBottomRank", BottomRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10MenuID[2] = AddMenuOption("$ShyWhenSeen", NPCShyTweak, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[13] = AddToggleOption("$ApplyRankTweak", ApplyTweak, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[14] = AddToggleOption("$ApplyRankTweakAsDefault", ApplyAsDefault, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[15] = AddToggleOption("$ApplyRankTweakConfirm", ConfirmSelection, DisabledIf(ApplyTweak == False))
+			
+			AddHeaderOption("$PersistentFemaleHeader")
+			Page10MenuID[3] = AddMenuOption("$SelectedFemaleText", SelectedPermFemale, 0)
+			
+			If DeletePermFemale == False
+				Page10ToggleID[16] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
+			Else
+				Page10ToggleID[17] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, 0)
 			EndIf
 		EndIf
+	ElseIf (page == "$DebugPage")
+		AddHeaderOption("$LoggingHeader")
+		Page11ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
+		Page11ToggleID[1] = AddToggleOption("$AddToGameLog", AddToMainLog, DisabledIf(Logging == False))
+		Page11ToggleID[2] = AddToggleOption("$DataDump", ConfirmSelection, 0)
 	EndIf
 EndEvent
 
@@ -1679,8 +1858,276 @@ Int Function DisabledIf(Bool Condition)
 	EndIf
 EndFunction
 
+Event OnOptionHighlight(Int Option)
+		;=========================
+		;---TOGGLES---
+		;=========================
+	If Option == Page9ToggleID[0] ;UseDynamicModesty
+		SetInfoText("$DynamicModestyInfoText")
+	ElseIf Option == Page9ToggleID[1] ;StrictModestyRules
+		SetInfoText("$StrictModestyInfoText")
+	ElseIf Option == Page9ToggleID[2] ;Corruption
+		SetInfoText("$CorruptionInfoText")
+	ElseIf Option == Page9ToggleID[3] ;Hardcore
+		SetInfoText("$HardcoreInfoText")
+	ElseIf Option == Page9ToggleID[4] ;Rank Jump 1
+		SetInfoText("$Rank1JumpInfoText")
+	ElseIf Option == Page9ToggleID[5] ;Rank Jump 2
+		SetInfoText("$Rank2JumpInfoText")
+	ElseIf Option == Page9ToggleID[6] ;Rank Jump 3
+		SetInfoText("$Rank3JumpInfoText")
+	ElseIf Option == Page9ToggleID[7] ;Rank Jump 4
+		SetInfoText("$Rank4JumpInfoText")
+	ElseIf Option == Page9ToggleID[8] ;Rank Jump 5
+		SetInfoText("$Rank5JumpInfoText")
+	ElseIf Option == Page9ToggleID[9] ;Rank Jump 6
+		SetInfoText("$Rank6JumpInfoText")
+	ElseIf Option == Page9ToggleID[10] ;Top Rank Jump 1
+		SetInfoText("$TopRank1JumpInfoText")
+	ElseIf Option == Page9ToggleID[11] ;Top Rank Jump 2
+		SetInfoText("$TopRank2JumpInfoText")
+	ElseIf Option == Page9ToggleID[12] ;Top Rank Jump 3
+		SetInfoText("$TopRank3JumpInfoText")
+	ElseIf Option == Page9ToggleID[13] ;Bottom Rank Jump 1
+		SetInfoText("$BottomRank1JumpInfoText")
+	ElseIf Option == Page9ToggleID[14] ;Bottom Rank Jump 2
+		SetInfoText("$BottomRank2JumpInfoText")
+	ElseIf Option == Page9ToggleID[15] ;Bottom Rank Jump 3
+		SetInfoText("$BottomRank3JumpInfoText")
+	ElseIf Option == Page9ToggleID[16] ;Reset Modesty
+		SetInfoText("$ResetModestyInfoText")
+	ElseIf Option == Page9ToggleID[17] ;Randomize Modesty
+		SetInfoText("$RandomizeModestyInfoText")
+	ElseIf Option == Page9ToggleID[18] ;Modesty Monologue
+		SetInfoText("$ModestyMonologueInfoText")
+		
+		;=========================
+		;END PAGE 9
+		;=========================
+		
+	ElseIf Option == Page10ToggleID[0] ;Reset All NPCs
+		SetInfoText("$ResetAllNPCInfoText")
+	ElseIf Option == Page10ToggleID[1] ;Reset All NPCs Confirm
+		SetInfoText("$ResetAllNPCInfoText")
+	ElseIf Option == Page10ToggleID[2] ;Delete All NPCs
+		SetInfoText("$DeleteAllNPCInfoText")
+	ElseIf Option == Page10ToggleID[3] ;Delete All NPCs Confirm
+		SetInfoText("$DeleteAllNPCInfoText")
+	ElseIf Option == Page10ToggleID[4] ;Dynamic Followers
+		SetInfoText("$DynamicFollowerInfoText")
+	ElseIf Option == Page10ToggleID[5] ;NPC Corruption
+		SetInfoText("$NPCCorruptionInfoText")
+	ElseIf Option == Page10ToggleID[6] ;ShamelessRosa
+		SetInfoText("$ShamelessRosaInfoText")
+	ElseIf Option == Page10ToggleID[7] ;Permanent Female
+		SetInfoText("$PermanentFemaleInfoText")
+	ElseIf Option == Page10ToggleID[8] ;Permanent Female Confirm
+		SetInfoText("$PermanentFemaleInfoText")
+	ElseIf Option == Page10ToggleID[9] ;Delete Female
+		SetInfoText("$DeleteFemaleInfoText")
+	ElseIf Option == Page10ToggleID[10] ;Delete Female Confirm
+		SetInfoText("$DeleteFemaleInfoText")
+	ElseIf Option == Page10ToggleID[11] ;Reset Female
+		SetInfoText("$ResetFemaleInfoText")
+	ElseIf Option == Page10ToggleID[12] ;Reset Female Confirm
+		SetInfoText("$ResetFemaleInfoText")
+	ElseIf Option == Page10ToggleID[13] ;Apply Ranks
+		SetInfoText("$ApplyRanksInfoText")
+	ElseIf Option == Page10ToggleID[14] ;Apply Ranks as Default
+		SetInfoText("$ApplyAsDefaultInfoText")
+	ElseIf Option == Page10ToggleID[15] ;Apply Ranks Confirm
+		SetInfoText("$ApplyRanksConfirmInfoText")
+	ElseIf Option == Page10ToggleID[16] ;Delete Perm Female
+		SetInfoText("$DeletePermFemaleInfoText")
+	ElseIf Option == Page10ToggleID[17] ;Delete Perm Female Confirm
+		SetInfoText("$DeletePermFemaleInfoText")
+		
+		;=========================
+		;END PAGE 10
+		;=========================
+		
+	ElseIf Option == Page11ToggleID[0] ;Enable Logging
+		SetInfoText("$EnableLoggingInfoText")
+	ElseIf Option == Page11ToggleID[1] ;Add To Main Log
+		SetInfoText("$AddToGameLogInfoText")
+		ElseIf Option == Page11ToggleID[2] ;Data Dump
+		SetInfoText("$DataDumpInfoText")
+		;=========================
+		;---SLIDERS---
+		;=========================
+		
+		;=========================
+		;END PAGE 9
+		;=========================
+		
+	ElseIf Option == Page10SliderID[0] ;NPC Arousal Cutoff
+		SetInfoText("$NPCArousalCutoffInfoText")
+	ElseIf Option == Page10SliderID[1] ;Tweak Strict Rank
+		SetInfoText("$TweakStrictRankInfoText")
+	ElseIf Option == Page10SliderID[2] ;Tweak Top Rank
+		SetInfoText("$TweakTopRankInfoText")
+	ElseIf Option == Page10SliderID[3] ;Tweak Bottom Rank
+		SetInfoText("$TweakBottomRankInfoText")
+		
+		;=========================
+		;END PAGE 10
+		;=========================
+		
+		;=========================
+		;---MENUS---
+		;=========================
+	ElseIf Option == Page9MenuID[0] ;Select Shy Sex (PC)
+		SetInfoText("SelectShySexInfoText")
+		
+		;=========================
+		;END PAGE 9
+		;=========================
+		
+	ElseIf Option == Page10MenuID[0] ;NPC Shy Sex
+		SetInfoText("$NPCSelectShySexInfoText")
+	ElseIf Option == Page10MenuID[1] ;Selected Female
+		SetInfoText("$SelectedFemaleInfoText")
+	ElseIf Option == Page10MenuID[2] ;NPC Shy Sex Tweak
+		SetInfoText("$NPCSelectShySexTweakInfoText")
+	ElseIf Option == Page10MenuID[3] ;Selected Permanent Female
+		SetInfoText("$SelectedPermFemaleInfoText")
+		
+		;=========================
+		;END PAGE 10
+		;=========================
+	EndIf
+EndEvent
+
+Event OnOptionSliderOpen(Int Option)
+	Float StartValue
+	Float RangeMin
+	Float RangeMax
+	Float Interval
+	Float DefaultValue
+	If Option == Page10SliderID[0]
+		StartValue = NPCModestyArousalThreshold.GetValue()
+		RangeMin = 0
+		RangeMax = 101
+		Interval = 1
+		DefaultValue = 70
+	ElseIf Option == Page10SliderID[1]
+		StartValue = StrictRank
+		RangeMin = 0
+		RangeMax = 6
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[2]
+		StartValue = TopRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[3]
+		StartValue = BottomRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	EndIf
+	
+	SetSliderDialogStartValue(StartValue)
+	SetSliderDialogDefaultValue(StartValue)
+	SetSliderDialogRange(RangeMin, RangeMax)
+	SetSliderDialogInterval(Interval)
+EndEvent
+
+Event OnOptionSliderAccept(Int Option, Float Value)
+	If Option == Page10SliderID[0]
+		NPCModestyArousalThreshold.SetValue(Value)
+	ElseIf Option == Page10SliderID[1]
+		StrictRank = Value
+	ElseIf Option == Page10SliderID[2]
+		TopRank = Value
+	ElseIf Option == Page10SliderID[2]
+		BottomRank = Value
+	EndIf
+	ForcePageReset()
+EndEvent
+
+Event OnOptionMenuOpen(Int Option)
+	String[] Texts
+	Int StartIndex
+	If Option == Page9MenuID[0]
+		Texts = Sexes
+		StartIndex = 0
+	ElseIf Option == Page10MenuID[0]
+		Texts = NPCSexes
+		StartIndex = 0
+	ElseIf Option == Page10MenuID[1]
+		Texts = DisplayFemaleName
+		StartIndex = DisplayIndex
+	ElseIf Option == Page10MenuID[2]
+		Texts = Sexes
+		StartIndex = 0
+	ElseIf Option == Page10MenuID[3]
+		Texts = PermFemales
+		StartIndex = PermIndex
+	EndIf
+	SetMenuDialogOptions(Texts)
+	SetMenuDialogStartIndex(StartIndex)
+	SetMenuDialogDefaultIndex(0)
+EndEvent
+
+Event OnOptionMenuAccept(Int Option, Int Index)
+	String[] Texts
+	If Option == Page9MenuID[0]
+		Texts = Sexes
+		ShySex = Sexes[Index]
+		
+		If Index == 0
+			PlayerRef.SetFactionRank(Main.ShyWithMale, 1)
+			PlayerRef.SetFactionRank(Main.ShyWithFemale, 0)
+		ElseIf Index == 1
+			PlayerRef.SetFactionRank(Main.ShyWithMale, 0)
+			PlayerRef.SetFactionRank(Main.ShyWithFemale, 1)
+		ElseIf Index == 2
+			PlayerRef.SetFactionRank(Main.ShyWithMale, 1)
+			PlayerRef.SetFactionRank(Main.ShyWithFemale, 1)
+		EndIf
+		
+		;=============
+		;END PAGE 9
+		;=============
+		
+	ElseIf Option == Page10MenuID[0]
+		Texts = NPCSexes
+		NPCShySex = NPCSexes[Index]
+	ElseIf Option == Page10MenuID[1]
+		Texts = DisplayFemaleName
+		DisplayIndex = Index
+		MakeFemalePermanent = False
+		DeleteFemale = False
+		DeletePermFemale = False
+		
+		If DisplayIndex < 0
+			DisplayIndex = 0
+		EndIf
+		
+		SelectedFemale = DisplayFemaleName[DisplayIndex]
+		SelectedFemaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+	ElseIf Option == Page10MenuID[2]
+		NPCShyTweak = Sexes[Index]
+	ElseIf Option == Page10MenuID[3]
+		Texts = PermFemales
+		PermIndex = Index
+		DeletePermFemale = False
+		
+		If PermIndex < 0
+			PermIndex = 0
+		EndIf
+		
+		SelectedPermFemale = PermFemales[PermIndex]
+	EndIf
+	ForcePageReset()
+EndEvent
+
 Event OnOptionSelect(Int Option)
-	If Option == OptionID[0]
+	If Option == Page9ToggleID[0]
 		If UseDynamicModesty == False
 			UseDynamicModesty = True
 			AND_DynamicModesty.SetValue(2)
@@ -1690,16 +2137,37 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, UseDynamicModesty)
 		ForcePageReset()
-		
-	ElseIf Option == OptionID[1]
-		If ShamelessCanBePermanent == False
-			ShamelessCanBePermanent = True
+	ElseIf Option == Page9ToggleID[1]
+		If StrictModestyRules == False
+			StrictModestyRules = True
+			AND_DynamicModesty.SetValue(1)
 		Else
-			ShamelessCanBePermanent = False
+			StrictModestyRules = False
+			AND_DynamicModesty.SetValue(2)
 		EndIf
-		SetToggleOptionValue(Option, ShamelessCanBePermanent)
-	
-	ElseIf Option == OptionID[2]
+		SetToggleOptionValue(Option, StrictModestyRules)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[2]
+		If ModestyCorruption == False
+			ModestyCorruption = True
+		Else
+			ModestyCorruption = False
+		EndIf
+		SetToggleOptionValue(Option, ModestyCorruption)
+	ElseIf Option == Page9ToggleID[3]
+		If UseHardcoreModesty == False
+			UseHardcoreModesty = True
+		Else
+			UseHardcoreModesty = False
+		EndIf
+		SetToggleOptionValue(Option, UseHardcoreModesty)
+		
+		If UseHardcoreModesty == True
+			Debug.MessageBox("WARNING: This will lock all Dynamic Modesty Settings when leaving the MCM! This CANNOT BE UNDONE UNLESS YOU HAVE AN OLDER SAVE TO REVERT TO!!!")
+		EndIf
+		
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[4]
 		If Rank1Jump == False
 			Rank1Jump = True
 			Rank2Jump = False
@@ -1713,7 +2181,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank1Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[3]
+	ElseIf Option == Page9ToggleID[5]
 		If Rank2Jump == False
 			Rank1Jump = False
 			Rank2Jump = True
@@ -1727,7 +2195,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank2Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[4]
+	ElseIf Option == Page9ToggleID[6]
 		If Rank3Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -1741,7 +2209,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank3Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[5]
+	ElseIf Option == Page9ToggleID[7]
 		If Rank4Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -1755,7 +2223,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank4Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[6]
+	ElseIf Option == Page9ToggleID[8]
 		If Rank5Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -1769,7 +2237,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank5Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[7]
+	ElseIf Option == Page9ToggleID[9]
 		If Rank6Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -1783,7 +2251,67 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank6Jump)
 		ForcePageReset()
-	ElseIf Option == OptionID[8]
+	ElseIf Option == Page9ToggleID[10]
+		If TopRank1Jump == False
+			TopRank1Jump = True
+			TopRank2Jump = False
+			TopRank3Jump = False
+		Else
+			TopRank1Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank1Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[11]
+		If TopRank2Jump == False
+			TopRank1Jump = False
+			TopRank2Jump = True
+			TopRank3Jump = False
+		Else
+			TopRank2Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank2Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[12]
+		If TopRank3Jump == False
+			TopRank1Jump = False
+			TopRank2Jump = False
+			TopRank3Jump = True
+		Else
+			TopRank3Jump = False
+		EndIf
+		SetToggleOptionValue(Option, TopRank3Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[13]
+		If BottomRank1Jump == False
+			BottomRank1Jump = True
+			BottomRank2Jump = False
+			BottomRank3Jump = False
+		Else
+			BottomRank1Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank1Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[14]
+		If BottomRank2Jump == False
+			BottomRank1Jump = False
+			BottomRank2Jump = True
+			BottomRank3Jump = False
+		Else
+			BottomRank2Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank2Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[15]
+		If BottomRank3Jump == False
+			BottomRank1Jump = False
+			BottomRank2Jump = False
+			BottomRank3Jump = True
+		Else
+			BottomRank3Jump = False
+		EndIf
+		SetToggleOptionValue(Option, BottomRank3Jump)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[16]
 		If ResetModesty == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -1797,122 +2325,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, ResetModesty)
 		ForcePageReset()
-	ElseIf Option == OptionID[9]
-		If UseHardcoreModesty == False
-			UseHardcoreModesty = True
-		Else
-			UseHardcoreModesty = False
-		EndIf
-		SetToggleOptionValue(Option, UseHardcoreModesty)
-		
-		If UseHardcoreModesty == True
-			Debug.MessageBox("WARNING: This will lock all Dynamic Modesty Settings when leaving the MCM! This CANNOT BE UNDONE UNLESS YOU HAVE AN OLDER SAVE TO REVERT TO!!!")
-		EndIf
-		
-		ForcePageReset()
-	ElseIf Option == OptionID[10]
-		If StrictModestyRules == False
-			StrictModestyRules = True
-			AND_DynamicModesty.SetValue(1)
-		Else
-			StrictModestyRules = False
-			AND_DynamicModesty.SetValue(2)
-		EndIf
-		SetToggleOptionValue(Option, StrictModestyRules)
-		ForcePageReset()
-	ElseIf Option == OptionID[11]
-		If TopRank1Jump == False
-			TopRank1Jump = True
-			TopRank2Jump = False
-			TopRank3Jump = False
-		Else
-			TopRank1Jump = False
-		EndIf
-		SetToggleOptionValue(Option, TopRank1Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[12]
-		If TopRank2Jump == False
-			TopRank1Jump = False
-			TopRank2Jump = True
-			TopRank3Jump = False
-		Else
-			TopRank2Jump = False
-		EndIf
-		SetToggleOptionValue(Option, TopRank2Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[13]
-		If TopRank3Jump == False
-			TopRank1Jump = False
-			TopRank2Jump = False
-			TopRank3Jump = True
-		Else
-			TopRank3Jump = False
-		EndIf
-		SetToggleOptionValue(Option, TopRank3Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[14]
-		If BottomRank1Jump == False
-			BottomRank1Jump = True
-			BottomRank2Jump = False
-			BottomRank3Jump = False
-		Else
-			BottomRank1Jump = False
-		EndIf
-		SetToggleOptionValue(Option, BottomRank1Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[15]
-		If BottomRank2Jump == False
-			BottomRank1Jump = False
-			BottomRank2Jump = True
-			BottomRank3Jump = False
-		Else
-			BottomRank2Jump = False
-		EndIf
-		SetToggleOptionValue(Option, BottomRank2Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[16]
-		If BottomRank1Jump == False
-			BottomRank1Jump = False
-			BottomRank2Jump = False
-			BottomRank3Jump = True
-		Else
-			BottomRank3Jump = False
-		EndIf
-		SetToggleOptionValue(Option, BottomRank3Jump)
-		ForcePageReset()
-	ElseIf Option == OptionID[17]
-		If ShamelessRosa == False
-			ShamelessRosa = True
-		Else
-			ShamelessRosa = False
-		EndIf
-		SetToggleOptionValue(Option, ShamelessRosa)
-		ForcePageReset()
-	ElseIf Option == OptionID[18]
-		If ResetRosa == False
-			ResetRosa = True
-		Else
-			ResetRosa = False
-		EndIf
-		SetToggleOptionValue(Option, ResetRosa)
-		ForcePageReset()
-	ElseIf Option == OptionID[19]
-		If ResetNPCs == False
-			ResetNPCs = True
-		Else
-			ResetNPCs = False
-		EndIf
-		SetToggleOptionValue(Option, ResetNPCs)
-		ForcePageReset()
-	ElseIf Option == OptionID[20]
-		If DeleteNPCs == False
-			DeleteNPCs = True
-		Else
-			DeleteNPCs = False
-		EndIf
-		SetToggleOptionValue(Option, DeleteNPCs)
-		ForcePageReset()
-	ElseIf Option == OptionID[21]
+	ElseIf Option == Page9ToggleID[17]
 		If RandomizePlayer == False
 			RandomizePlayer = True
 		Else
@@ -1920,20 +2333,183 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, RandomizePlayer)
 		ForcePageReset()
-	ElseIf Option == OptionID[22]
-		If DynamicFollowers == False
-			DynamicFollowers = True
-		Else
-			DynamicFollowers = False
-		EndIf
-		SetToggleOptionValue(Option, DynamicFollowers)
-	ElseIf Option == OptionID[23]
+	ElseIf Option == Page9ToggleID[18]
 		If ModestyMonologue == False
 			ModestyMonologue = True
 		Else
 			ModestyMonologue = False
 		EndIf
 		SetToggleOptionValue(Option, ModestyMonologue)
+		
+		;=============
+		;END PAGE 9
+		;=============
+
+	ElseIf Option == Page10ToggleID[0]
+		If ResetNPCs == False
+			ResetNPCs = True
+		Else
+			ResetNPCs = False
+		EndIf
+		SetToggleOptionValue(Option, ResetNPCs)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[1]
+		Int ResetFemaleID = NPCModesty.TrackedFemales
+		While ResetFemaleID > 0
+			NPCModesty.ResetFemale(None, ResetFemaleID)
+			ResetFemaleID -= 1
+		EndWhile
+		ResetNPCs = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[2]
+		If DeleteNPCs == False
+			DeleteNPCs = True
+		Else
+			DeleteNPCs = False
+		EndIf
+		SetToggleOptionValue(Option, DeleteNPCs)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[3]
+		Logger.Log("<MCM> {Page10ToggleID[3]} Delete All NPC Data Started")
+		Int RemoveFemaleID = NPCModesty.TrackedFemales
+		While RemoveFemaleID >= 0
+			NPCModesty.RemoveFemale(None, RemoveFemaleID)
+			RemoveFemaleID -= 1
+		EndWhile
+		DisplayFemaleName = Utility.ResizeStringArray(DisplayFemaleName, 1, "---")
+		Logger.Log("<MCM> {Page10ToggleID[3]} Delete All NPC Data Complete")
+		DeleteNPCs = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[4]
+		If DynamicFollowers == False
+			DynamicFollowers = True
+		Else
+			DynamicFollowers = False
+		EndIf
+		SetToggleOptionValue(Option, DynamicFollowers)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[5]
+		If NPCModestyCorruption == False
+			NPCModestyCorruption = True
+		Else
+			NPCModestyCorruption = False
+		EndIf
+		SetToggleOptionValue(Option, NPCModestyCorruption)
+	ElseIf Option == Page10ToggleID[6]
+		If ShamelessRosa == False
+			ShamelessRosa = True
+		Else
+			ShamelessRosa = False
+		EndIf
+		SetToggleOptionValue(Option, ShamelessRosa)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[7]
+		If MakeFemalePermanent == False
+			MakeFemalePermanent = True
+		Else
+			MakeFemalePermanent = False
+		EndIf
+		SetToggleOptionValue(Option, MakeFemalePermanent)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[8] ;Confirm Make Permanent
+		Actor femaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		
+		NPCModesty.AddPermanent(femaleActor)
+		
+		Int OldLength = PermFemales.Length
+		Int NewLength = OldLength + 1
+		PermFemales = Utility.ResizeStringArray(PermFemales, NewLength, "---")
+		PermFemales[OldLength] = GetStringValue(NPCModesty.PermJsonName, "Female " + OldLength + " Name")
+		
+		MakeFemalePermanent = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[9]
+		If DeleteFemale == False
+			DeleteFemale = True
+		Else
+			DeleteFemale = False
+		EndIf
+		SetToggleOptionValue(Option, DeleteFemale)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[10] ;Confirm Delete
+		Actor femaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		NPCModesty.RemoveFemale(femaleActor, DisplayIndex)
+		
+		Int OldLength = DisplayFemaleName.Length
+		Int NewLength = OldLength - 1
+		DisplayFemaleName = Utility.ResizeStringArray(DisplayFemaleName, NewLength, "---")
+		
+		DeleteFemale = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[11]
+		If ResetFemaleModesty == False
+			ResetFemaleModesty = True
+		Else
+			ResetFemaleModesty = False
+		EndIf
+		SetToggleOptionValue(Option, ResetFemaleModesty)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[12] ;Confirm Reset
+		Actor femaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		NPCModesty.ResetFemale(femaleActor, DisplayIndex)
+		ResetFemaleModesty = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[13]
+		If ApplyTweak == False
+			ApplyTweak = True
+		Else
+			ApplyTweak = False
+		EndIf
+		SetToggleOptionValue(Option, ApplyTweak)
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[14]
+		If ApplyAsDefault == False
+			ApplyAsDefault = True
+		Else
+			ApplyAsDefault = False
+		EndIf
+		SetToggleOptionValue(Option, ApplyAsDefault)
+	ElseIf Option == Page10ToggleID[15] ;Confirm Tweak
+		NPCModesty.TweakFemale(SelectedFemaleActor, DisplayIndex, StrictRank as Int, TopRank as Int, BottomRank as Int, ApplyAsDefault)
+		NPCModesty.UpdateShyness(SelectedFemaleActor)
+		ApplyTweak = False
+		ApplyAsDefault = False
+		ForcePageReset()
+	ElseIf Option == Page10ToggleID[16]
+		If DeletePermFemale == False
+			DeletePermFemale = True
+		Else
+			DeletePermFemale = False
+		EndIf
+		SetToggleOptionValue(Option, DeletePermFemale)
+	ElseIf Option == Page10ToggleID[17] ;Confirm Permanent Removal
+		Actor permFemaleActor = GetFormValue(NPCModesty.PermJsonName, PermIndex) as Actor
+		NPCModesty.RemovePermFemale(permFemaleActor, PermIndex)
+		DeletePermFemale = False
+		ForcePageReset()
+		
+		;=============
+		;END PAGE 10
+		;=============
+		
+	ElseIf Option == Page11ToggleID[0]
+		If Logging == False
+			Logging = True
+		Else
+			Logging = False
+			AddToMainLog = False
+		EndIf
+		SetToggleOptionValue(Option, Logging)
+		ForcePageReset()
+	ElseIf Option == Page11ToggleID[1]
+		If AddToMainLog == False
+			AddToMainLog = True
+		Else
+			AddToMainLog = False
+		EndIf
+		SetToggleOptionValue(Option, AddToMainLog)
+	ElseIf Option == Page11ToggleID[2]
+		NPCModesty.DumpNPCData()
 	EndIf
 EndEvent
 
@@ -1948,14 +2524,22 @@ State AND_MinimumFollowerRank_State
 	Event OnSliderAcceptST(float value)
 		MinimumFollowerRank = value as Int
 		SetSliderOptionValueST(MinimumFollowerRank, "{0}", False, "AND_MinimumFollowerRank_State")
+		If MinimumFollowerRank > MinimumRosaRank
+			MinimumRosaRank = MinimumFollowerRank
+			SetSliderOptionValueST(MinimumRosaRank, "{0}", False, "AND_MinimumRosaRank_State")
+		EndIf
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$MinimumFollowerRankInfoText")
 	EndEvent
 EndState
 
 State AND_MinimumRosaRank_State
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(MinimumRosaRank)
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(0,6)
+		SetSliderDialogDefaultValue(MinimumFollowerRank)
+		SetSliderDialogRange(MinimumFollowerRank,6)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
@@ -1963,18 +2547,22 @@ State AND_MinimumRosaRank_State
 		MinimumRosaRank = value as Int
 		SetSliderOptionValueST(MinimumRosaRank, "{0}", False, "AND_MinimumRosaRank_State")
 	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$MinimumRosaRankInfoText")
+	EndEvent
 EndState
 
 State AND_PlayerConfidence_State
 	Event OnMenuOpenST()
 		String[] Options = new String[6]
 		
-		Options[0] = "Cowardly"
-		Options[1] = "Cautious"
-		Options[2] = "Average"
-		Options[3] = "Brave"
-		Options[4] = "Foolhardy"
-		Options[5] = "Random"
+		Options[0] = "$Cowardly"
+		Options[1] = "$Cautious"
+		Options[2] = "$Average"
+		Options[3] = "$Brave"
+		Options[4] = "$Foolhardy"
+		Options[5] = "$Random"
 		
 		Int StartIndex = Options.Find(PlayerConfidence)
 		
@@ -1986,15 +2574,20 @@ State AND_PlayerConfidence_State
 	Event OnMenuAcceptST(Int AcceptedIndex)
 		String[] Options = new String[6]
 		
-		Options[0] = "Cowardly"
-		Options[1] = "Cautious"
-		Options[2] = "Average"
-		Options[3] = "Brave"
-		Options[4] = "Foolhardy"
-		Options[5] = "Random"
+		Options[0] = "$Cowardly"
+		Options[1] = "$Cautious"
+		Options[2] = "$Average"
+		Options[3] = "$Brave"
+		Options[4] = "$Foolhardy"
+		Options[5] = "$Random"
 		
 		PlayerConfidence = Options[AcceptedIndex]
+		PlayerConfidenceValue = AcceptedIndex
 		SetMenuOptionValueST(PlayerConfidence, False, "AND_PlayerConfidence_State")
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$PlayerConfidenceInfoText")
 	EndEvent
 EndState
 
@@ -2008,17 +2601,21 @@ State AND_ScanNPCToggle_State
 		
 		SetToggleOptionValueST(ScanNPC, False, "AND_ScanNPCToggle_State")
 	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$ScanToggleInfoText")
+	EndEvent
 EndState
 
 State AND_ScanFrequency_State
 	Event OnMenuOpenST()
 		String[] Options = new String[5]
 		
-		Options[0] = "Very Slow" ;0.75 Game Time (45 minutes) - TimeScale Limit: 300
-		Options[1] = "Slow" ;0.5 Game Time (30 Minutes) - TimeScale Limit: 200
-		Options[2] = "Normal" ;0.25 Game Time (15 Minutes) - TimeScale Limit: 100
-		Options[3] = "Fast" ;0.15 Game Time (9 Minutes) - TimeScale Limit: 60
-		Options[4] = "Very Fast" ;0.1 Game Time (6 Minutes) - TimeScale Limit: 40
+		Options[0] = "$VSScan" ;0.75 Game Time (45 Game Minutes/135 IRL Seconds) - TimeScale Limit: 300
+		Options[1] = "$SScan" ;0.5 Game Time (30 Game Minutes/90 IRL Seconds) - TimeScale Limit: 200
+		Options[2] = "$NScan" ;0.25 Game Time (15 Game Minutes/45 IRL Seconds) - TimeScale Limit: 100
+		Options[3] = "$FScan" ;0.15 Game Time (9 Game Minutes/27 IRL Seconds) - TimeScale Limit: 60
+		Options[4] = "$VFScan" ;0.1 Game Time (6 Game Minutes/18 IRL Seconds) - TimeScale Limit: 40
 		
 		Int StartIndex = Options.Find(ScanFrequency)
 		
@@ -2030,14 +2627,19 @@ State AND_ScanFrequency_State
 	Event OnMenuAcceptST(Int AcceptedIndex)
 		String[] Options = new String[5]
 		
-		Options[0] = "Very Slow" ;0.75 Game Time (45 minutes) - TimeScale Limit: 300
-		Options[1] = "Slow" ;0.5 Game Time (30 Minutes) - TimeScale Limit: 200
-		Options[2] = "Normal" ;0.25 Game Time (15 Minutes) - TimeScale Limit: 100
-		Options[3] = "Fast" ;0.15 Game Time (9 Minutes) - TimeScale Limit: 60
-		Options[4] = "Very Fast" ;0.1 Game Time (6 Minutes) - TimeScale Limit: 40
+		Options[0] = "$VSScan" ;0.75 Game Time (45 Game Minutes/135 IRL Seconds) - TimeScale Limit: 300
+		Options[1] = "$SScan" ;0.5 Game Time (30 Game Minutes/90 IRL Seconds) - TimeScale Limit: 200
+		Options[2] = "$NScan" ;0.25 Game Time (15 Game Minutes/45 IRL Seconds) - TimeScale Limit: 100
+		Options[3] = "$FScan" ;0.15 Game Time (9 Game Minutes/27 IRL Seconds) - TimeScale Limit: 60
+		Options[4] = "$VFScan" ;0.1 Game Time (6 Game Minutes/18 IRL Seconds) - TimeScale Limit: 40
 		
 		ScanFrequency = Options[AcceptedIndex]
+		Logger.Log("<MCM> {AND_ScanFrequency_State:OnMenuAcceptST} Scan Speed is now: " + ScanFrequency)
 		SetMenuOptionValueST(ScanFrequency, False, "AND_ScanFrequency_State")
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$ScanFrequencyInfoText")
 	EndEvent
 EndState
 
@@ -2045,7 +2647,7 @@ State AND_ModestyArousalThresholdState
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(ModestyArousalThreshold.GetValue())
 		SetSliderDialogDefaultValue(70)
-		SetSliderDialogRange(0,99)
+		SetSliderDialogRange(0,101)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
@@ -2053,19 +2655,27 @@ State AND_ModestyArousalThresholdState
 		ModestyArousalThreshold.SetValue(value)
 		SetSliderOptionValueST(ModestyArousalThreshold.GetValue() as Int, "{0}", False, "AND_ModestyArousalThresholdState")
 	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$ModestyArousalThresholdInfoText")
+	EndEvent
 EndState
 
 State AND_ModestyUpgradeTimeState
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(ImmodestyTimeNeeded)
-		SetSliderDialogDefaultValue(168)
-		SetSliderDialogRange(24, 1440)
-		SetSliderDialogInterval(24)
+		SetSliderDialogDefaultValue(14)
+		SetSliderDialogRange(1, 120)
+		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(float value)
 		ImmodestyTimeNeeded = value as Int
 		SetSliderOptionValueST(ImmodestyTimeNeeded, "{0}", False, "AND_ModestyUpgradeTimeState")
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$ImmodestyTimeInfoText")
 	EndEvent
 EndState
 
@@ -2080,6 +2690,10 @@ State AND_MinimumRankState
 	Event OnSliderAcceptST(float value)
 		MinimumModestyRank = value as Int
 		SetSliderOptionValueST(MinimumModestyRank, "{0}", False, "AND_MinimumRankState")
+	EndEvent
+	
+	Event OnHighlightST()
+		SetInfoText("$MinimumRankInfoText")
 	EndEvent
 EndState
 
@@ -2096,7 +2710,7 @@ State AND_DisableNakedCommentsState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$DisableNakedCommentsTooltip")
+		SetInfoText("$DisableNakedCommentsTooltip")
 	EndEvent
 EndState
 
@@ -2115,7 +2729,7 @@ State AND_NudeFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$NudeCommentChanceTooltip")
+		SetInfoText("$NudeCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2134,7 +2748,7 @@ State AND_ToplessFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$ToplessCommentChanceTooltip")
+		SetInfoText("$ToplessCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2153,7 +2767,7 @@ State AND_BottomlessFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$BottomlessCommentChanceTooltip")
+		SetInfoText("$BottomlessCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2172,7 +2786,7 @@ State AND_ChestFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$ChestCommentChanceTooltip")
+		SetInfoText("$ChestCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2191,7 +2805,7 @@ State AND_GenitalsFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$GenitalsCommentChanceTooltip")
+		SetInfoText("$GenitalsCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2210,7 +2824,7 @@ State AND_AssFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AssCommentChanceTooltip")
+		SetInfoText("$AssCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2229,7 +2843,7 @@ State AND_BraFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$BraCommentChanceTooltip")
+		SetInfoText("$BraCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2248,13 +2862,13 @@ State AND_UnderwearFactionCommentChanceState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$UnderwearCommentChanceTooltip")
+		SetInfoText("$UnderwearCommentChanceTooltip")
 	EndEvent
 EndState
 
 State AND_NakedCommentChanceState
 	Event OnHighlightST()
-		SetInfotext("$NakedCommentChanceTooltip")
+		SetInfoText("$NakedCommentChanceTooltip")
 	EndEvent
 EndState
 
@@ -2270,7 +2884,7 @@ State AND_AllowMotionFlashState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AllowMotionFlash_Tooltip")
+		SetInfoText("$AND_AllowMotionFlash_Tooltip")
 	EndEvent
 EndState
 
@@ -2297,7 +2911,7 @@ State AND_RunningFlashIncreaseState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_RunningFlash_Tooltip")
+		SetInfoText("$AND_RunningFlash_Tooltip")
 	EndEvent
 EndState
 
@@ -2315,7 +2929,7 @@ State AND_SprintingFlashIncreaseState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_SprintingFlash_Tooltip")
+		SetInfoText("$AND_SprintingFlash_Tooltip")
 	EndEvent
 EndState
 
@@ -2331,7 +2945,7 @@ State UseGenderlessState
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_Genderless_Tooltip")
+		SetInfoText("$AND_Genderless_Tooltip")
 	EndEvent
 EndState
 
@@ -2364,7 +2978,7 @@ State AND_ChestCurtainLowOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -2397,7 +3011,7 @@ State AND_ChestCurtainLowOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -2435,7 +3049,7 @@ State AND_ChestCurtainOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOdds_Tooltip")
+		SetInfoText("$AND_ChestCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -2473,7 +3087,7 @@ State AND_ChestCurtainOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOdds_Tooltip")
+		SetInfoText("$AND_ChestCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -2511,7 +3125,7 @@ State AND_ChestCurtainHighOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -2549,7 +3163,7 @@ State AND_ChestCurtainHighOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -2587,7 +3201,7 @@ State AND_ChestCurtainExtremeOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -2625,7 +3239,7 @@ State AND_ChestCurtainExtremeOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -2658,7 +3272,7 @@ State AND_ChestCurtainUltraOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -2691,7 +3305,7 @@ State AND_ChestCurtainUltraOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_ChestCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_ChestCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -2724,7 +3338,7 @@ State AND_TransparentChestCurtainLowOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -2757,7 +3371,7 @@ State AND_TransparentChestCurtainLowOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -2795,7 +3409,7 @@ State AND_TransparentChestCurtainOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -2833,7 +3447,7 @@ State AND_TransparentChestCurtainOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -2871,7 +3485,7 @@ State AND_TransparentChestCurtainHighOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -2909,7 +3523,7 @@ State AND_TransparentChestCurtainHighOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -2947,7 +3561,7 @@ State AND_TransparentChestCurtainExtremeOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -2985,7 +3599,7 @@ State AND_TransparentChestCurtainExtremeOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -3018,7 +3632,7 @@ State AND_TransparentChestCurtainUltraOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3051,7 +3665,7 @@ State AND_TransparentChestCurtainUltraOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentChestCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentChestCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3083,7 +3697,7 @@ State AND_PelvicCurtainLowOdds
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3115,7 +3729,7 @@ State AND_PelvicCurtainLowOddsMale
 	EndEvent 
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3152,7 +3766,7 @@ State AND_PelvicCurtainOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOdds_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3189,7 +3803,7 @@ State AND_PelvicCurtainOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOdds_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3226,7 +3840,7 @@ State AND_PelvicCurtainHighOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -3263,7 +3877,7 @@ State AND_PelvicCurtainHighOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -3300,7 +3914,7 @@ State AND_PelvicCurtainExtremeOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -3337,7 +3951,7 @@ State AND_PelvicCurtainExtremeOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -3369,7 +3983,7 @@ State AND_PelvicCurtainUltraOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3401,7 +4015,7 @@ State AND_PelvicCurtainUltraOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_PelvicCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_PelvicCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3433,7 +4047,7 @@ State AND_TransparentPelvicCurtainLowOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3465,7 +4079,7 @@ State AND_TransparentPelvicCurtainLowOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3502,7 +4116,7 @@ State AND_TransparentPelvicCurtainOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3539,7 +4153,7 @@ State AND_TransparentPelvicCurtainOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3576,7 +4190,7 @@ State AND_TransparentPelvicCurtainHighOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -3613,7 +4227,7 @@ State AND_TransparentPelvicCurtainHighOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -3650,7 +4264,7 @@ State AND_TransparentPelvicCurtainExtremeOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -3687,7 +4301,7 @@ State AND_TransparentPelvicCurtainExtremeOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -3719,7 +4333,7 @@ State AND_TransparentPelvicCurtainUltraOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3751,7 +4365,7 @@ State AND_TransparentPelvicCurtainUltraOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentPelvicCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentPelvicCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -3783,7 +4397,7 @@ State AND_AssCurtainLowOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3815,7 +4429,7 @@ State AND_AssCurtainLowOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -3852,7 +4466,7 @@ State AND_AssCurtainOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOdds_Tooltip")
+		SetInfoText("$AND_AssCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3889,7 +4503,7 @@ State AND_AssCurtainOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOdds_Tooltip")
+		SetInfoText("$AND_AssCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -3926,7 +4540,7 @@ State AND_AssCurtainHighOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -3963,7 +4577,7 @@ State AND_AssCurtainHighOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4000,7 +4614,7 @@ State AND_AssCurtainExtremeOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -4037,7 +4651,7 @@ State AND_AssCurtainExtremeOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -4069,7 +4683,7 @@ State AND_AssCurtainUltraOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -4101,7 +4715,7 @@ State AND_AssCurtainUltraOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_AssCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_AssCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -4133,7 +4747,7 @@ State AND_TransparentAssCurtainLowOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4165,7 +4779,7 @@ State AND_TransparentAssCurtainLowOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4202,7 +4816,7 @@ State AND_TransparentAssCurtainOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4239,7 +4853,7 @@ State AND_TransparentAssCurtainOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOdds_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4276,7 +4890,7 @@ State AND_TransparentAssCurtainHighOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4313,7 +4927,7 @@ State AND_TransparentAssCurtainHighOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4350,7 +4964,7 @@ State AND_TransparentAssCurtainExtremeOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -4387,7 +5001,7 @@ State AND_TransparentAssCurtainExtremeOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsExtreme_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsExtreme_Tooltip")
 	EndEvent
 EndState
 
@@ -4419,7 +5033,7 @@ State AND_TransparentAssCurtainUltraOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -4451,7 +5065,7 @@ State AND_TransparentAssCurtainUltraOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentAssCurtainOddsUltra_Tooltip")
+		SetInfoText("$AND_TransparentAssCurtainOddsUltra_Tooltip")
 	EndEvent
 EndState
 
@@ -4483,7 +5097,7 @@ State AND_CStringOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_CstringOdds_Tooltip")
+		SetInfoText("$AND_CstringOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4515,7 +5129,7 @@ State AND_CStringOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_CstringOdds_Tooltip")
+		SetInfoText("$AND_CstringOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4552,7 +5166,7 @@ State AND_TransparentCStringOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentCstringOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4589,7 +5203,7 @@ State AND_TransparentCStringOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentCstringOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4626,7 +5240,7 @@ State AND_TransparentCStringOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOdds_Tooltip")
+		SetInfoText("$AND_TransparentCstringOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4663,7 +5277,7 @@ State AND_TransparentCStringOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOdds_Tooltip")
+		SetInfoText("$AND_TransparentCstringOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4695,7 +5309,7 @@ State AND_TransparentCStringOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentCstringOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4727,7 +5341,7 @@ State AND_TransparentCStringOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentCstringOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentCstringOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4759,7 +5373,7 @@ State AND_TransparentTopArmorOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4791,7 +5405,7 @@ State AND_TransparentTopArmorOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4828,7 +5442,7 @@ State AND_TransparentTopArmorOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOdds_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4865,7 +5479,7 @@ State AND_TransparentTopArmorOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOdds_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -4897,7 +5511,7 @@ State AND_TransparentTopArmorOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4929,7 +5543,7 @@ State AND_TransparentTopArmorOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorTopOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentArmorTopOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -4961,7 +5575,7 @@ State AND_TransparentBottomArmorOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -4993,7 +5607,7 @@ State AND_TransparentBottomArmorOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5030,7 +5644,7 @@ State AND_TransparentBottomArmorOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOdds_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5067,7 +5681,7 @@ State AND_TransparentBottomArmorOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOdds_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5099,7 +5713,7 @@ State AND_TransparentBottomArmorOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5131,7 +5745,7 @@ State AND_TransparentBottomArmorOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentArmorBottomOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentArmorBottomOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5163,7 +5777,7 @@ State AND_TransparentBraOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentBraOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5195,7 +5809,7 @@ State AND_TransparentBraOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentBraOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5232,7 +5846,7 @@ State AND_TransparentBraOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOdds_Tooltip")
+		SetInfoText("$AND_TransparentBraOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5269,7 +5883,7 @@ State AND_TransparentBraOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOdds_Tooltip")
+		SetInfoText("$AND_TransparentBraOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5301,7 +5915,7 @@ State AND_TransparentBraOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentBraOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5333,7 +5947,7 @@ State AND_TransparentBraOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentBraOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentBraOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5365,7 +5979,7 @@ State AND_TransparentUnderwearOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5397,7 +6011,7 @@ State AND_TransparentUnderwearOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5434,7 +6048,7 @@ State AND_TransparentUnderwearOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOdds_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5471,7 +6085,7 @@ State AND_TransparentUnderwearOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOdds_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5503,7 +6117,7 @@ State AND_TransparentUnderwearOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5535,7 +6149,7 @@ State AND_TransparentUnderwearOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentUnderwearOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentUnderwearOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5567,7 +6181,7 @@ State AND_TransparentHotpantsOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5599,7 +6213,7 @@ State AND_TransparentHotpantsOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5636,7 +6250,7 @@ State AND_TransparentHotpantsOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOdds_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5673,7 +6287,7 @@ State AND_TransparentHotpantsOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOdds_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5705,7 +6319,7 @@ State AND_TransparentHotpantsOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5737,7 +6351,7 @@ State AND_TransparentHotpantsOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentHotpantsOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentHotpantsOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5769,7 +6383,7 @@ State AND_TransparentShowgirlSkirtOddsLow
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5801,7 +6415,7 @@ State AND_TransparentShowgirlSkirtOddsLowMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOddsLow_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOddsLow_Tooltip")
 	EndEvent
 EndState
 
@@ -5838,7 +6452,7 @@ State AND_TransparentShowgirlSkirtOdds
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOdds_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5875,7 +6489,7 @@ State AND_TransparentShowgirlSkirtOddsMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOdds_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOdds_Tooltip")
 	EndEvent
 EndState
 
@@ -5907,7 +6521,7 @@ State AND_TransparentShowgirlSkirtOddsHigh
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOddsHigh_Tooltip")
 	EndEvent
 EndState
 
@@ -5939,6 +6553,6 @@ State AND_TransparentShowgirlSkirtOddsHighMale
 	EndEvent
 	
 	Event OnHighlightST()
-		SetInfotext("$AND_TransparentShowgirlSkirtOddsHigh_Tooltip")
+		SetInfoText("$AND_TransparentShowgirlSkirtOddsHigh_Tooltip")
 	EndEvent
 EndState

@@ -1,6 +1,7 @@
 ScriptName AND_ModestyRandomizer extends Quest
 
 AND_MCM Property Config Auto
+AND_Logger Property Logger Auto
 
 Race[] Property ActorRace Auto
 
@@ -11,30 +12,22 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 	If IsPlayer == False
 		Confidence = targetActor.GetActorValue("Confidence") as Int
 	Else
-		If Config.PlayerConfidence == "Random"
+		If Config.PlayerConfidenceValue == 5
 			Confidence = Utility.RandomInt(0,4)
 			
 			If Confidence == 0
-				Config.PlayerConfidence = "Cowardly"
+				Config.PlayerConfidence = "$Cowardly"
 			ElseIf Confidence == 1
-				Config.PlayerConfidence = "Cautious"
+				Config.PlayerConfidence = "$Cautious"
 			ElseIf Confidence == 2
-				Config.PlayerConfidence = "Average"
+				Config.PlayerConfidence = "$Average"
 			ElseIf Confidence == 3
-				Config.PlayerConfidence = "Brave"
+				Config.PlayerConfidence = "$Brave"
 			ElseIf Confidence == 4
-				Config.PlayerConfidence = "Foolhardy"
+				Config.PlayerConfidence = "$Foolhardy"
 			EndIf
-		ElseIf Config.PlayerConfidence == "Cowardly"
-			Confidence = 0
-		ElseIf Config.PlayerConfidence == "Cautious"
-			Confidence = 1
-		ElseIf Config.PlayerConfidence == "Average"
-			Confidence = 2
-		ElseIf Config.PlayerConfidence == "Brave"
-			Confidence = 3
-		ElseIf Config.PlayerConfidence == "Foolhardy"
-			Confidence = 4
+		Else
+			Confidence = Config.PlayerConfidenceValue
 		EndIf
 	EndIf
 	Int BaseModesty = 0
@@ -150,7 +143,7 @@ Int Function GetRandomizedModesty(Actor targetActor, Bool IsPlayer)
 			BaseModesty = 5
 		EndIf
 	Else ;Custom Race
-		return 0
+		BaseModesty = 0
 	EndIf
 	
 	If Confidence == 0
