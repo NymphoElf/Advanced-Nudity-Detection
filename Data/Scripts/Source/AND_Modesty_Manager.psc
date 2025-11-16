@@ -1,12 +1,13 @@
 ScriptName AND_Modesty_Manager extends Quest
 
-AND_Core Property AND_Main Auto
+AND_Core Property Core Auto
 AND_MCM Property Config Auto
 AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
 
 Bool Property RegisteredForUpdate Auto Hidden
+Bool Property UpgradeBlocked Auto Hidden
 
 Float Property LastTimeCheck Auto Hidden
 
@@ -26,13 +27,13 @@ Event OnInit()
 EndEvent
 
 Event OnUpdateGameTime()
-	If AND_Main.DFFMA_Found == False && AND_Main.BARE_Found == False
+	If Core.DFFMA_Found == False && Core.BARE_Found == False
 		UnregisterForUpdateGameTime()
 		RegisteredForUpdate = False
 		return
 	EndIf
 	
-	If Config.UseDynamicModesty == False
+	If Config.UseDynamicModesty == False || UpgradeBlocked == True
 		return
 	EndIf
 	
@@ -55,29 +56,34 @@ Event OnUpdateGameTime()
 	EndIf
 EndEvent
 
-Function TopModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
-	Int TopModestyRank = PlayerRef.GetFactionRank(AND_Main.TopModestyFaction)
+Function TopModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
+	Int TopModestyRank = PlayerRef.GetFactionRank(Core.TopModestyFaction)
+	
+	If Config.MinimumTopModestyRank > TopModestyRank
+		TopModestyRankChange(True, Config.MinimumTopModestyRank)
+		return
+	EndIf
 	
 	Logger.Log("<Modesty Manager> [TopModestyUpgrade] Upgrade Time is: " + UpgradeTime)
 	Logger.Log("<Modesty Manager> [TopModestyUpgrade] Corruption Active: " + Corruption)
 	
-	Bool IsShowingBra = PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction))
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool)
+	Bool IsShowingBra = PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction))
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
 	
-	Bool IsShowingChest = PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction))
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool)
+	Bool IsShowingChest = PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction))
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction) as Bool)
 	
-	Bool IsTopless = PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction))
-	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool)
+	Bool IsTopless = PlayerRef.GetFactionRank(Core.AND_ToplessFaction) as Bool
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(Core.AND_ToplessFaction))
+	Logger.Log("<Modesty Manager> [TopModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(Core.AND_ToplessFaction) as Bool)
 	
 	If TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False)
-		TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2) + (1 * Multiplier)
+		TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2) + Hours
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)")
 	ElseIf TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)
-		TopModestyTimer[1] = TopModestyTimer[1] + (TopModestyTimer[2]/2) + (1 * Multiplier)
+		TopModestyTimer[1] = TopModestyTimer[1] + (TopModestyTimer[2]/2) + Hours
 		TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2)
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)")
 	ElseIf TopModestyRank == 1 && (IsShowingBra == True && IsShowingChest == False)
@@ -85,7 +91,7 @@ Function TopModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] TopModestyRank == 1 && (IsShowingBra == True && IsShowingChest == False)")
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] No Upgrade or Downgrade")
 	ElseIf TopModestyRank <= 2 && IsTopless == True
-		TopModestyTimer[2] = TopModestyTimer[2] + (1 * Multiplier)
+		TopModestyTimer[2] = TopModestyTimer[2] + Hours
 		TopModestyTimer[1] = TopModestyTimer[1] + (TopModestyTimer[2]/2)
 		TopModestyTimer[0] = TopModestyTimer[0] + (TopModestyTimer[1]/2)
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] TopModestyRank <= 2 && IsShowingChest == True")
@@ -95,17 +101,15 @@ Function TopModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] No Upgrade or Downgrade")
 	ElseIf TopModestyRank == 3 && IsTopless == True
 		Logger.Log("<Modesty Manager> [TopModestyUpgrade] TopModestyRank == 3 && IsTopless == True")
-		If TopModestyTimer[3] < 0
-			TopModestyTimer[3] = TopModestyTimer[3] + (1 * Multiplier)
-		EndIf
-		If TopModestyTimer[3] > 0
+		TopModestyTimer[3] = TopModestyTimer[3] + Hours
+		If TopModestyTimer[3] > 0 && Config.PermanentShameless == False
 			TopModestyTimer[3] = 0
 		EndIf
 	Else
-		If Corruption == True
-			Logger.Log("<Modesty Manager> [TopModestyUpgrade] Corruption Active. Cannot Downgrade.")
+		If Corruption == True || (TopModestyRank > 3 && Config.PermanentShameless == True)
+			Logger.Log("<Modesty Manager> [TopModestyUpgrade] Corruption Active or Permanently Shameless. Cannot Downgrade.")
 		Else
-			TopModestyDowngrade(TopModestyRank, IsShowingBra, IsShowingChest, IsTopless, Multiplier)
+			TopModestyDowngrade(TopModestyRank, IsShowingBra, IsShowingChest, IsTopless, Hours)
 			return
 		EndIf
 	EndIf
@@ -117,23 +121,25 @@ Function TopModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 	
 	If TopModestyRank <= 0
 		If TopModestyTimer[0] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 1)
 			TopModestyRankChange(True, 1)
 		EndIf
 	ElseIf TopModestyRank == 1
 		If TopModestyTimer[1] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 2)
 			TopModestyRankChange(True, 2)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer[2] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 3)
 			TopModestyRankChange(True, 3)
+		EndIf
+	ElseIf TopModestyRank == 3 && Config.PermanentShameless == True
+		If TopModestyTimer[3] >= (UpgradeTime *2) 
+			TopModestyTimer[3] = (UpgradeTime * 2)
+			TopModestyRankChange(True, 4)
 		EndIf
 	EndIf
 EndFunction
 
-Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowingChest, Bool IsTopless, Int Multiplier)
+Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowingChest, Bool IsTopless, Int Hours)
 	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
 	Logger.Log("<Modesty Manager> [TopModestyDowngrade] Downgrade Time is: " + DowngradeTime)
 	
@@ -141,7 +147,7 @@ Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowi
 		Logger.Log("<Modesty Manager> [TopModestyDowngrade] TopModestyRank <= 0 && (IsShowingBra == False && IsShowingChest == False)")
 		Int Index = 0
 		While Index < 3
-			TopModestyTimer[Index] = TopModestyTimer[Index] - (1 * Multiplier)
+			TopModestyTimer[Index] = TopModestyTimer[Index] - Hours
 			
 			If TopModestyTimer[Index] < 0
 				TopModestyTimer[Index] = 0
@@ -150,17 +156,17 @@ Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowi
 		EndWhile
 	ElseIf TopModestyRank == 1 && (IsShowingBra == False && IsShowingChest == False)
 		Logger.Log("<Modesty Manager> [TopModestyDowngrade] TopModestyRank == 1 && (IsShowingBra == False && IsShowingChest == False)")
-		TopModestyTimer[1] = TopModestyTimer[1] - (1 * Multiplier)
-		TopModestyTimer[2] = TopModestyTimer[2] - (1 * Multiplier)
+		TopModestyTimer[1] = TopModestyTimer[1] - Hours
+		TopModestyTimer[2] = TopModestyTimer[2] - Hours
 		If TopModestyTimer[2] < 0
 			TopModestyTimer[2] = 0
 		EndIf
 	ElseIf TopModestyRank == 2 && IsShowingChest == False
 		Logger.Log("<Modesty Manager> [TopModestyDowngrade] TopModestyRank == 2 && IsShowingChest == False")
-		TopModestyTimer[2] = TopModestyTimer[2] - (1 * Multiplier)
+		TopModestyTimer[2] = TopModestyTimer[2] - Hours
 	ElseIf TopModestyRank == 3 && IsTopless == False
 		Logger.Log("<Modesty Manager> [TopModestyDowngrade] TopModestyRank == 3 && IsTopless == False")
-		TopModestyTimer[3] = TopModestyTimer[3] - (1 * Multiplier)
+		TopModestyTimer[3] = TopModestyTimer[3] - Hours
 	Else
 		Logger.Log("<Modesty Manager> [TopModestyDowngrade] Could not upgrade nor downgrade Top Modesty.")
 		return
@@ -173,46 +179,48 @@ Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowi
 	
 	If TopModestyRank == 1
 		If TopModestyTimer[1] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 0)
 			TopModestyRankChange(False, 0)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer[2] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 1)
 			TopModestyRankChange(False, 1)
 		EndIf
 	ElseIf TopModestyRank == 3
 		If TopModestyTimer[3] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 2)
 			TopModestyRankChange(False, 2)
 		EndIf
 	EndIf
 EndFunction
 
-Function BottomModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
-	Int BottomModestyRank = PlayerRef.GetFactionRank(AND_Main.BottomModestyFaction)
+Function BottomModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
+	Int BottomModestyRank = PlayerRef.GetFactionRank(Core.BottomModestyFaction)
+	
+	If Config.MinimumBottomModestyRank > BottomModestyRank
+		BottomModestyRankChange(True, Config.MinimumBottomModestyRank)
+		return
+	EndIf
 	
 	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] Upgrade Time is: " + UpgradeTime)
 	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] BottomModestyUpgrade - Corruption Active: " + Corruption)
 	
-	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction))
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool)
+	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(Core.AND_ShowingUnderwearFaction))
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool)
 	
-	Bool IsShowingGenitals = PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction))
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool)
+	Bool IsShowingGenitals = PlayerRef.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(Core.AND_ShowingGenitalsFaction))
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool)
 	
-	Bool IsBottomless = PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction))
-	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool)
+	Bool IsBottomless = PlayerRef.GetFactionRank(Core.AND_BottomlessFaction) as Bool
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(Core.AND_BottomlessFaction))
+	Logger.Log("<Modesty Manager> [BottomModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(Core.AND_BottomlessFaction) as Bool)
 	
 	If BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
 		Logger.Log("<Modesty Manager> [BottomModestyUpgrade] BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)")
-		BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2) + (1 * Multiplier)
+		BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2) + Hours
 	ElseIf BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)
 		Logger.Log("<Modesty Manager> [BottomModestyUpgrade] BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)")
-		BottomModestyTimer[1] = BottomModestyTimer[1] + (BottomModestyTimer[2]/2) + (1 * Multiplier)
+		BottomModestyTimer[1] = BottomModestyTimer[1] + (BottomModestyTimer[2]/2) + Hours
 		BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2)
 	ElseIf BottomModestyRank == 1 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
 		;Do Nothing
@@ -220,7 +228,7 @@ Function BottomModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		Logger.Log("<Modesty Manager> [BottomModestyUpgrade] No Upgrade or Downgrade")
 	ElseIf BottomModestyRank <= 2 && IsShowingGenitals == True
 		Logger.Log("<Modesty Manager> [BottomModestyUpgrade] BottomModestyRank <= 2 && IsShowingGenitals == True")
-		BottomModestyTimer[2] = BottomModestyTimer[2] + (1 * Multiplier)
+		BottomModestyTimer[2] = BottomModestyTimer[2] + Hours
 		BottomModestyTimer[1] = BottomModestyTimer[1] + (BottomModestyTimer[2]/2)
 		BottomModestyTimer[0] = BottomModestyTimer[0] + (BottomModestyTimer[1]/2)
 	ElseIf BottomModestyRank == 2 && (IsShowingGenitals == True && IsBottomless == False)
@@ -230,17 +238,15 @@ Function BottomModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		
 	ElseIf BottomModestyRank == 3 && IsBottomless == True
 		Logger.Log("<Modesty Manager> [BottomModestyUpgrade] BottomModestyRank <= 3 && IsBottomless == True")
-		If BottomModestyTimer[3] < 0
-			BottomModestyTimer[3] = BottomModestyTimer[3] + (1 * Multiplier)
-		EndIf
-		If BottomModestyTimer[3] > 0
+		BottomModestyTimer[3] = BottomModestyTimer[3] + Hours
+		If BottomModestyTimer[3] > 0 && Config.PermanentShameless == False
 			BottomModestyTimer[3] = 0
 		EndIf
 	Else
-		If Corruption == True
+		If Corruption == True || (BottomModestyRank > 3 && Config.PermanentShameless == True)
 			Logger.Log("<Modesty Manager> [BottomModestyUpgrade] Corruption Active. Cannot Downgrade.")
 		Else
-			BottomModestyDowngrade(BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless, Multiplier)
+			BottomModestyDowngrade(BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless, Hours)
 			return
 		EndIf
 	EndIf
@@ -252,23 +258,25 @@ Function BottomModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 	
 	If BottomModestyRank <= 0
 		If BottomModestyTimer[0] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 1)
 			BottomModestyRankChange(True, 1)
 		EndIf
 	ElseIf BottomModestyRank == 1
 		If BottomModestyTimer[1] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 2)
 			BottomModestyRankChange(True, 2)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer[2] >= UpgradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 3)
 			BottomModestyRankChange(True, 3)
+		EndIf
+	ElseIf BottomModestyRank == 3 && Config.PermanentShameless == True
+		If BottomModestyTimer[3] >= (UpgradeTime * 2)
+			BottomModestyTimer[3] = (UpgradeTime * 2)
+			BottomModestyRankChange(True, 4)
 		EndIf
 	EndIf
 EndFunction
 
-Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, Bool IsShowingGenitals, Bool IsBottomless, Int Multiplier)
+Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, Bool IsShowingGenitals, Bool IsBottomless, Int Hours)
 	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
 	Logger.Log("<Modesty Manager> [BottomModestyDowngrade] Downgrade Time is: " + DowngradeTime)
 	
@@ -276,7 +284,7 @@ Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, 
 		Logger.Log("<Modesty Manager> [BottomModestyDowngrade] BottomModestyRank <= 0 && (IsShowingUnderwear == False && IsShowingGenitals == False && IsBottomless == False)")
 		Int Index = 0
 		While Index < 3
-			BottomModestyTimer[Index] = BottomModestyTimer[Index] - (1 * Multiplier)
+			BottomModestyTimer[Index] = BottomModestyTimer[Index] - Hours
 			
 			If BottomModestyTimer[Index] < 0
 				BottomModestyTimer[Index] = 0
@@ -285,17 +293,17 @@ Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, 
 		EndWhile
 	ElseIf BottomModestyRank == 1 && (IsShowingGenitals == False && IsBottomless == False)
 		Logger.Log("<Modesty Manager> [BottomModestyDowngrade] BottomModestyRank == 1 && (IsShowingGenitals == False && IsBottomless == False)")
-		BottomModestyTimer[1] = BottomModestyTimer[1] - (1 * Multiplier)
-		BottomModestyTimer[2] = BottomModestyTimer[2] - (1 * Multiplier)
+		BottomModestyTimer[1] = BottomModestyTimer[1] - Hours
+		BottomModestyTimer[2] = BottomModestyTimer[2] - Hours
 		If BottomModestyTimer[2] < 0
 			BottomModestyTimer[2] = 0
 		EndIf
 	ElseIf BottomModestyRank == 2 && IsShowingGenitals == False
 		Logger.Log("<Modesty Manager> [BottomModestyDowngrade] BottomModestyRank == 2 && IsShowingGenitals == False")
-		BottomModestyTimer[2] = BottomModestyTimer[2] - (1 * Multiplier)
+		BottomModestyTimer[2] = BottomModestyTimer[2] - Hours
 	ElseIf BottomModestyRank == 3 && IsBottomless == False
 		Logger.Log("<Modesty Manager> [BottomModestyDowngrade] BottomModestyRank == 3 && IsBottomless == False")
-		BottomModestyTimer[3] = BottomModestyTimer[3] - (1 * Multiplier)
+		BottomModestyTimer[3] = BottomModestyTimer[3] - Hours
 	Else
 		Logger.Log("<Modesty Manager> [BottomModestyDowngrade] Could not upgrade nor downgrade Bottom Modesty.")
 		return
@@ -308,47 +316,45 @@ Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, 
 	
 	If BottomModestyRank == 1
 		If BottomModestyTimer[1] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 0)
 			BottomModestyRankChange(False, 0)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer[2] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 1)
 			BottomModestyRankChange(False, 1)
 		EndIf
 	ElseIf BottomModestyRank == 3
 		If BottomModestyTimer[3] <= DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 2)
 			BottomModestyRankChange(False, 2)
 		EndIf
 	EndIf
 EndFunction
 
-Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
-	Int ModestyRank = PlayerRef.GetFactionRank(AND_Main.ModestyFaction)
+Function ModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
+	Int ModestyRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
 	
 	Logger.Log("<Modesty Manager> [ModestyUpgrade] Upgrade Time is: " + UpgradeTime)
 	Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active: " + Corruption)
 	
-	Bool IsShowingBra = PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
-	Bool IsShowingChest = PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
-	Bool IsTopless = PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
+	Bool IsShowingBra = PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
+	Bool IsShowingChest = PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
+	Bool IsTopless = PlayerRef.GetFactionRank(Core.AND_ToplessFaction) as Bool
 	
-	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
-	Bool IsShowingGenitals = PlayerRef.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
-	Bool IsBottomless = PlayerRef.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
+	Bool IsShowingUnderwear = PlayerRef.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool
+	Bool IsShowingGenitals = PlayerRef.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool
+	Bool IsBottomless = PlayerRef.GetFactionRank(Core.AND_BottomlessFaction) as Bool
 	
-	Bool IsNude = PlayerRef.GetFactionRank(AND_Main.AND_NudeActorFaction) as Bool
+	Bool IsNude = PlayerRef.GetFactionRank(Core.AND_NudeActorFaction) as Bool
 	
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool)
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool)
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool)
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool)
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool)
-	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(Core.AND_ToplessFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
+	Logger.Log("<Modesty Manager> [ModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
 	
 	If Config.MinimumModestyRank > ModestyRank
 		RankJump(Config.MinimumModestyRank)
+		return
 	EndIf
 	
 	If ModestyRank <= 0
@@ -356,18 +362,17 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsShowingBra == True && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If ModestyTimer[0] < UpgradeTime
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[0] Increase")
-				ModestyTimer[0] = ModestyTimer[0] + (1 * Multiplier)
+				ModestyTimer[0] = ModestyTimer[0] + Hours
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Rank Up")
 				ModestyTimer[0] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 1)
 				ModestyRankChange(True, 1)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
 				If ModestyTimer[0] > 0
 					Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[0] Decrease")
-					ModestyTimer[0] = ModestyTimer[0] - (1 * Multiplier)
+					ModestyTimer[0] = ModestyTimer[0] - Hours
 					If ModestyTimer[0] < 0
 						ModestyTimer[0] = 0
 					EndIf
@@ -382,16 +387,15 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsShowingUnderwear == True && IsShowingGenitals == False && IsShowingChest == False
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[1] Increase")
 			If ModestyTimer[1] < UpgradeTime
-				ModestyTimer[1] = ModestyTimer[1] + (1 * Multiplier)
+				ModestyTimer[1] = ModestyTimer[1] + Hours
 			Else
 				ModestyTimer[1] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 2)
 				ModestyRankChange(True, 2)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[1] Decrease")
-				ModestyDowngrade(1, Multiplier)
+				ModestyDowngrade(1, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
@@ -402,16 +406,15 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsShowingChest == True && IsTopless == False && IsShowingGenitals == False
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[2] Increase")
 			If ModestyTimer[2] < UpgradeTime
-				ModestyTimer[2] = ModestyTimer[2] + (1 * Multiplier)
+				ModestyTimer[2] = ModestyTimer[2] + Hours
 			Else
 				ModestyTimer[2] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 3)
 				ModestyRankChange(True, 3)
 			EndIf
 		ElseIf IsShowingUnderwear == False && IsShowingGenitals == False && IsShowingChest == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[2] Decrease")
-				ModestyDowngrade(2, Multiplier)
+				ModestyDowngrade(2, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
@@ -422,16 +425,15 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsShowingGenitals == True && IsBottomless == False && IsTopless == False
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[3] Increase")
 			If ModestyTimer[3] < UpgradeTime
-				ModestyTimer[3] = ModestyTimer[3] + (1 * Multiplier)
+				ModestyTimer[3] = ModestyTimer[3] + Hours
 			Else
 				ModestyTimer[3] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 4)
 				ModestyRankChange(True, 4)
 			EndIf
 		ElseIf IsShowingChest == False && IsShowingGenitals == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[3] Decrease")
-				ModestyDowngrade(3, Multiplier)
+				ModestyDowngrade(3, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
@@ -442,16 +444,15 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsTopless == True && IsBottomless == False
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[4] Increase")
 			If ModestyTimer[4] < UpgradeTime
-				ModestyTimer[4] = ModestyTimer[4] + (1 * Multiplier)
+				ModestyTimer[4] = ModestyTimer[4] + Hours
 			Else
 				ModestyTimer[4] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 5)
 				ModestyRankChange(True, 5)
 			EndIf
 		ElseIf IsShowingChest == False && IsShowingGenitals == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[4] Decrease")
-				ModestyDowngrade(4, Multiplier)
+				ModestyDowngrade(4, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
@@ -462,16 +463,15 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsBottomless == True
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[5] Increase")
 			If ModestyTimer[5] < UpgradeTime
-				ModestyTimer[5] = ModestyTimer[5] + (1 * Multiplier)
+				ModestyTimer[5] = ModestyTimer[5] + Hours
 			Else
 				ModestyTimer[5] = UpgradeTime
-				PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 6)
 				ModestyRankChange(True, 6)
 			EndIf
 		ElseIf IsShowingChest == False || IsShowingGenitals == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[5] Decrease")
-				ModestyDowngrade(5, Multiplier)
+				ModestyDowngrade(5, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
@@ -482,18 +482,25 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 		If IsTopless == False && IsBottomless == False
 			If Corruption == False
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[6] Decrease")
-				ModestyDowngrade(6, Multiplier)
+				ModestyDowngrade(6, Hours)
 			Else
 				Logger.Log("<Modesty Manager> [ModestyUpgrade] Corruption Active. Cannot Downgrade.")
 			EndIf
 		ElseIf IsNude == True
 			Logger.Log("<Modesty Manager> [ModestyUpgrade] Timer[6] Recover")
-			If ModestyTimer[6] < 0
-				ModestyTimer[6] = ModestyTimer[6] + (1 * Multiplier)
-			EndIf
-			If ModestyTimer[6] > 0
+			ModestyTimer[6] = ModestyTimer[6] + Hours
+			If ModestyTimer[6] > 0 && Config.PermanentShameless == False
 				ModestyTimer[6] = 0
+			ElseIf ModestyTimer[6] >= (UpgradeTime * 2)
+				ModestyTimer[6] = (UpgradeTime * 2)
+				ModestyRankChange(True, 7)
 			EndIf
+		EndIf
+	ElseIf ModestyRank > 6
+		If Config.PermanentShameless == True
+			Logger.Log("<Modesty Manager> [Modesty Upgrade] Modesty Rank == 7 | Permanently Shameless")
+		Else
+			PlayerRef.SetFactionRank(Core.ModestyFaction, 6)
 		EndIf
 	EndIf
 	
@@ -506,7 +513,7 @@ Function ModestyUpgrade(Int Multiplier, Int UpgradeTime, Bool Corruption)
 	Logger.Log("<Modesty Manager> [ModestyUpgrade] ModestyTimer[6] = " + ModestyTimer[6])
 EndFunction
 
-Function ModestyDowngrade(Int FactionRank, Int Multiplier)
+Function ModestyDowngrade(Int FactionRank, Int Hours)
 	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
 	Int FactionRankDown = FactionRank - 1
 	
@@ -515,11 +522,10 @@ Function ModestyDowngrade(Int FactionRank, Int Multiplier)
 	
 	If Config.MinimumModestyRank < FactionRank
 		Logger.Log("<Modesty Manager> [ModestyDowngrade] Minimum Rank (" + Config.MinimumModestyRank + ") is lower than current rank: " + FactionRank)
-		ModestyTimer[FactionRank] = ModestyTimer[FactionRank] - (1 * Multiplier)
+		ModestyTimer[FactionRank] = ModestyTimer[FactionRank] - Hours
 		
 		If ModestyTimer[FactionRank] <= DowngradeTime
 			ModestyTimer[FactionRank] = DowngradeTime
-			PlayerRef.SetFactionRank(AND_Main.ModestyFaction, FactionRankDown)
 			ModestyRankChange(False, FactionRankDown)
 		EndIf
 	EndIf
@@ -534,6 +540,8 @@ Function ModestyDowngrade(Int FactionRank, Int Multiplier)
 EndFunction
 
 Function TopModestyRankChange(Bool IsRankUpgrade, Int Rank)
+	PlayerRef.SetFactionRank(Core.TopModestyFaction, Rank)
+	
 	TopModestyTimer[0] = 0
 	TopModestyTimer[1] = 0
 	TopModestyTimer[2] = 0
@@ -565,6 +573,8 @@ Function TopModestyRankChange(Bool IsRankUpgrade, Int Rank)
 EndFunction
 
 Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
+	PlayerRef.SetFactionRank(Core.BottomModestyFaction, Rank)
+	
 	BottomModestyTimer[0] = 0
 	BottomModestyTimer[1] = 0
 	BottomModestyTimer[2] = 0
@@ -596,13 +606,17 @@ Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
 EndFunction
 
 Function ModestyRankChange(Bool IsRankUpgrade, Int Rank)
-	ModestyTimer[0] = 0
-	ModestyTimer[1] = 0
-	ModestyTimer[2] = 0
-	ModestyTimer[3] = 0
-	ModestyTimer[4] = 0
-	ModestyTimer[5] = 0
-	ModestyTimer[6] = 0
+	PlayerRef.SetFactionRank(Core.ModestyFaction, Rank)
+	
+	Int Index = 0
+	While Index < Rank 
+		ModestyTimer[Index] = Config.ImmodestyTimeNeeded
+		Index += 1
+	EndWhile
+	While Index < 7
+		ModestyTimer[Index] = 0
+		Index += 1
+	EndWhile
 	
 	If IsRankUpgrade == True
 		If Rank == 1
@@ -732,107 +746,31 @@ Modesty Faction Ranks (Strict Mode)
 /;
 
 Function RankJump(Int Rank)
-	If Rank == 0
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 0)
-		ModestyTimer[0] = 0
-		ModestyTimer[1] = 0
-		ModestyTimer[2] = 0
-		ModestyTimer[3] = 0
-		ModestyTimer[4] = 0
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 1
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 1)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = 0
-		ModestyTimer[2] = 0
-		ModestyTimer[3] = 0
-		ModestyTimer[4] = 0
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 2
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 2)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = Config.ImmodestyTimeNeeded
-		ModestyTimer[2] = 0
-		ModestyTimer[3] = 0
-		ModestyTimer[4] = 0
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 3
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 3)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = Config.ImmodestyTimeNeeded
-		ModestyTimer[2] = Config.ImmodestyTimeNeeded
-		ModestyTimer[3] = 0
-		ModestyTimer[4] = 0
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 4
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 4)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = Config.ImmodestyTimeNeeded
-		ModestyTimer[2] = Config.ImmodestyTimeNeeded
-		ModestyTimer[3] = Config.ImmodestyTimeNeeded
-		ModestyTimer[4] = 0
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 5
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 5)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = Config.ImmodestyTimeNeeded
-		ModestyTimer[2] = Config.ImmodestyTimeNeeded
-		ModestyTimer[3] = Config.ImmodestyTimeNeeded
-		ModestyTimer[4] = Config.ImmodestyTimeNeeded
-		ModestyTimer[5] = 0
-		ModestyTimer[6] = 0
-	ElseIf Rank == 6
-		PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 6)
-		ModestyTimer[0] = Config.ImmodestyTimeNeeded
-		ModestyTimer[1] = Config.ImmodestyTimeNeeded
-		ModestyTimer[2] = Config.ImmodestyTimeNeeded
-		ModestyTimer[3] = Config.ImmodestyTimeNeeded
-		ModestyTimer[4] = Config.ImmodestyTimeNeeded
-		ModestyTimer[5] = Config.ImmodestyTimeNeeded
-		ModestyTimer[6] = 0
-	EndIf
+	PlayerRef.SetFactionRank(Core.ModestyFaction, Rank)
+	
+	Int Index = 0
+	While Index < Rank
+		ModestyTimer[Index] = Config.ImmodestyTimeNeeded
+		Index += 1
+	EndWhile
+	While Index < 7
+		ModestyTimer[Index] = 0
+		Index += 1
+	EndWhile
 EndFunction
 
 Function TimerUpdate(Int NewTimeNeeded)
-	Int CurrentRank = PlayerRef.GetFactionRank(AND_Main.ModestyFaction)
+	Int CurrentRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
 	
-	If CurrentRank == 1
-		ModestyTimer[0] = NewTimeNeeded
-	ElseIf CurrentRank == 2
-		ModestyTimer[0] = NewTimeNeeded
-		ModestyTimer[1] = NewTimeNeeded
-	ElseIf CurrentRank == 3
-		ModestyTimer[0] = NewTimeNeeded
-		ModestyTimer[1] = NewTimeNeeded
-		ModestyTimer[2] = NewTimeNeeded
-	ElseIf CurrentRank == 4
-		ModestyTimer[0] = NewTimeNeeded
-		ModestyTimer[1] = NewTimeNeeded
-		ModestyTimer[2] = NewTimeNeeded
-		ModestyTimer[3] = NewTimeNeeded
-	ElseIf CurrentRank == 5
-		ModestyTimer[0] = NewTimeNeeded
-		ModestyTimer[1] = NewTimeNeeded
-		ModestyTimer[2] = NewTimeNeeded
-		ModestyTimer[3] = NewTimeNeeded
-		ModestyTimer[4] = NewTimeNeeded
-	ElseIf CurrentRank == 6
-		ModestyTimer[0] = NewTimeNeeded
-		ModestyTimer[1] = NewTimeNeeded
-		ModestyTimer[2] = NewTimeNeeded
-		ModestyTimer[3] = NewTimeNeeded
-		ModestyTimer[4] = NewTimeNeeded
-		ModestyTimer[5] = NewTimeNeeded
-	EndIf
+	Int Index = 0
+	While Index < CurrentRank
+		ModestyTimer[Index] = NewTimeNeeded
+		Index += 1
+	EndWhile
 EndFunction
 
 Function TopRankJump(Int Rank)
-	PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, Rank)
+	PlayerRef.SetFactionRank(Core.TopModestyFaction, Rank)
 	TopModestyTimer[0] = 0
 	TopModestyTimer[1] = 0
 	TopModestyTimer[2] = 0
@@ -840,7 +778,7 @@ Function TopRankJump(Int Rank)
 EndFunction
 
 Function BottomRankJump(Int Rank)
-	PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, Rank)
+	PlayerRef.SetFactionRank(Core.BottomModestyFaction, Rank)
 	BottomModestyTimer[0] = 0
 	BottomModestyTimer[1] = 0
 	BottomModestyTimer[2] = 0

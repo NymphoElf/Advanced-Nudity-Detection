@@ -2,9 +2,9 @@ ScriptName AND_PlayerScript extends ReferenceAlias
 
 Import PO3_SKSEFunctions
 
-AND_Core Property AND_Main Auto
-AND_MotionTimer Property AND_MotionClock Auto
-AND_MCM Property AND_Config Auto
+AND_Core Property Core Auto
+AND_MotionTimer Property MotionClock Auto
+AND_MCM Property Config Auto
 AND_NPC_Modesty_Manager Property NPCModestyManager Auto
 AND_ModEventListener Property ModEventListener Auto
 AND_Logger Property Logger Auto
@@ -28,26 +28,26 @@ EndEvent
 Function Startup()
 	RegisterForMenu("RaceSex Menu")
 	
-	PlayerRef.AddToFaction(AND_Main.AND_ShowingAssFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_ShowingChestFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_ShowingGenitalsFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_ShowingBraFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_ShowingUnderwearFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_ToplessFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_BottomlessFaction)
-	PlayerRef.AddToFaction(AND_Main.AND_NudeActorFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingAssFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingChestFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingGenitalsFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingBraFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingUnderwearFaction)
+	PlayerRef.AddToFaction(Core.AND_ToplessFaction)
+	PlayerRef.AddToFaction(Core.AND_BottomlessFaction)
+	PlayerRef.AddToFaction(Core.AND_NudeActorFaction)
 	
-	PlayerRef.AddToFaction(AND_Main.ModestyFaction)
-	PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 0)
-	PlayerRef.AddToFaction(AND_Main.TopModestyFaction)
-	PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 0)
-	PlayerRef.AddToFaction(AND_Main.BottomModestyFaction)
-	PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 0)
+	PlayerRef.AddToFaction(Core.ModestyFaction)
+	PlayerRef.SetFactionRank(Core.ModestyFaction, 0)
+	PlayerRef.AddToFaction(Core.TopModestyFaction)
+	PlayerRef.SetFactionRank(Core.TopModestyFaction, 0)
+	PlayerRef.AddToFaction(Core.BottomModestyFaction)
+	PlayerRef.SetFactionRank(Core.BottomModestyFaction, 0)
 	
-	PlayerRef.AddToFaction(AND_Main.ShyWithMale)
-	PlayerRef.SetFactionRank(AND_Main.ShyWithMale, 1)
-	PlayerRef.AddToFaction(AND_Main.ShyWithFemale)
-	PlayerRef.SetFactionRank(AND_Main.ShyWithFemale, 0)
+	PlayerRef.AddToFaction(Core.ShyWithMale)
+	PlayerRef.SetFactionRank(Core.ShyWithMale, 1)
+	PlayerRef.AddToFaction(Core.ShyWithFemale)
+	PlayerRef.SetFactionRank(Core.ShyWithFemale, 0)
 	
 	RegisterForAnimationEvent(PlayerRef, "FootLeft")
 	RegisterForAnimationEvent(PlayerRef, "tailSprint")
@@ -57,39 +57,39 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
-	String PlayerName = AND_Main.PlayerBase.GetName()
+	String PlayerName = Core.PlayerBase.GetName()
 	If Logger.LogName == "?" || Logger.LogName == ""
 		Logger.LogName = PlayerName
 	EndIf
 	
 	Logger.Log("===LOAD GAME===")
-	AND_Main.ModCheck()
+	Core.ModCheck()
 	NPCModestyManager.RestoreNPCFactions()
 	
-	If (AND_Main.DFFMA_Found == True || AND_Main.BARE_Found == True)
-		If PlayerRef.IsInFaction(AND_Main.ModestyFaction) == False
-			PlayerRef.AddToFaction(AND_Main.ModestyFaction)
-			PlayerRef.SetFactionRank(AND_Main.ModestyFaction, 0)
+	If (Core.DFFMA_Found == True || Core.BARE_Found == True)
+		If PlayerRef.IsInFaction(Core.ModestyFaction) == False
+			PlayerRef.AddToFaction(Core.ModestyFaction)
+			PlayerRef.SetFactionRank(Core.ModestyFaction, 0)
 		EndIf
 		
-		If PlayerRef.IsInFaction(AND_Main.TopModestyFaction) == False
-			PlayerRef.AddToFaction(AND_Main.TopModestyFaction)
-			PlayerRef.SetFactionRank(AND_Main.TopModestyFaction, 0)
+		If PlayerRef.IsInFaction(Core.TopModestyFaction) == False
+			PlayerRef.AddToFaction(Core.TopModestyFaction)
+			PlayerRef.SetFactionRank(Core.TopModestyFaction, 0)
 		EndIf
 		
-		If PlayerRef.IsInFaction(AND_Main.BottomModestyFaction) == False
-			PlayerRef.AddToFaction(AND_Main.BottomModestyFaction)
-			PlayerRef.SetFactionRank(AND_Main.BottomModestyFaction, 0)
+		If PlayerRef.IsInFaction(Core.BottomModestyFaction) == False
+			PlayerRef.AddToFaction(Core.BottomModestyFaction)
+			PlayerRef.SetFactionRank(Core.BottomModestyFaction, 0)
 		EndIf
 		
-		If PlayerRef.IsInFaction(AND_Main.ShyWithMale) == False
-			PlayerRef.AddToFaction(AND_Main.ShyWithMale)
-			PlayerRef.SetFactionRank(AND_Main.ShyWithMale, 1)
+		If PlayerRef.IsInFaction(Core.ShyWithMale) == False
+			PlayerRef.AddToFaction(Core.ShyWithMale)
+			PlayerRef.SetFactionRank(Core.ShyWithMale, 1)
 		EndIf
 		
-		If PlayerRef.IsInFaction(AND_Main.ShyWithFemale) == False
-			PlayerRef.AddToFaction(AND_Main.ShyWithFemale)
-			PlayerRef.SetFactionRank(AND_Main.ShyWithFemale, 0)
+		If PlayerRef.IsInFaction(Core.ShyWithFemale) == False
+			PlayerRef.AddToFaction(Core.ShyWithFemale)
+			PlayerRef.SetFactionRank(Core.ShyWithFemale, 0)
 		EndIf
 	EndIf
 	
@@ -102,7 +102,7 @@ EndEvent
 
 Event OnMenuClose(String MenuName)
 	If MenuName == "RaceSex Menu"
-		String PlayerName = AND_Main.PlayerBase.GetName()
+		String PlayerName = Core.PlayerBase.GetName()
 		
 		Logger.LogName = PlayerName
 		Logger.DuplicateCheck()
@@ -116,27 +116,27 @@ Event OnMenuClose(String MenuName)
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	If AND_Config.AllowMotionFlash == True
+	If Config.AllowMotionFlash == True
 		If akReference == PlayerRef
 			If akEventName == "FootLeft"
-				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && AND_MotionClock.RunTimer == 0 && MainRollActive == False
-					AND_Main.AND_MovementDiceRoll()
-					AND_MotionClock.RunTimer = 3
-					AND_MotionClock.StartClock()
+				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && MotionClock.RunTimer == 0 && MainRollActive == False
+					Core.AND_MovementDiceRoll()
+					MotionClock.RunTimer = 3
+					MotionClock.StartClock()
 				EndIf
 			EndIf
 			
 			If akEventName == "tailSprint"
-				If AND_MotionClock.SprintTimer == 0 && MainRollActive == False
-					AND_Main.AND_MovementDiceRoll()
+				If MotionClock.SprintTimer == 0 && MainRollActive == False
+					Core.AND_MovementDiceRoll()
 				EndIf
 			EndIf
 			
 			If akEventName == "EndAnimatedCameraDelta"
-				If AND_MotionClock.SprintTimer == 0 && MainRollActive == False
-					AND_Main.AND_MovementDiceRoll()
-					AND_MotionClock.SprintTimer = 3
-					AND_MotionClock.StartClock()
+				If MotionClock.SprintTimer == 0 && MainRollActive == False
+					Core.AND_MovementDiceRoll()
+					MotionClock.SprintTimer = 3
+					MotionClock.StartClock()
 				EndIf
 			EndIf
 		EndIf
@@ -146,27 +146,27 @@ EndEvent
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	Logger.Log("<Player Script> [OnObjectEquipped] Object Data: Base Object = " + akBaseObject \
 	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
-	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(AND_Main.AND_Ignore))
+	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
 	
-	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Main.AND_Ignore))
+	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
 		Logger.Log("<Player Script> [OnObjectEquipped] Equipped Null Object or has Ignore Keyword. Update Skipped.")
 		return
 	EndIf
 	
-	AND_Main.RegisterForSingleUpdate(0.1)
+	Core.RegisterForSingleUpdate(0.1)
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	Logger.Log("<Player Script> [OnObjectUnequipped] Object Data: Base Object = " + akBaseObject \
 	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
-	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(AND_Main.AND_Ignore))
+	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
 
-	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(AND_Main.AND_Ignore))
+	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
 		Logger.Log("<Player Script> [OnObjectUnequipped] Unequipped Null Object or has Ignore Keyword. Update Skipped.")
 		return
 	EndIf
 	
-	AND_Main.RegisterForSingleUpdate(0.1)
+	Core.RegisterForSingleUpdate(0.1)
 EndEvent
 
 Event OnUpdateGameTime()
@@ -184,6 +184,6 @@ Event OnUpdateGameTime()
 	Logger.Log("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
 	
 	MainRollActive = True
-	AND_Main.AND_DiceRoll()
+	Core.AND_DiceRoll()
 	MainRollActive = False
 EndEvent

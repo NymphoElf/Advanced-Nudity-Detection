@@ -1895,6 +1895,14 @@
                                                     },
                                                     "Limit detection to right side": false,
                                                     "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 0.0
+                                                    }
                                                 }
                                             ]
                                         },
@@ -1962,6 +1970,14 @@
                                                     },
                                                     "Limit detection to right side": false,
                                                     "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 0.0
+                                                    }
                                                 }
                                             ]
                                         },

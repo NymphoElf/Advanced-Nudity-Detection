@@ -1,10 +1,10 @@
 ScriptName AND_NPC_ScanSpell extends ActiveMagicEffect
 
-AND_Core Property AND_Main Auto
-AND_MCM Property AND_Config Auto
-AND_NPCMaleArmorScan Property AND_NPCMaleScan Auto
-AND_NPCFemaleArmorScan Property AND_NPCFemaleScan Auto
-AND_NPC_Modesty_Manager Property AND_NPCModesty Auto
+AND_Core Property Core Auto
+AND_MCM Property Config Auto
+AND_NPCMaleArmorScan Property NPCMaleScan Auto
+AND_NPCFemaleArmorScan Property NPCFemaleScan Auto
+AND_NPC_Modesty_Manager Property NPCModesty Auto
 AND_ModestyRandomizer Property ModestyRandomizer Auto
 AND_Logger Property Logger Auto
 
@@ -31,14 +31,13 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		return
 	EndIf
 	
-	akTarget.AddToFaction(AND_Factions[0])
-	akTarget.AddToFaction(AND_Factions[1])
-	akTarget.AddToFaction(AND_Factions[2])
-	akTarget.AddToFaction(AND_Factions[3])
-	akTarget.AddToFaction(AND_Factions[4])
-	akTarget.AddToFaction(AND_Factions[5])
-	akTarget.AddToFaction(AND_Factions[6])
-	akTarget.AddToFaction(AND_Factions[7])
+	Int Index = 0
+	While Index < AND_Factions.Length
+		If akTarget.IsInFaction(AND_Factions[Index]) == False
+			akTarget.AddToFaction(AND_Factions[Index])
+		EndIf
+		Index += 1
+	EndWhile
 	
 	ActorBase TargetBase = akTarget.GetActorBase()
 	
@@ -47,59 +46,59 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	
 	If TargetSex == 0
 		Logger.Log("<NPC Scan> [OnUpdateGameTime]Start Male (NPC) Scan for " + akTarget + " " + TargetName)
-		AND_NPCMaleScan.AND_LayerAnalyze(akTarget, TargetName)
+		NPCMaleScan.FullAnalyze(akTarget, TargetName)
 	Else
 		Logger.Log("<NPC Scan> Start Female (NPC) Scan for " + akTarget + " " + TargetName)
-		AND_NPCFemaleScan.AND_LayerAnalyze(akTarget, TargetName)
+		NPCFemaleScan.FullAnalyze(akTarget, TargetName)
 		
-		If AND_Config.UseDynamicModesty == True
+		If Config.UseDynamicModesty == True
 			Logger.Log("<NPC Scan> UseDynamicModesty is True")
-			If AND_NPCModesty.FemaleExists(akTarget, False) == False && AND_NPCModesty.FemaleExists(akTarget, True) == False
+			If NPCModesty.FemaleExists(akTarget, False) == False && NPCModesty.FemaleExists(akTarget, True) == False
 				Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " doesn't exist")
-				akTarget.AddToFaction(AND_Main.ModestyFaction)
-				akTarget.AddToFaction(AND_Main.TopModestyFaction)
-				akTarget.AddToFaction(AND_Main.BottomModestyFaction)
+				akTarget.AddToFaction(Core.ModestyFaction)
+				akTarget.AddToFaction(Core.TopModestyFaction)
+				akTarget.AddToFaction(Core.BottomModestyFaction)
 				
-				akTarget.AddToFaction(AND_Main.ShyWithMale)
-				akTarget.AddToFaction(AND_Main.ShyWithFemale)
+				akTarget.AddToFaction(Core.ShyWithMale)
+				akTarget.AddToFaction(Core.ShyWithFemale)
 				
 				Int ShyMode = 0
 				
-				If akTarget == AND_Main.Rosa && AND_Config.ShamelessRosa == True
+				If akTarget == Core.Rosa && Config.ShamelessRosa == True
 					Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " is Shameless")
-					akTarget.SetFactionRank(AND_Main.ModestyFaction, 6)
-					akTarget.SetFactionRank(AND_Main.TopModestyFaction, 3)
-					akTarget.SetFactionRank(AND_Main.BottomModestyFaction, 3)
+					akTarget.SetFactionRank(Core.ModestyFaction, 6)
+					akTarget.SetFactionRank(Core.TopModestyFaction, 3)
+					akTarget.SetFactionRank(Core.BottomModestyFaction, 3)
 					
-					akTarget.SetFactionRank(AND_Main.ShyWithMale, 1)
-					akTarget.SetFactionRank(AND_Main.ShyWithFemale, 0)
+					akTarget.SetFactionRank(Core.ShyWithMale, 1)
+					akTarget.SetFactionRank(Core.ShyWithFemale, 0)
 					
-					AND_NPCModesty.RegisterRosa(akTarget)
+					NPCModesty.RegisterRosa(akTarget)
 				Else
 					Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " is either not Rosa or Rosa isn't Shameless")
-					AND_NPCModesty.RegisterFemale(akTarget, False)
+					NPCModesty.RegisterFemale(akTarget, False)
 				EndIf
-			ElseIf AND_NPCModesty.FemaleExists(akTarget, True) == True
+			ElseIf NPCModesty.FemaleExists(akTarget, True) == True
 				Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " exists on the Permanent List, but not the Save-Specific list")
 				
-				AND_NPCModesty.RegisterFemale(akTarget, True)
+				NPCModesty.RegisterFemale(akTarget, True)
 			Else
 				Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " exists!")
-				If akTarget.GetFactionRank(FollowerFaction) >= 0 && AND_Config.DynamicFollowers == True
+				If akTarget.GetFactionRank(FollowerFaction) >= 0 && Config.DynamicFollowers == True
 					Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " is a follower and Dynamic Followers is True!")
-					AND_NPCModesty.ProcessNPCModesty(akTarget, AND_Config.StrictModestyRules)
+					NPCModesty.ProcessNPCModesty(akTarget, Config.StrictModestyRules)
 				EndIf
 			EndIf
 		Else
 			Logger.Log("<NPC Scan> UseDynamicModesty is False")
-			akTarget.RemoveFromFaction(AND_Main.ModestyFaction)
-			akTarget.RemoveFromFaction(AND_Main.TopModestyFaction)
-			akTarget.RemoveFromFaction(AND_Main.BottomModestyFaction)
-			akTarget.RemoveFromFaction(AND_Main.ShyWithMale)
-			akTarget.RemoveFromFaction(AND_Main.ShyWithFemale)
+			akTarget.RemoveFromFaction(Core.ModestyFaction)
+			akTarget.RemoveFromFaction(Core.TopModestyFaction)
+			akTarget.RemoveFromFaction(Core.BottomModestyFaction)
+			akTarget.RemoveFromFaction(Core.ShyWithMale)
+			akTarget.RemoveFromFaction(Core.ShyWithFemale)
 			
-			If AND_NPCModesty.FemaleExists(akTarget) == True
-				AND_NPCModesty.RemoveFemale(akTarget)
+			If NPCModesty.FemaleExists(akTarget) == True
+				NPCModesty.RemoveFemale(akTarget)
 			EndIf
 		EndIf
 	EndIf

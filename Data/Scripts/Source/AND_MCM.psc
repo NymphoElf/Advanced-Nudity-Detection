@@ -5,11 +5,12 @@ Import JsonUtil
 AND_Core Property Main Auto
 AND_PlayerScript Property PlayerScript Auto
 AND_Modesty_Manager Property ModestyManager Auto 
-AND_MaleArmorScan Property AND_MaleScan Auto
-AND_FemaleArmorScan Property AND_FemaleScan Auto
+AND_MaleArmorScan Property MaleScan Auto
+AND_FemaleArmorScan Property FemaleScan Auto
 AND_NPC_Modesty_Manager Property NPCModesty Auto
 AND_ModestyRandomizer Property ModestyRandomizer Auto
 AND_Logger Property Logger Auto
+AND_KeybindManager Property Keybinds Auto
 
 Actor Property PlayerRef Auto
 Actor Property SelectedFemaleActor Auto Hidden
@@ -155,6 +156,7 @@ Bool Property AllowMotionFlash = True Auto Hidden
 Bool Property DisableNakedComments = False Auto Hidden
 Bool Property UseDynamicModesty = False Auto Hidden
 Bool Property ModestyCorruption = False Auto Hidden
+Bool Property PermanentShameless = False Auto Hidden
 Bool Property NPCModestyCorruption = False Auto Hidden
 Bool Property ConfirmSelection = False Auto Hidden
 
@@ -195,7 +197,7 @@ Bool Property ScanNPC = True Auto Hidden
 Bool Property ApplyTweak = False Auto Hidden
 Bool Property ApplyAsDefault = False Auto Hidden
 
-Bool Property Logging = True Auto Hidden ;Default TRUE in Beta Builds | Default FALSE in non-Beta Builds
+Bool Property Logging = False Auto Hidden ;Default TRUE in Beta Builds | Default FALSE in non-Beta Builds
 Bool Property AddToMainLog = False Auto Hidden 
 
 Int Property RunningModifier = 10 Auto Hidden
@@ -211,6 +213,8 @@ Int Property BraFactionCommentChance = 5 Auto Hidden
 Int Property UnderwearFactionCommentChance = 5 Auto Hidden
 
 Int Property MinimumModestyRank = 0 Auto Hidden
+Int Property MinimumTopModestyRank = 0 Auto Hidden
+Int Property MinimumBottomModestyRank = 0 Auto Hidden
 Int Property MinimumFollowerRank = 0 Auto Hidden
 Int Property MinimumRosaRank = 0 Auto Hidden
 Int Property ImmodestyTimeNeeded = 14 Auto Hidden
@@ -227,15 +231,19 @@ GlobalVariable Property ModestyArousalThreshold Auto
 GlobalVariable Property NPCModestyArousalThreshold Auto
 GlobalVariable Property AND_DynamicModesty Auto
 
+Int[] Property FlashKey Auto
+
 Int[] Property Page9ToggleID Auto Hidden
 Int[] Property Page10ToggleID Auto Hidden
-Int[] Property Page11ToggleID Auto Hidden
+Int[] Property Page12ToggleID Auto Hidden
 
 Int[] Property Page9SliderID Auto Hidden
 Int[] Property Page10SliderID Auto Hidden
 
 Int[] Property Page9MenuID Auto Hidden
 Int[] Property Page10MenuID Auto Hidden
+
+Int[] Property Page11KeyID Auto Hidden
 
 String Property ScanFrequency = "Normal" Auto Hidden
 
@@ -267,7 +275,7 @@ EndEvent
 
 Function InstallMCM()
 	ModName = "Advanced Nudity"
-	Pages = New String[12]
+	Pages = New String[13]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -279,25 +287,26 @@ Function InstallMCM()
 	Pages[8] = "$NakedCommentsPage"
 	Pages[9] = "$DynamicModestyPage"
 	Pages[10] = "$NPCModestyPage"
-	Pages[11] = "$DebugPage"
+	Pages[11] = "$FlashKeys"
+	Pages[12] = "$DebugPage"
 EndFunction
 
 Function SetMaleCoverage()
-	TopCurtainLayer_Cover = AND_MaleScan.AND_TopCurtainLayer_Cover
-	AssCurtain_Cover = AND_MaleScan.AND_AssCurtain_Cover
-	PelvicCurtain_Cover = AND_MaleScan.AND_PelvicCurtain_Cover
+	TopCurtainLayer_Cover = MaleScan.AND_TopCurtain_Cover
+	AssCurtain_Cover = MaleScan.AND_AssCurtain_Cover
+	PelvicCurtain_Cover = MaleScan.AND_PelvicCurtain_Cover
 EndFunction
 
 Function SetFemaleCoverage()
-	TopCurtainLayer_Cover = AND_FemaleScan.AND_TopCurtainLayer_Cover
-	AssCurtain_Cover = AND_FemaleScan.AND_AssCurtain_Cover
-	PelvicCurtain_Cover = AND_FemaleScan.AND_PelvicCurtain_Cover
+	TopCurtainLayer_Cover = FemaleScan.AND_TopCurtain_Cover
+	AssCurtain_Cover = FemaleScan.AND_AssCurtain_Cover
+	PelvicCurtain_Cover = FemaleScan.AND_PelvicCurtain_Cover
 EndFunction
 
 Event OnConfigOpen()
 	Logger.Log("==CONFIG OPEN==")
 	
-	Pages = New String[12]
+	Pages = New String[13]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	Pages[2] = "$CurtainKeywordsPage"
@@ -309,7 +318,8 @@ Event OnConfigOpen()
 	Pages[8] = "$NakedCommentsPage"
 	Pages[9] = "$DynamicModestyPage"
 	Pages[10] = "$NPCModestyPage"
-	Pages[11] = "$DebugPage"
+	Pages[11] = "$FlashKeys"
+	Pages[12] = "$DebugPage"
 	
 	Int TrackedFemales = NPCModesty.TrackedFemales
 	Int PermanentFemales = NPCModesty.PermanentFemales
@@ -527,11 +537,15 @@ EndEvent
 Event OnPageReset(string page)
 	Page9ToggleID = new Int[50]
 	Page10ToggleID = new Int[50]
-	Page11ToggleID = new Int[10]
+	Page12ToggleID = new Int[10]
+	
 	Page9SliderID = new Int[50]
 	Page10SliderID = new Int[50]
+	
 	Page9MenuID = new Int[50]
 	Page10MenuID = new Int[50]
+	
+	Page11KeyID = new Int[50]
 	
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
@@ -1676,30 +1690,33 @@ Event OnPageReset(string page)
 			Page9ToggleID[0] = AddToggleOption("$EnableModesty", UseDynamicModesty, DisabledIf(HardcoreLockdown == True))
 			Page9ToggleID[1] = AddToggleOption("$StrictRules", StrictModestyRules, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			Page9ToggleID[2] = AddToggleOption("$ModestyCorruptionText", ModestyCorruption, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			Page9ToggleID[3] = AddToggleOption("$HardcoreMode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[3] = AddToggleOption("$PermanentShamelessText", PermanentShameless, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[4] = AddToggleOption("$HardcoreMode", UseHardcoreModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddSliderOptionST("AND_MinimumRankState", "$MinimumRank", MinimumModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == False))
+			Page9SliderID[0] = AddSliderOption("$MinimumTopModestyRankText", MinimumTopModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == True))
+			Page9SliderID[1] = AddSliderOption("$MinimumBottomModestyRankText", MinimumBottomModestyRank, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || StrictModestyRules == True))
 			AddSliderOptionST("AND_ModestyUpgradeTimeState", "$ImmodestyTime", ImmodestyTimeNeeded, "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddSliderOptionST("AND_ModestyArousalThresholdState", "$ArousalCutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			If StrictModestyRules == True
-				Page9ToggleID[4] = AddToggleOption("$JumpRank1", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[5] = AddToggleOption("$JumpRank2", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[6] = AddToggleOption("$JumpRank3", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[7] = AddToggleOption("$JumpRank4", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[8] = AddToggleOption("$JumpRank5", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[9] = AddToggleOption("$JumpRank6", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[5] = AddToggleOption("$JumpRank1", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[6] = AddToggleOption("$JumpRank2", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[7] = AddToggleOption("$JumpRank3", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[8] = AddToggleOption("$JumpRank4", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[9] = AddToggleOption("$JumpRank5", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[10] = AddToggleOption("$JumpRank6", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			Else
-				Page9ToggleID[10] = AddToggleOption("$JumpTopRank1", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[11] = AddToggleOption("$JumpTopRank2", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[12] = AddToggleOption("$JumpTopRank3", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[13] = AddToggleOption("$JumpBottomRank1", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[14] = AddToggleOption("$JumpBottomRank2", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[15] = AddToggleOption("$JumpBottomRank3", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[11] = AddToggleOption("$JumpTopRank1", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[12] = AddToggleOption("$JumpTopRank2", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[13] = AddToggleOption("$JumpTopRank3", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[14] = AddToggleOption("$JumpBottomRank1", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[15] = AddToggleOption("$JumpBottomRank2", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[16] = AddToggleOption("$JumpBottomRank3", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			EndIf
-			Page9ToggleID[16] = AddToggleOption("$ResetModestyText", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			Page9ToggleID[17] = AddToggleOption("$RandomizePlayerText", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[17] = AddToggleOption("$ResetModestyText", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+			Page9ToggleID[18] = AddToggleOption("$RandomizePlayerText", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddMenuOptionST("AND_PlayerConfidence_State", "$PlayerConfidenceText", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-			Page9ToggleID[18] = AddToggleOption("$ModestyMonologueText", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
+			Page9ToggleID[19] = AddToggleOption("$ModestyMonologueText", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
 			Page9MenuID[0] = AddMenuOption("$ShyWhenSeen", ShySex, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
@@ -1726,9 +1743,9 @@ Event OnPageReset(string page)
 					AddTextOption("$Shameless", ModestyManager.ModestyTimer[6])
 				EndIf
 			Else
-				AddHeaderOption("Top Modesty")
-				AddTextOption("Top Modesty Rank:", TopModestyRank as String)
-				AddTextOption("Top Modesty Title:", ModestyManager.TopModestyTitle[TopModestyRank])
+				AddHeaderOption("$TopModestyHeader")
+				AddTextOption("$TopModestyRank:", TopModestyRank as String)
+				AddTextOption("$TopModestyTitle:", ModestyManager.TopModestyTitle[TopModestyRank])
 				AddHeaderOption("$TopModestyTimer")
 				If TopModestyRank <= 0
 					AddTextOption("$Shy", ModestyManager.TopModestyTimer[0])
@@ -1842,11 +1859,15 @@ Event OnPageReset(string page)
 				Page10ToggleID[17] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, 0)
 			EndIf
 		EndIf
+	ElseIf (page == "$FlashKeys")
+		Page11KeyID[0] = AddKeyMapOption("$FlashChestCurtainText", FlashKey[0], 0)
+		Page11KeyID[1] = AddKeyMapOption("$FlashPelvicCurtainText", FlashKey[1], 0)
+		Page11KeyID[2] = AddKeyMapOption("$FlashAssCurtainText", FlashKey[2], 0)
 	ElseIf (page == "$DebugPage")
 		AddHeaderOption("$LoggingHeader")
-		Page11ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
-		Page11ToggleID[1] = AddToggleOption("$AddToGameLog", AddToMainLog, DisabledIf(Logging == False))
-		Page11ToggleID[2] = AddToggleOption("$DataDump", ConfirmSelection, 0)
+		Page12ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
+		Page12ToggleID[1] = AddToggleOption("$AddToGameLog", AddToMainLog, DisabledIf(Logging == False))
+		Page12ToggleID[2] = AddToggleOption("$DataDump", ConfirmSelection, 0)
 	EndIf
 EndEvent
 
@@ -1858,6 +1879,35 @@ Int Function DisabledIf(Bool Condition)
 	EndIf
 EndFunction
 
+Bool Function ShowConfirmationDialog(String Text)
+	return ShowMessage(Text, True)
+EndFunction
+
+Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, String ConflictName)
+	Logger.Log("<MCM> [OnOptionKeyMapChange] KeyCode is " + KeyCode)
+	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictControl is " + ConflictControl)
+	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictName is " + ConflictName)
+	If (KeyCode != -1 && ConflictControl != "" && !ShowConfirmationDialog("$AND_KeyAlreadyInUse"))
+		return
+	ElseIf KeyCode == 1
+		KeyCode = -1
+	EndIf
+	
+	If Option == Page11KeyID[0]
+		FlashKey[0] = KeyCode
+		Keybinds.UpdateRegister(0)
+		SetKeymapOptionValue(Option, KeyCode)
+	ElseIf Option == Page11KeyID[1]
+		FlashKey[1] = KeyCode
+		Keybinds.UpdateRegister(1)
+		SetKeymapOptionValue(Option, KeyCode)
+	ElseIf Option == Page11KeyID[2]
+		FlashKey[2] = KeyCode
+		Keybinds.UpdateRegister(2)
+		SetKeymapOptionValue(Option, KeyCode)
+	EndIf
+EndEvent
+
 Event OnOptionHighlight(Int Option)
 		;=========================
 		;---TOGGLES---
@@ -1868,37 +1918,39 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$StrictModestyInfoText")
 	ElseIf Option == Page9ToggleID[2] ;Corruption
 		SetInfoText("$CorruptionInfoText")
-	ElseIf Option == Page9ToggleID[3] ;Hardcore
+	ElseIf Option == Page9ToggleID[3] ;Permanent Shameless
+		SetInfoText("$PermanentShamelessInfoText")
+	ElseIf Option == Page9ToggleID[4] ;Hardcore
 		SetInfoText("$HardcoreInfoText")
-	ElseIf Option == Page9ToggleID[4] ;Rank Jump 1
+	ElseIf Option == Page9ToggleID[5] ;Rank Jump 1
 		SetInfoText("$Rank1JumpInfoText")
-	ElseIf Option == Page9ToggleID[5] ;Rank Jump 2
+	ElseIf Option == Page9ToggleID[6] ;Rank Jump 2
 		SetInfoText("$Rank2JumpInfoText")
-	ElseIf Option == Page9ToggleID[6] ;Rank Jump 3
+	ElseIf Option == Page9ToggleID[7] ;Rank Jump 3
 		SetInfoText("$Rank3JumpInfoText")
-	ElseIf Option == Page9ToggleID[7] ;Rank Jump 4
+	ElseIf Option == Page9ToggleID[8] ;Rank Jump 4
 		SetInfoText("$Rank4JumpInfoText")
-	ElseIf Option == Page9ToggleID[8] ;Rank Jump 5
+	ElseIf Option == Page9ToggleID[9] ;Rank Jump 5
 		SetInfoText("$Rank5JumpInfoText")
-	ElseIf Option == Page9ToggleID[9] ;Rank Jump 6
+	ElseIf Option == Page9ToggleID[10] ;Rank Jump 6
 		SetInfoText("$Rank6JumpInfoText")
-	ElseIf Option == Page9ToggleID[10] ;Top Rank Jump 1
+	ElseIf Option == Page9ToggleID[11] ;Top Rank Jump 1
 		SetInfoText("$TopRank1JumpInfoText")
-	ElseIf Option == Page9ToggleID[11] ;Top Rank Jump 2
+	ElseIf Option == Page9ToggleID[12] ;Top Rank Jump 2
 		SetInfoText("$TopRank2JumpInfoText")
-	ElseIf Option == Page9ToggleID[12] ;Top Rank Jump 3
+	ElseIf Option == Page9ToggleID[13] ;Top Rank Jump 3
 		SetInfoText("$TopRank3JumpInfoText")
-	ElseIf Option == Page9ToggleID[13] ;Bottom Rank Jump 1
+	ElseIf Option == Page9ToggleID[14] ;Bottom Rank Jump 1
 		SetInfoText("$BottomRank1JumpInfoText")
-	ElseIf Option == Page9ToggleID[14] ;Bottom Rank Jump 2
+	ElseIf Option == Page9ToggleID[15] ;Bottom Rank Jump 2
 		SetInfoText("$BottomRank2JumpInfoText")
-	ElseIf Option == Page9ToggleID[15] ;Bottom Rank Jump 3
+	ElseIf Option == Page9ToggleID[16] ;Bottom Rank Jump 3
 		SetInfoText("$BottomRank3JumpInfoText")
-	ElseIf Option == Page9ToggleID[16] ;Reset Modesty
+	ElseIf Option == Page9ToggleID[17] ;Reset Modesty
 		SetInfoText("$ResetModestyInfoText")
-	ElseIf Option == Page9ToggleID[17] ;Randomize Modesty
+	ElseIf Option == Page9ToggleID[18] ;Randomize Modesty
 		SetInfoText("$RandomizeModestyInfoText")
-	ElseIf Option == Page9ToggleID[18] ;Modesty Monologue
+	ElseIf Option == Page9ToggleID[19] ;Modesty Monologue
 		SetInfoText("$ModestyMonologueInfoText")
 		
 		;=========================
@@ -1945,17 +1997,29 @@ Event OnOptionHighlight(Int Option)
 		;=========================
 		;END PAGE 10
 		;=========================
+	ElseIf Option == Page11KeyID[0]
+		SetInfoText("$FlashChestCurtainInfoText")
+	ElseIf Option == Page11KeyID[1]
+		SetInfoText("$FlashPelvicCurtainInfoText")
+	ElseIf Option == Page11KeyID[2]
+		SetInfoText("$FlashAssCurtainInfoText")
+		;=========================
+		;END PAGE 11
+		;=========================
 		
-	ElseIf Option == Page11ToggleID[0] ;Enable Logging
+	ElseIf Option == Page12ToggleID[0] ;Enable Logging
 		SetInfoText("$EnableLoggingInfoText")
-	ElseIf Option == Page11ToggleID[1] ;Add To Main Log
+	ElseIf Option == Page12ToggleID[1] ;Add To Main Log
 		SetInfoText("$AddToGameLogInfoText")
-		ElseIf Option == Page11ToggleID[2] ;Data Dump
+		ElseIf Option == Page12ToggleID[2] ;Data Dump
 		SetInfoText("$DataDumpInfoText")
 		;=========================
 		;---SLIDERS---
 		;=========================
-		
+	ElseIf Option == Page9SliderID[0] ;Minimum Top Modesty
+		SetInfoText("$MinimumTopModestyInfoText")
+	ElseIf Option == Page9SliderID[1] ;Minimum Bottom Modesty
+		SetInfoText("$MinimumBottomModestyInfoText")
 		;=========================
 		;END PAGE 9
 		;=========================
@@ -2004,7 +2068,19 @@ Event OnOptionSliderOpen(Int Option)
 	Float RangeMax
 	Float Interval
 	Float DefaultValue
-	If Option == Page10SliderID[0]
+	If Option == Page9SliderID[0]
+		StartValue = MinimumTopModestyRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page9SliderID[1]
+		StartValue = MinimumBottomModestyRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[0]
 		StartValue = NPCModestyArousalThreshold.GetValue()
 		RangeMin = 0
 		RangeMax = 101
@@ -2037,14 +2113,18 @@ Event OnOptionSliderOpen(Int Option)
 EndEvent
 
 Event OnOptionSliderAccept(Int Option, Float Value)
-	If Option == Page10SliderID[0]
+	If Option == Page9SliderID[0]
+		MinimumTopModestyRank = Value as Int
+	ElseIf Option == Page9SliderID[1]
+		MinimumBottomModestyRank = Value as Int
+	ElseIf Option == Page10SliderID[0]
 		NPCModestyArousalThreshold.SetValue(Value)
 	ElseIf Option == Page10SliderID[1]
-		StrictRank = Value
+		StrictRank = Value as Int
 	ElseIf Option == Page10SliderID[2]
-		TopRank = Value
+		TopRank = Value as Int
 	ElseIf Option == Page10SliderID[2]
-		BottomRank = Value
+		BottomRank = Value as Int
 	EndIf
 	ForcePageReset()
 EndEvent
@@ -2155,6 +2235,14 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, ModestyCorruption)
 	ElseIf Option == Page9ToggleID[3]
+		If PermanentShameless == False
+			PermanentShameless = True
+		Else
+			PermanentShameless = False
+		EndIf
+		SetToggleOptionValue(Option, PermanentShameless)
+		ForcePageReset()
+	ElseIf Option == Page9ToggleID[4]
 		If UseHardcoreModesty == False
 			UseHardcoreModesty = True
 		Else
@@ -2167,7 +2255,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[4]
+	ElseIf Option == Page9ToggleID[5]
 		If Rank1Jump == False
 			Rank1Jump = True
 			Rank2Jump = False
@@ -2181,7 +2269,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank1Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[5]
+	ElseIf Option == Page9ToggleID[6]
 		If Rank2Jump == False
 			Rank1Jump = False
 			Rank2Jump = True
@@ -2195,7 +2283,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank2Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[6]
+	ElseIf Option == Page9ToggleID[7]
 		If Rank3Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -2209,7 +2297,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank3Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[7]
+	ElseIf Option == Page9ToggleID[8]
 		If Rank4Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -2223,7 +2311,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank4Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[8]
+	ElseIf Option == Page9ToggleID[9]
 		If Rank5Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -2237,7 +2325,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank5Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[9]
+	ElseIf Option == Page9ToggleID[10]
 		If Rank6Jump == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -2251,7 +2339,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Rank6Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[10]
+	ElseIf Option == Page9ToggleID[11]
 		If TopRank1Jump == False
 			TopRank1Jump = True
 			TopRank2Jump = False
@@ -2261,7 +2349,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank1Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[11]
+	ElseIf Option == Page9ToggleID[12]
 		If TopRank2Jump == False
 			TopRank1Jump = False
 			TopRank2Jump = True
@@ -2271,7 +2359,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank2Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[12]
+	ElseIf Option == Page9ToggleID[13]
 		If TopRank3Jump == False
 			TopRank1Jump = False
 			TopRank2Jump = False
@@ -2281,7 +2369,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, TopRank3Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[13]
+	ElseIf Option == Page9ToggleID[14]
 		If BottomRank1Jump == False
 			BottomRank1Jump = True
 			BottomRank2Jump = False
@@ -2291,7 +2379,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, BottomRank1Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[14]
+	ElseIf Option == Page9ToggleID[15]
 		If BottomRank2Jump == False
 			BottomRank1Jump = False
 			BottomRank2Jump = True
@@ -2301,7 +2389,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, BottomRank2Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[15]
+	ElseIf Option == Page9ToggleID[16]
 		If BottomRank3Jump == False
 			BottomRank1Jump = False
 			BottomRank2Jump = False
@@ -2311,7 +2399,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, BottomRank3Jump)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[16]
+	ElseIf Option == Page9ToggleID[17]
 		If ResetModesty == False
 			Rank1Jump = False
 			Rank2Jump = False
@@ -2325,7 +2413,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, ResetModesty)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[17]
+	ElseIf Option == Page9ToggleID[18]
 		If RandomizePlayer == False
 			RandomizePlayer = True
 		Else
@@ -2333,7 +2421,7 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, RandomizePlayer)
 		ForcePageReset()
-	ElseIf Option == Page9ToggleID[18]
+	ElseIf Option == Page9ToggleID[19]
 		If ModestyMonologue == False
 			ModestyMonologue = True
 		Else
@@ -2492,7 +2580,7 @@ Event OnOptionSelect(Int Option)
 		;END PAGE 10
 		;=============
 		
-	ElseIf Option == Page11ToggleID[0]
+	ElseIf Option == Page12ToggleID[0]
 		If Logging == False
 			Logging = True
 		Else
@@ -2501,14 +2589,14 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, Logging)
 		ForcePageReset()
-	ElseIf Option == Page11ToggleID[1]
+	ElseIf Option == Page12ToggleID[1]
 		If AddToMainLog == False
 			AddToMainLog = True
 		Else
 			AddToMainLog = False
 		EndIf
 		SetToggleOptionValue(Option, AddToMainLog)
-	ElseIf Option == Page11ToggleID[2]
+	ElseIf Option == Page12ToggleID[2]
 		NPCModesty.DumpNPCData()
 	EndIf
 EndEvent

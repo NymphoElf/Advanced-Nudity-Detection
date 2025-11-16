@@ -2,7 +2,7 @@ ScriptName AND_NPC_Modesty_Manager extends Quest
 
 Import JsonUtil
 
-AND_Core Property AND_Main Auto
+AND_Core Property Core Auto
 AND_ModestyRandomizer Property ModestyRandomizer Auto
 AND_MCM Property Config Auto
 AND_Logger Property Logger Auto
@@ -154,23 +154,23 @@ Function RestoreNPCFactions()
 	Int Index = 0
 	While Index < TrackedFemales
 		Actor akFemale = FemaleActor[Index] as Actor
-		akFemale.AddToFaction(AND_Main.ModestyFaction)
-		akFemale.AddToFaction(AND_Main.TopModestyFaction)
-		akFemale.AddToFaction(AND_Main.BottomModestyFaction)
+		akFemale.AddToFaction(Core.ModestyFaction)
+		akFemale.AddToFaction(Core.TopModestyFaction)
+		akFemale.AddToFaction(Core.BottomModestyFaction)
 		
-		akFemale.AddToFaction(AND_Main.ShyWithMale)
-		akFemale.AddToFaction(AND_Main.ShyWithFemale)
+		akFemale.AddToFaction(Core.ShyWithMale)
+		akFemale.AddToFaction(Core.ShyWithFemale)
 		
-		akFemale.SetFactionRank(AND_Main.ModestyFaction, CurrentRankStrict[Index])
-		akFemale.SetFactionRank(AND_Main.TopModestyFaction, CurrentRankTop[Index])
-		akFemale.SetFactionRank(AND_Main.BottomModestyFaction, CurrentRankBottom[Index])
+		akFemale.SetFactionRank(Core.ModestyFaction, CurrentRankStrict[Index])
+		akFemale.SetFactionRank(Core.TopModestyFaction, CurrentRankTop[Index])
+		akFemale.SetFactionRank(Core.BottomModestyFaction, CurrentRankBottom[Index])
 		
 		If ShynessMode[Index] != 0
-			akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 		EndIf
 		
 		If ShynessMode[Index] != 1
-			akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
+			akFemale.SetFactionRank(Core.ShyWithMale, 1)
 		EndIf
 		
 		Index += 1
@@ -211,23 +211,23 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		CurrentRankTop[TrackedFemales] = TopRank
 		CurrentRankBottom[TrackedFemales] = BottomRank
 		
-		akFemale.AddToFaction(AND_Main.ModestyFaction)
-		akFemale.AddToFaction(AND_Main.TopModestyFaction)
-		akFemale.AddToFaction(AND_Main.BottomModestyFaction)
+		akFemale.AddToFaction(Core.ModestyFaction)
+		akFemale.AddToFaction(Core.TopModestyFaction)
+		akFemale.AddToFaction(Core.BottomModestyFaction)
 		
-		akFemale.AddToFaction(AND_Main.ShyWithFemale)
-		akFemale.AddToFaction(AND_Main.ShyWithMale)
+		akFemale.AddToFaction(Core.ShyWithFemale)
+		akFemale.AddToFaction(Core.ShyWithMale)
 		
-		akFemale.SetFactionRank(AND_Main.ModestyFaction, StrictRank)
-		akFemale.SetFactionRank(AND_Main.TopModestyFaction, TopRank)
-		akFemale.SetFactionRank(AND_Main.BottomModestyFaction, BottomRank)
+		akFemale.SetFactionRank(Core.ModestyFaction, StrictRank)
+		akFemale.SetFactionRank(Core.TopModestyFaction, TopRank)
+		akFemale.SetFactionRank(Core.BottomModestyFaction, BottomRank)
 		
 		If ShyMode != 0 ;is NOT Males
-			akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 		EndIf
 		
 		If ShyMode != 1 ;is NOT Females
-			akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
+			akFemale.SetFactionRank(Core.ShyWithMale, 1)
 		EndIf
 	Else
 		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ")")
@@ -266,55 +266,55 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		CurrentRankTop[TrackedFemales] = TopModesty
 		CurrentRankBottom[TrackedFemales] = BottomModesty
 		
-		akFemale.SetFactionRank(AND_Main.ModestyFaction, Modesty)
-		akFemale.SetFactionRank(AND_Main.TopModestyFaction, TopModesty)
-		akFemale.SetFactionRank(AND_Main.BottomModestyFaction, BottomModesty)
+		akFemale.SetFactionRank(Core.ModestyFaction, Modesty)
+		akFemale.SetFactionRank(Core.TopModestyFaction, TopModesty)
+		akFemale.SetFactionRank(Core.BottomModestyFaction, BottomModesty)
 		
-		If AND_Main.SexlabInstalled == True && Config.NPCShySex == "Sexuality"
+		If Core.SexlabInstalled == True && Config.NPCShySex == "Sexuality"
 			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Sexuality with Sexlab Installed")
-			Int SexualityScore = AND_Main.FindSexuality(akFemale)
+			Int SexualityScore = Core.FindSexuality(akFemale)
 			
 			If SexualityScore > 65 ;Straight
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 0)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+				akFemale.SetFactionRank(Core.ShyWithMale, 0)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 				ShyMode = 0
 			ElseIf SexualityScore < 35 ;Gay 
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 0)
+				akFemale.SetFactionRank(Core.ShyWithMale, 1)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 0)
 				ShyMode = 1
 			Else ;Bisexual
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+				akFemale.SetFactionRank(Core.ShyWithMale, 1)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 				ShyMode = 2
 			EndIf
 		ElseIf Config.NPCShySex == "Random"
 			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Random")
 			Int Roll = Utility.RandomInt(0,2)
 			If Roll == 0
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 0)
+				akFemale.SetFactionRank(Core.ShyWithMale, 1)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 0)
 			ElseIf Roll == 1
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 0)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+				akFemale.SetFactionRank(Core.ShyWithMale, 0)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			Else
-				akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-				akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+				akFemale.SetFactionRank(Core.ShyWithMale, 1)
+				akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			EndIf
 			ShyMode = Roll
 		ElseIf Config.NPCShySex == "Both"
 			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Both")
-			akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-			akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+			akFemale.SetFactionRank(Core.ShyWithMale, 1)
+			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			ShyMode = 2
 		ElseIf Config.NPCShySex == "Female"
 			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Female")
-			akFemale.SetFactionRank(AND_Main.ShyWithMale, 0)
-			akFemale.SetFactionRank(AND_Main.ShyWithFemale, 1)
+			akFemale.SetFactionRank(Core.ShyWithMale, 0)
+			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			ShyMode = 1
 		Else
 			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is either Male or Sexuality without Sexlab Installed/Detected")
-			akFemale.SetFactionRank(AND_Main.ShyWithMale, 1)
-			akFemale.SetFactionRank(AND_Main.ShyWithFemale, 0)
+			akFemale.SetFactionRank(Core.ShyWithMale, 1)
+			akFemale.SetFactionRank(Core.ShyWithFemale, 0)
 		EndIf
 	EndIf
 	
@@ -542,9 +542,9 @@ Function ResetFemale(Actor akFemale = None, Int FemaleID = -1)
 	CurrentRankTop[FemaleID] = DefaultRankTop[FemaleID]
 	CurrentRankBottom[FemaleID] = DefaultRankBottom[FemaleID]
 	
-	akFemale.SetFactionRank(AND_Main.ModestyFaction, DefaultRankStrict[FemaleID])
-	akFemale.SetFactionRank(AND_Main.TopModestyFaction, DefaultRankTop[FemaleID])
-	akFemale.SetFactionRank(AND_Main.BottomModestyFaction, DefaultRankBottom[FemaleID])
+	akFemale.SetFactionRank(Core.ModestyFaction, DefaultRankStrict[FemaleID])
+	akFemale.SetFactionRank(Core.TopModestyFaction, DefaultRankTop[FemaleID])
+	akFemale.SetFactionRank(Core.BottomModestyFaction, DefaultRankBottom[FemaleID])
 	
 	If FemaleExists(akFemale, True) == True
 		UpdatePermanent(akFemale, FemaleID)
@@ -568,9 +568,9 @@ Function UpdatePermanent(Actor akFemale, Int FemaleID)
 EndFunction
 
 Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, Int BottomRank, Bool MakeDefault)
-	akFemale.SetFactionRank(AND_Main.ModestyFaction, StrictRank)
-	akFemale.SetFactionRank(AND_Main.TopModestyFaction, TopRank)
-	akFemale.SetFactionRank(AND_Main.BottomModestyFaction, BottomRank)
+	akFemale.SetFactionRank(Core.ModestyFaction, StrictRank)
+	akFemale.SetFactionRank(Core.TopModestyFaction, TopRank)
+	akFemale.SetFactionRank(Core.BottomModestyFaction, BottomRank)
 	
 	ModestyTimer0[FemaleID] = 0
 	ModestyTimer1[FemaleID] = 0
@@ -611,10 +611,10 @@ Function ProcessNPCModesty(Actor akFemale, Bool Strict)
 	
 	Int FemaleID = FemaleActor.Find(akFemale)
 	
-	If akFemale == AND_Main.Rosa && Config.ShamelessRosa == True
-		akFemale.SetFactionRank(AND_Main.ModestyFaction, 6)
-		akFemale.SetFactionRank(AND_Main.TopModestyFaction, 3)
-		akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 3)
+	If akFemale == Core.Rosa && Config.ShamelessRosa == True
+		akFemale.SetFactionRank(Core.ModestyFaction, 6)
+		akFemale.SetFactionRank(Core.TopModestyFaction, 3)
+		akFemale.SetFactionRank(Core.BottomModestyFaction, 3)
 		
 		CurrentRankStrict[FemaleID] = 6
 		CurrentRankTop[FemaleID] = 3
@@ -632,9 +632,9 @@ Function ProcessNPCModesty(Actor akFemale, Bool Strict)
 		BottomNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption)
 	EndIf
 	
-	CurrentRankStrict[FemaleID] = akFemale.GetFactionRank(AND_Main.ModestyFaction)
-	CurrentRankTop[FemaleID] = akFemale.GetFactionRank(AND_Main.TopModestyFaction)
-	CurrentRankBottom[FemaleID] = akFemale.GetFactionRank(AND_Main.BottomModestyFaction)
+	CurrentRankStrict[FemaleID] = akFemale.GetFactionRank(Core.ModestyFaction)
+	CurrentRankTop[FemaleID] = akFemale.GetFactionRank(Core.TopModestyFaction)
+	CurrentRankBottom[FemaleID] = akFemale.GetFactionRank(Core.BottomModestyFaction)
 	
 	If FemaleExists(akFemale, True) == True
 		UpdatePermanent(akFemale, FemaleID)
@@ -671,8 +671,8 @@ Function UpdateShyness(Actor akFemale)
 	EndIf
 	
 	If ShynessMode[FemaleID] != ShyMode
-		akFemale.SetFactionRank(AND_Main.ShyWithMale, MaleShy)
-		akFemale.SetFactionRank(AND_Main.ShyWithFemale, FemaleShy)
+		akFemale.SetFactionRank(Core.ShyWithMale, MaleShy)
+		akFemale.SetFactionRank(Core.ShyWithFemale, FemaleShy)
 		ShynessMode[FemaleID] = ShyMode
 		If FemaleExists(akFemale, True) == True
 			UpdatePermanent(akFemale, Index)
@@ -681,27 +681,27 @@ Function UpdateShyness(Actor akFemale)
 EndFunction
 
 Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
-	Int ModestyRank = akFemale.GetFactionRank(AND_Main.ModestyFaction)
+	Int ModestyRank = akFemale.GetFactionRank(Core.ModestyFaction)
 	Int MinimumModesty = 0
 	
-	Bool IsShowingBra = akFemale.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
-	Bool IsShowingChest = akFemale.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
-	Bool IsTopless = akFemale.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
+	Bool IsShowingBra = akFemale.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
+	Bool IsShowingChest = akFemale.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
+	Bool IsTopless = akFemale.GetFactionRank(Core.AND_ToplessFaction) as Bool
 	
-	Bool IsShowingUnderwear = akFemale.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
-	Bool IsShowingGenitals = akFemale.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
-	Bool IsBottomless = akFemale.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
+	Bool IsShowingUnderwear = akFemale.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool
+	Bool IsShowingGenitals = akFemale.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool
+	Bool IsBottomless = akFemale.GetFactionRank(Core.AND_BottomlessFaction) as Bool
 	
-	Bool IsNude = akFemale.GetFactionRank(AND_Main.AND_NudeActorFaction) as Bool
+	Bool IsNude = akFemale.GetFactionRank(Core.AND_NudeActorFaction) as Bool
 	
-	If akFemale == AND_Main.Rosa
+	If akFemale == Core.Rosa
 		MinimumModesty = Config.MinimumRosaRank
 	Else
 		MinimumModesty = Config.MinimumFollowerRank
 	EndIf
 	
 	If MinimumModesty > ModestyRank
-		NPCModestyRankChange(akFemale, MinimumModesty)
+		NPCModestyRankChange(akFemale, akName, MinimumModesty)
 	EndIf
 	
 	If ModestyRank <= 0
@@ -711,8 +711,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer0[FemaleID] = ModestyTimer0[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 1
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 1)
-				NPCModestyRankChange(akName, 1)
+				NPCModestyRankChange(akFemale, akName, 1)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
@@ -731,8 +730,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer1[FemaleID] = ModestyTimer1[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 2
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 2)
-				NPCModestyRankChange(akName, 2)
+				NPCModestyRankChange(akFemale, akName, 2)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
@@ -749,8 +747,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer2[FemaleID] = ModestyTimer2[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 3
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 3)
-				NPCModestyRankChange(akName, 3)
+				NPCModestyRankChange(akFemale, akName, 3)
 			EndIf
 		ElseIf IsShowingUnderwear == False && IsShowingGenitals == False && IsShowingChest == False
 			If Corruption == False
@@ -767,8 +764,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer3[FemaleID] = ModestyTimer3[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 4
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 4)
-				NPCModestyRankChange(akName, 4)
+				NPCModestyRankChange(akFemale, akName, 4)
 			EndIf
 		ElseIf IsShowingChest == False && IsShowingGenitals == False
 			If Corruption == False
@@ -785,8 +781,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer4[FemaleID] = ModestyTimer4[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 5
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 5)
-				NPCModestyRankChange(akName, 5)
+				NPCModestyRankChange(akFemale, akName, 5)
 			EndIf
 		ElseIf IsShowingGenitals == False && IsTopless == False
 			If Corruption == False
@@ -803,8 +798,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				ModestyTimer5[FemaleID] = ModestyTimer5[FemaleID] + 1
 			Else
 				CurrentRankStrict[FemaleID] = 6
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 6)
-				NPCModestyRankChange(akName, 6)
+				NPCModestyRankChange(akFemale, akName, 6)
 			EndIf
 		ElseIf IsTopless == False
 			If Corruption == False
@@ -823,12 +817,20 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		ElseIf IsNude == True
-			If ModestyTimer6[FemaleID] < 0
-				ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] + 1
-			EndIf
-			If ModestyTimer6[FemaleID] > 0
+			ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] + 1
+			If ModestyTimer6[FemaleID] > 0 && Config.PermanentShameless == False
 				ModestyTimer6[FemaleID] = 0
+			ElseIf ModestyTimer6[FemaleID] >= (UpgradeTime * 2)
+				ModestyTimer6[FemaleID] = (UpgradeTime * 2)
+				CurrentRankStrict[FemaleID] = 7
+				NPCModestyRankChange(akFemale, akName, 7)
 			EndIf
+		EndIf
+	ElseIf ModestyRank > 6
+		If Config.PermanentShameless == True
+			Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC " + akFemale + " " + akName + " is Permanently Shameless")
+		Else
+			akFemale.SetFactionRank(Core.ModestyFaction, 6)
 		EndIf
 	EndIf
 	
@@ -844,8 +846,8 @@ EndFunction
 Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Rank, Int UpgradeTime, Int MinimumRank)
 	Int DowngradeTime = (0 - UpgradeTime)
 	
-	If akFemale.GetFactionRank(AND_Main.AND_ShowingBraFaction) == 0 && akFemale.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) == 0\ 
-	&& akFemale.GetFactionRank(AND_Main.AND_ShowingChestFaction) == 0 && akFemale.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) == 0
+	If akFemale.GetFactionRank(Core.AND_ShowingBraFaction) == 0 && akFemale.GetFactionRank(Core.AND_ShowingUnderwearFaction) == 0\ 
+	&& akFemale.GetFactionRank(Core.AND_ShowingChestFaction) == 0 && akFemale.GetFactionRank(Core.AND_ShowingGenitalsFaction) == 0
 		Int CurrentTimer = 0
 		
 		If Rank == 1
@@ -853,48 +855,42 @@ Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Ra
 			If ModestyTimer1[FemaleID] <= DowngradeTime
 				ModestyTimer1[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 0
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 0)
-				NPCModestyRankChange(akName, 0)
+				NPCModestyRankChange(akFemale, akName, 0)
 			EndIf
 		ElseIf Rank == 2
 			ModestyTimer2[FemaleID] = ModestyTimer2[FemaleID] - 1
 			If ModestyTimer2[FemaleID] <= DowngradeTime
 				ModestyTimer2[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 1
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 1)
-				NPCModestyRankChange(akName, 1)
+				NPCModestyRankChange(akFemale, akName, 1)
 			EndIf
 		ElseIf Rank == 3
 			ModestyTimer3[FemaleID] = ModestyTimer3[FemaleID] - 1
 			If ModestyTimer3[FemaleID] <= DowngradeTime
 				ModestyTimer3[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 2
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 2)
-				NPCModestyRankChange(akName, 2)
+				NPCModestyRankChange(akFemale, akName, 2)
 			EndIf
 		ElseIf Rank == 4
 			ModestyTimer4[FemaleID] = ModestyTimer4[FemaleID] - 1
 			If ModestyTimer4[FemaleID] <= DowngradeTime
 				ModestyTimer4[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 3
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 3)
-				NPCModestyRankChange(akName, 3)
+				NPCModestyRankChange(akFemale, akName, 3)
 			EndIf
 		ElseIf Rank == 5
 			ModestyTimer5[FemaleID] = ModestyTimer5[FemaleID] - 1
 			If ModestyTimer5[FemaleID] <= DowngradeTime
 				ModestyTimer5[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 4
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 4)
-				NPCModestyRankChange(akName, 4)
+				NPCModestyRankChange(akFemale, akName, 4)
 			EndIf
 		ElseIf Rank == 6
 			ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] - 1
 			If ModestyTimer6[FemaleID] <= DowngradeTime
 				ModestyTimer6[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 5
-				akFemale.SetFactionRank(AND_Main.ModestyFaction, 5)
-				NPCModestyRankChange(akName, 5)
+				NPCModestyRankChange(akFemale, akName, 5)
 			EndIf
 		EndIf
 	EndIf
@@ -909,11 +905,11 @@ Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Ra
 EndFunction
 
 Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
-	Int TopModestyRank = akFemale.GetFactionRank(AND_Main.TopModestyFaction)
+	Int TopModestyRank = akFemale.GetFactionRank(Core.TopModestyFaction)
 	
-	Bool IsShowingBra = akFemale.GetFactionRank(AND_Main.AND_ShowingBraFaction) as Bool
-	Bool IsShowingChest = akFemale.GetFactionRank(AND_Main.AND_ShowingChestFaction) as Bool
-	Bool IsTopless = akFemale.GetFactionRank(AND_Main.AND_ToplessFaction) as Bool
+	Bool IsShowingBra = akFemale.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
+	Bool IsShowingChest = akFemale.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
+	Bool IsTopless = akFemale.GetFactionRank(Core.AND_ToplessFaction) as Bool
 	
 	If TopModestyRank >= 3 && Corruption == True
 		return
@@ -948,20 +944,17 @@ Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeT
 	If TopModestyRank <= 0
 		If TopModestyTimer0[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 1
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 1)
-			NPCTopModestyRankChange(akName, 1)
+			NPCTopModestyRankChange(akFemale, akName, 1)
 		EndIf
 	ElseIf TopModestyRank == 1
 		If TopModestyTimer1[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 2
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 2)
-			NPCTopModestyRankChange(akName, 2)
+			NPCTopModestyRankChange(akFemale, akName, 2)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer2[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 3
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 3)
-			NPCTopModestyRankChange(akName, 3)
+			NPCTopModestyRankChange(akFemale, akName, 3)
 		EndIf
 	EndIf
 	
@@ -1005,20 +998,17 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 	If TopModestyRank == 1
 		If TopModestyTimer1[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 0
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 0)
-			NPCTopModestyRankChange(akName, 0)
+			NPCTopModestyRankChange(akFemale, akName, 0)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer2[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 1
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 1)
-			NPCTopModestyRankChange(akName, 1)
+			NPCTopModestyRankChange(akFemale, akName, 1)
 		EndIf
 	ElseIf TopModestyRank == 3
 		If TopModestyTimer3[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 2
-			akFemale.SetFactionRank(AND_Main.TopModestyFaction, 2)
-			NPCTopModestyRankChange(akName, 2)
+			NPCTopModestyRankChange(akFemale, akName, 2)
 		EndIf
 	EndIf
 	
@@ -1029,11 +1019,11 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 EndFunction
 
 Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
-	Int BottomModestyRank = akFemale.GetFactionRank(AND_Main.BottomModestyFaction)
+	Int BottomModestyRank = akFemale.GetFactionRank(Core.BottomModestyFaction)
 	
-	Bool IsShowingUnderwear = akFemale.GetFactionRank(AND_Main.AND_ShowingUnderwearFaction) as Bool
-	Bool IsShowingGenitals = akFemale.GetFactionRank(AND_Main.AND_ShowingGenitalsFaction) as Bool
-	Bool IsBottomless = akFemale.GetFactionRank(AND_Main.AND_BottomlessFaction) as Bool
+	Bool IsShowingUnderwear = akFemale.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool
+	Bool IsShowingGenitals = akFemale.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool
+	Bool IsBottomless = akFemale.GetFactionRank(Core.AND_BottomlessFaction) as Bool
 	
 	If BottomModestyRank >= 3 && Corruption == True
 		return
@@ -1068,20 +1058,17 @@ Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 	If BottomModestyRank <= 0
 		If BottomModestyTimer0[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 1
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 1)
-			NPCBottomModestyRankChange(akName, 1)
+			NPCBottomModestyRankChange(akFemale, akName, 1)
 		EndIf
 	ElseIf BottomModestyRank == 1
 		If BottomModestyTimer1[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 2
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 2)
-			NPCBottomModestyRankChange(akName, 2)
+			NPCBottomModestyRankChange(akFemale, akName, 2)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer2[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 3
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 3)
-			NPCBottomModestyRankChange(akName, 3)
+			NPCBottomModestyRankChange(akFemale, akName, 3)
 		EndIf
 	EndIf
 	
@@ -1125,20 +1112,17 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 	If BottomModestyRank == 1
 		If BottomModestyTimer1[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 0
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 0)
-			NPCBottomModestyRankChange(akName, 0)
+			NPCBottomModestyRankChange(akFemale, akName, 0)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer2[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 1
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 1)
-			NPCBottomModestyRankChange(akName, 1)
+			NPCBottomModestyRankChange(akFemale, akName, 1)
 		EndIf
 	ElseIf BottomModestyRank == 3
 		If BottomModestyTimer3[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 2
-			akFemale.SetFactionRank(AND_Main.BottomModestyFaction, 2)
-			NPCBottomModestyRankChange(akName, 2)
+			NPCBottomModestyRankChange(akFemale, akName, 2)
 		EndIf
 	EndIf
 	
@@ -1148,7 +1132,8 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
 EndFunction
 
-Function NPCModestyRankChange(String akName, Int Rank)
+Function NPCModestyRankChange(Actor akFemale, String akName, Int Rank)
+	akFemale.SetFactionRank(Core.ModestyFaction, Rank)
 	If Rank == 0
 		Debug.Notification(akName + "'s Modesty has become Modest")
 	ElseIf Rank == 1
@@ -1168,7 +1153,8 @@ Function NPCModestyRankChange(String akName, Int Rank)
 	EndIf
 EndFunction
 
-Function NPCTopModestyRankChange(String akName, Int Rank)
+Function NPCTopModestyRankChange(Actor akFemale, String akName, Int Rank)
+	akFemale.SetFactionRank(Core.TopModestyFaction, Rank)
 	If Rank == 0
 		Debug.Notification(akName + "'s Top Modesty has become Shy")
 	ElseIf Rank == 1
@@ -1182,7 +1168,8 @@ Function NPCTopModestyRankChange(String akName, Int Rank)
 	EndIf
 EndFunction
 
-Function NPCBottomModestyRankChange(String akName, Int Rank)
+Function NPCBottomModestyRankChange(Actor akFemale, String akName, Int Rank)
+	akFemale.SetFactionRank(Core.BottomModestyFaction, Rank)
 	If Rank == 0
 		Debug.Notification(akName + "'s Bottom Modesty has become Shy")
 	ElseIf Rank == 1

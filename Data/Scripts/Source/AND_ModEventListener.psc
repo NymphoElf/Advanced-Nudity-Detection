@@ -1,6 +1,9 @@
 ScriptName AND_ModEventListener extends Quest
 
 AND_Core Property Core Auto
+AND_MCM Property Config Auto
+AND_Modesty_Manager Property ModestyManager Auto
+AND_Logger Property Logger Auto
 
 Event OnInit()
 	InitializeModEvents()
@@ -19,6 +22,24 @@ Function InitializeModEvents()
 	RegisterForModEvent("AdvancedNudityDetection_GetTopless", "OnGetTopless")
 	RegisterForModEvent("AdvancedNudityDetection_GetBottomless", "OnGetBottomless")
 	RegisterForModEvent("AdvancedNudityDetection_GetNude", "OnGetNude")
+	
+	RegisterForModEvent("AdvancedNudityDetection_SetMinModesty", "OnSetMinimumModestyRank")
+	RegisterForModEvent("AdvancedNudityDetection_GetMinModesty", "OnGetMinimumModestyRank")
+	RegisterForModEvent("AdvancedNudityDetection_SetMinTopModesty", "OnSetMinimumTopModestyRank")
+	RegisterForModEvent("AdvancedNudityDetection_GetMinTopModesty", "OnGetMinimumTopModestyRank")
+	RegisterForModEvent("AdvancedNudityDetection_SetMinBottomModesty", "OnSetMinimumBottomModestyRank")
+	RegisterForModEvent("AdvancedNudityDetection_GetMinBottomModesty", "OnGetMinimumBottomModestyRank")
+	
+	RegisterForModEvent("AdvancedNudityDetection_SetHardcore", "OnSetHardcore")
+	RegisterForModEvent("AdvancedNudityDetection_GetHardcore", "OnGetHardcore")
+	RegisterForModEvent("AdvancedNudityDetection_SetCorruption", "OnSetCorruption")
+	RegisterForModEvent("AdvancedNudityDetection_GetCorruption", "OnGetCorruption")
+	RegisterForModEvent("AdvancedNudityDetection_SetPermShameless", "OnSetPermShameless")
+	RegisterForModEvent("AdvancedNudityDetection_GetPermShameless", "OnGetPermShameless")
+	RegisterForModEvent("AdvancedNudityDetection_SetModestyUpgradeBlocked", "OnSetModestyUpgradeBlocked")
+	RegisterForModEvent("AdvancedNudityDetection_GetModestyUpgradeBlocked", "OnGetModestyUpgradeBlocked")
+	RegisterForModEvent("AdvancedNudityDetection_SetImmodestyTime", "OnSetImmodestyTime")
+	RegisterForModEvent("AdvancedNudityDetection_GetImmodestyTime", "OnGetImmodestyTime")
 EndFunction
 
 ;/
@@ -124,5 +145,117 @@ Event OnGetNude(Actor actorRef)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsNude")
 	ModEvent.PushBool(EventHandle, IsNude)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+;/
+===========================================
+Modesty Events
+===========================================
+/;
+
+Event OnSetMinimumModestyRank(Int ModestyRank)
+	If ModestyRank < 0
+		ModestyRank = 0
+	ElseIf ModestyRank > 6
+		ModestyRank = 6
+	EndIf
+	
+	Config.MinimumModestyRank = ModestyRank
+EndEvent
+
+Event OnGetMinimumModestyRank()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnMinimumModestyRank")
+	ModEvent.PushInt(EventHandle, Config.MinimumModestyRank)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetMinimumTopModestyRank(Int Rank)
+	If Rank > 3
+		Rank = 3
+	ElseIf Rank < 0
+		Rank = 0
+	EndIf
+	
+	Config.MinimumTopModestyRank = Rank
+EndEvent
+
+Event OnGetMinimumTopModestyRank()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnMinimumTopModestyRank")
+	ModEvent.PushInt(EventHandle, Config.MinimumTopModestyRank)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetMinimumBottomModestyRank(Int Rank)
+	If Rank > 3
+		Rank = 3
+	ElseIf Rank < 0
+		Rank = 0
+	EndIf
+	
+	Config.MinimumBottomModestyRank = Rank
+EndEvent
+
+Event OnGetMinimumBottomModestyRank()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnMinimumTopModestyRank")
+	ModEvent.PushInt(EventHandle, Config.MinimumBottomModestyRank)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetHardcore(Bool EnableHardcore)
+	Config.UseHardcoreModesty = EnableHardcore
+	Config.HardcoreLockdown = EnableHardcore
+EndEvent
+
+Event OnGetHardcore()
+	Bool IsHardcore = Config.HardcoreLockdown
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnHardcore")
+	ModEvent.PushBool(EventHandle, IsHardcore)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetCorruption(Bool Corruption)
+	Config.ModestyCorruption = Corruption
+EndEvent
+
+Event OnGetCorruption()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnCorruption")
+	ModEvent.PushBool(EventHandle, Config.ModestyCorruption)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetPermShameless(Bool PermShameless)
+	Config.PermanentShameless = PermShameless
+EndEvent
+
+Event OnGetPermShameless()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnPermShameless")
+	ModEvent.PushBool(EventHandle, Config.PermanentShameless)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetModestyUpgradeBlocked(Bool BlockUpgrade)
+	ModestyManager.UpgradeBlocked = BlockUpgrade
+EndEvent
+
+Event OnGetModestyUpgradeBlocked()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnUpgradeBlocked")
+	ModEvent.PushBool(EventHandle, ModestyManager.UpgradeBlocked)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetImmodestyTime(Int ImmodestyTime)
+	If ImmodestyTime < 1
+		ImmodestyTime = 0
+	ElseIf ImmodestyTime > 120
+		ImmodestyTime = 120
+	EndIf
+	
+	Config.ImmodestyTimeNeeded = ImmodestyTime
+EndEvent
+
+Event OnGetImmodestyTime()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnImmodestyTime")
+	ModEvent.PushInt(EventHandle, Config.ImmodestyTimeNeeded)
 	ModEvent.Send(EventHandle)
 EndEvent

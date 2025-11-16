@@ -1,9 +1,9 @@
 ScriptName AND_Core extends Quest
 
-AND_MCM Property AND_Config Auto
-AND_MaleArmorScan Property AND_MaleScan Auto
-AND_FemaleArmorScan Property AND_FemaleScan Auto
-AND_PlayerScript Property AND_Player Auto
+AND_MCM Property Config Auto
+AND_MaleArmorScan Property MaleScan Auto
+AND_FemaleArmorScan Property FemaleScan Auto
+AND_PlayerScript Property PlayerScript Auto
 AND_Modesty_Manager Property ModestyManager Auto
 AND_Logger Property Logger Auto
 
@@ -212,7 +212,7 @@ GlobalVariable Property WICommentChanceNaked Auto
 Event OnInit()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	ModCheck()
-	PlayerBase = AND_Player.PlayerRef.GetActorBase()
+	PlayerBase = PlayerScript.PlayerRef.GetActorBase()
 	Debug.Notification("A.N.D. Initialized")
 EndEvent
 
@@ -220,13 +220,13 @@ Event OnUpdate()
 	If PlayerBase.GetSex() == 0 ;Male
 		Logger.Log("<Core> [OnUpdate] Send Male Scan")
 		
-		AND_MaleScan.AND_LayerAnalyze()
-		AND_Config.SetMaleCoverage()
+		MaleScan.FullAnalyze()
+		Config.SetMaleCoverage()
 	Else
 		Logger.Log("<Core> [OnUpdate] Send Female Scan")
 		
-		AND_FemaleScan.AND_LayerAnalyze()
-		AND_Config.SetFemaleCoverage()
+		FemaleScan.FullAnalyze()
+		Config.SetFemaleCoverage()
 	EndIf
 	
 	If SLSFR_Found == True
@@ -294,20 +294,14 @@ EndFunction
 Function AND_MovementDiceRoll()
 	Logger.Log("<Core> [AND_MovementDiceRoll]")
 	
-	Int MaxRoll = 0
-	Int RunMod = AND_Config.RunningModifier
-	Int SprintMod = AND_Config.SprintingModifier
+	Int MaxRoll = 100
+	Int RunMod = Config.RunningModifier
+	Int SprintMod = Config.SprintingModifier
 	
-	If AND_Config.AllowMotionFlash == True
-		If AND_Player.PlayerRef.IsSprinting()
-			MaxRoll = (100 - SprintMod)
-		ElseIf AND_Player.PlayerRef.IsRunning()
-			MaxRoll = (100 - RunMod)
-		Else
-			MaxRoll = 100
-		EndIf
-	Else
-		MaxRoll = 100
+	If PlayerScript.PlayerRef.IsSprinting()
+		MaxRoll = (100 - SprintMod)
+	ElseIf PlayerScript.PlayerRef.IsRunning()
+		MaxRoll = (100 - RunMod)
 	EndIf
 	
 	;Player Flash Odds
@@ -317,12 +311,12 @@ Function AND_MovementDiceRoll()
 	
 	If PlayerBase.GetSex() == 0 ;Male
 		Logger.Log("<Core> [Movement Dice Roll] Send Male Scan")
-		AND_MaleScan.AND_LayerAnalyze()
-		AND_Config.SetMaleCoverage()
+		MaleScan.FullAnalyze()
+		Config.SetMaleCoverage()
 	Else
 		Logger.Log("<Core> [Movement Dice Roll] Send Female Scan")
-		AND_FemaleScan.AND_LayerAnalyze()
-		AND_Config.SetFemaleCoverage()
+		FemaleScan.FullAnalyze()
+		Config.SetFemaleCoverage()
 	EndIf
 EndFunction
 
@@ -332,13 +326,13 @@ Function AND_DiceRoll()
 		Logger.Log("<Core> [AND_DiceRoll]")
 		
 		Int MaxRoll = 0
-		Int RunMod = AND_Config.RunningModifier
-		Int SprintMod = AND_Config.SprintingModifier
+		Int RunMod = Config.RunningModifier
+		Int SprintMod = Config.SprintingModifier
 		
-		If AND_Config.AllowMotionFlash == True
-			If AND_Player.PlayerRef.IsSprinting()
+		If Config.AllowMotionFlash == True
+			If PlayerScript.PlayerRef.IsSprinting()
 				MaxRoll = (100 - SprintMod)
-			ElseIf AND_Player.PlayerRef.IsRunning()
+			ElseIf PlayerScript.PlayerRef.IsRunning()
 				MaxRoll = (100 - RunMod)
 			Else
 				MaxRoll = 100
@@ -373,16 +367,16 @@ Function AND_DiceRoll()
 		
 		If PlayerBase.GetSex() == 0 ;Male
 			Logger.Log("<Core> [Dice Roll] Send Male Scan")
-			AND_MaleScan.AND_LayerAnalyze()
-			AND_Config.SetMaleCoverage()
+			MaleScan.FullAnalyze()
+			Config.SetMaleCoverage()
 		Else
 			Logger.Log("<Core> [Dice Roll] Send Female Scan")
-			AND_FemaleScan.AND_LayerAnalyze()
-			AND_Config.SetFemaleCoverage()
+			FemaleScan.FullAnalyze()
+			Config.SetFemaleCoverage()
 		EndIf
 		
-		If AND_Config.ScanNPC == True
-			NPCScanSpell.Cast(AND_Player.PlayerRef)
+		If Config.ScanNPC == True
+			NPCScanSpell.Cast(PlayerScript.PlayerRef)
 		EndIf
 		MainRollRunning = False
 	EndIf
@@ -408,46 +402,42 @@ Int Function NakedCommentChance(Bool IsMCMRequest)
 		CommentChance += 1 ;Increase return value by 1 for a more understandable % return in the MCM
 	EndIf
 	
-	If AND_Config.DisableNakedComments == False
-		If AND_Player.PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
-			CommentChance += AND_Config.NudeFactionCommentChance
+	If Config.DisableNakedComments == False
+		If PlayerScript.PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
+			CommentChance += Config.NudeFactionCommentChance
 		EndIf
 		
-		If AND_Player.PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
-			CommentChance += AND_Config.ToplessFactionCommentChance
+		If PlayerScript.PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
+			CommentChance += Config.ToplessFactionCommentChance
 		EndIf
 		
-		If AND_Player.PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
-			CommentChance += AND_Config.BottomlessFactionCommentChance
+		If PlayerScript.PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
+			CommentChance += Config.BottomlessFactionCommentChance
 		EndIf
 		
-		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
-			CommentChance += AND_Config.ChestFactionCommentChance
-		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
-			CommentChance += AND_Config.BraFactionCommentChance
+		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
+			CommentChance += Config.ChestFactionCommentChance
+		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
+			CommentChance += Config.BraFactionCommentChance
 		EndIf
 		
-		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
-			CommentChance += AND_Config.GenitalsFactionCommentChance
-		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
-			CommentChance += AND_Config.UnderwearFactionCommentChance
+		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
+			CommentChance += Config.GenitalsFactionCommentChance
+		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
+			CommentChance += Config.UnderwearFactionCommentChance
 			UnderwearCounted = True
 		EndIf
 		
-		If AND_Player.PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
-			CommentChance += AND_Config.AssFactionCommentChance
-		ElseIf AND_Player.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1 && UnderwearCounted == False
-			CommentChance += AND_Config.UnderwearFactionCommentChance
+		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
+			CommentChance += Config.AssFactionCommentChance
+		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1 && UnderwearCounted == False
+			CommentChance += Config.UnderwearFactionCommentChance
 		EndIf
 	EndIf
 	
 	return CommentChance
 EndFunction
-;/
-sslActorStats Function GetSexlabStats() Global
-	return Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats
-EndFunction
-/;
+
 Int Function FindSexuality(Actor target)
 	If SexlabInstalled == True
 		return SexlabStats.GetSexuality(target)
