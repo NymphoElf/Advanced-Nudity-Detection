@@ -1863,6 +1863,9 @@ Event OnPageReset(string page)
 		Page11KeyID[0] = AddKeyMapOption("$FlashChestCurtainText", FlashKey[0], 0)
 		Page11KeyID[1] = AddKeyMapOption("$FlashPelvicCurtainText", FlashKey[1], 0)
 		Page11KeyID[2] = AddKeyMapOption("$FlashAssCurtainText", FlashKey[2], 0)
+		Page11KeyID[3] = AddKeyMapOption("$FixChestCurtainText", FlashKey[3], 0)
+		Page11KeyID[4] = AddKeyMapOption("$FixPelvicCurtainText", FlashKey[4], 0)
+		Page11KeyID[5] = AddKeyMapOption("$FixAssCurtainText", FlashKey[5], 0)
 	ElseIf (page == "$DebugPage")
 		AddHeaderOption("$LoggingHeader")
 		Page12ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
@@ -1904,6 +1907,18 @@ Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, Stri
 	ElseIf Option == Page11KeyID[2]
 		FlashKey[2] = KeyCode
 		Keybinds.UpdateRegister(2)
+		SetKeymapOptionValue(Option, KeyCode)
+	ElseIf Option == Page11KeyID[3]
+		FlashKey[3] = KeyCode
+		Keybinds.UpdateRegister(3)
+		SetKeymapOptionValue(Option, KeyCode)
+	ElseIf Option == Page11KeyID[4]
+		FlashKey[4] = KeyCode
+		Keybinds.UpdateRegister(4)
+		SetKeymapOptionValue(Option, KeyCode)
+	ElseIf Option == Page11KeyID[5]
+		FlashKey[5] = KeyCode
+		Keybinds.UpdateRegister(5)
 		SetKeymapOptionValue(Option, KeyCode)
 	EndIf
 EndEvent
@@ -2003,6 +2018,12 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$FlashPelvicCurtainInfoText")
 	ElseIf Option == Page11KeyID[2]
 		SetInfoText("$FlashAssCurtainInfoText")
+	ElseIf Option == Page11KeyID[3]
+		SetInfoText("$FixChestCurtainInfoText")
+	ElseIf Option == Page11KeyID[4]
+		SetInfoText("$FixPelvicCurtainInfoText")
+	ElseIf Option == Page11KeyID[5]
+		SetInfoText("$FixAssCurtainInfoText")
 		;=========================
 		;END PAGE 11
 		;=========================

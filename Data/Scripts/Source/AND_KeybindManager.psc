@@ -12,6 +12,9 @@ Bool Property CanFlash Auto Hidden
 Int Property FlashChestCurtainKey = 0 AutoReadOnly ;FlashKey[0]
 Int Property FlashPelvicCurtainKey = 1 AutoReadOnly ;FlashKey[1]
 Int Property FlashAssCurtainKey = 2 AutoReadOnly ;FlashKey[2]
+Int Property FixChestCurtainKey = 3 AutoReadOnly ;FlashKey[3]
+Int Property FixPelvicCurtainKey = 4 AutoReadOnly ;FlashKey[4]
+Int Property FixAssCurtainKey = 5 AutoReadOnly ;FlashKey[5]
 
 Int[] Property RegisteredKeys Auto
 
@@ -47,6 +50,9 @@ Function Startup()
 	RegisterForKey(RegisteredKeys[0])
 	RegisterForKey(RegisteredKeys[1])
 	RegisterForKey(RegisteredKeys[2])
+	RegisterForKey(RegisteredKeys[3])
+	RegisterForKey(RegisteredKeys[4])
+	RegisterForKey(RegisteredKeys[5])
 EndFunction
 
 Event OnMenuOpen(String MenuName)
@@ -93,9 +99,37 @@ Event OnKeyDown(Int KeyCode)
 			Else
 				Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
 			EndIf
+		ElseIf Index == FixChestCurtainKey
+			If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT_Male) == True
+				Core.TopCurtainRoll = 101
+				Logger.Log("<Keybind Manager> [OnKeyDown] Fix Chest Curtain")
+			Else
+				Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Chest Curtain")
+			EndIf
+		ElseIf Index == FixPelvicCurtainKey
+			If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT_Male) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
+				Core.PelvicCurtainRoll = 101
+				Logger.Log("<Keybind Manager> [OnKeyDown] Fix Pelvic Curtain")
+			Else
+				Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Pelvic Curtain")
+			EndIf
+		ElseIf Index == FixAssCurtainKey
+			If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtainT) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtain_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtainT_Male) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
+			|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
+				Core.AssCurtainRoll = 101
+				Logger.Log("<Keybind Manager> [OnKeyDown] Fix Ass Curtain")
+			Else
+				Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
+			EndIf
 		Else
 			Logger.Log("<Keybind Manager> [OnKeyDown] CRITICAL ERROR!!! Registered Key was pressed but somehow not found in the RegisteredKeys Array!!! Something is broken!!!", True)
-			Debug.MessageBox("ADVANCED NUDITY DETECTION CRITICAL ERROR!!! Registered Flash Key was pressed but somehow not found in the RegisteredKeys Array!!! Something is broken!!!")
+			Debug.MessageBox("ADVANCED NUDITY DETECTION CRITICAL ERROR!!! Registered Flash/Fix Key was pressed but somehow not found in the RegisteredKeys Array!!! Something is broken!!!")
 			return
 		EndIf
 		
