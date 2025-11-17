@@ -1357,5 +1357,11 @@ Function FinalAnalyze(Actor ScannedActor, String ActorName)
 		ScannedActor.SetFactionRank(Core.AND_NudeActorFaction, 0)
 	EndIf
 
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionNPCUpdate")
+	if EventHandle
+		ModEvent.PushForm(EventHandle, ScannedActor)
+		ModEvent.Send(EventHandle)
+	endif
+
 	Logger.Log("<Female NPC Armor Scan> [Layer Analyze] Female Armor Scan Finished for " + ScannedActor + " " + ActorName)
 EndFunction
