@@ -64,7 +64,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 				
 				Int ShyMode = 0
 				
-				If akTarget == Core.Rosa && Config.ShamelessRosa == True
+				If akTarget == Core.Rosa
 					Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " is Shameless")
 					akTarget.SetFactionRank(Core.ModestyFaction, 6)
 					akTarget.SetFactionRank(Core.TopModestyFaction, 3)
@@ -86,7 +86,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 				Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " exists!")
 				If akTarget.GetFactionRank(FollowerFaction) >= 0 && Config.DynamicFollowers == True
 					Logger.Log("<NPC Scan> Female " + akTarget + " " + TargetName + " is a follower and Dynamic Followers is True!")
-					NPCModesty.ProcessNPCModesty(akTarget, Config.StrictModestyRules)
+					NPCModesty.ProcessNPCModesty(akTarget)
 				EndIf
 			EndIf
 		Else

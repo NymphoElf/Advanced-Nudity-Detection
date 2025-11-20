@@ -15,9 +15,15 @@ AND_KeybindManager Property Keybinds Auto
 Actor Property PlayerRef Auto
 Actor Property SelectedFemaleActor Auto Hidden
 
-Float Property StrictRank = 0.0 Auto Hidden
-Float Property TopRank = 0.0 Auto Hidden
-Float Property BottomRank = 0.0 Auto Hidden
+Float Property ThisNPCStrictRank = 0.0 Auto Hidden
+Float Property ThisNPCMinimumStrictRank = 0.0 Auto Hidden
+Float Property ThisNPCTopRank = 0.0 Auto Hidden
+Float Property ThisNPCMinimumTopRank = 0.0 Auto Hidden
+Float Property ThisNPCBottomRank = 0.0 Auto Hidden
+Float Property ThisNPCMinimumBottomRank = 0.0 Auto Hidden
+
+Bool Property ThisNPCPermanentShameless = False Auto Hidden
+Bool Property ThisNPCCorrupt = False Auto Hidden
 
 Int Property TopCurtainOddsLow = 20 Auto Hidden
 Int Property TopCurtainOdds = 35 Auto Hidden
@@ -183,7 +189,6 @@ Bool Property UseHardcoreModesty = False Auto Hidden
 Bool Property HardcoreLockdown = False Auto Hidden
 Bool Property StrictModestyRules = False Auto Hidden
 Bool Property DynamicFollowers = False Auto Hidden
-Bool Property ShamelessRosa = True Auto Hidden
 Bool Property ResetNPCs = False Auto Hidden
 Bool Property DeleteNPCs = False Auto Hidden
 Bool Property ModestyMonologue = True Auto Hidden
@@ -196,6 +201,10 @@ Bool Property ScanNPC = True Auto Hidden
 
 Bool Property ApplyTweak = False Auto Hidden
 Bool Property ApplyAsDefault = False Auto Hidden
+
+Bool Property StrictNPC = False Auto Hidden
+Bool Property NPCUpgradeBlocked = False Auto Hidden
+Bool Property NPCPermanentShameless = False Auto Hidden
 
 Bool Property Logging = False Auto Hidden ;Default TRUE in Beta Builds | Default FALSE in non-Beta Builds
 Bool Property AddToMainLog = False Auto Hidden 
@@ -215,8 +224,6 @@ Int Property UnderwearFactionCommentChance = 5 Auto Hidden
 Int Property MinimumModestyRank = 0 Auto Hidden
 Int Property MinimumTopModestyRank = 0 Auto Hidden
 Int Property MinimumBottomModestyRank = 0 Auto Hidden
-Int Property MinimumFollowerRank = 0 Auto Hidden
-Int Property MinimumRosaRank = 0 Auto Hidden
 Int Property ImmodestyTimeNeeded = 14 Auto Hidden
 Int Property PlayerConfidenceValue = 2 Auto Hidden
 
@@ -1699,19 +1706,19 @@ Event OnPageReset(string page)
 			AddSliderOptionST("AND_ModestyArousalThresholdState", "$ArousalCutoff", ModestyArousalThreshold.GetValue(), "{0}", DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			If StrictModestyRules == True
-				Page9ToggleID[5] = AddToggleOption("$JumpRank1", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[6] = AddToggleOption("$JumpRank2", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[7] = AddToggleOption("$JumpRank3", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[8] = AddToggleOption("$JumpRank4", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[9] = AddToggleOption("$JumpRank5", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[10] = AddToggleOption("$JumpRank6", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[5] = AddToggleOption("$JumpRank1", Rank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[6] = AddToggleOption("$JumpRank2", Rank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[7] = AddToggleOption("$JumpRank3", Rank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[8] = AddToggleOption("$JumpRank4", Rank4Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[9] = AddToggleOption("$JumpRank5", Rank5Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[10] = AddToggleOption("$JumpRank6", Rank6Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
 			Else
-				Page9ToggleID[11] = AddToggleOption("$JumpTopRank1", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[12] = AddToggleOption("$JumpTopRank2", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[13] = AddToggleOption("$JumpTopRank3", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[14] = AddToggleOption("$JumpBottomRank1", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[15] = AddToggleOption("$JumpBottomRank2", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
-				Page9ToggleID[16] = AddToggleOption("$JumpBottomRank3", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
+				Page9ToggleID[11] = AddToggleOption("$JumpTopRank1", TopRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[12] = AddToggleOption("$JumpTopRank2", TopRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[13] = AddToggleOption("$JumpTopRank3", TopRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[14] = AddToggleOption("$JumpBottomRank1", BottomRank1Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[15] = AddToggleOption("$JumpBottomRank2", BottomRank2Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
+				Page9ToggleID[16] = AddToggleOption("$JumpBottomRank3", BottomRank3Jump, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True || ModestyManager.UpgradeBlocked == True))
 			EndIf
 			Page9ToggleID[17] = AddToggleOption("$ResetModestyText", ResetModesty, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			Page9ToggleID[18] = AddToggleOption("$RandomizePlayerText", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
@@ -1744,8 +1751,8 @@ Event OnPageReset(string page)
 				EndIf
 			Else
 				AddHeaderOption("$TopModestyHeader")
-				AddTextOption("$TopModestyRank:", TopModestyRank as String)
-				AddTextOption("$TopModestyTitle:", ModestyManager.TopModestyTitle[TopModestyRank])
+				AddTextOption("$TopModestyRank", TopModestyRank as String)
+				AddTextOption("$TopModestyTitle", ModestyManager.TopModestyTitle[TopModestyRank])
 				AddHeaderOption("$TopModestyTimer")
 				If TopModestyRank <= 0
 					AddTextOption("$Shy", ModestyManager.TopModestyTimer[0])
@@ -1795,14 +1802,8 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$AllFollowerHeader")
 			Page10ToggleID[4] = AddToggleOption("$FollowersAreDynamic", DynamicFollowers, 0)
-			Page10ToggleID[5] = AddToggleOption("$FollowerCorruption", NPCModestyCorruption, DisabledIf(DynamicFollowers == False))
-			AddSliderOptionST("AND_MinimumFollowerRank_State", "$MinFollowerRank", MinimumFollowerRank, "{0}", DisabledIf(DynamicFollowers == False))
-			
-			If Main.RosaExists == True
-				AddHeaderOption("$RosaHeader")
-				Page10ToggleID[6] = AddToggleOption("$RosaShameless", ShamelessRosa, DisabledIf(Main.RosaExists == False || ResetNPCs == True || DeleteNPCs == True))
-				AddSliderOptionST("AND_MinimumRosaRank_State", "$RosaMinRank", MinimumRosaRank, "{0}", DisabledIf(Main.RosaExists == False || DynamicFollowers == False || ShamelessRosa == True))
-			EndIf
+			Page10ToggleID[5] = AddToggleOption("$NPCPermanentShamelessText", NPCPermanentShameless, DisabledIf(DynamicFollowers == False))
+			Page10ToggleID[6] = AddToggleOption("$FollowerCorruption", NPCModestyCorruption, DisabledIf(DynamicFollowers == False))
 			
 			SetCursorPosition(1)
 			
@@ -1828,41 +1829,66 @@ Event OnPageReset(string page)
 			
 			If SelectedFemale != "---" && SelectedFemale != ""
 				Logger.Log("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
-				StrictRank = SelectedFemaleActor.GetFactionRank(Main.ModestyFaction) as Float
-				TopRank = SelectedFemaleActor.GetFactionRank(Main.TopModestyFaction) as Float
-				BottomRank = SelectedFemaleActor.GetFactionRank(Main.BottomModestyFaction) as Float
 				Int FemaleID = NPCModesty.FemaleActor.Find(SelectedFemaleActor)
 				Int Index = NPCModesty.ShynessMode[FemaleID]
+				
+				ThisNPCStrictRank = SelectedFemaleActor.GetFactionRank(Main.ModestyFaction) as Float
+				ThisNPCMinimumStrictRank = NPCModesty.MinimumRankStrict[FemaleID] as Float
+				ThisNPCTopRank = SelectedFemaleActor.GetFactionRank(Main.TopModestyFaction) as Float
+				ThisNPCMinimumTopRank = NPCModesty.MinimumRankTop[FemaleID] as Float
+				ThisNPCBottomRank = SelectedFemaleActor.GetFactionRank(Main.BottomModestyFaction) as Float
+				ThisNPCMinimumBottomRank = NPCModesty.MinimumRankBottom[FemaleID] as Float
+				
+				ThisNPCPermanentShameless = NPCModesty.AllowPermanentShameless[FemaleID] as Bool
+				ThisNPCCorrupt = NPCModesty.FemaleCorruption[FemaleID] as Bool
+				
 				NPCShyTweak = Sexes[Index]
 			Else
-				StrictRank = 0 as Float
-				TopRank = 0 as Float
-				BottomRank = 0 as Float
+				ThisNPCStrictRank = 0 as Float
+				ThisNPCTopRank = 0 as Float
+				ThisNPCBottomRank = 0 as Float
+				ThisNPCMinimumStrictRank = 0 as Float
+				ThisNPCMinimumTopRank = 0 as Float
+				ThisNPCMinimumBottomRank = 0 as Float
+				
+				ThisNPCPermanentShameless = False
+				ThisNPCCorrupt = False
+				
 				NPCShyTweak = Sexes[0]
 				ApplyTweak = False
 				ApplyAsDefault = False
 			EndIf
-			Page10SliderID[1] = AddSliderOption("$NPCStrictRank", StrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
-			Page10SliderID[2] = AddSliderOption("$NPCTopRank", TopRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
-			Page10SliderID[3] = AddSliderOption("$NPCBottomRank", BottomRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[1] = AddSliderOption("$NPCStrictRank", ThisNPCStrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[2] = AddSliderOption("$NPCMinStrictRank", ThisNPCMinimumStrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[3] = AddSliderOption("$NPCTopRank", ThisNPCTopRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[4] = AddSliderOption("$NPCMinTopRank", ThisNPCMinimumTopRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[5] = AddSliderOption("$NPCBottomRank", ThisNPCBottomRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10SliderID[6] = AddSliderOption("$NPCMinBottomRank", ThisNPCMinimumBottomRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[13] = AddToggleOption("$ThisNPCPermanentShamelessText", ThisNPCPermanentShameless, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[14] = AddToggleOption("$NPCIsCorrupted", ThisNPCCorrupt, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
 			Page10MenuID[2] = AddMenuOption("$ShyWhenSeen", NPCShyTweak, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
-			Page10ToggleID[13] = AddToggleOption("$ApplyRankTweak", ApplyTweak, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
-			Page10ToggleID[14] = AddToggleOption("$ApplyRankTweakAsDefault", ApplyAsDefault, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
-			Page10ToggleID[15] = AddToggleOption("$ApplyRankTweakConfirm", ConfirmSelection, DisabledIf(ApplyTweak == False))
+			Page10ToggleID[15] = AddToggleOption("$ApplyRankTweak", ApplyTweak, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[16] = AddToggleOption("$ApplyRankTweakAsDefault", ApplyAsDefault, DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
+			Page10ToggleID[17] = AddToggleOption("$ApplyRankTweakConfirm", ConfirmSelection, DisabledIf(ApplyTweak == False))
 			
 			AddHeaderOption("$PersistentFemaleHeader")
 			Page10MenuID[3] = AddMenuOption("$SelectedFemaleText", SelectedPermFemale, 0)
 			
 			If DeletePermFemale == False
-				Page10ToggleID[16] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
+				Page10ToggleID[18] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
 			Else
-				Page10ToggleID[17] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, 0)
+				Page10ToggleID[19] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, 0)
 			EndIf
 		EndIf
 	ElseIf (page == "$FlashKeys")
+		AddHeaderOption("$FlashKeysHeader")
 		Page11KeyID[0] = AddKeyMapOption("$FlashChestCurtainText", FlashKey[0], 0)
 		Page11KeyID[1] = AddKeyMapOption("$FlashPelvicCurtainText", FlashKey[1], 0)
 		Page11KeyID[2] = AddKeyMapOption("$FlashAssCurtainText", FlashKey[2], 0)
+		
+		SetCursorPosition(1)
+		
+		AddHeaderOption("$FixKeysHeader")
 		Page11KeyID[3] = AddKeyMapOption("$FixChestCurtainText", FlashKey[3], 0)
 		Page11KeyID[4] = AddKeyMapOption("$FixPelvicCurtainText", FlashKey[4], 0)
 		Page11KeyID[5] = AddKeyMapOption("$FixAssCurtainText", FlashKey[5], 0)
@@ -1982,10 +2008,10 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$DeleteAllNPCInfoText")
 	ElseIf Option == Page10ToggleID[4] ;Dynamic Followers
 		SetInfoText("$DynamicFollowerInfoText")
-	ElseIf Option == Page10ToggleID[5] ;NPC Corruption
+	ElseIf Option == Page10ToggleID[5] ;NPC Permanent Shameless
+		SetInfoText("$NPCPermanentShamelessInfoText")
+	ElseIf Option == Page10ToggleID[6] ;NPC Corruption
 		SetInfoText("$NPCCorruptionInfoText")
-	ElseIf Option == Page10ToggleID[6] ;ShamelessRosa
-		SetInfoText("$ShamelessRosaInfoText")
 	ElseIf Option == Page10ToggleID[7] ;Permanent Female
 		SetInfoText("$PermanentFemaleInfoText")
 	ElseIf Option == Page10ToggleID[8] ;Permanent Female Confirm
@@ -1998,15 +2024,19 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ResetFemaleInfoText")
 	ElseIf Option == Page10ToggleID[12] ;Reset Female Confirm
 		SetInfoText("$ResetFemaleInfoText")
-	ElseIf Option == Page10ToggleID[13] ;Apply Ranks
+	ElseIf Option == Page10ToggleID[13] ;Allow This NPC to gain permanent shameless
+		SetInfoText("$ThisNPCPermanentShamelessInfoText")
+	ElseIf Option == Page10ToggleID[14] ;This NPC is Corrupted
+		SetInfoText("$ThisNPCCorruptInfoText")
+	ElseIf Option == Page10ToggleID[15] ;Apply Ranks
 		SetInfoText("$ApplyRanksInfoText")
-	ElseIf Option == Page10ToggleID[14] ;Apply Ranks as Default
+	ElseIf Option == Page10ToggleID[16] ;Apply Ranks as Default
 		SetInfoText("$ApplyAsDefaultInfoText")
-	ElseIf Option == Page10ToggleID[15] ;Apply Ranks Confirm
+	ElseIf Option == Page10ToggleID[17] ;Apply Ranks Confirm
 		SetInfoText("$ApplyRanksConfirmInfoText")
-	ElseIf Option == Page10ToggleID[16] ;Delete Perm Female
+	ElseIf Option == Page10ToggleID[18] ;Delete Perm Female
 		SetInfoText("$DeletePermFemaleInfoText")
-	ElseIf Option == Page10ToggleID[17] ;Delete Perm Female Confirm
+	ElseIf Option == Page10ToggleID[19] ;Delete Perm Female Confirm
 		SetInfoText("$DeletePermFemaleInfoText")
 		
 		;=========================
@@ -2049,11 +2079,16 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$NPCArousalCutoffInfoText")
 	ElseIf Option == Page10SliderID[1] ;Tweak Strict Rank
 		SetInfoText("$TweakStrictRankInfoText")
-	ElseIf Option == Page10SliderID[2] ;Tweak Top Rank
+	ElseIf Option == Page10SliderID[2] ;Tweak Minimum Strict Rank
+		SetInfoText("$TweakMinStrictRankInfoText")
+	ElseIf Option == Page10SliderID[3] ;Tweak Top Rank
 		SetInfoText("$TweakTopRankInfoText")
-	ElseIf Option == Page10SliderID[3] ;Tweak Bottom Rank
+	ElseIf Option == Page10SliderID[4] ;Tweak Minimum Top Rank
+		SetInfoText("$TweakMinTopRankInfoText")
+	ElseIf Option == Page10SliderID[5] ;Tweak Bottom Rank
 		SetInfoText("$TweakBottomRankInfoText")
-		
+	ElseIf Option == Page10SliderID[6] ;Tweak Minimum Bottom Rank
+		SetInfoText("$TweakMinBottomRankInfoText")
 		;=========================
 		;END PAGE 10
 		;=========================
@@ -2108,19 +2143,37 @@ Event OnOptionSliderOpen(Int Option)
 		Interval = 1
 		DefaultValue = 70
 	ElseIf Option == Page10SliderID[1]
-		StartValue = StrictRank
+		StartValue = ThisNPCStrictRank
 		RangeMin = 0
 		RangeMax = 6
 		Interval = 1
 		DefaultValue = 0
 	ElseIf Option == Page10SliderID[2]
-		StartValue = TopRank
+		StartValue = ThisNPCMinimumStrictRank
+		RangeMin = 0
+		RangeMax = 6
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[3]
+		StartValue = ThisNPCTopRank
 		RangeMin = 0
 		RangeMax = 3
 		Interval = 1
 		DefaultValue = 0
-	ElseIf Option == Page10SliderID[3]
-		StartValue = BottomRank
+	ElseIf Option == Page10SliderID[4]
+		StartValue = ThisNPCMinimumTopRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[5]
+		StartValue = ThisNPCBottomRank
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 0
+	ElseIf Option == Page10SliderID[6]
+		StartValue = ThisNPCMinimumBottomRank
 		RangeMin = 0
 		RangeMax = 3
 		Interval = 1
@@ -2141,11 +2194,17 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	ElseIf Option == Page10SliderID[0]
 		NPCModestyArousalThreshold.SetValue(Value)
 	ElseIf Option == Page10SliderID[1]
-		StrictRank = Value as Int
+		ThisNPCStrictRank = Value as Int
 	ElseIf Option == Page10SliderID[2]
-		TopRank = Value as Int
-	ElseIf Option == Page10SliderID[2]
-		BottomRank = Value as Int
+		ThisNPCMinimumStrictRank = Value as Int
+	ElseIf Option == Page10SliderID[3]
+		ThisNPCTopRank = Value as Int
+	ElseIf Option == Page10SliderID[4]
+		ThisNPCMinimumTopRank = Value as Int
+	ElseIf Option == Page10SliderID[5]
+		ThisNPCBottomRank = Value as Int
+	ElseIf Option == Page10SliderID[6]
+		ThisNPCMinimumBottomRank = Value as Int
 	EndIf
 	ForcePageReset()
 EndEvent
@@ -2504,14 +2563,7 @@ Event OnOptionSelect(Int Option)
 			NPCModestyCorruption = False
 		EndIf
 		SetToggleOptionValue(Option, NPCModestyCorruption)
-	ElseIf Option == Page10ToggleID[6]
-		If ShamelessRosa == False
-			ShamelessRosa = True
-		Else
-			ShamelessRosa = False
-		EndIf
-		SetToggleOptionValue(Option, ShamelessRosa)
-		ForcePageReset()
+	
 	ElseIf Option == Page10ToggleID[7]
 		If MakeFemalePermanent == False
 			MakeFemalePermanent = True
@@ -2564,6 +2616,18 @@ Event OnOptionSelect(Int Option)
 		ResetFemaleModesty = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[13]
+		If ThisNPCPermanentShameless == False
+			ThisNPCPermanentShameless = True
+		Else
+			ThisNPCPermanentShameless = False
+		EndIf
+	ElseIf Option == Page10ToggleID[14]
+		If ThisNPCCorrupt == False
+			ThisNPCCorrupt = True
+		Else
+			ThisNPCCorrupt = False
+		EndIf
+	ElseIf Option == Page10ToggleID[15]
 		If ApplyTweak == False
 			ApplyTweak = True
 		Else
@@ -2571,27 +2635,27 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		SetToggleOptionValue(Option, ApplyTweak)
 		ForcePageReset()
-	ElseIf Option == Page10ToggleID[14]
+	ElseIf Option == Page10ToggleID[16]
 		If ApplyAsDefault == False
 			ApplyAsDefault = True
 		Else
 			ApplyAsDefault = False
 		EndIf
 		SetToggleOptionValue(Option, ApplyAsDefault)
-	ElseIf Option == Page10ToggleID[15] ;Confirm Tweak
-		NPCModesty.TweakFemale(SelectedFemaleActor, DisplayIndex, StrictRank as Int, TopRank as Int, BottomRank as Int, ApplyAsDefault)
+	ElseIf Option == Page10ToggleID[17] ;Confirm Tweak
+		NPCModesty.TweakFemale(SelectedFemaleActor, DisplayIndex, ThisNPCStrictRank as Int, ThisNPCTopRank as Int, ThisNPCBottomRank as Int, ThisNPCMinimumStrictRank as Int, ThisNPCMinimumTopRank as Int, ThisNPCMinimumBottomRank as Int, ThisNPCPermanentShameless, ThisNPCCorrupt, ApplyAsDefault, StrictNPC, NPCUpgradeBlocked)
 		NPCModesty.UpdateShyness(SelectedFemaleActor)
 		ApplyTweak = False
 		ApplyAsDefault = False
 		ForcePageReset()
-	ElseIf Option == Page10ToggleID[16]
+	ElseIf Option == Page10ToggleID[18]
 		If DeletePermFemale == False
 			DeletePermFemale = True
 		Else
 			DeletePermFemale = False
 		EndIf
 		SetToggleOptionValue(Option, DeletePermFemale)
-	ElseIf Option == Page10ToggleID[17] ;Confirm Permanent Removal
+	ElseIf Option == Page10ToggleID[19] ;Confirm Permanent Removal
 		Actor permFemaleActor = GetFormValue(NPCModesty.PermJsonName, PermIndex) as Actor
 		NPCModesty.RemovePermFemale(permFemaleActor, PermIndex)
 		DeletePermFemale = False
@@ -2621,46 +2685,6 @@ Event OnOptionSelect(Int Option)
 		NPCModesty.DumpNPCData()
 	EndIf
 EndEvent
-
-State AND_MinimumFollowerRank_State
-	Event OnSliderOpenST()
-		SetSliderDialogStartValue(MinimumFollowerRank)
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(0,6)
-		SetSliderDialogInterval(1)
-	EndEvent
-	
-	Event OnSliderAcceptST(float value)
-		MinimumFollowerRank = value as Int
-		SetSliderOptionValueST(MinimumFollowerRank, "{0}", False, "AND_MinimumFollowerRank_State")
-		If MinimumFollowerRank > MinimumRosaRank
-			MinimumRosaRank = MinimumFollowerRank
-			SetSliderOptionValueST(MinimumRosaRank, "{0}", False, "AND_MinimumRosaRank_State")
-		EndIf
-	EndEvent
-	
-	Event OnHighlightST()
-		SetInfoText("$MinimumFollowerRankInfoText")
-	EndEvent
-EndState
-
-State AND_MinimumRosaRank_State
-	Event OnSliderOpenST()
-		SetSliderDialogStartValue(MinimumRosaRank)
-		SetSliderDialogDefaultValue(MinimumFollowerRank)
-		SetSliderDialogRange(MinimumFollowerRank,6)
-		SetSliderDialogInterval(1)
-	EndEvent
-	
-	Event OnSliderAcceptST(float value)
-		MinimumRosaRank = value as Int
-		SetSliderOptionValueST(MinimumRosaRank, "{0}", False, "AND_MinimumRosaRank_State")
-	EndEvent
-	
-	Event OnHighlightST()
-		SetInfoText("$MinimumRosaRankInfoText")
-	EndEvent
-EndState
 
 State AND_PlayerConfidence_State
 	Event OnMenuOpenST()

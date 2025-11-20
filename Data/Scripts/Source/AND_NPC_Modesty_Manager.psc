@@ -8,6 +8,11 @@ AND_MCM Property Config Auto
 AND_Logger Property Logger Auto
 
 ;=================================
+Int[] Property AllowPermanentShameless Auto Hidden ;Used in place of Bool due to CreateBoolArray bug in SKSE
+Int[] Property FemaleCorruption Auto Hidden ;Used in place of Bool due to CreateBoolArray bug in SKSE
+Int[] Property StrictNPCRules Auto Hidden ;Used in place of Bool due to CreateBoolArray bug in SKSE
+Int[] Property UpgradeBlocked Auto Hidden ;Used in place of Bool due to CreateBoolArray bug in SKSE
+
 Int[] Property ModestyTimer0 Auto Hidden
 Int[] Property ModestyTimer1 Auto Hidden
 Int[] Property ModestyTimer2 Auto Hidden
@@ -17,6 +22,7 @@ Int[] Property ModestyTimer5 Auto Hidden
 Int[] Property ModestyTimer6 Auto Hidden
 Int[] Property DefaultRankStrict Auto Hidden
 Int[] Property CurrentRankStrict Auto Hidden
+Int[] Property MinimumRankStrict Auto Hidden
 
 Int[] Property TopModestyTimer0 Auto Hidden
 Int[] Property TopModestyTimer1 Auto Hidden
@@ -24,6 +30,7 @@ Int[] Property TopModestyTimer2 Auto Hidden
 Int[] Property TopModestyTimer3 Auto Hidden
 Int[] Property DefaultRankTop Auto Hidden
 Int[] Property CurrentRankTop Auto Hidden
+Int[] Property MinimumRankTop Auto Hidden
 
 Int[] Property BottomModestyTimer0 Auto Hidden
 Int[] Property BottomModestyTimer1 Auto Hidden
@@ -31,8 +38,11 @@ Int[] Property BottomModestyTimer2 Auto Hidden
 Int[] Property BottomModestyTimer3 Auto Hidden
 Int[] Property DefaultRankBottom Auto Hidden
 Int[] Property CurrentRankBottom Auto Hidden
+Int[] Property MinimumRankBottom Auto Hidden
 
 Int[] Property ShynessMode Auto Hidden
+
+Float[] Property LastUpdateTime Auto Hidden
 
 Form[] Property FemaleActor Auto Hidden
 Form[] Property PermanentFemaleActor Auto Hidden
@@ -64,6 +74,7 @@ Function Startup()
 	ModestyTimer6 = Utility.CreateIntArray(ArraySize)
 	DefaultRankStrict = Utility.CreateIntArray(ArraySize)
 	CurrentRankStrict = Utility.CreateIntArray(ArraySize)
+	MinimumRankStrict = Utility.CreateIntArray(ArraySize)
 	
 	TopModestyTimer0 = Utility.CreateIntArray(ArraySize)
 	TopModestyTimer1 = Utility.CreateIntArray(ArraySize)
@@ -71,6 +82,7 @@ Function Startup()
 	TopModestyTimer3 = Utility.CreateIntArray(ArraySize)
 	DefaultRankTop = Utility.CreateIntArray(ArraySize)
 	CurrentRankTop = Utility.CreateIntArray(ArraySize)
+	MinimumRankTop = Utility.CreateIntArray(ArraySize)
 	
 	BottomModestyTimer0 = Utility.CreateIntArray(ArraySize)
 	BottomModestyTimer1 = Utility.CreateIntArray(ArraySize)
@@ -78,8 +90,16 @@ Function Startup()
 	BottomModestyTimer3 = Utility.CreateIntArray(ArraySize)
 	DefaultRankBottom = Utility.CreateIntArray(ArraySize)
 	CurrentRankBottom = Utility.CreateIntArray(ArraySize)
+	MinimumRankBottom = Utility.CreateIntArray(ArraySize)
 	
 	ShynessMode = Utility.CreateIntArray(ArraySize)
+	
+	AllowPermanentShameless = Utility.CreateIntArray(ArraySize)
+	FemaleCorruption = Utility.CreateIntArray(ArraySize)
+	StrictNPCRules = Utility.CreateIntArray(ArraySize)
+	UpgradeBlocked = Utility.CreateIntArray(ArraySize)
+	
+	LastUpdateTime = Utility.CreateFloatArray(ArraySize)
 	
 	FemaleName = Utility.CreateStringArray(ArraySize)
 EndFunction
@@ -125,12 +145,14 @@ Function ResizeNormalArrays()
 	ModestyTimer6 = Utility.ResizeIntArray(ModestyTimer6, ArraySize)
 	DefaultRankStrict = Utility.ResizeIntArray(DefaultRankStrict, ArraySize)
 	CurrentRankStrict = Utility.ResizeIntArray(CurrentRankStrict, ArraySize)
+	CurrentRankStrict = Utility.ResizeIntArray(CurrentRankStrict, ArraySize)
 	
 	TopModestyTimer0 = Utility.ResizeIntArray(TopModestyTimer0, ArraySize)
 	TopModestyTimer1 = Utility.ResizeIntArray(TopModestyTimer1, ArraySize)
 	TopModestyTimer2 = Utility.ResizeIntArray(TopModestyTimer2, ArraySize)
 	TopModestyTimer3 = Utility.ResizeIntArray(TopModestyTimer3, ArraySize)
 	DefaultRankTop = Utility.ResizeIntArray(DefaultRankTop, ArraySize)
+	CurrentRankTop = Utility.ResizeIntArray(CurrentRankTop, ArraySize)
 	CurrentRankTop = Utility.ResizeIntArray(CurrentRankTop, ArraySize)
 	
 	BottomModestyTimer0 = Utility.ResizeIntArray(BottomModestyTimer0, ArraySize)
@@ -139,8 +161,16 @@ Function ResizeNormalArrays()
 	BottomModestyTimer3 = Utility.ResizeIntArray(BottomModestyTimer3, ArraySize)
 	DefaultRankBottom = Utility.ResizeIntArray(DefaultRankBottom, ArraySize)
 	CurrentRankBottom = Utility.ResizeIntArray(CurrentRankBottom, ArraySize)
+	CurrentRankBottom = Utility.ResizeIntArray(CurrentRankBottom, ArraySize)
 	
 	ShynessMode = Utility.ResizeIntArray(ShynessMode, ArraySize)
+	
+	AllowPermanentShameless = Utility.ResizeIntArray(AllowPermanentShameless, ArraySize)
+	FemaleCorruption = Utility.ResizeIntArray(FemaleCorruption, ArraySize)
+	StrictNPCRules = Utility.ResizeIntArray(StrictNPCRules, ArraySize)
+	UpgradeBlocked = Utility.ResizeIntArray(UpgradeBlocked, ArraySize)
+	
+	LastUpdateTime = Utility.ResizeFloatArray(LastUpdateTime, ArraySize)
 	
 	FemaleName = Utility.ResizeStringArray(FemaleName, ArraySize)
 EndFunction
@@ -185,6 +215,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 
 	FemaleActor[TrackedFemales] = akFemale
 	FemaleName[TrackedFemales] = akName
+	LastUpdateTime[TrackedFemales] = Utility.GetCurrentGameTime()
 	
 	If PermImport == True
 		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ") from Permanent List")
@@ -210,6 +241,15 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		CurrentRankStrict[TrackedFemales] = StrictRank
 		CurrentRankTop[TrackedFemales] = TopRank
 		CurrentRankBottom[TrackedFemales] = BottomRank
+		
+		MinimumRankStrict[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " MinimumRankStrict")
+		MinimumRankTop[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " MinimumRankTop")
+		MinimumRankBottom[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " MinimumRankBottom")
+		
+		AllowPermanentShameless[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " AllowPermanentShameless")
+		FemaleCorruption[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " FemaleCorruption")
+		StrictNPCRules[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " StrictNPCRules")
+		UpgradeBlocked[TrackedFemales] = GetIntValue(PermJsonName, "Female " + PermID + " UpgradeBlocked")
 		
 		akFemale.AddToFaction(Core.ModestyFaction)
 		akFemale.AddToFaction(Core.TopModestyFaction)
@@ -265,6 +305,15 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		CurrentRankStrict[TrackedFemales] = Modesty
 		CurrentRankTop[TrackedFemales] = TopModesty
 		CurrentRankBottom[TrackedFemales] = BottomModesty
+		
+		MinimumRankStrict[TrackedFemales] = 0
+		MinimumRankTop[TrackedFemales] = 0
+		MinimumRankBottom[TrackedFemales] = 0
+		
+		AllowPermanentShameless[TrackedFemales] = Config.NPCPermanentShameless as Int
+		FemaleCorruption[TrackedFemales] = Config.NPCModestyCorruption as Int
+		StrictNPCRules[TrackedFemales] = Config.StrictNPC as Int
+		UpgradeBlocked[TrackedFemales] = 0
 		
 		akFemale.SetFactionRank(Core.ModestyFaction, Modesty)
 		akFemale.SetFactionRank(Core.TopModestyFaction, TopModesty)
@@ -333,13 +382,22 @@ Function RegisterRosa(Actor akRosa)
 	FemaleName[TrackedFemales] = RosaName
 	ShynessMode[TrackedFemales] = 0
 	
-	DefaultRankStrict[TrackedFemales] = 7
-	DefaultRankTop[TrackedFemales] = 4
-	DefaultRankBottom[TrackedFemales] = 4
+	DefaultRankStrict[TrackedFemales] = 6
+	DefaultRankTop[TrackedFemales] = 3
+	DefaultRankBottom[TrackedFemales] = 3
 	
-	CurrentRankStrict[TrackedFemales] = 7
-	CurrentRankTop[TrackedFemales] = 4
-	CurrentRankBottom[TrackedFemales] = 4
+	CurrentRankStrict[TrackedFemales] = 6
+	CurrentRankTop[TrackedFemales] = 3
+	CurrentRankBottom[TrackedFemales] = 3
+	
+	MinimumRankStrict[TrackedFemales] = 6
+	MinimumRankTop[TrackedFemales] = 3
+	MinimumRankBottom[TrackedFemales] = 3
+	
+	AllowPermanentShameless[TrackedFemales] = 0
+	FemaleCorruption[TrackedFemales] = 0
+	
+	LastUpdateTime[TrackedFemales] = Utility.GetCurrentGameTime()
 	
 	Logger.Log("<NPC Modesty Manager> [RegisterRosa] Number of Registered Females (before add): " + TrackedFemales)
 	TrackedFemales += 1
@@ -374,14 +432,22 @@ Function AddPermanent(Actor akFemale)
 	
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " DefaultRankStrict", DefaultRankStrict[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " CurrentRankStrict", CurrentRankStrict[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " MinimumRankStrict", MinimumRankStrict[FemaleID])
 	
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " DefaultRankTop", DefaultRankTop[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " CurrentRankTop", CurrentRankTop[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " MinimumRankTop", MinimumRankTop[FemaleID])
 	
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " DefaultRankBottom", DefaultRankBottom[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " CurrentRankBottom", CurrentRankBottom[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " MinimumRankBottom", MinimumRankBottom[FemaleID])
 	
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " ShynessMode", ShynessMode[FemaleID])
+	
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " AllowPermanentShameless", AllowPermanentShameless[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " FemaleCorruption", FemaleCorruption[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " StrictNPCRules", StrictNPCRules[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermanentFemales + " UpgradeBlocked", UpgradeBlocked[FemaleID])
 	
 	PermanentFemales += 1
 	
@@ -460,6 +526,17 @@ Function RemoveFemale(Actor akFemale = None, Int FemaleID = -1)
 		
 		ShynessMode[FemaleID] = ShynessMode[NextFemaleID]
 		
+		MinimumRankStrict[FemaleID] = MinimumRankStrict[NextFemaleID]
+		MinimumRankTop[FemaleID] = MinimumRankTop[NextFemaleID]
+		MinimumRankBottom[FemaleID] = MinimumRankBottom[NextFemaleID]
+		
+		AllowPermanentShameless[FemaleID] = AllowPermanentShameless[NextFemaleID]
+		FemaleCorruption[FemaleID] = FemaleCorruption[NextFemaleID]
+		StrictNPCRules[FemaleID] = StrictNPCRules[NextFemaleID]
+		UpgradeBlocked[FemaleID] = UpgradeBlocked[NextFemaleID]
+		
+		LastUpdateTime[FemaleID] = LastUpdateTime[NextFemaleID]
+		
 		FemaleID += 1
 		NextFemaleID += 1
 	EndWhile
@@ -483,24 +560,32 @@ Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
 		FemaleID = GetIntValue(PermJsonName, akFemale)
 	EndIf
 	
-	Int nextFemaleID = FemaleID + 1
-	While nextFemaleID < PermanentFemales
-		Actor nextFemaleActor = GetFormValue(PermJsonName, nextFemaleID) as Actor
+	Int NextFemaleID = FemaleID + 1
+	While NextFemaleID < PermanentFemales
+		Actor NextFemaleActor = GetFormValue(PermJsonName, NextFemaleID) as Actor
 		
-		SetFormValue(PermJsonName, FemaleID, GetFormValue(PermJsonName, nextFemaleID))
-		SetIntValue(PermJsonName, nextFemaleActor, FemaleID)
-		SetStringValue(PermJsonName, "Female " + FemaleID + " Name", GetStringValue(PermJsonName, "Female " + nextFemaleID + " Name"))
+		SetFormValue(PermJsonName, FemaleID, GetFormValue(PermJsonName, NextFemaleID))
+		SetIntValue(PermJsonName, NextFemaleActor, FemaleID)
+		SetStringValue(PermJsonName, "Female " + FemaleID + " Name", GetStringValue(PermJsonName, "Female " + NextFemaleID + " Name"))
 		
-		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankStrict", GetIntValue(PermJsonName, "Female " + nextFemaleID + " DefaultRankStrict"))
-		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankStrict", GetIntValue(PermJsonName, "Female " + nextFemaleID + " CurrentRankStrict"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankStrict", GetIntValue(PermJsonName, "Female " + NextFemaleID + " DefaultRankStrict"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankStrict", GetIntValue(PermJsonName, "Female " + NextFemaleID + " CurrentRankStrict"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankStrict", GetIntValue(PermJsonName, "Female " + NextFemaleID + " MinimumRankStrict"))
 		
-		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankTop", GetIntValue(PermJsonName, "Female " + nextFemaleID + " DefaultRankTop"))
-		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankTop", GetIntValue(PermJsonName, "Female " + nextFemaleID + " CurrentRankTop"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankTop", GetIntValue(PermJsonName, "Female " + NextFemaleID + " DefaultRankTop"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankTop", GetIntValue(PermJsonName, "Female " + NextFemaleID + " CurrentRankTop"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankTop", GetIntValue(PermJsonName, "Female " + NextFemaleID + " MinimumRankTop"))
 		
-		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankBottom", GetIntValue(PermJsonName, "Female " + nextFemaleID + " DefaultRankBottom"))
-		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankBottom", GetIntValue(PermJsonName, "Female " + nextFemaleID + " CurrentRankBottom"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankBottom", GetIntValue(PermJsonName, "Female " + NextFemaleID + " DefaultRankBottom"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankBottom", GetIntValue(PermJsonName, "Female " + NextFemaleID + " CurrentRankBottom"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankBottom", GetIntValue(PermJsonName, "Female " + NextFemaleID + " MinimumRankBottom"))
 		
-		SetIntValue(PermJsonName, "Female " + FemaleID + " ShynessMode", GetIntValue(PermJsonName, "Female " + nextFemaleID + " ShynessMode"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " AllowPermanentShameless", GetIntValue(PermJsonName, "Female " + NextFemaleID + " AllowPermanentShameless"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " FemaleCorruption", GetIntValue(PermJsonName, "Female " + NextFemaleID + " FemaleCorruption"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " StrictNPCRules", GetIntValue(PermJsonName, "Female " + NextFemaleID + " StrictNPCRules"))
+		SetIntValue(PermJsonName, "Female " + FemaleID + " UpgradeBlocked", GetIntValue(PermJsonName, "Female " + NextFemaleID + " UpgradeBlocked"))
+		
+		SetIntValue(PermJsonName, "Female " + FemaleID + " ShynessMode", GetIntValue(PermJsonName, "Female " + NextFemaleID + " ShynessMode"))
 	EndWhile
 	
 	UnsetFormValue(PermJsonName, FemaleID)
@@ -509,12 +594,20 @@ Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
 	
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankStrict")
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankStrict")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankStrict")
 	
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankTop")
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankTop")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankTop")
 	
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " DefaultRankBottom")
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " CurrentRankBottom")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " MinimumRankBottom")
+	
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " AllowPermanentShameless")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " FemaleCorruption")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " StrictNPCRules")
+	UnsetIntValue(PermJsonName, "Female " + FemaleID + " UpgradeBlocked")
 	
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " ShynessMode")
 	
@@ -530,17 +623,21 @@ Function ResetFemale(Actor akFemale = None, Int FemaleID = -1)
 	If akFemale == None && FemaleID < 0
 		Logger.Log("<NPC Modesty Manager> [ResetFemale] ERROR - Both akFemale and FemaleID are invalid!")
 		return
-	EndIf
-	
-	If akFemale != None
+	ElseIf akFemale != None && FemaleID < 0
 		FemaleID = FemaleActor.Find(akFemale)
-	ElseIf FemaleID >= 0
+	ElseIf akFemale == None && FemaleID >= 0
 		akFemale = FemaleActor[FemaleID] as Actor
 	EndIf
 	
 	CurrentRankStrict[FemaleID] = DefaultRankStrict[FemaleID]
 	CurrentRankTop[FemaleID] = DefaultRankTop[FemaleID]
 	CurrentRankBottom[FemaleID] = DefaultRankBottom[FemaleID]
+	
+	MinimumRankStrict[FemaleID] = 0
+	MinimumRankTop[FemaleID] = 0
+	MinimumRankBottom[FemaleID] = 0
+	
+	LastUpdateTime[FemaleID] = Utility.GetCurrentGameTime()
 	
 	akFemale.SetFactionRank(Core.ModestyFaction, DefaultRankStrict[FemaleID])
 	akFemale.SetFactionRank(Core.TopModestyFaction, DefaultRankTop[FemaleID])
@@ -562,12 +659,19 @@ Function UpdatePermanent(Actor akFemale, Int FemaleID)
 	SetIntValue(PermJsonName, "Female " + PermID + " DefaultRankTop", DefaultRankTop[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermID + " DefaultRankBottom", DefaultRankBottom[FemaleID])
 	
+	SetIntValue(PermJsonName, "Female " + PermID + " MinimumRankStrict", MinimumRankStrict[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermID + " MinimumRankTop", MinimumRankTop[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermID + " MinimumRankBottom", MinimumRankBottom[FemaleID])
+	
+	SetIntValue(PermJsonName, "Female " + PermID + " AllowPermanentShameless", AllowPermanentShameless[FemaleID])
+	SetIntValue(PermJsonName, "Female " + PermID + " FemaleCorruption", FemaleCorruption[FemaleID])
+	
 	SetIntValue(PermJsonName, "Female " + PermID + " ShynessMode", ShynessMode[FemaleID])
 	
 	Save(PermJsonName)
 EndFunction
 
-Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, Int BottomRank, Bool MakeDefault)
+Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, Int BottomRank, Int MinimumStrict, Int MinimumTop, Int MinimumBottom, Bool EnablePermShame, Bool EnableCorrupt, Bool MakeDefault, Bool IsStrict, Bool IsBlocked)
 	akFemale.SetFactionRank(Core.ModestyFaction, StrictRank)
 	akFemale.SetFactionRank(Core.TopModestyFaction, TopRank)
 	akFemale.SetFactionRank(Core.BottomModestyFaction, BottomRank)
@@ -594,6 +698,17 @@ Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, 
 	CurrentRankTop[FemaleID] = TopRank
 	CurrentRankBottom[FemaleID] = BottomRank
 	
+	MinimumRankStrict[FemaleID] = MinimumStrict
+	MinimumRankTop[FemaleID] = MinimumTop
+	MinimumRankBottom[FemaleID] = MinimumBottom
+	
+	AllowPermanentShameless[FemaleID] = EnablePermShame as Int
+	FemaleCorruption[FemaleID] = EnableCorrupt as Int
+	StrictNPCRules[FemaleID] = IsStrict as Int
+	UpgradeBlocked[FemaleID] = IsBlocked as Int
+	
+	LastUpdateTime[FemaleID] = Utility.GetCurrentGameTime()
+	
 	If MakeDefault == True
 		DefaultRankStrict[FemaleID] = StrictRank
 		DefaultRankTop[FemaleID] = TopRank
@@ -605,32 +720,35 @@ Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, 
 	EndIf
 EndFunction
 
-Function ProcessNPCModesty(Actor akFemale, Bool Strict)
+Function ProcessNPCModesty(Actor akFemale)
 	ActorBase femaleBase = akFemale.GetActorBase()
 	String akName = femaleBase.GetName()
 	
 	Int FemaleID = FemaleActor.Find(akFemale)
-	
-	If akFemale == Core.Rosa && Config.ShamelessRosa == True
-		akFemale.SetFactionRank(Core.ModestyFaction, 6)
-		akFemale.SetFactionRank(Core.TopModestyFaction, 3)
-		akFemale.SetFactionRank(Core.BottomModestyFaction, 3)
-		
-		CurrentRankStrict[FemaleID] = 6
-		CurrentRankTop[FemaleID] = 3
-		CurrentRankBottom[FemaleID] = 3
-		return
-	EndIf
 
 	Int UpgradeTime = (Config.ImmodestyTimeNeeded * 24)
-	Bool Corruption = Config.NPCModestyCorruption
+	Bool Corruption = (FemaleCorruption[FemaleID] as Bool)
+	Bool PermShame = (AllowPermanentShameless[FemaleID] as Bool)
+	Bool Strict = StrictNPCRules[FemaleID] as Bool
 	
-	If Strict == True
-		StrictNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption)
-	Else
-		TopNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption)
-		BottomNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption)
-	EndIf
+	Float CurrentGameTime = Utility.GetCurrentGameTime()
+	Int RequiredIterations = ((LastUpdateTime[FemaleID] - CurrentGameTime) / 0.041667) as Int
+	Float RealTimeStart = Utility.GetCurrentRealTime()
+	
+	Logger.Log("<NPC Modesty Manager> [ProcessNPCModesty] Starting " + RequiredIterations + " Iterations for " + akFemale + " " + akName)
+	
+	While RequiredIterations > 0
+		If Strict == True
+			StrictNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption, PermShame)
+		Else
+			TopNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption, PermShame)
+			BottomNPCModesty(akFemale, akName, FemaleID, UpgradeTime, Corruption, PermShame)
+		EndIf
+		RequiredIterations -= 1
+	EndWhile
+	
+	Float TimeTaken = (Utility.GetCurrentRealTime() - RealTimeStart)
+	Logger.Log("<NPC Modesty Manager> [ProcessNPCModesty] Iterations for " + akFemale + " " + akName + " took " + TimeTaken + " seconds")
 	
 	CurrentRankStrict[FemaleID] = akFemale.GetFactionRank(Core.ModestyFaction)
 	CurrentRankTop[FemaleID] = akFemale.GetFactionRank(Core.TopModestyFaction)
@@ -639,6 +757,8 @@ Function ProcessNPCModesty(Actor akFemale, Bool Strict)
 	If FemaleExists(akFemale, True) == True
 		UpdatePermanent(akFemale, FemaleID)
 	EndIf
+	
+	LastUpdateTime[FemaleID] = CurrentGameTime
 EndFunction
 
 Function UpdateShyness(Actor akFemale)
@@ -680,9 +800,9 @@ Function UpdateShyness(Actor akFemale)
 	EndIf
 EndFunction
 
-Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
+Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption, Bool PermShame)
 	Int ModestyRank = akFemale.GetFactionRank(Core.ModestyFaction)
-	Int MinimumModesty = 0
+	Int MinimumModesty = MinimumRankStrict[FemaleID]
 	
 	Bool IsShowingBra = akFemale.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
 	Bool IsShowingChest = akFemale.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
@@ -694,24 +814,21 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 	
 	Bool IsNude = akFemale.GetFactionRank(Core.AND_NudeActorFaction) as Bool
 	
-	If akFemale == Core.Rosa
-		MinimumModesty = Config.MinimumRosaRank
-	Else
-		MinimumModesty = Config.MinimumFollowerRank
-	EndIf
-	
 	If MinimumModesty > ModestyRank
-		NPCModestyRankChange(akFemale, akName, MinimumModesty)
+		NPCModestyRankChange(akFemale, akName, FemaleID, MinimumModesty)
+		return
 	EndIf
 	
 	If ModestyRank <= 0
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 0")
 		If IsShowingBra == True && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If ModestyTimer0[FemaleID] < UpgradeTime
-				ModestyTimer0[FemaleID] = ModestyTimer0[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer0[FemaleID] = ModestyTimer0[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 1
-				NPCModestyRankChange(akFemale, akName, 1)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 1)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
@@ -727,10 +844,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 1")
 		If IsShowingUnderwear == True && IsShowingGenitals == False && IsShowingChest == False
 			If ModestyTimer1[FemaleID] < UpgradeTime
-				ModestyTimer1[FemaleID] = ModestyTimer1[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer1[FemaleID] = ModestyTimer1[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 2
-				NPCModestyRankChange(akFemale, akName, 2)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 2)
 			EndIf
 		ElseIf IsShowingBra == False && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If Corruption == False
@@ -744,10 +863,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 2")
 		If IsShowingChest == True && IsTopless == False && IsShowingGenitals == False
 			If ModestyTimer2[FemaleID] < UpgradeTime
-				ModestyTimer2[FemaleID] = ModestyTimer2[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer2[FemaleID] = ModestyTimer2[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 3
-				NPCModestyRankChange(akFemale, akName, 3)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 3)
 			EndIf
 		ElseIf IsShowingUnderwear == False && IsShowingGenitals == False && IsShowingChest == False
 			If Corruption == False
@@ -761,10 +882,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 3")
 		If IsShowingGenitals == True && IsBottomless == False && IsTopless == False
 			If ModestyTimer3[FemaleID] < UpgradeTime
-				ModestyTimer3[FemaleID] = ModestyTimer3[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer3[FemaleID] = ModestyTimer3[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 4
-				NPCModestyRankChange(akFemale, akName, 4)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 4)
 			EndIf
 		ElseIf IsShowingChest == False && IsShowingGenitals == False
 			If Corruption == False
@@ -778,10 +901,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 4")
 		If IsTopless == True && IsBottomless == False
 			If ModestyTimer4[FemaleID] < UpgradeTime
-				ModestyTimer4[FemaleID] = ModestyTimer4[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer4[FemaleID] = ModestyTimer4[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 5
-				NPCModestyRankChange(akFemale, akName, 5)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 5)
 			EndIf
 		ElseIf IsShowingGenitals == False && IsTopless == False
 			If Corruption == False
@@ -795,10 +920,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 5")
 		If IsBottomless == True
 			If ModestyTimer5[FemaleID] < UpgradeTime
-				ModestyTimer5[FemaleID] = ModestyTimer5[FemaleID] + 1
+				If (UpgradeBlocked[FemaleID] as Bool) == False
+					ModestyTimer5[FemaleID] = ModestyTimer5[FemaleID] + 1
+				EndIf
 			Else
 				CurrentRankStrict[FemaleID] = 6
-				NPCModestyRankChange(akFemale, akName, 6)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 6)
 			EndIf
 		ElseIf IsTopless == False
 			If Corruption == False
@@ -817,20 +944,23 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		ElseIf IsNude == True
-			ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] + 1
-			If ModestyTimer6[FemaleID] > 0 && Config.PermanentShameless == False
+			If (UpgradeBlocked[FemaleID] as Bool) == False
+				ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] + 1
+			EndIf
+			
+			If ModestyTimer6[FemaleID] > 0 && PermShame == False
 				ModestyTimer6[FemaleID] = 0
 			ElseIf ModestyTimer6[FemaleID] >= (UpgradeTime * 2)
 				ModestyTimer6[FemaleID] = (UpgradeTime * 2)
 				CurrentRankStrict[FemaleID] = 7
-				NPCModestyRankChange(akFemale, akName, 7)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 7)
 			EndIf
 		EndIf
 	ElseIf ModestyRank > 6
-		If Config.PermanentShameless == True
+		If PermShame == True
 			Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC " + akFemale + " " + akName + " is Permanently Shameless")
 		Else
-			akFemale.SetFactionRank(Core.ModestyFaction, 6)
+			NPCModestyRankChange(akFemale, akName, FemaleID, 6)
 		EndIf
 	EndIf
 	
@@ -855,42 +985,42 @@ Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Ra
 			If ModestyTimer1[FemaleID] <= DowngradeTime
 				ModestyTimer1[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 0
-				NPCModestyRankChange(akFemale, akName, 0)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 0)
 			EndIf
 		ElseIf Rank == 2
 			ModestyTimer2[FemaleID] = ModestyTimer2[FemaleID] - 1
 			If ModestyTimer2[FemaleID] <= DowngradeTime
 				ModestyTimer2[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 1
-				NPCModestyRankChange(akFemale, akName, 1)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 1)
 			EndIf
 		ElseIf Rank == 3
 			ModestyTimer3[FemaleID] = ModestyTimer3[FemaleID] - 1
 			If ModestyTimer3[FemaleID] <= DowngradeTime
 				ModestyTimer3[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 2
-				NPCModestyRankChange(akFemale, akName, 2)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 2)
 			EndIf
 		ElseIf Rank == 4
 			ModestyTimer4[FemaleID] = ModestyTimer4[FemaleID] - 1
 			If ModestyTimer4[FemaleID] <= DowngradeTime
 				ModestyTimer4[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 3
-				NPCModestyRankChange(akFemale, akName, 3)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 3)
 			EndIf
 		ElseIf Rank == 5
 			ModestyTimer5[FemaleID] = ModestyTimer5[FemaleID] - 1
 			If ModestyTimer5[FemaleID] <= DowngradeTime
 				ModestyTimer5[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 4
-				NPCModestyRankChange(akFemale, akName, 4)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 4)
 			EndIf
 		ElseIf Rank == 6
 			ModestyTimer6[FemaleID] = ModestyTimer6[FemaleID] - 1
 			If ModestyTimer6[FemaleID] <= DowngradeTime
 				ModestyTimer6[FemaleID] = DowngradeTime
 				CurrentRankStrict[FemaleID] = 5
-				NPCModestyRankChange(akFemale, akName, 5)
+				NPCModestyRankChange(akFemale, akName, FemaleID, 5)
 			EndIf
 		EndIf
 	EndIf
@@ -904,57 +1034,78 @@ Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Ra
 	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer6 = " + ModestyTimer6[FemaleID])
 EndFunction
 
-Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
+Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption, Bool PermShame)
 	Int TopModestyRank = akFemale.GetFactionRank(Core.TopModestyFaction)
+	Int MinTopRank = MinimumRankTop[FemaleID]
 	
 	Bool IsShowingBra = akFemale.GetFactionRank(Core.AND_ShowingBraFaction) as Bool
 	Bool IsShowingChest = akFemale.GetFactionRank(Core.AND_ShowingChestFaction) as Bool
 	Bool IsTopless = akFemale.GetFactionRank(Core.AND_ToplessFaction) as Bool
 	
-	If TopModestyRank >= 3 && Corruption == True
+	If MinTopRank > TopModestyRank
+		NPCTopModestyRankChange(akFemale, akName, FemaleID, MinTopRank)
 		return
-	Else
-		If TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
+	EndIf
+	
+	If TopModestyRank <= 0 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			TopModestyTimer0[FemaleID] = TopModestyTimer0[FemaleID] + (TopModestyTimer1[FemaleID]/2) + 1
-		ElseIf TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)
+		EndIf
+	ElseIf TopModestyRank <= 1 && (IsShowingChest == True && IsTopless == False)
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			TopModestyTimer1[FemaleID] = TopModestyTimer1[FemaleID] + (TopModestyTimer2[FemaleID]/2) + 1
 			TopModestyTimer0[FemaleID] = TopModestyTimer0[FemaleID] + (TopModestyTimer1[FemaleID]/2)
-		ElseIf TopModestyRank == 1 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
-			;Do Nothing
-		ElseIf TopModestyRank <= 2 && IsTopless == True
+		EndIf
+	ElseIf TopModestyRank == 1 && (IsShowingBra == True && IsShowingChest == False && IsTopless == False)
+		;Do Nothing
+	ElseIf TopModestyRank <= 2 && IsTopless == True
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			TopModestyTimer2[FemaleID] = TopModestyTimer2[FemaleID] + 1
 			TopModestyTimer1[FemaleID] = TopModestyTimer1[FemaleID] + (TopModestyTimer2[FemaleID]/2)
 			TopModestyTimer0[FemaleID] = TopModestyTimer0[FemaleID] + (TopModestyTimer1[FemaleID]/2)
-		ElseIf TopModestyRank == 2 && (IsShowingChest == True && IsTopless == False)
-			;Do Nothing
-		ElseIf TopModestyRank == 3 && IsTopless == True
-			If TopModestyTimer3[FemaleID] < 0
-				TopModestyTimer3[FemaleID] = TopModestyTimer3[FemaleID] + 1
-			EndIf
-		Else
-			If Corruption == False
-				NPCTopModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, TopModestyRank, IsShowingBra, IsShowingChest, IsTopless)
-			Else
-				Logger.Log("<NPC Modesty Manager> [TopNPCModesty] NPC Corruption Active. Cannot Downgrade.")
-			EndIf
-			return
 		EndIf
+	ElseIf TopModestyRank == 2 && (IsShowingChest == True && IsTopless == False)
+		;Do Nothing
+	ElseIf TopModestyRank == 3 && IsTopless == True
+		If (UpgradeBlocked[FemaleID] as Bool) == False
+			TopModestyTimer3[FemaleID] = TopModestyTimer3[FemaleID] + 1
+		EndIf
+		
+		If TopModestyTimer3[FemaleID] > 0 && PermShame == False
+			TopModestyTimer3[FemaleID] = 0
+		EndIf
+	ElseIf TopModestyRank == 4 && PermShame == False
+		NPCTopModestyRankChange(akFemale, akName, FemaleID, 3)
+	ElseIf TopModestyRank == 4 && PermShame == True
+		return
+	Else
+		If Corruption == False
+			NPCTopModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, TopModestyRank, IsShowingBra, IsShowingChest, IsTopless)
+		Else
+			Logger.Log("<NPC Modesty Manager> [TopNPCModesty] NPC Corruption Active. Cannot Downgrade.")
+		EndIf
+		return
 	EndIf
 	
 	If TopModestyRank <= 0
 		If TopModestyTimer0[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 1
-			NPCTopModestyRankChange(akFemale, akName, 1)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 1)
 		EndIf
 	ElseIf TopModestyRank == 1
 		If TopModestyTimer1[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 2
-			NPCTopModestyRankChange(akFemale, akName, 2)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 2)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer2[FemaleID] >= UpgradeTime
 			CurrentRankTop[FemaleID] = 3
-			NPCTopModestyRankChange(akFemale, akName, 3)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 3)
+		EndIf
+	ElseIf TopModestyRank == 3 && PermShame == True
+		If TopModestyTimer3[FemaleID] >= (UpgradeTime * 2)
+			CurrentRankTop[FemaleID] = 4
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 4)
 		EndIf
 	EndIf
 	
@@ -998,17 +1149,17 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 	If TopModestyRank == 1
 		If TopModestyTimer1[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 0
-			NPCTopModestyRankChange(akFemale, akName, 0)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 0)
 		EndIf
 	ElseIf TopModestyRank == 2
 		If TopModestyTimer2[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 1
-			NPCTopModestyRankChange(akFemale, akName, 1)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 1)
 		EndIf
 	ElseIf TopModestyRank == 3
 		If TopModestyTimer3[FemaleID] <= DowngradeTime
 			CurrentRankTop[FemaleID] = 2
-			NPCTopModestyRankChange(akFemale, akName, 2)
+			NPCTopModestyRankChange(akFemale, akName, FemaleID, 2)
 		EndIf
 	EndIf
 	
@@ -1018,57 +1169,72 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 	Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer3 = " + TopModestyTimer3[FemaleID])
 EndFunction
 
-Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption)
+Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption, Bool PermShame)
 	Int BottomModestyRank = akFemale.GetFactionRank(Core.BottomModestyFaction)
 	
 	Bool IsShowingUnderwear = akFemale.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool
 	Bool IsShowingGenitals = akFemale.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool
 	Bool IsBottomless = akFemale.GetFactionRank(Core.AND_BottomlessFaction) as Bool
 	
-	If BottomModestyRank >= 3 && Corruption == True
-		return
-	Else
-		If BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
+	If BottomModestyRank <= 0 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			BottomModestyTimer0[FemaleID] = BottomModestyTimer0[FemaleID] + (BottomModestyTimer1[FemaleID]/2) + 1
-		ElseIf BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)
+		EndIf
+	ElseIf BottomModestyRank <= 1 && (IsShowingGenitals == True && IsBottomless == False)
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			BottomModestyTimer1[FemaleID] = BottomModestyTimer1[FemaleID] + (BottomModestyTimer2[FemaleID]/2) + 1
 			BottomModestyTimer0[FemaleID] = BottomModestyTimer0[FemaleID] + (BottomModestyTimer1[FemaleID]/2)
-		ElseIf BottomModestyRank == 1 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
-			;Do Nothing
-		ElseIf BottomModestyRank <= 2 && IsBottomless == True
+		EndIf
+	ElseIf BottomModestyRank == 1 && (IsShowingUnderwear == True && IsShowingGenitals == False && IsBottomless == False)
+		;Do Nothing
+	ElseIf BottomModestyRank <= 2 && IsBottomless == True
+		If (UpgradeBlocked[FemaleID] as Bool) == False
 			BottomModestyTimer2[FemaleID] = BottomModestyTimer2[FemaleID] + 1
 			BottomModestyTimer1[FemaleID] = BottomModestyTimer1[FemaleID] + (BottomModestyTimer2[FemaleID]/2)
 			BottomModestyTimer0[FemaleID] = BottomModestyTimer0[FemaleID] + (BottomModestyTimer1[FemaleID]/2)
-		ElseIf BottomModestyRank == 2 && (IsShowingGenitals == True && IsBottomless == False)
-			;Do Nothing
-		ElseIf BottomModestyRank == 3 && IsBottomless == True
-			If BottomModestyTimer3[FemaleID] < 0
-				BottomModestyTimer3[FemaleID] = BottomModestyTimer3[FemaleID] + 1
-			EndIf
-		Else
-			If Corruption == False
-				NPCBottomModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless)
-			Else
-				Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] NPC Corruption Active. Cannot Downgrade.")
-			EndIf
-			return
 		EndIf
+	ElseIf BottomModestyRank == 2 && (IsShowingGenitals == True && IsBottomless == False)
+		;Do Nothing
+	ElseIf BottomModestyRank == 3 && IsBottomless == True
+		If (UpgradeBlocked[FemaleID] as Bool) == False
+			BottomModestyTimer3[FemaleID] = BottomModestyTimer3[FemaleID] + 1
+		EndIf
+		
+		If BottomModestyTimer3[FemaleID] > 0 && PermShame == False
+			BottomModestyTimer3[FemaleID] = 0
+		EndIf
+	ElseIf BottomModestyRank == 4 && PermShame == False
+		NPCBottomModestyRankChange(akFemale, akName, FemaleID, 3)
+	ElseIf BottomModestyRank == 4 && PermShame == True
+		return
+	Else
+		If Corruption == False
+			NPCBottomModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless)
+		Else
+			Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] NPC Corruption Active. Cannot Downgrade.")
+		EndIf
+		return
 	EndIf
 	
 	If BottomModestyRank <= 0
 		If BottomModestyTimer0[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 1
-			NPCBottomModestyRankChange(akFemale, akName, 1)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 1)
 		EndIf
 	ElseIf BottomModestyRank == 1
 		If BottomModestyTimer1[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 2
-			NPCBottomModestyRankChange(akFemale, akName, 2)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 2)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer2[FemaleID] >= UpgradeTime
 			CurrentRankBottom[FemaleID] = 3
-			NPCBottomModestyRankChange(akFemale, akName, 3)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 3)
+		EndIf
+	ElseIf BottomModestyRank == 3 && PermShame == True
+		If BottomModestyTimer3[FemaleID] >= (UpgradeTime * 2)
+			CurrentRankBottom[FemaleID] = 4
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 4)
 		EndIf
 	EndIf
 	
@@ -1112,17 +1278,17 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 	If BottomModestyRank == 1
 		If BottomModestyTimer1[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 0
-			NPCBottomModestyRankChange(akFemale, akName, 0)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 0)
 		EndIf
 	ElseIf BottomModestyRank == 2
 		If BottomModestyTimer2[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 1
-			NPCBottomModestyRankChange(akFemale, akName, 1)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 1)
 		EndIf
 	ElseIf BottomModestyRank == 3
 		If BottomModestyTimer3[FemaleID] <= DowngradeTime
 			CurrentRankBottom[FemaleID] = 2
-			NPCBottomModestyRankChange(akFemale, akName, 2)
+			NPCBottomModestyRankChange(akFemale, akName, FemaleID, 2)
 		EndIf
 	EndIf
 	
@@ -1132,8 +1298,16 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
 EndFunction
 
-Function NPCModestyRankChange(Actor akFemale, String akName, Int Rank)
+Function NPCModestyRankChange(Actor akFemale, String akName, Int FemaleID, Int Rank)
 	akFemale.SetFactionRank(Core.ModestyFaction, Rank)
+	ModestyTimer0[FemaleID] = 0
+	ModestyTimer1[FemaleID] = 0
+	ModestyTimer2[FemaleID] = 0
+	ModestyTimer3[FemaleID] = 0
+	ModestyTimer4[FemaleID] = 0
+	ModestyTimer5[FemaleID] = 0
+	ModestyTimer6[FemaleID] = 0
+	
 	If Rank == 0
 		Debug.Notification(akName + "'s Modesty has become Modest")
 	ElseIf Rank == 1
@@ -1153,8 +1327,13 @@ Function NPCModestyRankChange(Actor akFemale, String akName, Int Rank)
 	EndIf
 EndFunction
 
-Function NPCTopModestyRankChange(Actor akFemale, String akName, Int Rank)
+Function NPCTopModestyRankChange(Actor akFemale, String akName, Int FemaleID, Int Rank)
 	akFemale.SetFactionRank(Core.TopModestyFaction, Rank)
+	TopModestyTimer0[FemaleID] = 0
+	TopModestyTimer1[FemaleID] = 0
+	TopModestyTimer2[FemaleID] = 0
+	TopModestyTimer3[FemaleID] = 0
+	
 	If Rank == 0
 		Debug.Notification(akName + "'s Top Modesty has become Shy")
 	ElseIf Rank == 1
@@ -1168,8 +1347,13 @@ Function NPCTopModestyRankChange(Actor akFemale, String akName, Int Rank)
 	EndIf
 EndFunction
 
-Function NPCBottomModestyRankChange(Actor akFemale, String akName, Int Rank)
+Function NPCBottomModestyRankChange(Actor akFemale, String akName, Int FemaleID, Int Rank)
 	akFemale.SetFactionRank(Core.BottomModestyFaction, Rank)
+	BottomModestyTimer0[FemaleID] = 0
+	BottomModestyTimer1[FemaleID] = 0
+	BottomModestyTimer2[FemaleID] = 0
+	BottomModestyTimer3[FemaleID] = 0
+	
 	If Rank == 0
 		Debug.Notification(akName + "'s Bottom Modesty has become Shy")
 	ElseIf Rank == 1
@@ -1210,7 +1394,12 @@ Function DumpNPCData()
 		SetIntValue(DumpJsonName, "Female " + Index + " CurrentRankStrict", CurrentRankStrict[Index])
 		SetIntValue(DumpJsonName, "Female " + Index + " CurrentRankTop", CurrentRankTop[Index])
 		SetIntValue(DumpJsonName, "Female " + Index + " CurrentRankBottom", CurrentRankBottom[Index])
+		SetIntValue(DumpJsonName, "Female " + Index + " MinimumRankStrict", MinimumRankStrict[Index])
+		SetIntValue(DumpJsonName, "Female " + Index + " MinimumRankTop", MinimumRankTop[Index])
+		SetIntValue(DumpJsonName, "Female " + Index + " MinimumRankBottom", MinimumRankBottom[Index])
 		SetIntValue(DumpJsonName, "Female " + Index + " ShynessMode", ShynessMode[Index])
+		SetIntValue(DumpJsonName, "Female " + Index + " AllowPermanentShameless", AllowPermanentShameless[Index])
+		SetIntValue(DumpJsonName, "Female " + Index + " FemaleCorruption", FemaleCorruption[Index])
 		
 		SetStringValue(DumpJsonName, "Female " + Index + " Name", FemaleName[Index])
 		
