@@ -312,7 +312,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		
 		AllowPermanentShameless[TrackedFemales] = Config.NPCPermanentShameless as Int
 		FemaleCorruption[TrackedFemales] = Config.NPCModestyCorruption as Int
-		StrictNPCRules[TrackedFemales] = Config.StrictNPC as Int
+		StrictNPCRules[TrackedFemales] = Config.StrictModestyRules as Int
 		UpgradeBlocked[TrackedFemales] = 0
 		
 		akFemale.SetFactionRank(Core.ModestyFaction, Modesty)
@@ -394,8 +394,11 @@ Function RegisterRosa(Actor akRosa)
 	MinimumRankTop[TrackedFemales] = 3
 	MinimumRankBottom[TrackedFemales] = 3
 	
-	AllowPermanentShameless[TrackedFemales] = 0
-	FemaleCorruption[TrackedFemales] = 0
+	AllowPermanentShameless[TrackedFemales] = Config.NPCPermanentShameless as Int
+	FemaleCorruption[TrackedFemales] = Config.NPCModestyCorruption as Int
+	
+	StrictNPCRules[TrackedFemales] = Config.StrictModestyRules as Int
+	UpgradeBlocked[TrackedFemales] = 0
 	
 	LastUpdateTime[TrackedFemales] = Utility.GetCurrentGameTime()
 	
@@ -447,7 +450,6 @@ Function AddPermanent(Actor akFemale)
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " AllowPermanentShameless", AllowPermanentShameless[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " FemaleCorruption", FemaleCorruption[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermanentFemales + " StrictNPCRules", StrictNPCRules[FemaleID])
-	SetIntValue(PermJsonName, "Female " + PermanentFemales + " UpgradeBlocked", UpgradeBlocked[FemaleID])
 	
 	PermanentFemales += 1
 	
@@ -583,7 +585,6 @@ Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
 		SetIntValue(PermJsonName, "Female " + FemaleID + " AllowPermanentShameless", GetIntValue(PermJsonName, "Female " + NextFemaleID + " AllowPermanentShameless"))
 		SetIntValue(PermJsonName, "Female " + FemaleID + " FemaleCorruption", GetIntValue(PermJsonName, "Female " + NextFemaleID + " FemaleCorruption"))
 		SetIntValue(PermJsonName, "Female " + FemaleID + " StrictNPCRules", GetIntValue(PermJsonName, "Female " + NextFemaleID + " StrictNPCRules"))
-		SetIntValue(PermJsonName, "Female " + FemaleID + " UpgradeBlocked", GetIntValue(PermJsonName, "Female " + NextFemaleID + " UpgradeBlocked"))
 		
 		SetIntValue(PermJsonName, "Female " + FemaleID + " ShynessMode", GetIntValue(PermJsonName, "Female " + NextFemaleID + " ShynessMode"))
 	EndWhile
@@ -607,7 +608,6 @@ Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " AllowPermanentShameless")
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " FemaleCorruption")
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " StrictNPCRules")
-	UnsetIntValue(PermJsonName, "Female " + FemaleID + " UpgradeBlocked")
 	
 	UnsetIntValue(PermJsonName, "Female " + FemaleID + " ShynessMode")
 	
@@ -666,6 +666,8 @@ Function UpdatePermanent(Actor akFemale, Int FemaleID)
 	SetIntValue(PermJsonName, "Female " + PermID + " AllowPermanentShameless", AllowPermanentShameless[FemaleID])
 	SetIntValue(PermJsonName, "Female " + PermID + " FemaleCorruption", FemaleCorruption[FemaleID])
 	
+	SetIntValue(PermJsonName, "Female " + PermID + " StrictNPCRules", StrictNPCRules[FemaleID])
+	
 	SetIntValue(PermJsonName, "Female " + PermID + " ShynessMode", ShynessMode[FemaleID])
 	
 	Save(PermJsonName)
@@ -720,12 +722,21 @@ Function TweakFemale(Actor akFemale, Int FemaleID, Int StrictRank, Int TopRank, 
 	EndIf
 EndFunction
 
+Function WipeLastUpdateTimes()
+	Float WipeTime = Utility.GetCurrentGameTime()
+	Int Index = 0
+	While Index < TrackedFemales
+		LastUpdateTime[Index] = WipeTime
+		Index += 1
+	EndWhile
+EndFunction
+
 Function ProcessNPCModesty(Actor akFemale)
 	ActorBase femaleBase = akFemale.GetActorBase()
 	String akName = femaleBase.GetName()
 	
 	Int FemaleID = FemaleActor.Find(akFemale)
-
+	
 	Int UpgradeTime = (Config.ImmodestyTimeNeeded * 24)
 	Bool Corruption = (FemaleCorruption[FemaleID] as Bool)
 	Bool PermShame = (AllowPermanentShameless[FemaleID] as Bool)

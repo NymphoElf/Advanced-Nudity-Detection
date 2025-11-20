@@ -198,6 +198,7 @@ Bool Property PelvicCurtain_Cover Auto Hidden
 Bool Property AssCurtain_Cover Auto Hidden
 
 Bool Property ScanNPC = True Auto Hidden
+Bool Property NPCTimerWipeArmed = False Auto Hidden
 
 Bool Property ApplyTweak = False Auto Hidden
 Bool Property ApplyAsDefault = False Auto Hidden
@@ -527,6 +528,11 @@ Event OnConfigClose()
 			ModestyManager.TopRankJump(3)
 			ModestyManager.BottomRankJump(3)
 		EndIf
+	EndIf
+	
+	If NPCTimerWipeArmed == True
+		NPCModesty.WipeLastUpdateTimes()
+		NPCTimerWipeArmed = False
 	EndIf
 	
 	RandomizePlayer = False
@@ -1802,7 +1808,7 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$AllFollowerHeader")
 			Page10ToggleID[4] = AddToggleOption("$FollowersAreDynamic", DynamicFollowers, 0)
-			Page10ToggleID[5] = AddToggleOption("$NPCPermanentShamelessText", NPCPermanentShameless, DisabledIf(DynamicFollowers == False))
+			Page10ToggleID[5] = AddToggleOption("$FollowerPermanentShamelessText", NPCPermanentShameless, DisabledIf(DynamicFollowers == False))
 			Page10ToggleID[6] = AddToggleOption("$FollowerCorruption", NPCModestyCorruption, DisabledIf(DynamicFollowers == False))
 			
 			SetCursorPosition(1)
@@ -2553,6 +2559,11 @@ Event OnOptionSelect(Int Option)
 			DynamicFollowers = True
 		Else
 			DynamicFollowers = False
+		EndIf
+		If NPCTimerWipeArmed == False
+			NPCTimerWipeArmed = True
+		Else
+			NPCTimerWipeArmed = False
 		EndIf
 		SetToggleOptionValue(Option, DynamicFollowers)
 		ForcePageReset()
