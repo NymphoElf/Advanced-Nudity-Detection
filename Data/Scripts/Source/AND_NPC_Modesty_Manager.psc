@@ -735,6 +735,10 @@ Function ProcessNPCModesty(Actor akFemale)
 	Int RequiredIterations = ((LastUpdateTime[FemaleID] - CurrentGameTime) / 0.041667) as Int
 	Float RealTimeStart = Utility.GetCurrentRealTime()
 	
+	If RequiredIterations > 168
+		RequiredIterations = 168
+	EndIf
+	
 	Logger.Log("<NPC Modesty Manager> [ProcessNPCModesty] Starting " + RequiredIterations + " Iterations for " + akFemale + " " + akName)
 	
 	While RequiredIterations > 0
