@@ -549,21 +549,21 @@ Function TopModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	
 	If IsRankUpgrade == True
 		If Rank == 1
-			Debug.MessageBox("Top Immodesty Upgrade: Rank 1 (Comfortable)")
+			ModestyAlert("Top Immodesty Upgrade: Rank 1 (Comfortable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Top Immodesty Upgrade: Rank 2 (Bold)")
+			ModestyAlert("Top Immodesty Upgrade: Rank 2 (Bold)")
 		ElseIf Rank == 3
-			Debug.MessageBox("Top Immodesty Upgrade: Rank 3 (Shameless)")
+			ModestyAlert("Top Immodesty Upgrade: Rank 3 (Shameless)")
 		ElseIf Rank == 4
-			Debug.MessageBox("Top Immodesty Upgrade: Rank 4 (Permanently Shameless)")
+			ModestyAlert("Top Immodesty Upgrade: Rank 4 (Permanently Shameless)")
 		EndIf
 	Else
 		If Rank == 0
-			Debug.MessageBox("Top Immodesty Downgrade: Rank 0 (Modest)")
+			ModestyAlert("Top Immodesty Downgrade: Rank 0 (Modest)")
 		ElseIf Rank == 1
-			Debug.MessageBox("Top Immodesty Downgrade: Rank 1 (Comfortable)")
+			ModestyAlert("Top Immodesty Downgrade: Rank 1 (Comfortable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Top Immodesty Downgrade: Rank 2 (Bold)")
+			ModestyAlert("Top Immodesty Downgrade: Rank 2 (Bold)")
 		EndIf
 	EndIf
 	
@@ -582,21 +582,21 @@ Function BottomModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	
 	If IsRankUpgrade == True
 		If Rank == 1
-			Debug.MessageBox("Bottom Immodesty Upgrade: Rank 1 (Comfortable)")
+			ModestyAlert("Bottom Immodesty Upgrade: Rank 1 (Comfortable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Bottom Immodesty Upgrade: Rank 2 (Bold)")
+			ModestyAlert("Bottom Immodesty Upgrade: Rank 2 (Bold)")
 		ElseIf Rank == 3
-			Debug.MessageBox("Bottom Immodesty Upgrade: Rank 3 (Shameless)")
+			ModestyAlert("Bottom Immodesty Upgrade: Rank 3 (Shameless)")
 		ElseIf Rank == 4
-			Debug.MessageBox("Bottom Immodesty Upgrade: Rank 4 (Permanently Shameless)")
+			ModestyAlert("Bottom Immodesty Upgrade: Rank 4 (Permanently Shameless)")
 		EndIf
 	Else
 		If Rank == 0
-			Debug.MessageBox("Bottom Immodesty Downgrade: Rank 0 (Modest)")
+			ModestyAlert("Bottom Immodesty Downgrade: Rank 0 (Modest)")
 		ElseIf Rank == 1
-			Debug.MessageBox("Bottom Immodesty Downgrade: Rank 1 (Comfortable)")
+			ModestyAlert("Bottom Immodesty Downgrade: Rank 1 (Comfortable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Bottom Immodesty Downgrade: Rank 2 (Bold)")
+			ModestyAlert("Bottom Immodesty Downgrade: Rank 2 (Bold)")
 		EndIf
 	EndIf
 	
@@ -620,38 +620,46 @@ Function ModestyRankChange(Bool IsRankUpgrade, Int Rank)
 	
 	If IsRankUpgrade == True
 		If Rank == 1
-			Debug.MessageBox("Immodesty Upgrade: Rank 1 (Reasonable)")
+			ModestyAlert("Immodesty Upgrade: Rank 1 (Reasonable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Immodesty Upgrade: Rank 2 (Relaxed)")
+			ModestyAlert("Immodesty Upgrade: Rank 2 (Relaxed)")
 		ElseIf Rank == 3
-			Debug.MessageBox("Immodesty Upgrade: Rank 3 (Comfortable)")
+			ModestyAlert("Immodesty Upgrade: Rank 3 (Comfortable)")
 		ElseIf Rank == 4
-			Debug.MessageBox("Immodesty Upgrade: Rank 4 (Tease)")
+			ModestyAlert("Immodesty Upgrade: Rank 4 (Tease)")
 		ElseIf Rank == 5
-			Debug.MessageBox("Immodesty Upgrade: Rank 5 (Brazen)")
+			ModestyAlert("Immodesty Upgrade: Rank 5 (Brazen)")
 		ElseIf Rank == 6
-			Debug.MessageBox("Immodesty Upgrade: Rank 6 (Shameless)")
+			ModestyAlert("Immodesty Upgrade: Rank 6 (Shameless)")
 		ElseIf Rank == 7
-			Debug.MessageBox("Immodesty Upgrade: Permanently Shameless")
+			ModestyAlert("Immodesty Upgrade: Permanently Shameless")
 		EndIf
 	Else
 		If Rank == 0
-			Debug.MessageBox("Immodesty Downgrade: Rank 0 (Modest)")
+			ModestyAlert("Immodesty Downgrade: Rank 0 (Modest)")
 		ElseIf Rank == 1
-			Debug.MessageBox("Immodesty Downgrade: Rank 1 (Reasonable)")
+			ModestyAlert("Immodesty Downgrade: Rank 1 (Reasonable)")
 		ElseIf Rank == 2
-			Debug.MessageBox("Immodesty Downgrade: Rank 2 (Relaxed)")
+			ModestyAlert("Immodesty Downgrade: Rank 2 (Relaxed)")
 		ElseIf Rank == 3
-			Debug.MessageBox("Immodesty Downgrade: Rank 3 (Comfortable)")
+			ModestyAlert("Immodesty Downgrade: Rank 3 (Comfortable)")
 		ElseIf Rank == 4
-			Debug.MessageBox("Immodesty Downgrade: Rank 4 (Tease)")
+			ModestyAlert("Immodesty Downgrade: Rank 4 (Tease)")
 		ElseIf Rank == 5
-			Debug.MessageBox("Immodesty Downgrade: Rank 5 (Brazen)")
+			ModestyAlert("Immodesty Downgrade: Rank 5 (Brazen)")
 		EndIf
 	EndIf
 	
 	If Config.ModestyMonologue == True
 		ModestyInnerMonologue(IsRankUpgrade, Rank, 1)
+	EndIf
+EndFunction
+
+Function ModestyAlert(String MessageText)
+	If Config.ModestyMessagebox == True
+		Debug.MessageBox(MessageText)
+	Else
+		Debug.Notification(MessageText)
 	EndIf
 EndFunction
 

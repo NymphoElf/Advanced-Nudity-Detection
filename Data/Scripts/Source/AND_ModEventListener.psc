@@ -30,6 +30,10 @@ Function InitializeModEvents()
 	RegisterForModEvent("AdvancedNudityDetection_SetMinBottomModesty", "OnSetMinimumBottomModestyRank")
 	RegisterForModEvent("AdvancedNudityDetection_GetMinBottomModesty", "OnGetMinimumBottomModestyRank")
 	
+	RegisterForModEvent("AdvancedNudityDetection_SetUseDynamicModesty", "OnSetUseDynamicModesty")
+	RegisterForModEvent("AdvancedNudityDetection_GetUseDynamicModesty", "OnGetUseDynamicModesty")
+	RegisterForModEvent("AdvancedNudityDetection_SetStrictModestyRules", "OnSetStrictModestyRules")
+	RegisterForModEvent("AdvancedNudityDetection_GetStrictModestyRules", "OnGetStrictModestyRules")
 	RegisterForModEvent("AdvancedNudityDetection_SetHardcore", "OnSetHardcore")
 	RegisterForModEvent("AdvancedNudityDetection_GetHardcore", "OnGetHardcore")
 	RegisterForModEvent("AdvancedNudityDetection_SetCorruption", "OnSetCorruption")
@@ -153,6 +157,26 @@ EndEvent
 Modesty Events
 ===========================================
 /;
+
+Event OnSetUseDynamicModesty(Bool Enabled)
+	Config.UseDynamicModesty = Enabled
+EndEvent
+
+Event OnGetUseDynamicModesty()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnUseDynamicModesty")
+	ModEvent.PushBool(EventHandle, Config.UseDynamicModesty)
+	ModEvent.Send(EventHandle)
+EndEvent
+
+Event OnSetStrictModestyRules(Bool Strict)
+	Config.StrictModestyRules = Strict
+EndEvent
+
+Event OnGetStrictModestyRules()
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnStrictModestyRules")
+	ModEvent.PushBool(EventHandle, Config.StrictModestyRules)
+	ModEvent.Send(EventHandle)
+EndEvent
 
 Event OnSetMinimumModestyRank(Int ModestyRank)
 	If ModestyRank < 0

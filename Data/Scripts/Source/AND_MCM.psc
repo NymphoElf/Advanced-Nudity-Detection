@@ -192,6 +192,7 @@ Bool Property DynamicFollowers = False Auto Hidden
 Bool Property ResetNPCs = False Auto Hidden
 Bool Property DeleteNPCs = False Auto Hidden
 Bool Property ModestyMonologue = True Auto Hidden
+Bool Property ModestyMessagebox = True Auto Hidden
 
 Bool Property TopCurtainLayer_Cover Auto Hidden
 Bool Property PelvicCurtain_Cover Auto Hidden
@@ -534,6 +535,9 @@ Event OnConfigClose()
 		NPCModesty.WipeLastUpdateTimes()
 		NPCTimerWipeArmed = False
 	EndIf
+	
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_MCMChanged")
+	ModEvent.Send(EventHandle)
 	
 	RandomizePlayer = False
 	
@@ -1730,6 +1734,7 @@ Event OnPageReset(string page)
 			Page9ToggleID[18] = AddToggleOption("$RandomizePlayerText", RandomizePlayer, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			AddMenuOptionST("AND_PlayerConfidence_State", "$PlayerConfidenceText", PlayerConfidence, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			Page9ToggleID[19] = AddToggleOption("$ModestyMonologueText", ModestyMonologue, DisabledIf(UseDynamicModesty == False))
+			Page9ToggleID[20] = AddToggleOption("$ModestyMessageboxText", ModestyMessagebox, DisabledIf(UseDynamicModesty == False))
 			Page9MenuID[0] = AddMenuOption("$ShyWhenSeen", ShySex, DisabledIf(UseDynamicModesty == False || HardcoreLockdown == True))
 			
 			SetCursorPosition(1)
@@ -1999,6 +2004,8 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$RandomizeModestyInfoText")
 	ElseIf Option == Page9ToggleID[19] ;Modesty Monologue
 		SetInfoText("$ModestyMonologueInfoText")
+	ElseIf Option == Page9ToggleID[20] ;Modesty Monologue
+		SetInfoText("$ModestyMessageboxInfoText")
 		
 		;=========================
 		;END PAGE 9
@@ -2296,7 +2303,11 @@ Event OnOptionSelect(Int Option)
 	If Option == Page9ToggleID[0]
 		If UseDynamicModesty == False
 			UseDynamicModesty = True
-			AND_DynamicModesty.SetValue(2)
+			If StrictModestyRules == True
+				AND_DynamicModesty.SetValue(1)
+			Else
+				AND_DynamicModesty.SetValue(2)
+			EndIf
 		Else
 			UseDynamicModesty = False
 			AND_DynamicModesty.SetValue(0)
@@ -2514,6 +2525,11 @@ Event OnOptionSelect(Int Option)
 			ModestyMonologue = False
 		EndIf
 		SetToggleOptionValue(Option, ModestyMonologue)
+	
+	ElseIf Option == Page9ToggleID[20]
+		ModestyMessagebox = !ModestyMessagebox
+		
+		SetToggleOptionValue(Option, ModestyMessagebox)
 		
 		;=============
 		;END PAGE 9
