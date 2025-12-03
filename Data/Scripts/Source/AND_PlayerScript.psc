@@ -153,7 +153,10 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 		return
 	EndIf
 	
-	Core.RegisterForSingleUpdate(0.1)
+	If Core.EquipScanArmed == False
+		Core.EquipScanArmed = True
+		Core.RegisterForSingleUpdate(0.1)
+	EndIf
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
@@ -166,7 +169,10 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 		return
 	EndIf
 	
-	Core.RegisterForSingleUpdate(0.1)
+	If Core.EquipScanArmed == False
+		Core.EquipScanArmed = True
+		Core.RegisterForSingleUpdate(0.1)
+	EndIf
 EndEvent
 
 Event OnUpdateGameTime()

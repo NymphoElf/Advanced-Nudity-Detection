@@ -16,6 +16,7 @@ Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto Hidden
 
 Bool Property MainRollRunning Auto Hidden
+Bool Property EquipScanArmed Auto Hidden
 
 Faction Property AND_ShowingAssFaction Auto
 Faction Property AND_ShowingChestFaction Auto
@@ -234,6 +235,9 @@ Event OnUpdate()
 	Else
 		WICommentChanceNaked.SetValue(NakedCommentChance(False))
 	EndIf
+	
+	Utility.Wait(1.0)
+	EquipScanArmed = False
 EndEvent
 
 Function ModCheck()
