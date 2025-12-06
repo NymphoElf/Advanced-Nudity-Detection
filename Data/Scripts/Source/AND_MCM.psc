@@ -253,6 +253,7 @@ Int[] Property Page9MenuID Auto Hidden
 Int[] Property Page10MenuID Auto Hidden
 
 Int[] Property Page11KeyID Auto Hidden
+Int[] Property Page11ToggleID Auto Hidden
 
 String Property ScanFrequency = "Normal" Auto Hidden
 
@@ -562,7 +563,8 @@ Event OnPageReset(string page)
 	Page9MenuID = new Int[50]
 	Page10MenuID = new Int[50]
 	
-	Page11KeyID = new Int[50]
+	Page11KeyID = new Int[10]
+	Page11ToggleID = new Int[10]
 	
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
@@ -1893,16 +1895,25 @@ Event OnPageReset(string page)
 		EndIf
 	ElseIf (page == "$FlashKeys")
 		AddHeaderOption("$FlashKeysHeader")
-		Page11KeyID[0] = AddKeyMapOption("$FlashChestCurtainText", FlashKey[0], 0)
-		Page11KeyID[1] = AddKeyMapOption("$FlashPelvicCurtainText", FlashKey[1], 0)
-		Page11KeyID[2] = AddKeyMapOption("$FlashAssCurtainText", FlashKey[2], 0)
+		Page11KeyID[0] = AddKeyMapOption("$FlashChestCurtainText", FlashKey[0], OPTION_FLAG_WITH_UNMAP)
+		Page11KeyID[1] = AddKeyMapOption("$FlashPelvicCurtainText", FlashKey[1], OPTION_FLAG_WITH_UNMAP)
+		Page11KeyID[2] = AddKeyMapOption("$FlashAssCurtainText", FlashKey[2], OPTION_FLAG_WITH_UNMAP)
 		
+		AddEmptyOption()
+		
+		Page11ToggleID[0] = AddToggleOption("$ResetFlashKeybindsText", ConfirmSelection, 0)
+		Page11ToggleID[1] = AddToggleOption("$ClearFlashKeybindsText", ConfirmSelection, 0)
 		SetCursorPosition(1)
 		
 		AddHeaderOption("$FixKeysHeader")
-		Page11KeyID[3] = AddKeyMapOption("$FixChestCurtainText", FlashKey[3], 0)
-		Page11KeyID[4] = AddKeyMapOption("$FixPelvicCurtainText", FlashKey[4], 0)
-		Page11KeyID[5] = AddKeyMapOption("$FixAssCurtainText", FlashKey[5], 0)
+		Page11KeyID[3] = AddKeyMapOption("$FixChestCurtainText", FlashKey[3], OPTION_FLAG_WITH_UNMAP)
+		Page11KeyID[4] = AddKeyMapOption("$FixPelvicCurtainText", FlashKey[4], OPTION_FLAG_WITH_UNMAP)
+		Page11KeyID[5] = AddKeyMapOption("$FixAssCurtainText", FlashKey[5], OPTION_FLAG_WITH_UNMAP)
+		
+		AddEmptyOption()
+		
+		Page11ToggleID[2] = AddToggleOption("$ResetFixKeybindsText", ConfirmSelection, 0)
+		Page11ToggleID[3] = AddToggleOption("$ClearFixKeybindsText", ConfirmSelection, 0)
 	ElseIf (page == "$DebugPage")
 		AddHeaderOption("$LoggingHeader")
 		Page12ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
@@ -1927,7 +1938,7 @@ Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, Stri
 	Logger.Log("<MCM> [OnOptionKeyMapChange] KeyCode is " + KeyCode)
 	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictControl is " + ConflictControl)
 	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictName is " + ConflictName)
-	If (KeyCode != -1 && ConflictControl != "" && !ShowConfirmationDialog("$AND_KeyAlreadyInUse"))
+	If (KeyCode != 1 && ConflictControl != "" && !ShowConfirmationDialog("$AND_KeyAlreadyInUse"))
 		return
 	ElseIf KeyCode == 1
 		KeyCode = -1
@@ -2067,6 +2078,15 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$FixPelvicCurtainInfoText")
 	ElseIf Option == Page11KeyID[5]
 		SetInfoText("$FixAssCurtainInfoText")
+		
+	ElseIf Option == Page11ToggleID[0]
+		SetInfoText("$ResetFlashKeybindsInfoText")
+	ElseIf Option == Page11ToggleID[1]
+		SetInfoText("$ClearFlashKeybindsInfoText")
+	ElseIf Option == Page11ToggleID[2]
+		SetInfoText("$ResetFixKeybindsInfoText")
+	ElseIf Option == Page11ToggleID[3]
+		SetInfoText("$ClearFixKeybindsInfoText")
 		;=========================
 		;END PAGE 11
 		;=========================
@@ -2690,6 +2710,46 @@ Event OnOptionSelect(Int Option)
 		
 		;=============
 		;END PAGE 10
+		;=============
+		
+	ElseIf Option == Page11ToggleID[0] ;Reset Flash Keys
+		FlashKey[0] = 26
+		FlashKey[1] = 27
+		FlashKey[2] = 43
+		Keybinds.UpdateRegister(0)
+		Keybinds.UpdateRegister(1)
+		Keybinds.UpdateRegister(2)
+		ForcePageReset()
+		
+	ElseIf Option == Page11ToggleID[1] ;Clear Flash Keys
+		FlashKey[0] = -1
+		FlashKey[1] = -1
+		FlashKey[2] = -1
+		Keybinds.UpdateRegister(0)
+		Keybinds.UpdateRegister(1)
+		Keybinds.UpdateRegister(2)
+		ForcePageReset()
+		
+	ElseIf Option == Page11ToggleID[2] ;Reset Fix Keys
+		FlashKey[3] = 39
+		FlashKey[4] = 40
+		FlashKey[5] = 28
+		Keybinds.UpdateRegister(3)
+		Keybinds.UpdateRegister(4)
+		Keybinds.UpdateRegister(5)
+		ForcePageReset()
+		
+	ElseIf Option == Page11ToggleID[3] ;Reset Fix Keys
+		FlashKey[3] = -1
+		FlashKey[4] = -1
+		FlashKey[5] = -1
+		Keybinds.UpdateRegister(3)
+		Keybinds.UpdateRegister(4)
+		Keybinds.UpdateRegister(5)
+		ForcePageReset()
+		
+		;=============
+		;END PAGE 11
 		;=============
 		
 	ElseIf Option == Page12ToggleID[0]
