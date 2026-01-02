@@ -27,7 +27,7 @@ Event OnInit()
 EndEvent
 
 Event OnUpdateGameTime()
-	If Core.DFFMA_Found == False && Core.BARE_Found == False
+	If Core.DFFMA_Found == False && Core.EnableDynamicModesty == False
 		UnregisterForUpdateGameTime()
 		RegisteredForUpdate = False
 		return
@@ -140,7 +140,7 @@ Function TopModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
 EndFunction
 
 Function TopModestyDowngrade(Int TopModestyRank, Bool IsShowingBra, Bool IsShowingChest, Bool IsTopless, Int Hours)
-	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	Int DowngradeTime = (0 - (Config.ImmodestyTimeNeeded * 24))
 	Logger.Log("<Modesty Manager> [TopModestyDowngrade] Downgrade Time is: " + DowngradeTime)
 	
 	If TopModestyRank <= 0 && (IsShowingBra == False && IsShowingChest == False)
@@ -277,7 +277,7 @@ Function BottomModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
 EndFunction
 
 Function BottomModestyDowngrade(Int BottomModestyRank, Bool IsShowingUnderwear, Bool IsShowingGenitals, Bool IsBottomless, Int Hours)
-	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	Int DowngradeTime = (0 - (Config.ImmodestyTimeNeeded * 24))
 	Logger.Log("<Modesty Manager> [BottomModestyDowngrade] Downgrade Time is: " + DowngradeTime)
 	
 	If BottomModestyRank <= 0 && (IsShowingUnderwear == False && IsShowingGenitals == False && IsBottomless == False)
@@ -514,7 +514,7 @@ Function ModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
 EndFunction
 
 Function ModestyDowngrade(Int FactionRank, Int Hours)
-	Int DowngradeTime = (0 - Config.ImmodestyTimeNeeded)
+	Int DowngradeTime = (0 - (Config.ImmodestyTimeNeeded * 24))
 	Int FactionRankDown = FactionRank - 1
 	
 	Logger.Log("<Modesty Manager> [ModestyDowngrade] Downgrade Time is: " + DowngradeTime)

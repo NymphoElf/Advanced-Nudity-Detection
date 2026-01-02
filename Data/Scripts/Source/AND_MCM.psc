@@ -334,61 +334,43 @@ Event OnConfigOpen()
 	Int TrackedFemales = NPCModesty.TrackedFemales
 	Int PermanentFemales = NPCModesty.PermanentFemales
 	Int Index = 0
-	Bool Grow = False
 	
+	If TrackedFemales > 0
+		DisplayFemaleName = NPCModesty.FemaleName
+	Else
+		DisplayFemaleName[0] = "---"
+	EndIf
+	
+	If PermanentFemales > 0
+		PermFemales = Utility.ResizeStringArray(PermFemales, PermanentFemales, "---")
+		
+		While Index < PermanentFemales
+			Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " for PermFemales: " + GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name"))
+			PermFemales[Index] = GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name")
+			Logger.Log("<MCM> [Config Open] PermFemales[" + Index + "] = " + PermFemales[Index])
+			Index += 1
+		EndWhile
+	Else
+		PermFemales[0] = "---"
+	EndIf
+	;/
 	Logger.Log("<MCM> [Config Open] Tracked Females = " + TrackedFemales)
 	Logger.Log("<MCM> [Config Open] DisplayFemaleName Array Length: " + DisplayFemaleName.Length)
 	Logger.Log("<MCM> [Config Open] Permanent Females = " + PermanentFemales)
 	Logger.Log("<MCM> [Config Open] PermFemales Array Length: " + PermFemales.Length)
 	
-	If (TrackedFemales > 1) && (TrackedFemales != DisplayFemaleName.Length)
-		If TrackedFemales > DisplayFemaleName.Length
-			Grow = True
-			Index = DisplayFemaleName.Length
-		EndIf
-		
-		DisplayFemaleName = Utility.ResizeStringArray(DisplayFemaleName, TrackedFemales, "---")
-		
-		If Grow == True
-			While Index < TrackedFemales
-				Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " in NPCModesty.FemaleName Array: " + NPCModesty.FemaleName[Index])
-				DisplayFemaleName[Index] = NPCModesty.FemaleName[Index]
-				Logger.Log("<MCM> [Config Open] DisplayFemaleName[" + Index + "] = " + DisplayFemaleName[Index])
-				Index += 1
-			EndWhile
-		EndIf
-	ElseIf TrackedFemales == 1
-		DisplayFemaleName[0] = NPCModesty.FemaleName[0]
-	ElseIf TrackedFemales == 0
-		If DisplayFemaleName[0] != "---"
-			DisplayFemaleName[0] = "---"
-		EndIf
-	EndIf
+	Index = 0
+	While Index < DisplayFemaleName.Length
+		Logger.Log("<MCM> [Config Open] DEBUG Display Name " + Index + " = " + DisplayFemaleName[Index])
+		Index += 1
+	EndWhile
 	
 	Index = 0
-	Grow = False
-	If (PermanentFemales > 1) && (PermanentFemales != PermFemales.Length)
-		If PermanentFemales > PermFemales.Length
-			Grow = True
-			Index = PermFemales.Length
-		EndIf
-		PermFemales = Utility.ResizeStringArray(PermFemales, PermanentFemales, "---")
-		
-		If Grow == True
-			While Index < PermanentFemales
-				Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " for PermFemales: " + GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name"))
-				PermFemales[Index] = GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name")
-				Logger.Log("<MCM> [Config Open] PermFemales[" + Index + "] = " + PermFemales[Index])
-				Index += 1
-			EndWhile
-		EndIf
-	ElseIf PermanentFemales == 1
-		PermFemales[0] = GetStringValue(NPCModesty.PermJsonName, "Female " + 0 + " Name")
-	ElseIf PermanentFemales == 0
-		If PermFemales[0] != "---"
-			PermFemales[0] = "---"
-		EndIf
-	EndIf
+	While Index < NPCModesty.FemaleName.Length
+		Logger.Log("<MCM> [Config Open] DEBUG NPC Female Name " + Index + " = " + NPCModesty.FemaleName[Index])
+		Index += 1
+	EndWhile
+	/;
 EndEvent
 
 Event OnConfigClose()
@@ -1699,7 +1681,7 @@ Event OnPageReset(string page)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
 	
 	ElseIf (page == "$DynamicModestyPage") ;Page 9
-		If Main.DFFMA_Found == True || Main.BARE_Found == True
+		If Main.DFFMA_Found == True || Main.EnableDynamicModesty == True
 			
 			Int ModestyRank = (PlayerRef.GetFactionRank(Main.ModestyFaction) as Int)
 			Int TopModestyRank = (PlayerRef.GetFactionRank(Main.TopModestyFaction) as Int)
@@ -1794,7 +1776,7 @@ Event OnPageReset(string page)
 			AddTextOption("$ModestyDisabled", None)
 		EndIf
 	ElseIf (page == "$NPCModestyPage") ;Page 10
-		If (Main.DFFMA_Found == False && Main.BARE_Found == False) || UseDynamicModesty == False
+		If (Main.DFFMA_Found == False && Main.EnableDynamicModesty == False) || UseDynamicModesty == False
 			AddTextOption("$ModestyDisabled", None)
 		Else
 			AddHeaderOption("$AllNPCHeader")

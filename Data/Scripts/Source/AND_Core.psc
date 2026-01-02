@@ -10,13 +10,14 @@ AND_Logger Property Logger Auto
 SLSF_Reloaded_MCM Property SLSFR_Config = None Auto Hidden
 SLSF_Reloaded_ModIntegration Property SLSFR_Mods = None Auto Hidden
 
-sslActorStats Property SexlabStats = None Auto
+sslActorStats Property SexlabStats = None Auto Hidden
 
 Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto Hidden
 
 Bool Property MainRollRunning Auto Hidden
 Bool Property EquipScanArmed Auto Hidden
+Bool Property EnableDynamicModesty = False Auto Hidden
 
 Faction Property AND_ShowingAssFaction Auto
 Faction Property AND_ShowingChestFaction Auto
@@ -200,22 +201,34 @@ Int Property NPCUnderwearTransparentRoll Auto Hidden
 Int Property NPCHotpantsTransparentRoll Auto Hidden
 Int Property NPCShowgirlTransparentRoll Auto Hidden
 
+Int Property TransformOverwrite = 0 Auto Hidden
+
 Spell Property NPCScanSpell Auto
 
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
-Bool Property BARE_Found Auto Hidden
 Bool Property RosaExists Auto Hidden
 Bool Property SexlabInstalled Auto Hidden
+
+Race Property BaseRace = None Auto Hidden
+
+Race[] Property DefaultRaces Auto
+Race[] Property TransformedRaces Auto
+Race[] Property CustomTransform Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
 Event OnInit()
+	Startup()
+EndEvent
+
+Function Startup()
 	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	ModCheck()
 	PlayerBase = PlayerScript.PlayerRef.GetActorBase()
+	CustomTransform = new Race[10]
 	Debug.Notification("A.N.D. Initialized")
-EndEvent
+EndFunction
 
 Event OnUpdate()
 	If PlayerBase.GetSex() == 0 ;Male
@@ -276,14 +289,6 @@ Function ModCheck()
 		DFFMA_Found = False
 	EndIf
 	
-	If Game.GetModByName("BARE_ArousalUndress.esp") != 255
-		Logger.Log("<Core> [Mod Check] BARE_ArousalUndress.esp Found")
-		BARE_Found = True
-	Else
-		Logger.Log("<Core> [Mod Check] BARE_ArousalUndress.esp NOT Found")
-		BARE_Found = False
-	EndIf
-	
 	If Game.GetModByName("RosaFollower.esp") != 255
 		Logger.Log("<Core> [Mod Check] RosaFollower.esp Found")
 		RosaExists = True
@@ -295,23 +300,57 @@ Function ModCheck()
 	EndIf
 EndFunction
 
-Function AND_MovementDiceRoll()
-	Logger.Log("<Core> [AND_MovementDiceRoll]")
+Function AddCustomTransform(Race TransformRace)
+	Int Index = CustomTransform.Find(None)
+	If Index < 0
+		Debug.MessageBox("A.N.D. MESSAGE - Custom Transform List Full! Oldest Entry will be overwritten!")
+		Index = TransformOverwrite
+		If TransformOverwrite < 9
+			TransformOverwrite += 1
+		Else
+			TransformOverwrite = 0
+		EndIf
+	EndIf
+	
+	CustomTransform[Index] = TransformRace
+EndFunction
+
+Function AND_MovementDiceRoll(Bool Sprinting)
+	Logger.Log("<Core> [AND_MovementDiceRoll] START")
+	Logger.Log("<Core> [AND_MovementDiceRoll] Sprinting = " + Sprinting)
+	
+	Bool WearingChestCurtain = PlayerScript.IsWearingChestCurtain
+	Bool WearingAssCurtain = PlayerScript.IsWearingAssCurtain
+	Bool WearingPelvicCurtain = PlayerScript.IsWearingPelvicCurtain
+	
+	If WearingChestCurtain == False && WearingAssCurtain == False && WearingPelvicCurtain == False
+		Logger.Log("<Core> [AND_MovementDiceRoll] No curtains worn. Skipping Mvoement check.")
+		Logger.Log("<Core> [AND_MovementDiceRoll] END")
+		return
+	EndIf
 	
 	Int MaxRoll = 100
 	Int RunMod = Config.RunningModifier
 	Int SprintMod = Config.SprintingModifier
 	
-	If PlayerScript.PlayerRef.IsSprinting()
+	If Sprinting == True
 		MaxRoll = (100 - SprintMod)
-	ElseIf PlayerScript.PlayerRef.IsRunning()
+	Else
 		MaxRoll = (100 - RunMod)
 	EndIf
 	
 	;Player Flash Odds
-	TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
-	PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
-	AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	If WearingChestCurtain == True
+		TopCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	EndIf
+	
+	If WearingPelvicCurtain == True
+		PelvicCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	EndIf
+	
+	If WearingAssCurtain == True
+		AssCurtainRoll = Utility.RandomInt(1,MaxRoll)
+	EndIf
 	
 	If PlayerBase.GetSex() == 0 ;Male
 		Logger.Log("<Core> [Movement Dice Roll] Send Male Scan")
@@ -322,6 +361,8 @@ Function AND_MovementDiceRoll()
 		FemaleScan.FullAnalyze()
 		Config.SetFemaleCoverage()
 	EndIf
+	
+	Logger.Log("<Core> [AND_MovementDiceRoll] END")
 EndFunction
 
 Function AND_DiceRoll()
@@ -329,7 +370,7 @@ Function AND_DiceRoll()
 		MainRollRunning = True
 		Logger.Log("<Core> [AND_DiceRoll]")
 		
-		Int MaxRoll = 0
+		Int MaxRoll = 100
 		Int RunMod = Config.RunningModifier
 		Int SprintMod = Config.SprintingModifier
 		
@@ -338,11 +379,7 @@ Function AND_DiceRoll()
 				MaxRoll = (100 - SprintMod)
 			ElseIf PlayerScript.PlayerRef.IsRunning()
 				MaxRoll = (100 - RunMod)
-			Else
-				MaxRoll = 100
 			EndIf
-		Else
-			MaxRoll = 100
 		EndIf
 		
 		;Player Flash Odds
@@ -448,4 +485,11 @@ Int Function FindSexuality(Actor target)
 	Else
 		return 100
 	EndIf
+EndFunction
+
+Bool Function IsPlayerTransformed()
+	If PlayerBase.GetRace() != BaseRace
+		return True
+	EndIf
+	return False
 EndFunction

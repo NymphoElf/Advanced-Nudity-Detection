@@ -101,7 +101,7 @@ Function Startup()
 	
 	LastUpdateTime = Utility.CreateFloatArray(ArraySize)
 	
-	FemaleName = Utility.CreateStringArray(ArraySize)
+	FemaleName = Utility.CreateStringArray(ArraySize, "---")
 EndFunction
 
 Function GeneratePermanentFile()
@@ -172,7 +172,7 @@ Function ResizeNormalArrays()
 	
 	LastUpdateTime = Utility.ResizeFloatArray(LastUpdateTime, ArraySize)
 	
-	FemaleName = Utility.ResizeStringArray(FemaleName, ArraySize)
+	FemaleName = Utility.ResizeStringArray(FemaleName, ArraySize, "---")
 EndFunction
 
 Function ResizePermanentArray()
@@ -210,6 +210,11 @@ EndFunction
 Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 	ActorBase femaleBase = akFemale.GetActorBase()
 	String akName = femaleBase.GetName()
+	
+	If akName == ""
+		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Cannot Register a nameless female. Female " + akFemale + " is nameless or has an empty name string.")
+		return
+	EndIf
 	
 	Int ShyMode = 0
 
@@ -419,6 +424,11 @@ Function AddPermanent(Actor akFemale)
 	
 	If FemaleID < 0
 		Logger.Log("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " not found in FemaleActor array!")
+		return
+	EndIf
+	
+	If PermanentFemaleActor.Find(akFemale) >= 0
+		Logger.Log("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " already exists on Permanent Female Array!")
 		return
 	EndIf
 	

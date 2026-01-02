@@ -213,7 +213,7 @@ EndFunction
 
 Function FullAnalyze()
 	Logger.Log("<Female Armor Scan> [FullAnalyze] Full Analysis Started for Player")
-	If PlayerRef.WornHasKeyword(Core.AND_CoversAll) == False
+	If PlayerRef.WornHasKeyword(Core.AND_CoversAll) == False && Core.IsPlayerTransformed() == False
 		Logger.Log("<Female Armor Scan> [FullAnalyze] No CoversAll Keyword Detected")
 		
 		Bool HasChestCurtain = PlayerRef.WornHasKeyword(Core.AND_ChestCurtain)

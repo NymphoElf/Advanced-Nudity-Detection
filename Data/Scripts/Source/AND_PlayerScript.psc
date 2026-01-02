@@ -11,11 +11,20 @@ AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
 
+Bool Property PermanentsImported = False Auto Hidden
+Bool Property IsWearingAssCurtain = False Auto Hidden
+Bool Property IsWearingChestCurtain = False Auto Hidden
+Bool Property IsWearingPelvicCurtain = False Auto Hidden
+Bool Property StartupCompleted = False Auto Hidden
+
 Float Property GameTimeUpdateSpeed Auto Hidden
 
 GlobalVariable Property TimeScale Auto
 
 Int Property MaxTimeScale = 100 Auto Hidden
+
+Message Property IsTransformedMessage Auto
+Message Property AddTransformRace Auto
 
 String Property ScanSetting Auto Hidden
 
@@ -23,11 +32,49 @@ Bool MainRollActive = False
 
 Event OnInit()
 	Startup()
+	While StartupCompleted == False
+		Startup()
+	EndWhile
 EndEvent
 
 Function Startup()
 	RegisterForMenu("RaceSex Menu")
+	RegisterForMenu("Console")
+	RegisterForUpdateGameTime(0.25)
+	StartupCompleted = True
+EndFunction
+
+Event OnPlayerLoadGame()
+	String PlayerName = Core.PlayerBase.GetName()
+	If Logger.LogName == "?" || Logger.LogName == ""
+		Logger.LogName = PlayerName
+	EndIf
 	
+	If Core.BaseRace == None
+		Debug.MessageBox("You cannot continue using AND with this save. You must start a new game.")
+	EndIf
+	
+	Logger.Log("===LOAD GAME===")
+	Core.ModCheck()
+	NPCModestyManager.RestoreNPCFactions()
+	
+	If Core.DFFMA_Found == True
+		SetPlayerModestyFactions()
+	EndIf
+	
+	ModEventListener.InitializeModEvents()
+	
+	RegisterForAnimations()
+	
+	ModEventListener.CleanRegistry()
+EndEvent
+
+Function RegisterForAnimations()
+	RegisterForAnimationEvent(PlayerRef, "FootLeft")
+	RegisterForAnimationEvent(PlayerRef, "FootSprintLeft")
+EndFunction
+
+Function InitializeFactions()
 	PlayerRef.AddToFaction(Core.AND_ShowingAssFaction)
 	PlayerRef.AddToFaction(Core.AND_ShowingChestFaction)
 	PlayerRef.AddToFaction(Core.AND_ShowingGenitalsFaction)
@@ -48,95 +95,101 @@ Function Startup()
 	PlayerRef.SetFactionRank(Core.ShyWithMale, 1)
 	PlayerRef.AddToFaction(Core.ShyWithFemale)
 	PlayerRef.SetFactionRank(Core.ShyWithFemale, 0)
-	
-	RegisterForAnimationEvent(PlayerRef, "FootLeft")
-	RegisterForAnimationEvent(PlayerRef, "tailSprint")
-	RegisterForAnimationEvent(PlayerRef, "EndAnimatedCameraDelta")
-	
-	RegisterForUpdateGameTime(0.25)
 EndFunction
 
-Event OnPlayerLoadGame()
-	String PlayerName = Core.PlayerBase.GetName()
-	If Logger.LogName == "?" || Logger.LogName == ""
-		Logger.LogName = PlayerName
+Function SetPlayerModestyFactions()
+	If PlayerRef.IsInFaction(Core.ModestyFaction) == False
+		PlayerRef.AddToFaction(Core.ModestyFaction)
+		PlayerRef.SetFactionRank(Core.ModestyFaction, 0)
 	EndIf
 	
-	Logger.Log("===LOAD GAME===")
-	Core.ModCheck()
-	NPCModestyManager.RestoreNPCFactions()
-	
-	If (Core.DFFMA_Found == True || Core.BARE_Found == True)
-		If PlayerRef.IsInFaction(Core.ModestyFaction) == False
-			PlayerRef.AddToFaction(Core.ModestyFaction)
-			PlayerRef.SetFactionRank(Core.ModestyFaction, 0)
-		EndIf
-		
-		If PlayerRef.IsInFaction(Core.TopModestyFaction) == False
-			PlayerRef.AddToFaction(Core.TopModestyFaction)
-			PlayerRef.SetFactionRank(Core.TopModestyFaction, 0)
-		EndIf
-		
-		If PlayerRef.IsInFaction(Core.BottomModestyFaction) == False
-			PlayerRef.AddToFaction(Core.BottomModestyFaction)
-			PlayerRef.SetFactionRank(Core.BottomModestyFaction, 0)
-		EndIf
-		
-		If PlayerRef.IsInFaction(Core.ShyWithMale) == False
-			PlayerRef.AddToFaction(Core.ShyWithMale)
-			PlayerRef.SetFactionRank(Core.ShyWithMale, 1)
-		EndIf
-		
-		If PlayerRef.IsInFaction(Core.ShyWithFemale) == False
-			PlayerRef.AddToFaction(Core.ShyWithFemale)
-			PlayerRef.SetFactionRank(Core.ShyWithFemale, 0)
-		EndIf
+	If PlayerRef.IsInFaction(Core.TopModestyFaction) == False
+		PlayerRef.AddToFaction(Core.TopModestyFaction)
+		PlayerRef.SetFactionRank(Core.TopModestyFaction, 0)
 	EndIf
 	
-	ModEventListener.InitializeModEvents()
+	If PlayerRef.IsInFaction(Core.BottomModestyFaction) == False
+		PlayerRef.AddToFaction(Core.BottomModestyFaction)
+		PlayerRef.SetFactionRank(Core.BottomModestyFaction, 0)
+	EndIf
 	
-	RegisterForAnimationEvent(PlayerRef, "FootLeft")
-	RegisterForAnimationEvent(PlayerRef, "tailSprint")
-	RegisterForAnimationEvent(PlayerRef, "EndAnimatedCameraDelta")
-EndEvent
+	If PlayerRef.IsInFaction(Core.ShyWithMale) == False
+		PlayerRef.AddToFaction(Core.ShyWithMale)
+		PlayerRef.SetFactionRank(Core.ShyWithMale, 1)
+	EndIf
+	
+	If PlayerRef.IsInFaction(Core.ShyWithFemale) == False
+		PlayerRef.AddToFaction(Core.ShyWithFemale)
+		PlayerRef.SetFactionRank(Core.ShyWithFemale, 0)
+	EndIf
+EndFunction
 
 Event OnMenuClose(String MenuName)
 	If MenuName == "RaceSex Menu"
 		String PlayerName = Core.PlayerBase.GetName()
+		Core.BaseRace = Core.PlayerBase.GetRace()
+		
+		RegisterForAnimations()
+		InitializeFactions()
 		
 		Logger.LogName = PlayerName
 		Logger.DuplicateCheck()
 		Logger.Log("===ADVANCED NUDITY DETECTION LOG START===")
 		Logger.Log("===PLAYER NAME: " + PlayerName + " ===")
 		
-		NPCModestyManager.ImportPermanentFemales()
-		
-		UnregisterForMenu("RaceSex Menu")
+		If PermanentsImported == False
+			NPCModestyManager.ImportPermanentFemales()
+			PermanentsImported = True
+		EndIf
+	EndIf
+	
+	If MenuName == "Console"
+		Race arPlayer = Core.PlayerBase.GetRace()
+		If arPlayer != Core.BaseRace
+			If Core.DefaultRaces.Find(arPlayer) >= 0
+				Core.BaseRace = arPlayer
+			ElseIf Core.TransformedRaces.Find(arPlayer) >= 0 || Core.CustomTransform.Find(arPlayer) >= 0
+				;Do nothing, player is still Transformed
+			Else
+				Int TransformedSelection = IsTransformedMessage.Show()
+				If TransformedSelection == 1 ;Custom Race
+					Core.BaseRace = arPlayer
+					Debug.MessageBox("A.N.D. MESSAGE - Your race is detected as: " + arPlayer + " " + arPlayer.GetName() + ". If this is not your NON-transformed race, use Racemenu to reset it to the correct race.")
+				Else
+					Int AddTransform = AddTransformRace.Show()
+					If AddTransform == 0
+						Core.AddCustomTransform(arPlayer)
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 	EndIf
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	If Config.AllowMotionFlash == True
-		If akReference == PlayerRef
+	Logger.Log("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | Event: " + akEventName)
+	Logger.Log("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | PlayerRef: " + PlayerRef)
+	If Config.AllowMotionFlash == True && akReference == PlayerRef
+		Logger.Log("<PlayerScript> [OnAnimationEvent] Motion Flash Enabled and Ref is PlayerRef")
+		Logger.Log("<PlayerScript> [OnAnimationEvent] Ass Cutain: " + IsWearingAssCurtain)
+		Logger.Log("<PlayerScript> [OnAnimationEvent] Chest Cutain: " + IsWearingChestCurtain)
+		Logger.Log("<PlayerScript> [OnAnimationEvent] Pelvic Cutain: " + IsWearingPelvicCurtain)
+		If (IsWearingAssCurtain == True || IsWearingChestCurtain == True || IsWearingPelvicCurtain == True)
 			If akEventName == "FootLeft"
-				If !PlayerRef.IsSprinting() && PlayerRef.IsRunning() && MotionClock.RunTimer == 0 && MainRollActive == False
-					Core.AND_MovementDiceRoll()
-					MotionClock.RunTimer = 3
-					MotionClock.StartClock()
+				Logger.Log("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft'")
+				If MotionClock.CooldownActive == False && MainRollActive == False
+					Logger.Log("<PlayerScript> [OnAnimationEvent] Running Motion Flash Trigger")
+					Core.AND_MovementDiceRoll(False)
+					MotionClock.Cooldown()
 				EndIf
 			EndIf
 			
-			If akEventName == "tailSprint"
-				If MotionClock.SprintTimer == 0 && MainRollActive == False
-					Core.AND_MovementDiceRoll()
-				EndIf
-			EndIf
-			
-			If akEventName == "EndAnimatedCameraDelta"
-				If MotionClock.SprintTimer == 0 && MainRollActive == False
-					Core.AND_MovementDiceRoll()
-					MotionClock.SprintTimer = 3
-					MotionClock.StartClock()
+			If akEventName == "FootSprintLeft"
+				Logger.Log("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft'")
+				If MotionClock.CooldownActive == False && MainRollActive == False
+					Logger.Log("<PlayerScript> [OnAnimationEvent] Sprinting Motion Flash Trigger")
+					Core.AND_MovementDiceRoll(True)
+					MotionClock.Cooldown()
 				EndIf
 			EndIf
 		EndIf
@@ -155,6 +208,7 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
+		CheckWearingCurtain()
 		Core.RegisterForSingleUpdate(0.1)
 	EndIf
 EndEvent
@@ -171,9 +225,24 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
+		CheckWearingCurtain()
 		Core.RegisterForSingleUpdate(0.1)
 	EndIf
 EndEvent
+
+Function CheckWearingCurtain()
+	If Core.PlayerBase.GetSex() == 0
+		IsWearingChestCurtain = (PlayerRef.WornHasKeyword(Core.AND_ChestCurtain_Male) || PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT_Male))
+		
+		IsWearingAssCurtain = (PlayerRef.WornHasKeyword(Core.AND_AssCurtain_Male) || PlayerRef.WornHasKeyword(Core.AND_AssCurtainT_Male) || PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) || PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male))
+		IsWearingPelvicCurtain = (PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain_Male) || PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT_Male) || PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) || PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male))
+	Else
+		IsWearingChestCurtain = (PlayerRef.WornHasKeyword(Core.AND_ChestCurtain) || PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT))
+		
+		IsWearingAssCurtain = (PlayerRef.WornHasKeyword(Core.AND_AssCurtain) || PlayerRef.WornHasKeyword(Core.AND_AssCurtainT) || PlayerRef.WornHasKeyword(Core.AND_Miniskirt) || PlayerRef.WornHasKeyword(Core.AND_MiniskirtT))
+		IsWearingPelvicCurtain = (PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain) || PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT) || PlayerRef.WornHasKeyword(Core.AND_Miniskirt) || PlayerRef.WornHasKeyword(Core.AND_MiniskirtT))
+	EndIf
+EndFunction
 
 Event OnUpdateGameTime()
 	If TimeScale.GetValue() as Int > MaxTimeScale
