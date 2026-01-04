@@ -271,6 +271,7 @@ Event OnRegisterMod(String PluginName)
 			If EmptyIndex >= 0
 				Plugins[EmptyIndex] = PluginName
 				RegisteredMods += 1
+				Logger.Log("<Mod Event Listener> [OnRegisterMod] Plugin " + PluginName + " successfully registered at Index " + EmptyIndex)
 			Else
 				Logger.Log("<Mod Event Listener> [OnRegisterMod] Registered Plugin List Full")
 			EndIf
@@ -344,6 +345,9 @@ Event OnSetStrictModestyRules(String Plugin, Bool Strict)
 	If PluginIndex < 0
 		Logger.Log("<Mod Event Listener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered.")
 		return
+	ElseIf Config.UseDynamicModesty == False
+		Logger.Log("<Mod Event Listener> [OnSetMinimumModestyRank] Cannot set Modesty Rules from plugin " + Plugin + " - Dynamic Modesty is Disabled in the MCM!")
+		return
 	EndIf
 	
 	IsStrictRules[PluginIndex] = Strict
@@ -353,6 +357,11 @@ Event OnSetStrictModestyRules(String Plugin, Bool Strict)
 	EndIf
 	
 	Config.StrictModestyRules = Strict
+	If Strict == True
+		Config.AND_DynamicModesty.SetValue(1)
+	Else
+		Config.AND_DynamicModesty.SetValue(2)
+	EndIf
 EndEvent
 
 Event OnGetStrictModestyRules()
