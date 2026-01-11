@@ -208,7 +208,7 @@ Bool Property StrictNPC = False Auto Hidden
 Bool Property NPCUpgradeBlocked = False Auto Hidden
 Bool Property NPCPermanentShameless = False Auto Hidden
 
-Bool Property Logging = False Auto Hidden ;Default TRUE in Beta Builds | Default FALSE in non-Beta Builds
+Bool Property Logging = False Auto Hidden
 Bool Property AddToMainLog = False Auto Hidden 
 
 Int Property RunningModifier = 10 Auto Hidden
@@ -280,6 +280,12 @@ Event OnUpdate()
 	NPCModestyArousalThreshold.SetValue(70)
 	DisplayFemaleName = Utility.CreateStringArray(1, "---")
 	PermFemales = Utility.CreateStringArray(1, "---")
+	
+	;Debug.Trace("{ADVANCED NUDITY DETECTION} - <MCM> [OnUpdate] bCustomLogEnabled:AdvancedNudityDetection value = " + Utility.GetINIBool("bEnableLogging:Papyrus"))
+	;If user has Papyrus Logging enabled in 'Skyrim.ini', immediately enable custom logger and output to game log as well.
+	Logging = Utility.GetINIBool("bEnableLogging:Papyrus")
+	AddToMainLog = Logging
+	
 	Debug.Notification("Advanced Nudity MCM Ready!")
 EndEvent
 

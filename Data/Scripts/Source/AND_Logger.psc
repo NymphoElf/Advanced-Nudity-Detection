@@ -26,7 +26,7 @@ EndFunction
 
 Function Log(String LogString, Bool ForceToMainLog = False)
 	If Config.AddToMainLog == True || ForceToMainLog == True
-		Debug.Trace("[ADVANCED NUDITY DETECTION] - " + LogString)
+		Debug.Trace("{ADVANCED NUDITY DETECTION} - " + LogString)
 	EndIf
 	
 	If Config.Logging == False

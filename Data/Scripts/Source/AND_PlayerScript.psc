@@ -51,7 +51,8 @@ Event OnPlayerLoadGame()
 	EndIf
 	
 	If Core.BaseRace == None
-		Debug.MessageBox("You cannot continue using AND with this save. You must start a new game.")
+		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
+		Game.ShowRaceMenu()
 	EndIf
 	
 	Logger.Log("===LOAD GAME===")
@@ -140,6 +141,11 @@ Event OnMenuClose(String MenuName)
 		If PermanentsImported == False
 			NPCModestyManager.ImportPermanentFemales()
 			PermanentsImported = True
+		EndIf
+		
+		If Core.BaseRace == None
+			Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your character's race again.")
+			Game.ShowRaceMenu()
 		EndIf
 	EndIf
 	
