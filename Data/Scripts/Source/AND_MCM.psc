@@ -9,8 +9,8 @@ AND_MaleArmorScan Property MaleScan Auto
 AND_FemaleArmorScan Property FemaleScan Auto
 AND_NPC_Modesty_Manager Property NPCModesty Auto
 AND_ModestyRandomizer Property ModestyRandomizer Auto
-AND_Logger Property Logger Auto
 AND_KeybindManager Property Keybinds Auto
+AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
 Actor Property SelectedFemaleActor Auto Hidden
@@ -209,7 +209,7 @@ Bool Property NPCUpgradeBlocked = False Auto Hidden
 Bool Property NPCPermanentShameless = False Auto Hidden
 
 Bool Property Logging = False Auto Hidden
-Bool Property AddToMainLog = False Auto Hidden 
+Int Property LoggingLevel = 1 Auto Hidden
 
 Int Property RunningModifier = 10 Auto Hidden
 Int Property SprintingModifier = 20 Auto Hidden
@@ -248,6 +248,7 @@ Int[] Property Page12ToggleID Auto Hidden
 
 Int[] Property Page9SliderID Auto Hidden
 Int[] Property Page10SliderID Auto Hidden
+Int[] Property Page12SliderID Auto Hidden
 
 Int[] Property Page9MenuID Auto Hidden
 Int[] Property Page10MenuID Auto Hidden
@@ -269,27 +270,51 @@ String Property SelectedPermFemale = "---" Auto Hidden
 Bool Property DeletePermFemale = False Auto Hidden
 
 Event OnConfigInit()
-	Utility.Wait(1)
-	RegisterForSingleUpdate(1)
-	Debug.Notification("Advanced Nudity MCM Initializing...")
+	Startup()
 EndEvent
 
 Event OnUpdate()
+	AND_Logger.FastLog("<MCM> [OnUpdate] - START")
+	
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting MCM Install...")
 	InstallMCM()
+	AND_Logger.FastLog("<MCM> [OnUpdate] - MCM Installed!")
+	
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting to set Globals...")
 	ModestyArousalThreshold.SetValue(70)
 	NPCModestyArousalThreshold.SetValue(70)
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Globals Set!")
+	
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting to create arrays...")
 	DisplayFemaleName = Utility.CreateStringArray(1, "---")
 	PermFemales = Utility.CreateStringArray(1, "---")
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Arrays created!")
 	
-	;Debug.Trace("{ADVANCED NUDITY DETECTION} - <MCM> [OnUpdate] bCustomLogEnabled:AdvancedNudityDetection value = " + Utility.GetINIBool("bEnableLogging:Papyrus"))
-	;If user has Papyrus Logging enabled in 'Skyrim.ini', immediately enable custom logger and output to game log as well.
-	Logging = Utility.GetINIBool("bEnableLogging:Papyrus")
-	AddToMainLog = Logging
-	
+	AND_Logger.FastLog("<MCM> [OnUpdate] - Advanced Nudity MCM Ready!")
 	Debug.Notification("Advanced Nudity MCM Ready!")
 EndEvent
 
+Function Startup()
+	;If user has Papyrus Logging enabled in 'Skyrim.ini', immediately enable custom logger and output to game log as well.
+	Logging = Utility.GetINIBool("bEnableLogging:Papyrus")
+	AND_Logger.EnableLogging(Logging)
+	If Logging == True
+		LoggingLevel = 0
+		AND_Logger.SetLogLevel(LoggingLevel)
+	EndIf
+	
+	Utility.Wait(1.0)
+	
+	Debug.Notification("Advanced Nudity MCM Initializing...")
+	
+	AND_Logger.FastLog("<MCM> [Startup] - RegisterForSingleUpdate...")
+	RegisterForSingleUpdate(1)
+	AND_Logger.FastLog("<MCM> [Startup] - RegisterForSingleUpdate Complete!")
+EndFunction
+
 Function InstallMCM()
+	AND_Logger.FastLog("<MCM> [InstallMCM] - START")
+	
 	ModName = "Advanced Nudity"
 	Pages = New String[13]
 	Pages[0] = "$NudityStatesPage"
@@ -305,6 +330,8 @@ Function InstallMCM()
 	Pages[10] = "$NPCModestyPage"
 	Pages[11] = "$FlashKeys"
 	Pages[12] = "$DebugPage"
+	
+	AND_Logger.FastLog("<MCM> [InstallMCM] - END")
 EndFunction
 
 Function SetMaleCoverage()
@@ -320,8 +347,9 @@ Function SetFemaleCoverage()
 EndFunction
 
 Event OnConfigOpen()
-	Logger.Log("==CONFIG OPEN==")
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
 	
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Set Page Array")
 	Pages = New String[13]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
@@ -337,46 +365,33 @@ Event OnConfigOpen()
 	Pages[11] = "$FlashKeys"
 	Pages[12] = "$DebugPage"
 	
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Initialize NPC Variables")
 	Int TrackedFemales = NPCModesty.TrackedFemales
 	Int PermanentFemales = NPCModesty.PermanentFemales
 	Int Index = 0
 	
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Update Tracked Females List")
 	If TrackedFemales > 0
 		DisplayFemaleName = NPCModesty.FemaleName
 	Else
 		DisplayFemaleName[0] = "---"
 	EndIf
 	
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Update Permanent Females List")
 	If PermanentFemales > 0
 		PermFemales = Utility.ResizeStringArray(PermFemales, PermanentFemales, "---")
 		
 		While Index < PermanentFemales
-			Logger.Log("<MCM> [Config Open] String Value for Index " + Index + " for PermFemales: " + GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name"))
+			AND_Logger.FastLog("<MCM> [Config Open] String Value for Index " + Index + " for PermFemales: " + GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name"))
 			PermFemales[Index] = GetStringValue(NPCModesty.PermJsonName, "Female " + Index + " Name")
-			Logger.Log("<MCM> [Config Open] PermFemales[" + Index + "] = " + PermFemales[Index])
+			AND_Logger.FastLog("<MCM> [Config Open] PermFemales[" + Index + "] = " + PermFemales[Index])
 			Index += 1
 		EndWhile
 	Else
 		PermFemales[0] = "---"
 	EndIf
-	;/
-	Logger.Log("<MCM> [Config Open] Tracked Females = " + TrackedFemales)
-	Logger.Log("<MCM> [Config Open] DisplayFemaleName Array Length: " + DisplayFemaleName.Length)
-	Logger.Log("<MCM> [Config Open] Permanent Females = " + PermanentFemales)
-	Logger.Log("<MCM> [Config Open] PermFemales Array Length: " + PermFemales.Length)
 	
-	Index = 0
-	While Index < DisplayFemaleName.Length
-		Logger.Log("<MCM> [Config Open] DEBUG Display Name " + Index + " = " + DisplayFemaleName[Index])
-		Index += 1
-	EndWhile
-	
-	Index = 0
-	While Index < NPCModesty.FemaleName.Length
-		Logger.Log("<MCM> [Config Open] DEBUG NPC Female Name " + Index + " = " + NPCModesty.FemaleName[Index])
-		Index += 1
-	EndWhile
-	/;
+	AND_Logger.FastLog("<MCM> [OnConfigOpen] - END")
 EndEvent
 
 Event OnConfigClose()
@@ -547,6 +562,7 @@ Event OnPageReset(string page)
 	
 	Page9SliderID = new Int[50]
 	Page10SliderID = new Int[50]
+	Page12SliderID = new Int[1]
 	
 	Page9MenuID = new Int[50]
 	Page10MenuID = new Int[50]
@@ -1829,7 +1845,7 @@ Event OnPageReset(string page)
 			EndIf
 			
 			If SelectedFemale != "---" && SelectedFemale != ""
-				Logger.Log("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
+				AND_Logger.FastLog("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
 				Int FemaleID = NPCModesty.FemaleActor.Find(SelectedFemaleActor)
 				Int Index = NPCModesty.ShynessMode[FemaleID]
 				
@@ -1905,8 +1921,8 @@ Event OnPageReset(string page)
 	ElseIf (page == "$DebugPage")
 		AddHeaderOption("$LoggingHeader")
 		Page12ToggleID[0] = AddToggleOption("$EnableLogging", Logging, 0)
-		Page12ToggleID[1] = AddToggleOption("$AddToGameLog", AddToMainLog, DisabledIf(Logging == False))
-		Page12ToggleID[2] = AddToggleOption("$DataDump", ConfirmSelection, 0)
+		Page12SliderID[0] = AddSliderOption("$LoggingLevel", LoggingLevel, "{0}", DisabledIf(Logging == False))
+		Page12ToggleID[1] = AddToggleOption("$DataDump", ConfirmSelection, 0)
 	EndIf
 EndEvent
 
@@ -1923,9 +1939,9 @@ Bool Function ShowConfirmationDialog(String Text)
 EndFunction
 
 Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, String ConflictName)
-	Logger.Log("<MCM> [OnOptionKeyMapChange] KeyCode is " + KeyCode)
-	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictControl is " + ConflictControl)
-	Logger.Log("<MCM> [OnOptionKeyMapChange] ConflictName is " + ConflictName)
+	AND_Logger.FastLog("<MCM> [OnOptionKeyMapChange] KeyCode is " + KeyCode)
+	AND_Logger.FastLog("<MCM> [OnOptionKeyMapChange] ConflictControl is " + ConflictControl)
+	AND_Logger.FastLog("<MCM> [OnOptionKeyMapChange] ConflictName is " + ConflictName)
 	If (KeyCode != 1 && ConflictControl != "" && !ShowConfirmationDialog("$AND_KeyAlreadyInUse"))
 		return
 	ElseIf KeyCode == 1
@@ -2113,7 +2129,9 @@ Event OnOptionHighlight(Int Option)
 		;=========================
 		;END PAGE 10
 		;=========================
-		
+	
+	ElseIf Option == Page12SliderID[0]
+		SetInfoText("$LoggingLevelInfoText")
 		;=========================
 		;---MENUS---
 		;=========================
@@ -2199,6 +2217,12 @@ Event OnOptionSliderOpen(Int Option)
 		RangeMax = 3
 		Interval = 1
 		DefaultValue = 0
+	ElseIf Option == Page12SliderID[0]
+		StartValue = LoggingLevel
+		RangeMin = 0
+		RangeMax = 3
+		Interval = 1
+		DefaultValue = 1
 	EndIf
 	
 	SetSliderDialogStartValue(StartValue)
@@ -2226,6 +2250,10 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		ThisNPCBottomRank = Value as Int
 	ElseIf Option == Page10SliderID[6]
 		ThisNPCMinimumBottomRank = Value as Int
+	ElseIf Option == Page12SliderID[0]
+		LoggingLevel = Value as Int
+		AND_Logger.SetLogLevel(LoggingLevel)
+		AND_Logger.FastLog("<MCM> [OnOptionSliderAccept] - LoggingLevel set to " + LoggingLevel, Logger.CRITICAL)
 	EndIf
 	ForcePageReset()
 EndEvent
@@ -2568,14 +2596,14 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, DeleteNPCs)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[3]
-		Logger.Log("<MCM> {Page10ToggleID[3]} Delete All NPC Data Started")
+		AND_Logger.FastLog("<MCM> {Page10ToggleID[3]} Delete All NPC Data Started")
 		Int RemoveFemaleID = NPCModesty.TrackedFemales
 		While RemoveFemaleID >= 0
 			NPCModesty.RemoveFemale(None, RemoveFemaleID)
 			RemoveFemaleID -= 1
 		EndWhile
 		DisplayFemaleName = Utility.ResizeStringArray(DisplayFemaleName, 1, "---")
-		Logger.Log("<MCM> {Page10ToggleID[3]} Delete All NPC Data Complete")
+		AND_Logger.FastLog("<MCM> {Page10ToggleID[3]} Delete All NPC Data Complete")
 		DeleteNPCs = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[4]
@@ -2745,10 +2773,12 @@ Event OnOptionSelect(Int Option)
 			Logging = True
 		Else
 			Logging = False
-			AddToMainLog = False
+			;AddToMainLog = False
 		EndIf
+		AND_Logger.EnableLogging(Logging)
 		SetToggleOptionValue(Option, Logging)
 		ForcePageReset()
+	;/
 	ElseIf Option == Page12ToggleID[1]
 		If AddToMainLog == False
 			AddToMainLog = True
@@ -2756,6 +2786,7 @@ Event OnOptionSelect(Int Option)
 			AddToMainLog = False
 		EndIf
 		SetToggleOptionValue(Option, AddToMainLog)
+	/;
 	ElseIf Option == Page12ToggleID[2]
 		NPCModesty.DumpNPCData()
 	EndIf
@@ -2842,7 +2873,7 @@ State AND_ScanFrequency_State
 		Options[4] = "$VFScan" ;0.1 Game Time (6 Game Minutes/18 IRL Seconds) - TimeScale Limit: 40
 		
 		ScanFrequency = Options[AcceptedIndex]
-		Logger.Log("<MCM> {AND_ScanFrequency_State:OnMenuAcceptST} Scan Speed is now: " + ScanFrequency)
+		AND_Logger.FastLog("<MCM> {AND_ScanFrequency_State:OnMenuAcceptST} Scan Speed is now: " + ScanFrequency)
 		SetMenuOptionValueST(ScanFrequency, False, "AND_ScanFrequency_State")
 	EndEvent
 	

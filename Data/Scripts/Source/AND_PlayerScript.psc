@@ -15,7 +15,6 @@ Bool Property PermanentsImported = False Auto Hidden
 Bool Property IsWearingAssCurtain = False Auto Hidden
 Bool Property IsWearingChestCurtain = False Auto Hidden
 Bool Property IsWearingPelvicCurtain = False Auto Hidden
-Bool Property StartupCompleted = False Auto Hidden
 
 Float Property GameTimeUpdateSpeed Auto Hidden
 
@@ -31,31 +30,39 @@ String Property ScanSetting Auto Hidden
 Bool MainRollActive = False
 
 Event OnInit()
+	AND_Logger.FastLog("<PlayerScript> [OnInit] - INIT START")
 	Startup()
-	While StartupCompleted == False
-		Startup()
-	EndWhile
+	AND_Logger.FastLog("<PlayerScript> [OnInit] - INIT END")
 EndEvent
 
 Function Startup()
+	AND_Logger.FastLog("<PlayerScript> [Startup] - STARTUP BEGIN")
+	
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for RaceSex Menu...")
 	RegisterForMenu("RaceSex Menu")
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for RaceSex Menu Completed.")
+	
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for Console Menu...")
 	RegisterForMenu("Console")
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for Console Completed.")
+	
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for UpdateGameTime...")
 	RegisterForUpdateGameTime(0.25)
-	StartupCompleted = True
+	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for UpdateGameTime Completed")
+	
+	AND_Logger.FastLog("<PlayerScript> [Startup] - STARTUP COMPLETE")
 EndFunction
 
 Event OnPlayerLoadGame()
 	String PlayerName = Core.PlayerBase.GetName()
-	If Logger.LogName == "?" || Logger.LogName == ""
-		Logger.LogName = PlayerName
-	EndIf
 	
 	If Core.BaseRace == None
+		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.ERROR)
 		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
 		Game.ShowRaceMenu()
 	EndIf
 	
-	Logger.Log("===LOAD GAME===")
+	AND_Logger.FastLog("===LOAD GAME===")
 	Core.ModCheck()
 	NPCModestyManager.RestoreNPCFactions()
 	
@@ -126,17 +133,24 @@ Function SetPlayerModestyFactions()
 EndFunction
 
 Event OnMenuClose(String MenuName)
+	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Menu Closed")
 	If MenuName == "RaceSex Menu"
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - RaceSex Menu Closed")
 		String PlayerName = Core.PlayerBase.GetName()
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Player Name is: " + PlayerName)
+		
 		Core.BaseRace = Core.PlayerBase.GetRace()
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace)
 		
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Attempting to register for animations...")
 		RegisterForAnimations()
-		InitializeFactions()
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Animation Register Completed.")
 		
-		Logger.LogName = PlayerName
-		Logger.DuplicateCheck()
-		Logger.Log("===ADVANCED NUDITY DETECTION LOG START===")
-		Logger.Log("===PLAYER NAME: " + PlayerName + " ===")
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Attempting to Initialize Factions...")
+		InitializeFactions()
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Faction Initialize Completed.")
+		
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - PLAYER NAME: " + PlayerName)
 		
 		If PermanentsImported == False
 			NPCModestyManager.ImportPermanentFemales()
@@ -144,6 +158,7 @@ Event OnMenuClose(String MenuName)
 		EndIf
 		
 		If Core.BaseRace == None
+			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.ERROR)
 			Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your character's race again.")
 			Game.ShowRaceMenu()
 		EndIf
@@ -173,27 +188,27 @@ Event OnMenuClose(String MenuName)
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	Logger.Log("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | Event: " + akEventName)
-	Logger.Log("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | PlayerRef: " + PlayerRef)
+	AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | Event: " + akEventName)
+	AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | PlayerRef: " + PlayerRef)
 	If Config.AllowMotionFlash == True && akReference == PlayerRef
-		Logger.Log("<PlayerScript> [OnAnimationEvent] Motion Flash Enabled and Ref is PlayerRef")
-		Logger.Log("<PlayerScript> [OnAnimationEvent] Ass Cutain: " + IsWearingAssCurtain)
-		Logger.Log("<PlayerScript> [OnAnimationEvent] Chest Cutain: " + IsWearingChestCurtain)
-		Logger.Log("<PlayerScript> [OnAnimationEvent] Pelvic Cutain: " + IsWearingPelvicCurtain)
+		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Motion Flash Enabled and Ref is PlayerRef")
+		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Ass Cutain: " + IsWearingAssCurtain)
+		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Chest Cutain: " + IsWearingChestCurtain)
+		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Pelvic Cutain: " + IsWearingPelvicCurtain)
 		If (IsWearingAssCurtain == True || IsWearingChestCurtain == True || IsWearingPelvicCurtain == True)
 			If akEventName == "FootLeft"
-				Logger.Log("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft'")
+				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft'")
 				If MotionClock.CooldownActive == False && MainRollActive == False
-					Logger.Log("<PlayerScript> [OnAnimationEvent] Running Motion Flash Trigger")
+					AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Running Motion Flash Trigger")
 					Core.AND_MovementDiceRoll(False)
 					MotionClock.Cooldown()
 				EndIf
 			EndIf
 			
 			If akEventName == "FootSprintLeft"
-				Logger.Log("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft'")
+				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft'")
 				If MotionClock.CooldownActive == False && MainRollActive == False
-					Logger.Log("<PlayerScript> [OnAnimationEvent] Sprinting Motion Flash Trigger")
+					AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sprinting Motion Flash Trigger")
 					Core.AND_MovementDiceRoll(True)
 					MotionClock.Cooldown()
 				EndIf
@@ -203,12 +218,12 @@ Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
-	Logger.Log("<Player Script> [OnObjectEquipped] Object Data: Base Object = " + akBaseObject \
+	AND_Logger.FastLog("<Player Script> [OnObjectEquipped] Object Data: Base Object = " + akBaseObject \
 	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
 	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
 	
 	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
-		Logger.Log("<Player Script> [OnObjectEquipped] Equipped Null Object or has Ignore Keyword. Update Skipped.")
+		AND_Logger.FastLog("<Player Script> [OnObjectEquipped] Equipped Null Object or has Ignore Keyword. Update Skipped.")
 		return
 	EndIf
 	
@@ -220,12 +235,12 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
-	Logger.Log("<Player Script> [OnObjectUnequipped] Object Data: Base Object = " + akBaseObject \
+	AND_Logger.FastLog("<Player Script> [OnObjectUnequipped] Object Data: Base Object = " + akBaseObject \
 	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
 	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
 
 	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
-		Logger.Log("<Player Script> [OnObjectUnequipped] Unequipped Null Object or has Ignore Keyword. Update Skipped.")
+		AND_Logger.FastLog("<Player Script> [OnObjectUnequipped] Unequipped Null Object or has Ignore Keyword. Update Skipped.")
 		return
 	EndIf
 	
@@ -255,14 +270,14 @@ Event OnUpdateGameTime()
 		UnregisterForUpdateGameTime()
 		Debug.MessageBox("A.N.D. Warning - Time Scale too high. Current: " + TimeScale.GetValue() as Int + ". Maximum: " + MaxTimeScale + ". Either choose a slower AND scan frequency or change the settings on your Time Scale mod.")
 		While TimeScale.GetValue() as Int > MaxTimeScale
-			Logger.Log("<Player Script> [OnUpdateGameTime] Time Scale too high: " + TimeScale.GetValue() as Int + ". Waiting for Time Scale to go below: " + MaxTimeScale)
+			AND_Logger.FastLog("<Player Script> [OnUpdateGameTime] Time Scale too high: " + TimeScale.GetValue() as Int + ". Waiting for Time Scale to go below: " + MaxTimeScale, Logger.WARNING)
 			Utility.Wait(30.0)
 		EndWhile
 		RegisterForUpdateGameTime(GameTimeUpdateSpeed)
 		return
 	EndIf
 	
-	Logger.Log("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
+	AND_Logger.FastLog("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
 	
 	MainRollActive = True
 	Core.AND_DiceRoll()

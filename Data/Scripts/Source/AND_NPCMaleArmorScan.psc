@@ -2,7 +2,6 @@ ScriptName AND_NPCMaleArmorScan extends Quest
 
 AND_Core Property Core Auto
 AND_MCM Property Config Auto
-AND_Logger Property Logger Auto
 
 Bool AND_TopCurtain_Cover = False
 Bool AND_Bra_Cover = False
@@ -210,9 +209,9 @@ Bool Function CStringCheck(Bool IsTransparent, String Level)
 EndFunction
 
 Function FullAnalyze(Actor ScannedActor, String ActorName)
-	Logger.Log("<Male NPC Armor Scan> [FullAnalyze] Full Analysis Started for " + ScannedActor + " " + ActorName)
+	AND_Logger.FastLog("<Male NPC Armor Scan> [FullAnalyze] Full Analysis Started for " + ScannedActor + " " + ActorName)
 	If ScannedActor.WornHasKeyword(Core.AND_CoversAll) == False
-		Logger.Log("<Male NPC Armor Scan> [FullAnalyze] No CoversAll Keyword Detected")
+		AND_Logger.FastLog("<Male NPC Armor Scan> [FullAnalyze] No CoversAll Keyword Detected")
 		
 		Bool HasChestCurtain = ScannedActor.WornHasKeyword(Core.AND_ChestCurtain_Male)
 		Bool HasChestCurtainT = ScannedActor.WornHasKeyword(Core.AND_ChestCurtainT_Male)
@@ -269,7 +268,7 @@ Function FullAnalyze(Actor ScannedActor, String ActorName)
 		EndIf
 		
 		If VanillaArmorCheck(ScannedActor) == False ;Armor has at least one AND Keyword
-			Logger.Log("<Male NPC Armor Scan> [FullAnalyze] Armor is not Vanilla")
+			AND_Logger.FastLog("<Male NPC Armor Scan> [FullAnalyze] Armor is not Vanilla")
 			;/
 			=============
 			Top Variables
@@ -375,7 +374,7 @@ Function FullAnalyze(Actor ScannedActor, String ActorName)
 			AnalyzeTop(HasChestCurtain, HasChestCurtainT, HasChestRiskLevel, HasArmorTop, HasArmorTopT, HasTopRiskLevel, HasBra, HasBraT, HasBraRiskLevel, HasBraNoCover)
 			AnalyzeBottom(HasPelvicCurtain, HasPelvicCurtainT, HasPelvicRiskLevel, HasAssCurtain, HasAssCurtainT, HasAssRiskLevel, HasArmorBottom, HasArmorBottomT, HasBottomRiskLevel, HasHotpants, HasHotpantsT, HasHotpantsRiskLevel, HasHimbo, HasHimboT, HasHimboRiskLevel, HasUnderwear, HasUnderwearT, HasUnderwearRiskLevel, HasUnderwearNoCover, HasThong, HasThongT, HasThongRiskLevel, HasThongNoCover, HasCString, HasCStringT, HasCStringRiskLevel)
 		Else
-			Logger.Log("<Male NPC Armor Scan> [FullAnalyze] Armor is considered Vanilla")
+			AND_Logger.FastLog("<Male NPC Armor Scan> [FullAnalyze] Armor is considered Vanilla")
 			;These checks simply update MCM condition for consistency
 			If HasChestCurtain == True || HasChestCurtainT == True
 				AND_TopCurtain_Cover = CurtainCheck("Chest", HasChestCurtainT, HasChestRiskLevel)
@@ -395,7 +394,7 @@ Function FullAnalyze(Actor ScannedActor, String ActorName)
 			AND_Underwear_Cover = True
 		EndIf
 	Else
-		Logger.Log("<Male NPC Armor Scan> [FullAnalyze] CoversAll Keyword Detected")
+		AND_Logger.FastLog("<Male NPC Armor Scan> [FullAnalyze] CoversAll Keyword Detected")
 		
 		AND_TopCurtain_Cover = True
 		AND_PelvicCurtain_Cover = True
@@ -1357,5 +1356,5 @@ Function FinalAnalyze(Actor ScannedActor, String ActorName)
 		ScannedActor.SetFactionRank(Core.AND_NudeActorFaction, 0)
 	EndIf
 
-	Logger.Log("<Male NPC Armor Scan> [Layer Analyze] Male Armor Scan Finished for " + ScannedActor + " " + ActorName)
+	AND_Logger.FastLog("<Male NPC Armor Scan> [Layer Analyze] Male Armor Scan Finished for " + ScannedActor + " " + ActorName)
 EndFunction 

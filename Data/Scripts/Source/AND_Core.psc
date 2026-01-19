@@ -232,12 +232,12 @@ EndFunction
 
 Event OnUpdate()
 	If PlayerBase.GetSex() == 0 ;Male
-		Logger.Log("<Core> [OnUpdate] Send Male Scan")
+		AND_Logger.FastLog("<Core> [OnUpdate] Send Male Scan")
 		
 		MaleScan.FullAnalyze()
 		Config.SetMaleCoverage()
 	Else
-		Logger.Log("<Core> [OnUpdate] Send Female Scan")
+		AND_Logger.FastLog("<Core> [OnUpdate] Send Female Scan")
 		
 		FemaleScan.FullAnalyze()
 		Config.SetFemaleCoverage()
@@ -255,29 +255,29 @@ EndEvent
 
 Function ModCheck()
 	If Game.GetModByName("SexLab.esm") != 255
-		Logger.Log("<Core> [Mod Check] SexLab.esm Found")
+		AND_Logger.FastLog("<Core> [Mod Check] SexLab.esm Found")
 		SexlabInstalled = True
 		SexlabStats = Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats ;GetSexlabStats()
 	Else
-		Logger.Log("<Core> [Mod Check] SexLab.esm NOT Found")
+		AND_Logger.FastLog("<Core> [Mod Check] SexLab.esm NOT Found")
 		SexlabInstalled = False
 		SexlabStats = None
 	EndIf
 	
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
-		Logger.Log("<Core> [Mod Check] SLSF Reloaded.esp Found")
+		AND_Logger.FastLog("<Core> [Mod Check] SLSF Reloaded.esp Found")
 		SLSFR_Found = True
 		SLSFR_Config = Game.GetFormFromFile(0x809, "SLSF Reloaded.esp") as SLSF_Reloaded_MCM
 		SLSFR_Mods = Game.GetFormFromFile(0x808, "SLSF Reloaded.esp") as SLSF_Reloaded_ModIntegration
 	Else
-		Logger.Log("<Core> [Mod Check] SLSF Reloaded.esp NOT Found")
+		AND_Logger.FastLog("<Core> [Mod Check] SLSF Reloaded.esp NOT Found")
 		SLSFR_Found = False
 		SLSFR_Config = None
 		SLSFR_Mods = None
 	EndIf
 	
 	If Game.GetModByName("Modesty_Keyword.esp") != 255
-		Logger.Log("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) Found")
+		AND_Logger.FastLog("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) Found")
 		DFFMA_Found = True
 		
 		If ModestyManager.RegisteredForUpdate == False
@@ -285,16 +285,16 @@ Function ModCheck()
 			ModestyManager.RegisteredForUpdate = True
 		EndIf
 	Else
-		Logger.Log("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) NOT Found")
+		AND_Logger.FastLog("<Core> [Mod Check] Modesty_Keyword.esp (aka DFFMA) NOT Found")
 		DFFMA_Found = False
 	EndIf
 	
 	If Game.GetModByName("RosaFollower.esp") != 255
-		Logger.Log("<Core> [Mod Check] RosaFollower.esp Found")
+		AND_Logger.FastLog("<Core> [Mod Check] RosaFollower.esp Found")
 		RosaExists = True
 		Rosa = Game.GetFormFromFile(0xD62, "RosaFollower.esp") as Actor
 	Else
-		Logger.Log("<Core> [Mod Check] RosaFollower.esp NOT Found")
+		AND_Logger.FastLog("<Core> [Mod Check] RosaFollower.esp NOT Found")
 		RosaExists = False
 		Rosa = None
 	EndIf
@@ -303,6 +303,7 @@ EndFunction
 Function AddCustomTransform(Race TransformRace)
 	Int Index = CustomTransform.Find(None)
 	If Index < 0
+		AND_Logger.FastLog("<Core> [AddCustomTransform] - Custom Transform List Full! Oldest Entry will be overwritten!", Logger.WARNING)
 		Debug.MessageBox("A.N.D. MESSAGE - Custom Transform List Full! Oldest Entry will be overwritten!")
 		Index = TransformOverwrite
 		If TransformOverwrite < 9
@@ -316,16 +317,16 @@ Function AddCustomTransform(Race TransformRace)
 EndFunction
 
 Function AND_MovementDiceRoll(Bool Sprinting)
-	Logger.Log("<Core> [AND_MovementDiceRoll] START")
-	Logger.Log("<Core> [AND_MovementDiceRoll] Sprinting = " + Sprinting)
+	AND_Logger.FastLog("<Core> [AND_MovementDiceRoll] - START")
+	AND_Logger.FastLog("<Core> [AND_MovementDiceRoll] - Sprinting = " + Sprinting)
 	
 	Bool WearingChestCurtain = PlayerScript.IsWearingChestCurtain
 	Bool WearingAssCurtain = PlayerScript.IsWearingAssCurtain
 	Bool WearingPelvicCurtain = PlayerScript.IsWearingPelvicCurtain
 	
 	If WearingChestCurtain == False && WearingAssCurtain == False && WearingPelvicCurtain == False
-		Logger.Log("<Core> [AND_MovementDiceRoll] No curtains worn. Skipping Mvoement check.")
-		Logger.Log("<Core> [AND_MovementDiceRoll] END")
+		AND_Logger.FastLog("<Core> [AND_MovementDiceRoll] - No curtains worn. Skipping Mvoement check.")
+		AND_Logger.FastLog("<Core> [AND_MovementDiceRoll] - END")
 		return
 	EndIf
 	
@@ -353,22 +354,22 @@ Function AND_MovementDiceRoll(Bool Sprinting)
 	EndIf
 	
 	If PlayerBase.GetSex() == 0 ;Male
-		Logger.Log("<Core> [Movement Dice Roll] Send Male Scan")
+		AND_Logger.FastLog("<Core> [Movement Dice Roll] - Send Male Scan")
 		MaleScan.FullAnalyze()
 		Config.SetMaleCoverage()
 	Else
-		Logger.Log("<Core> [Movement Dice Roll] Send Female Scan")
+		AND_Logger.FastLog("<Core> [Movement Dice Roll] - Send Female Scan")
 		FemaleScan.FullAnalyze()
 		Config.SetFemaleCoverage()
 	EndIf
 	
-	Logger.Log("<Core> [AND_MovementDiceRoll] END")
+	AND_Logger.FastLog("<Core> [AND_MovementDiceRoll] - END")
 EndFunction
 
 Function AND_DiceRoll()
 	If MainRollRunning == False
 		MainRollRunning = True
-		Logger.Log("<Core> [AND_DiceRoll]")
+		AND_Logger.FastLog("<Core> [AND_DiceRoll] - START")
 		
 		Int MaxRoll = 100
 		Int RunMod = Config.RunningModifier
@@ -407,11 +408,11 @@ Function AND_DiceRoll()
 		NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
 		
 		If PlayerBase.GetSex() == 0 ;Male
-			Logger.Log("<Core> [Dice Roll] Send Male Scan")
+			AND_Logger.FastLog("<Core> [Dice Roll] - Send Male Scan")
 			MaleScan.FullAnalyze()
 			Config.SetMaleCoverage()
 		Else
-			Logger.Log("<Core> [Dice Roll] Send Female Scan")
+			AND_Logger.FastLog("<Core> [Dice Roll] - Send Female Scan")
 			FemaleScan.FullAnalyze()
 			Config.SetFemaleCoverage()
 		EndIf
@@ -420,6 +421,7 @@ Function AND_DiceRoll()
 			NPCScanSpell.Cast(PlayerScript.PlayerRef)
 		EndIf
 		MainRollRunning = False
+		AND_Logger.FastLog("<Core> [AND_DiceRoll] - END")
 	EndIf
 EndFunction
 

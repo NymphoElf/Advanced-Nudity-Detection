@@ -110,13 +110,13 @@ Function GeneratePermanentFile()
 EndFunction
 
 Function ImportPermanentFemales()
-	Logger.Log("<NPC Modesty Manager> [ImportPermanentFemales] Import/Generate Permanent List")
+	AND_Logger.FastLog("<NPC Modesty Manager> [ImportPermanentFemales] Import/Generate Permanent List")
 	
 	If JsonExists(PermJsonName) == False
-		Logger.Log("<NPC Modesty Manager> [ImportPermanentFemales] Generate New List")
+		AND_Logger.FastLog("<NPC Modesty Manager> [ImportPermanentFemales] Generate New List")
 		GeneratePermanentFile()
 	Else
-		Logger.Log("<NPC Modesty Manager> [ImportPermanentFemales] Import from existing List")
+		AND_Logger.FastLog("<NPC Modesty Manager> [ImportPermanentFemales] Import from existing List")
 		Int Index = 0
 		Int Limit = GetIntValue(PermJsonName, "Total Permanent Females")
 		While Index < Limit
@@ -212,7 +212,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 	String akName = femaleBase.GetName()
 	
 	If akName == ""
-		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Cannot Register a nameless female. Female " + akFemale + " is nameless or has an empty name string.")
+		AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] Cannot Register a nameless female. Female " + akFemale + " is nameless or has an empty name string.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -223,10 +223,10 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 	LastUpdateTime[TrackedFemales] = Utility.GetCurrentGameTime()
 	
 	If PermImport == True
-		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ") from Permanent List")
+		AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ") from Permanent List")
 		
 		If FemaleExists(akFemale, True)
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] ERROR - Female: " + akFemale + " (" + akName + ") already exists on Permanent List")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] ERROR - Female: " + akFemale + " (" + akName + ") already exists on Permanent List")
 			return
 		EndIf
 		
@@ -275,7 +275,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 			akFemale.SetFactionRank(Core.ShyWithMale, 1)
 		EndIf
 	Else
-		Logger.Log("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ")")
+		AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] Registering Female: " + akFemale + " (" + akName + ")")
 		
 		Int Modesty = ModestyRandomizer.GetRandomizedModesty(akFemale, False)
 		Int TopModesty = 0
@@ -325,7 +325,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 		akFemale.SetFactionRank(Core.BottomModestyFaction, BottomModesty)
 		
 		If Core.SexlabInstalled == True && Config.NPCShySex == "Sexuality"
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Sexuality with Sexlab Installed")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Sexuality with Sexlab Installed")
 			Int SexualityScore = Core.FindSexuality(akFemale)
 			
 			If SexualityScore > 65 ;Straight
@@ -342,7 +342,7 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 				ShyMode = 2
 			EndIf
 		ElseIf Config.NPCShySex == "Random"
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Random")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Random")
 			Int Roll = Utility.RandomInt(0,2)
 			If Roll == 0
 				akFemale.SetFactionRank(Core.ShyWithMale, 1)
@@ -356,26 +356,26 @@ Function RegisterFemale(Actor akFemale, Bool PermImport = False)
 			EndIf
 			ShyMode = Roll
 		ElseIf Config.NPCShySex == "Both"
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Both")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Both")
 			akFemale.SetFactionRank(Core.ShyWithMale, 1)
 			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			ShyMode = 2
 		ElseIf Config.NPCShySex == "Female"
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Female")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is Female")
 			akFemale.SetFactionRank(Core.ShyWithMale, 0)
 			akFemale.SetFactionRank(Core.ShyWithFemale, 1)
 			ShyMode = 1
 		Else
-			Logger.Log("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is either Male or Sexuality without Sexlab Installed/Detected")
+			AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] " + akName + " Shy Sex is either Male or Sexuality without Sexlab Installed/Detected")
 			akFemale.SetFactionRank(Core.ShyWithMale, 1)
 			akFemale.SetFactionRank(Core.ShyWithFemale, 0)
 		EndIf
 	EndIf
 	
 	ShynessMode[TrackedFemales] = ShyMode
-	Logger.Log("<NPC Modesty Manager> [RegisterFemale] Number of Registered Females (before add): " + TrackedFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] Number of Registered Females (before add): " + TrackedFemales)
 	TrackedFemales += 1
-	Logger.Log("<NPC Modesty Manager> [RegisterFemale] Number of Registered Females (after add): " + TrackedFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [RegisterFemale] Number of Registered Females (after add): " + TrackedFemales)
 	
 	ResizeNormalArrays()
 EndFunction
@@ -407,35 +407,35 @@ Function RegisterRosa(Actor akRosa)
 	
 	LastUpdateTime[TrackedFemales] = Utility.GetCurrentGameTime()
 	
-	Logger.Log("<NPC Modesty Manager> [RegisterRosa] Number of Registered Females (before add): " + TrackedFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [RegisterRosa] Number of Registered Females (before add): " + TrackedFemales)
 	TrackedFemales += 1
-	Logger.Log("<NPC Modesty Manager> [RegisterRosa] Number of Registered Females (after add): " + TrackedFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [RegisterRosa] Number of Registered Females (after add): " + TrackedFemales)
 EndFunction
 
 Function AddPermanent(Actor akFemale)
-	Logger.Log("<NPC Modesty Manager> [AddPermanent]")
+	AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] - START")
 	
 	If akFemale == None
-		Logger.Log("<NPC Modesty Manager> [AddPermanent] ERROR: akFemale is NONE")
+		AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] ERROR: akFemale is NONE", Logger.ERROR)
 		return
 	EndIf
 	
 	Int FemaleID = FemaleActor.Find(akFemale)
 	
 	If FemaleID < 0
-		Logger.Log("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " not found in FemaleActor array!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " not found in FemaleActor array!", Logger.ERROR)
 		return
 	EndIf
 	
 	If PermanentFemaleActor.Find(akFemale) >= 0
-		Logger.Log("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " already exists on Permanent Female Array!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] ERROR: Female " + akFemale + " " + akName + " already exists on Permanent Female Array!", Logger.ERROR)
 		return
 	EndIf
 	
 	ActorBase femaleBase = akFemale.GetActorBase()
 	String akName = femaleBase.GetName()
 	
-	Logger.Log("<NPC Modesty Manager> [AddPermanent] Adding Female: " + akFemale + " (" + akName + ")")
+	AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] Adding Female: " + akFemale + " (" + akName + ")")
 	
 	PermanentFemaleActor[PermanentFemales] = FemaleActor[FemaleID]
 	
@@ -464,26 +464,27 @@ Function AddPermanent(Actor akFemale)
 	PermanentFemales += 1
 	
 	SetIntValue(PermJsonName, "Total Permanent Females", PermanentFemales)
-	Logger.Log("<NPC Modesty Manager> [AddPermanent] Number of Permanent Females: " + PermanentFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] Number of Permanent Females: " + PermanentFemales)
 	Save(PermJsonName)
 	
 	ResizePermanentArray()
+	AND_Logger.FastLog("<NPC Modesty Manager> [AddPermanent] - END")
 EndFunction
 
 Bool Function FemaleExists(Actor akFemale, Bool PermFile = False)
-	Logger.Log("<NPC Modesty Manager> [FemaleExists] Check Female Exists - " + akFemale)
+	AND_Logger.FastLog("<NPC Modesty Manager> [FemaleExists] Check Female Exists - " + akFemale)
 	If akFemale == None
 		return False
 	EndIf
 	
 	If PermFile == False
 		If FemaleActor.Find(akFemale) >= 0
-			Logger.Log("<NPC Modesty Manager> [FemaleExists] (Tracked Females) Found " + akFemale + " at Index " + FemaleActor.Find(akFemale) + " out of " + TrackedFemales)
+			AND_Logger.FastLog("<NPC Modesty Manager> [FemaleExists] (Tracked Females) Found " + akFemale + " at Index " + FemaleActor.Find(akFemale) + " out of " + TrackedFemales)
 			return True
 		EndIf
 	Else
 		If PermanentFemaleActor.Find(akFemale) >= 0
-			Logger.Log("<NPC Modesty Manager> [FemaleExists] (Permanent Females) Found " + akFemale + " at Index " + PermanentFemaleActor.Find(akFemale) + " out of " + PermanentFemales)
+			AND_Logger.FastLog("<NPC Modesty Manager> [FemaleExists] (Permanent Females) Found " + akFemale + " at Index " + PermanentFemaleActor.Find(akFemale) + " out of " + PermanentFemales)
 			return True
 		EndIf
 	EndIf
@@ -492,9 +493,9 @@ Bool Function FemaleExists(Actor akFemale, Bool PermFile = False)
 EndFunction
 
 Function RemoveFemale(Actor akFemale = None, Int FemaleID = -1)
-	Logger.Log("<NPC Modesty Manager> [RemoveFemale]")
+	AND_Logger.FastLog("<NPC Modesty Manager> [RemoveFemale] - START")
 	If akFemale == None && FemaleID < 0
-		Logger.Log("<NPC Modesty Manager> [RemoveFemale] ERROR - Both akFemale and FemaleID are invalid!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [RemoveFemale] ERROR: Both akFemale and FemaleID are invalid!", Logger.ERROR)
 		return
 	EndIf
 	
@@ -554,15 +555,16 @@ Function RemoveFemale(Actor akFemale = None, Int FemaleID = -1)
 	EndWhile
 	
 	TrackedFemales -= 1
-	Logger.Log("<NPC Modesty Manager> [RemoveFemale] Number of Registered Females: " + TrackedFemales)
+	AND_Logger.FastLog("<NPC Modesty Manager> [RemoveFemale] Number of Registered Females: " + TrackedFemales)
 	
 	ResizeNormalArrays()
+	AND_Logger.FastLog("<NPC Modesty Manager> [RemoveFemale] - END")
 EndFunction
 
 Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
-	Logger.Log("<NPC Modesty Manager> [RemovePermFemale]")
+	AND_Logger.FastLog("<NPC Modesty Manager> [RemovePermFemale] - START")
 	If akFemale == None && FemaleID < 1
-		Logger.Log("<NPC Modesty Manager> [RemovePermFemale] ERROR - Both akFemale and FemaleID are invalid!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [RemovePermFemale] ERROR: Both akFemale and FemaleID are invalid!", Logger.ERROR)
 		return
 	EndIf
 	
@@ -627,11 +629,12 @@ Function RemovePermFemale(Actor akFemale = None, Int FemaleID = -1)
 	Save(PermJsonName)
 	
 	ResizePermanentArray()
+	AND_Logger.FastLog("<NPC Modesty Manager> [RemovePermFemale] - END")
 EndFunction
 
 Function ResetFemale(Actor akFemale = None, Int FemaleID = -1)
 	If akFemale == None && FemaleID < 0
-		Logger.Log("<NPC Modesty Manager> [ResetFemale] ERROR - Both akFemale and FemaleID are invalid!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [ResetFemale] ERROR: Both akFemale and FemaleID are invalid!", Logger.ERROR)
 		return
 	ElseIf akFemale != None && FemaleID < 0
 		FemaleID = FemaleActor.Find(akFemale)
@@ -760,7 +763,7 @@ Function ProcessNPCModesty(Actor akFemale)
 		RequiredIterations = 168
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [ProcessNPCModesty] Starting " + RequiredIterations + " Iterations for " + akFemale + " " + akName)
+	AND_Logger.FastLog("<NPC Modesty Manager> [ProcessNPCModesty] Starting " + RequiredIterations + " Iterations for " + akFemale + " " + akName)
 	
 	While RequiredIterations > 0
 		If Strict == True
@@ -773,7 +776,7 @@ Function ProcessNPCModesty(Actor akFemale)
 	EndWhile
 	
 	Float TimeTaken = (Utility.GetCurrentRealTime() - RealTimeStart)
-	Logger.Log("<NPC Modesty Manager> [ProcessNPCModesty] Iterations for " + akFemale + " " + akName + " took " + TimeTaken + " seconds")
+	AND_Logger.FastLog("<NPC Modesty Manager> [ProcessNPCModesty] Iterations for " + akFemale + " " + akName + " took " + TimeTaken + " seconds")
 	
 	CurrentRankStrict[FemaleID] = akFemale.GetFactionRank(Core.ModestyFaction)
 	CurrentRankTop[FemaleID] = akFemale.GetFactionRank(Core.TopModestyFaction)
@@ -788,14 +791,14 @@ EndFunction
 
 Function UpdateShyness(Actor akFemale)
 	If akFemale == None
-		Logger.Log("<NPC Modesty Manager> [UpdateShyness] Error: akFemale is None")
+		AND_Logger.FastLog("<NPC Modesty Manager> [UpdateShyness] Error: akFemale is None", Logger.ERROR)
 		return
 	EndIf
 	
 	Int FemaleID = FemaleActor.Find(akFemale)
 	
 	If FemaleID < 0
-		Logger.Log("<NPC Modesty Manager> [UpdateShyness] Error: " + akFemale + " doesn't exist in the Tracked Females list!")
+		AND_Logger.FastLog("<NPC Modesty Manager> [UpdateShyness] Error: " + akFemale + " doesn't exist in the Tracked Females list!", Logger.ERROR)
 		return
 	EndIf
 	
@@ -845,7 +848,7 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 	EndIf
 	
 	If ModestyRank <= 0
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 0")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 0")
 		If IsShowingBra == True && IsShowingChest == False && IsShowingUnderwear == False && IsShowingGenitals == False
 			If ModestyTimer0[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -861,12 +864,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 					ModestyTimer0[FemaleID] = ModestyTimer0[FemaleID] - 1
 				EndIf
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 		
 	ElseIf ModestyRank == 1
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 1")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 1")
 		If IsShowingUnderwear == True && IsShowingGenitals == False && IsShowingChest == False
 			If ModestyTimer1[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -880,12 +883,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 1, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 	
 	ElseIf ModestyRank == 2
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 2")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 2")
 		If IsShowingChest == True && IsTopless == False && IsShowingGenitals == False
 			If ModestyTimer2[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -899,12 +902,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 2, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 		
 	ElseIf ModestyRank == 3
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 3")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 3")
 		If IsShowingGenitals == True && IsBottomless == False && IsTopless == False
 			If ModestyTimer3[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -918,12 +921,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 3, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 		
 	ElseIf ModestyRank == 4
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 4")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 4")
 		If IsTopless == True && IsBottomless == False
 			If ModestyTimer4[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -937,12 +940,12 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 4, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 		
 	ElseIf ModestyRank == 5
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 5")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 5")
 		If IsBottomless == True
 			If ModestyTimer5[FemaleID] < UpgradeTime
 				If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -956,17 +959,17 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 5, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		EndIf
 		
 	ElseIf ModestyRank == 6
-		Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 6")
+		AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " Rank is 6")
 		If IsTopless == False && IsBottomless == False
 			If Corruption == False
 				NPCModestyDowngrade(akFemale, akName, FemaleID, 6, UpgradeTime, MinimumModesty)
 			Else
-				Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
+				AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC Corruption Active. Cannot Downgrade " + akFemale + " " + akName)
 			EndIf
 		ElseIf IsNude == True
 			If (UpgradeBlocked[FemaleID] as Bool) == False
@@ -983,19 +986,19 @@ Function StrictNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		EndIf
 	ElseIf ModestyRank > 6
 		If PermShame == True
-			Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] NPC " + akFemale + " " + akName + " is Permanently Shameless")
+			AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] NPC " + akFemale + " " + akName + " is Permanently Shameless")
 		Else
 			NPCModestyRankChange(akFemale, akName, FemaleID, 6)
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer0 = " + ModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer1 = " + ModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer2 = " + ModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer3 = " + ModestyTimer3[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer4 = " + ModestyTimer4[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer5 = " + ModestyTimer5[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer6 = " + ModestyTimer6[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer0 = " + ModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer1 = " + ModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer2 = " + ModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer3 = " + ModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer4 = " + ModestyTimer4[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer5 = " + ModestyTimer5[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [StrictNPCModesty] " + akFemale + " " + akName + " ModestyTimer6 = " + ModestyTimer6[FemaleID])
 EndFunction
 
 Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Rank, Int UpgradeTime, Int MinimumRank)
@@ -1050,13 +1053,13 @@ Function NPCModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int Ra
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer0 = " + ModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer1 = " + ModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer2 = " + ModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer3 = " + ModestyTimer3[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer4 = " + ModestyTimer4[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer5 = " + ModestyTimer5[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer6 = " + ModestyTimer6[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer0 = " + ModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer1 = " + ModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer2 = " + ModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer3 = " + ModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer4 = " + ModestyTimer4[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer5 = " + ModestyTimer5[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCModestyDowngrade] " + akFemale + " " + akName + " ModestyTimer6 = " + ModestyTimer6[FemaleID])
 EndFunction
 
 Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption, Bool PermShame)
@@ -1107,7 +1110,7 @@ Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeT
 		If Corruption == False
 			NPCTopModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, TopModestyRank, IsShowingBra, IsShowingChest, IsTopless)
 		Else
-			Logger.Log("<NPC Modesty Manager> [TopNPCModesty] NPC Corruption Active. Cannot Downgrade.")
+			AND_Logger.FastLog("<NPC Modesty Manager> [TopNPCModesty] NPC Corruption Active. Cannot Downgrade.")
 		EndIf
 		return
 	EndIf
@@ -1134,10 +1137,10 @@ Function TopNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeT
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer0 = " + TopModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer1 = " + TopModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer2 = " + TopModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer3 = " + TopModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer0 = " + TopModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer1 = " + TopModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer2 = " + TopModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [TopNPCModesty] " + akFemale + " " + akName + " TopModestyTimer3 = " + TopModestyTimer3[FemaleID])
 EndFunction
 
 Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Int TopModestyRank, Bool IsShowingBra, Bool IsShowingChest, Bool IsTopless)
@@ -1167,7 +1170,7 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 	ElseIf TopModestyRank == 3
 		TopModestyTimer3[FemaleID] = TopModestyTimer3[FemaleID] - 1
 	Else
-		Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] Could not upgrade nor downgrade NPC Top Modesty.")
+		AND_Logger.FastLog("<NPC Modesty Manager> [NPCTopModestyDowngrade] Could not upgrade nor downgrade NPC Top Modesty.")
 		return
 	EndIf
 	
@@ -1188,10 +1191,10 @@ Function NPCTopModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer0 = " + TopModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer1 = " + TopModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer2 = " + TopModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer3 = " + TopModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer0 = " + TopModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer1 = " + TopModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer2 = " + TopModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCTopModestyDowngrade] " + akFemale + " " + akName + " TopModestyTimer3 = " + TopModestyTimer3[FemaleID])
 EndFunction
 
 Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Bool Corruption, Bool PermShame)
@@ -1236,7 +1239,7 @@ Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		If Corruption == False
 			NPCBottomModestyDowngrade(akFemale, akName, FemaleID, UpgradeTime, BottomModestyRank, IsShowingUnderwear, IsShowingGenitals, IsBottomless)
 		Else
-			Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] NPC Corruption Active. Cannot Downgrade.")
+			AND_Logger.FastLog("<NPC Modesty Manager> [BottomNPCModesty] NPC Corruption Active. Cannot Downgrade.")
 		EndIf
 		return
 	EndIf
@@ -1263,10 +1266,10 @@ Function BottomNPCModesty(Actor akFemale, String akName, Int FemaleID, Int Upgra
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer0 = " + BottomModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer1 = " + BottomModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer2 = " + BottomModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer0 = " + BottomModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer1 = " + BottomModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer2 = " + BottomModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [BottomNPCModesty] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
 EndFunction
 
 Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, Int UpgradeTime, Int BottomModestyRank, Bool IsShowingUnderwear, Bool IsShowingGenitals, Bool IsBottomless)
@@ -1296,7 +1299,7 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 	ElseIf BottomModestyRank == 3
 		BottomModestyTimer3[FemaleID] = BottomModestyTimer3[FemaleID] - 1
 	Else
-		Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] Could not upgrade nor downgrade NPC Bottom Modesty.")
+		AND_Logger.FastLog("<NPC Modesty Manager> [NPCBottomModestyDowngrade] Could not upgrade nor downgrade NPC Bottom Modesty.")
 		return
 	EndIf
 	
@@ -1317,10 +1320,10 @@ Function NPCBottomModestyDowngrade(Actor akFemale, String akName, Int FemaleID, 
 		EndIf
 	EndIf
 	
-	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer0 = " + BottomModestyTimer0[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer1 = " + BottomModestyTimer1[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer2 = " + BottomModestyTimer2[FemaleID])
-	Logger.Log("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer0 = " + BottomModestyTimer0[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer1 = " + BottomModestyTimer1[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer2 = " + BottomModestyTimer2[FemaleID])
+	AND_Logger.FastLog("<NPC Modesty Manager> [NPCBottomModestyDowngrade] " + akFemale + " " + akName + " BottomModestyTimer3 = " + BottomModestyTimer3[FemaleID])
 EndFunction
 
 Function NPCModestyRankChange(Actor akFemale, String akName, Int FemaleID, Int Rank)

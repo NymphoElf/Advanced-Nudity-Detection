@@ -57,18 +57,18 @@ EndFunction
 
 Event OnMenuOpen(String MenuName)
 	KeysEnabled = False
-	Logger.Log("<Keybind Manager> [OnMenuOpen] Opened Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
+	AND_Logger.FastLog("<Keybind Manager> [OnMenuOpen] Opened Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
 EndEvent
 
 Event OnMenuClose(String MenuName)
 	KeysEnabled = True
-	Logger.Log("<Keybind Manager> [OnMenuClose] Closed Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
+	AND_Logger.FastLog("<Keybind Manager> [OnMenuClose] Closed Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
 EndEvent
 
 Event OnKeyDown(Int KeyCode)
-	Logger.Log("<Keybind Manager> [OnKeyDown] Registered Key was pressed! Keycode is " + KeyCode)
+	AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Registered Key was pressed! Keycode is " + KeyCode)
 	If KeysEnabled == True
-		Logger.Log("<Keybind Manager> [OnKeyDown] Keys are ENABLED")
+		AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Keys are ENABLED")
 		
 		Int CheckedIndex = 0
 		While CheckedIndex < 6
@@ -79,16 +79,16 @@ Event OnKeyDown(Int KeyCode)
 		EndWhile
 
 		If Core.PlayerBase.GetSex() == 0 ;Male
-			Logger.Log("<Keybind Manager> [OnKeyDown] Send Male Scan")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Send Male Scan")
 			MaleScan.FullAnalyze()
 			Config.SetMaleCoverage()
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Send Female Scan")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Send Female Scan")
 			FemaleScan.FullAnalyze()
 			Config.SetFemaleCoverage()
 		EndIf
 	Else
-		Logger.Log("<Keybind Manager> [OnKeyDown] Keys are DISABLED.")
+		AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Keys are DISABLED.")
 	EndIf
 EndEvent
 
@@ -97,9 +97,9 @@ Function ProcessKey(Int KeyIndex)
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT_Male) == True
 			Core.TopCurtainRoll = 0
-			Logger.Log("<Keybind Manager> [OnKeyDown] Flash Chest Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Flash Chest Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Chest Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing a Chest Curtain")
 		EndIf
 	ElseIf KeyIndex == FlashPelvicCurtainKey
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT) == True \
@@ -107,9 +107,9 @@ Function ProcessKey(Int KeyIndex)
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
 			Core.PelvicCurtainRoll = 0
-			Logger.Log("<Keybind Manager> [OnKeyDown] Flash Pelvic Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Flash Pelvic Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Pelvic Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing a Pelvic Curtain")
 		EndIf
 	ElseIf KeyIndex == FlashAssCurtainKey
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtainT) == True \
@@ -117,17 +117,17 @@ Function ProcessKey(Int KeyIndex)
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
 			Core.AssCurtainRoll = 0
-			Logger.Log("<Keybind Manager> [OnKeyDown] Flash Ass Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Flash Ass Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
 		EndIf
 	ElseIf KeyIndex == FixChestCurtainKey
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtain_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT_Male) == True
 			Core.TopCurtainRoll = 101
-			Logger.Log("<Keybind Manager> [OnKeyDown] Fix Chest Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Fix Chest Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Chest Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing a Chest Curtain")
 		EndIf
 	ElseIf KeyIndex == FixPelvicCurtainKey
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_PelvicCurtainT) == True \
@@ -135,9 +135,9 @@ Function ProcessKey(Int KeyIndex)
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
 			Core.PelvicCurtainRoll = 101
-			Logger.Log("<Keybind Manager> [OnKeyDown] Fix Pelvic Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Fix Pelvic Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing a Pelvic Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing a Pelvic Curtain")
 		EndIf
 	ElseIf KeyIndex == FixAssCurtainKey
 		If PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtain) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_AssCurtainT) == True \
@@ -145,21 +145,21 @@ Function ProcessKey(Int KeyIndex)
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT) == True \
 		|| PlayerScript.PlayerRef.WornHasKeyword(Core.AND_Miniskirt_Male) == True || PlayerScript.PlayerRef.WornHasKeyword(Core.AND_MiniskirtT_Male) == True
 			Core.AssCurtainRoll = 101
-			Logger.Log("<Keybind Manager> [OnKeyDown] Fix Ass Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Fix Ass Curtain")
 		Else
-			Logger.Log("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Not Wearing an Ass Curtain")
 		EndIf
 	Else
-		Logger.Log("<Keybind Manager> [OnKeyDown] ERROR: Registered Key was pressed but somehow not found in the RegisteredKeys Array. KeyIndex value is: " + KeyIndex, True)
+		AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] ERROR: Registered Key was pressed but somehow not found in the RegisteredKeys Array. KeyIndex value is: " + KeyIndex, Logger.ERROR)
 		Debug.MessageBox("ADVANCED NUDITY DETECTION ERROR: Registered Flash/Fix Key was pressed but somehow not found in the RegisteredKeys Array.")
 		return
 	EndIf
 EndFunction
 
 Function UpdateRegister(Int KeyIndex)
-	Logger.Log("<Keybind Manager> [UpdateRegister] Update Key Index " + KeyIndex)
+	AND_Logger.FastLog("<Keybind Manager> [UpdateRegister] Update Key Index " + KeyIndex)
 	UnregisterForKey(RegisteredKeys[KeyIndex])
 	RegisteredKeys[KeyIndex] = Config.FlashKey[KeyIndex]
-	Logger.Log("KeyCode is " + Config.FlashKey[KeyIndex])
+	AND_Logger.FastLog("KeyCode is " + Config.FlashKey[KeyIndex])
 	RegisterForKey(RegisteredKeys[KeyIndex])
 EndFunction

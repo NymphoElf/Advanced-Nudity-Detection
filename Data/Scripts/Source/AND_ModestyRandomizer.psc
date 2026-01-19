@@ -1,7 +1,6 @@
 ScriptName AND_ModestyRandomizer extends Quest
 
 AND_MCM Property Config Auto
-AND_Logger Property Logger Auto
 
 Race[] Property ActorRace Auto
 

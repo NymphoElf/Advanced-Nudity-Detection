@@ -3,8 +3,8 @@ ScriptName AND_ModEventListener extends Quest
 AND_Core Property Core Auto
 AND_MCM Property Config Auto
 AND_Modesty_Manager Property ModestyManager Auto
-AND_Logger Property Logger Auto
 AND_PlayerScript Property PlayerScript Auto
+AND_Logger Property Logger Auto
 
 Bool[] Property DynamicModestyEnabled Auto Hidden
 Bool[] Property HardcoreEnabled Auto Hidden
@@ -265,19 +265,19 @@ Registry Events
 Event OnRegisterMod(String PluginName)
 	If Game.GetModByName(PluginName) != 255
 		If Plugins.Find(PluginName) >= 0
-			Logger.Log("<Mod Event Listener> [OnRegisterMod] Plugin (" + PluginName + ") already registered.")
+			AND_Logger.FastLog("<Mod Event Listener> [OnRegisterMod] Plugin (" + PluginName + ") already registered.", Logger.WARNING)
 		Else
 			Int EmptyIndex = Plugins.Find("")
 			If EmptyIndex >= 0
 				Plugins[EmptyIndex] = PluginName
 				RegisteredMods += 1
-				Logger.Log("<Mod Event Listener> [OnRegisterMod] Plugin " + PluginName + " successfully registered at Index " + EmptyIndex)
+				AND_Logger.FastLog("<Mod Event Listener> [OnRegisterMod] Plugin " + PluginName + " successfully registered at Index " + EmptyIndex)
 			Else
-				Logger.Log("<Mod Event Listener> [OnRegisterMod] Registered Plugin List Full")
+				AND_Logger.FastLog("<Mod Event Listener> [OnRegisterMod] Registered Plugin List Full", Logger.CRITICAL)
 			EndIf
 		EndIf
 	Else
-		Logger.Log("<Mod Event Listener> [OnRegisterMod] Plugin " + PluginName + " is not loaded or doesn't exist.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnRegisterMod] Plugin " + PluginName + " is not loaded or doesn't exist.", Logger.WARNING)
 	EndIf
 EndEvent
 
@@ -288,7 +288,7 @@ EndEvent
 Function UnregisterMod(String PluginName)
 	Int PluginIndex = Plugins.Find(PluginName)
 	If RegisteredMods == 0 || PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnUnregisterMod] Plugin " + PluginName + " is either already unregistered or was never registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnUnregisterMod] Plugin " + PluginName + " is either already unregistered or was never registered.", Logger.WARNING)
 	Else
 		Plugins[PluginIndex] = ""
 		DynamicModestyEnabled[PluginIndex] = False
@@ -307,7 +307,7 @@ Modesty Events
 Event OnEnableDynamicModesty(String Plugin, Bool Enabled)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnEnableDynamicModesty] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnEnableDynamicModesty] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -343,10 +343,10 @@ EndEvent
 Event OnSetStrictModestyRules(String Plugin, Bool Strict)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	ElseIf Config.UseDynamicModesty == False
-		Logger.Log("<Mod Event Listener> [OnSetMinimumModestyRank] Cannot set Modesty Rules from plugin " + Plugin + " - Dynamic Modesty is Disabled in the MCM!")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetMinimumModestyRank] Cannot set Modesty Rules from plugin " + Plugin + " - Dynamic Modesty is Disabled in the MCM!", Logger.WARNING)
 		return
 	EndIf
 	
@@ -373,7 +373,7 @@ EndEvent
 Event OnSetMinimumModestyRank(String Plugin, Int ModestyRank)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -413,7 +413,7 @@ EndEvent
 Event OnSetMinimumTopModestyRank(String Plugin, Int Rank)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetMinimumTopModestyRank] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetMinimumTopModestyRank] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -447,7 +447,7 @@ EndEvent
 Event OnSetMinimumBottomModestyRank(String Plugin, Int Rank)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetMinimumBottomModestyRank] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetMinimumBottomModestyRank] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -481,7 +481,7 @@ EndEvent
 Event OnSetHardcore(String Plugin, Bool EnableHardcore)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetHardcore] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetHardcore] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -505,7 +505,7 @@ EndEvent
 Event OnSetCorruption(String Plugin, Bool Corruption)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetCorruption] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetCorruption] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -527,7 +527,7 @@ EndEvent
 Event OnSetPermShameless(String Plugin, Bool PermShameless)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetPermShameless] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetPermShameless] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -549,7 +549,7 @@ EndEvent
 Event OnSetModestyUpgradeBlocked(String Plugin, Bool BlockUpgrade)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetModestyUpgradeBlocked] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetModestyUpgradeBlocked] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	
@@ -571,7 +571,7 @@ EndEvent
 Event OnSetImmodestyTime(String Plugin, Int ImmodestyTime)
 	Int PluginIndex = Plugins.Find(Plugin)
 	If PluginIndex < 0
-		Logger.Log("<Mod Event Listener> [OnSetImmodestyTime] Plugin " + Plugin + " is not registered.")
+		AND_Logger.FastLog("<Mod Event Listener> [OnSetImmodestyTime] Plugin " + Plugin + " is not registered.", Logger.WARNING)
 		return
 	EndIf
 	

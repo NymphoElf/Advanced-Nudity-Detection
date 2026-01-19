@@ -2,7 +2,6 @@ ScriptName AND_FemaleArmorScan extends Quest
 
 AND_Core Property Core Auto
 AND_MCM Property Config Auto
-AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
 
@@ -212,9 +211,9 @@ Bool Function CStringCheck(Bool IsTransparent, String Level)
 EndFunction
 
 Function FullAnalyze()
-	Logger.Log("<Female Armor Scan> [FullAnalyze] Full Analysis Started for Player")
+	AND_Logger.FastLog("<Female Armor Scan> [FullAnalyze] Full Analysis Started for Player")
 	If PlayerRef.WornHasKeyword(Core.AND_CoversAll) == False && Core.IsPlayerTransformed() == False
-		Logger.Log("<Female Armor Scan> [FullAnalyze] No CoversAll Keyword Detected")
+		AND_Logger.FastLog("<Female Armor Scan> [FullAnalyze] No CoversAll Keyword Detected")
 		
 		Bool HasChestCurtain = PlayerRef.WornHasKeyword(Core.AND_ChestCurtain)
 		Bool HasChestCurtainT = PlayerRef.WornHasKeyword(Core.AND_ChestCurtainT)
@@ -271,7 +270,7 @@ Function FullAnalyze()
 		EndIf
 		
 		If VanillaArmorCheck() == False ;Armor has at least one AND Keyword
-			Logger.Log("<Female Armor Scan> [FullAnalyze] Armor is not Vanilla")
+			AND_Logger.FastLog("<Female Armor Scan> [FullAnalyze] Armor is not Vanilla")
 			;/
 			=============
 			Top Variables
@@ -377,7 +376,7 @@ Function FullAnalyze()
 			AnalyzeTop(HasChestCurtain, HasChestCurtainT, HasChestRiskLevel, HasArmorTop, HasArmorTopT, HasTopRiskLevel, HasBra, HasBraT, HasBraRiskLevel, HasBraNoCover)
 			AnalyzeBottom(HasPelvicCurtain, HasPelvicCurtainT, HasPelvicRiskLevel, HasAssCurtain, HasAssCurtainT, HasAssRiskLevel, HasArmorBottom, HasArmorBottomT, HasBottomRiskLevel, HasHotpants, HasHotpantsT, HasHotpantsRiskLevel, HasShowgirl, HasShowgirlT, HasShowgirlRiskLevel, HasUnderwear, HasUnderwearT, HasUnderwearRiskLevel, HasUnderwearNoCover, HasThong, HasThongT, HasThongRiskLevel, HasThongNoCover, HasCString, HasCStringT, HasCStringRiskLevel)
 		Else
-			Logger.Log("<Female Armor Scan> [FullAnalyze] Armor is considered Vanilla")
+			AND_Logger.FastLog("<Female Armor Scan> [FullAnalyze] Armor is considered Vanilla")
 			;These checks simply update MCM condition for consistency
 			If HasChestCurtain == True || HasChestCurtainT == True
 				AND_TopCurtain_Cover = CurtainCheck("Chest", HasChestCurtainT, HasChestRiskLevel)
@@ -397,7 +396,7 @@ Function FullAnalyze()
 			AND_Underwear_Cover = True
 		EndIf
 	Else
-		Logger.Log("<Female Armor Scan> [FullAnalyze] CoversAll Keyword Detected")
+		AND_Logger.FastLog("<Female Armor Scan> [FullAnalyze] CoversAll Keyword Detected")
 		
 		AND_TopCurtain_Cover = True
 		AND_PelvicCurtain_Cover = True
@@ -1362,5 +1361,5 @@ Function FinalAnalyze()
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
 	ModEvent.Send(EventHandle)
 
-	Logger.Log("<Female Armor Scan> [Layer Analyze] Female Armor Scan Finished for Player")
+	AND_Logger.FastLog("<Female Armor Scan> [Layer Analyze] Female Armor Scan Finished for Player")
 EndFunction
