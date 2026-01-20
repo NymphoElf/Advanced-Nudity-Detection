@@ -30,31 +30,19 @@ String Property ScanSetting Auto Hidden
 Bool MainRollActive = False
 
 Event OnInit()
-	AND_Logger.FastLog("<PlayerScript> [OnInit] - INIT START")
 	Startup()
-	AND_Logger.FastLog("<PlayerScript> [OnInit] - INIT END")
 EndEvent
 
 Function Startup()
-	AND_Logger.FastLog("<PlayerScript> [Startup] - STARTUP BEGIN")
-	
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for RaceSex Menu...")
 	RegisterForMenu("RaceSex Menu")
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for RaceSex Menu Completed.")
-	
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for Console Menu...")
 	RegisterForMenu("Console")
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for Console Completed.")
-	
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Attempting to register for UpdateGameTime...")
 	RegisterForUpdateGameTime(0.25)
-	AND_Logger.FastLog("<PlayerScript> [Startup] - Register for UpdateGameTime Completed")
-	
-	AND_Logger.FastLog("<PlayerScript> [Startup] - STARTUP COMPLETE")
+	AND_Logger.FastLog("<PlayerScript> [Startup] Completed!", Logger.CRITICAL)
 EndFunction
 
 Event OnPlayerLoadGame()
-	String PlayerName = Core.PlayerBase.GetName()
+	AND_Logger.EnableLogging(Config.Logging)
+	AND_Logger.SetLogLevel(Config.LoggingLevel)
 	
 	If Core.BaseRace == None
 		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.ERROR)
@@ -136,21 +124,13 @@ Event OnMenuClose(String MenuName)
 	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Menu Closed")
 	If MenuName == "RaceSex Menu"
 		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - RaceSex Menu Closed")
-		String PlayerName = Core.PlayerBase.GetName()
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Player Name is: " + PlayerName)
 		
+		Core.PlayerBase = PlayerRef.GetActorBase()
 		Core.BaseRace = Core.PlayerBase.GetRace()
 		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace)
 		
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Attempting to register for animations...")
 		RegisterForAnimations()
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Animation Register Completed.")
-		
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Attempting to Initialize Factions...")
 		InitializeFactions()
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Faction Initialize Completed.")
-		
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - PLAYER NAME: " + PlayerName)
 		
 		If PermanentsImported == False
 			NPCModestyManager.ImportPermanentFemales()
@@ -161,7 +141,9 @@ Event OnMenuClose(String MenuName)
 			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.ERROR)
 			Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your character's race again.")
 			Game.ShowRaceMenu()
+			return
 		EndIf
+		Core.RegisterForSingleUpdate(1.0)
 	EndIf
 	
 	If MenuName == "Console"
@@ -188,10 +170,7 @@ Event OnMenuClose(String MenuName)
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | Event: " + akEventName)
-	AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sender: " + akReference + " | PlayerRef: " + PlayerRef)
-	If Config.AllowMotionFlash == True && akReference == PlayerRef
-		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Motion Flash Enabled and Ref is PlayerRef")
+	If Config.AllowMotionFlash == True
 		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Ass Cutain: " + IsWearingAssCurtain)
 		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Chest Cutain: " + IsWearingChestCurtain)
 		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Pelvic Cutain: " + IsWearingPelvicCurtain)

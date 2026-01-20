@@ -223,11 +223,9 @@ Event OnInit()
 EndEvent
 
 Function Startup()
-	RegisterForSingleUpdate(10.0) ;When initialized, register the OnUpdate event to fire in 10 seconds
 	ModCheck()
-	PlayerBase = PlayerScript.PlayerRef.GetActorBase()
 	CustomTransform = new Race[10]
-	Debug.Notification("A.N.D. Initialized")
+	AND_Logger.FastLog("<Core> [Startup] Completed!", Logger.CRITICAL)
 EndFunction
 
 Event OnUpdate()

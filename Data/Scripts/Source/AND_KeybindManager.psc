@@ -18,6 +18,8 @@ Int Property FixAssCurtainKey = 5 AutoReadOnly ;FlashKey[5]
 
 Int[] Property RegisteredKeys Auto
 
+Int OpenMenus = 0
+
 Event OnInit()
 	Startup()
 EndEvent
@@ -57,12 +59,17 @@ EndFunction
 
 Event OnMenuOpen(String MenuName)
 	KeysEnabled = False
-	AND_Logger.FastLog("<Keybind Manager> [OnMenuOpen] Opened Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
+	OpenMenus += 1
+	AND_Logger.FastLog("<Keybind Manager> [OnMenuOpen] Opened Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled + " | Menus Open = " + OpenMenus)
 EndEvent
 
 Event OnMenuClose(String MenuName)
-	KeysEnabled = True
-	AND_Logger.FastLog("<Keybind Manager> [OnMenuClose] Closed Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled)
+	OpenMenus -= 1
+	If OpenMenus <= 0
+		OpenMenus = 0
+		KeysEnabled = True
+	EndIf
+	AND_Logger.FastLog("<Keybind Manager> [OnMenuClose] Closed Menu: " + MenuName + ". KeysEnabled is now: " + KeysEnabled + " | Menus Open = " + OpenMenus)
 EndEvent
 
 Event OnKeyDown(Int KeyCode)

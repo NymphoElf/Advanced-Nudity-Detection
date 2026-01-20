@@ -274,24 +274,18 @@ Event OnConfigInit()
 EndEvent
 
 Event OnUpdate()
-	AND_Logger.FastLog("<MCM> [OnUpdate] - START")
-	
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting MCM Install...")
+	AND_Logger.FastLog("<MCM> [OnUpdate] - START", Logger.CRITICAL)
 	InstallMCM()
-	AND_Logger.FastLog("<MCM> [OnUpdate] - MCM Installed!")
 	
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting to set Globals...")
 	ModestyArousalThreshold.SetValue(70)
 	NPCModestyArousalThreshold.SetValue(70)
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Globals Set!")
 	
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Attempting to create arrays...")
 	DisplayFemaleName = Utility.CreateStringArray(1, "---")
 	PermFemales = Utility.CreateStringArray(1, "---")
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Arrays created!")
 	
-	AND_Logger.FastLog("<MCM> [OnUpdate] - Advanced Nudity MCM Ready!")
+	AND_Logger.FastLog("<MCM> [OnUpdate] - FINISHED", Logger.CRITICAL)
 	Debug.Notification("Advanced Nudity MCM Ready!")
+	AND_Logger.FastLog("<MCM> [OnUpdate] - MCM Setup Complete!", Logger.CRITICAL)
 EndEvent
 
 Function Startup()
@@ -307,13 +301,12 @@ Function Startup()
 	
 	Debug.Notification("Advanced Nudity MCM Initializing...")
 	
-	AND_Logger.FastLog("<MCM> [Startup] - RegisterForSingleUpdate...")
 	RegisterForSingleUpdate(1)
-	AND_Logger.FastLog("<MCM> [Startup] - RegisterForSingleUpdate Complete!")
+	AND_Logger.FastLog("<MCM> [Startup] - Completed!", Logger.CRITICAL)
 EndFunction
 
 Function InstallMCM()
-	AND_Logger.FastLog("<MCM> [InstallMCM] - START")
+	AND_Logger.FastLog("<MCM> [InstallMCM] - START", Logger.CRITICAL)
 	
 	ModName = "Advanced Nudity"
 	Pages = New String[13]
@@ -331,7 +324,21 @@ Function InstallMCM()
 	Pages[11] = "$FlashKeys"
 	Pages[12] = "$DebugPage"
 	
-	AND_Logger.FastLog("<MCM> [InstallMCM] - END")
+	Page9ToggleID = new Int[25]
+	Page10ToggleID = new Int[25]
+	Page12ToggleID = new Int[2]
+	
+	Page9SliderID = new Int[2]
+	Page10SliderID = new Int[10]
+	Page12SliderID = new Int[1]
+	
+	Page9MenuID = new Int[1]
+	Page10MenuID = new Int[5]
+	
+	Page11KeyID = new Int[10]
+	Page11ToggleID = new Int[5]
+	
+	AND_Logger.FastLog("<MCM> [InstallMCM] - END", Logger.CRITICAL)
 EndFunction
 
 Function SetMaleCoverage()
@@ -349,33 +356,13 @@ EndFunction
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
 	
-	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Set Page Array")
-	Pages = New String[13]
-	Pages[0] = "$NudityStatesPage"
-	Pages[1] = "$FlashingStatesPage"
-	Pages[2] = "$CurtainKeywordsPage"
-	Pages[3] = "$ArmorAndUnderwearKeywordsPage"
-	Pages[4] = "$GeneralKeywordsPage"
-	Pages[5] = "$FlashRiskKeywordsPage"
-	Pages[6] = "$FemaleFlashChancesPage"
-	Pages[7] = "$MaleFlashChancesPage"
-	Pages[8] = "$NakedCommentsPage"
-	Pages[9] = "$DynamicModestyPage"
-	Pages[10] = "$NPCModestyPage"
-	Pages[11] = "$FlashKeys"
-	Pages[12] = "$DebugPage"
-	
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Initialize NPC Variables")
 	Int TrackedFemales = NPCModesty.TrackedFemales
 	Int PermanentFemales = NPCModesty.PermanentFemales
 	Int Index = 0
 	
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Update Tracked Females List")
-	If TrackedFemales > 0
-		DisplayFemaleName = NPCModesty.FemaleName
-	Else
-		DisplayFemaleName[0] = "---"
-	EndIf
+	DisplayFemaleName = NPCModesty.FemaleName
 	
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - Update Permanent Females List")
 	If PermanentFemales > 0
@@ -556,20 +543,6 @@ Event OnConfigClose()
 EndEvent
 
 Event OnPageReset(string page)
-	Page9ToggleID = new Int[50]
-	Page10ToggleID = new Int[50]
-	Page12ToggleID = new Int[10]
-	
-	Page9SliderID = new Int[50]
-	Page10SliderID = new Int[50]
-	Page12SliderID = new Int[1]
-	
-	Page9MenuID = new Int[50]
-	Page10MenuID = new Int[50]
-	
-	Page11KeyID = new Int[10]
-	Page11ToggleID = new Int[10]
-	
 	If (page == "")
 		Int Screen = Utility.RandomInt(1,8)
 		
@@ -601,7 +574,10 @@ Event OnPageReset(string page)
 	
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
-	ActorBase PlayerBase = Game.GetPlayer().GetActorBase()
+	
+	ActorBase PlayerBase = Main.PlayerBase
+	Int PlayerSex = PlayerBase.GetSex()
+	
 	If (page == "$NudityStatesPage") ;default page
 		AddHeaderOption("$NudityConditionsHeader")
 		If PlayerRef.GetFactionRank(Main.AND_NudeActorFaction) == 1
@@ -629,13 +605,13 @@ Event OnPageReset(string page)
 		EndIf
 		
 		If PlayerRef.GetFactionRank(Main.AND_ShowingChestFaction) == 1
-			If PlayerBase.GetSex() == 0 || GenderlessWording == True ;Male/Genderless
+			If PlayerSex == 0 || GenderlessWording == True ;Male/Genderless
 				AddTextOption("$ShowingChestText", "$YesText")
 			Else
 				AddTextOption("$ShowingBoobsText", "$YesText")
 			EndIf
 		Else
-			If PlayerBase.GetSex() == 0 || GenderlessWording == True ;Male/Genderless
+			If PlayerSex == 0 || GenderlessWording == True ;Male/Genderless
 				AddTextOption("$ShowingChestText", "$NoText")
 			Else
 				AddTextOption("$ShowingBoobsText", "$NoText")
@@ -649,7 +625,7 @@ Event OnPageReset(string page)
 		EndIf
 		
 		If PlayerRef.GetFactionRank(Main.AND_ShowingGenitalsFaction) == 1
-			If PlayerBase.GetSex() == 0 && GenderlessWording == False ;Male
+			If PlayerSex == 0 && GenderlessWording == False ;Male
 				AddTextOption("$ShowingPenisText", "$YesText")
 			ElseIf GenderlessWording == False
 				AddTextOption("$ShowingPussyText", "$YesText")
@@ -657,7 +633,7 @@ Event OnPageReset(string page)
 				AddTextOption("$ShowingGenitalsText", "$YesText")
 			EndIf
 		Else
-			If PlayerBase.GetSex() == 0 && GenderlessWording == False ;Male
+			If PlayerSex == 0 && GenderlessWording == False ;Male
 				AddTextOption("$ShowingPenisText", "$NoText")
 			ElseIf GenderlessWording == False
 				AddTextOption("$ShowingPussyText", "$NoText")
@@ -675,7 +651,7 @@ Event OnPageReset(string page)
 		AddEmptyOption()
 		AddToggleOptionST("UseGenderlessState", "$GenderlessWordingText", GenderlessWording, 0)
 		
-		If PlayerBase.GetSex() == 0 ;Male
+		If PlayerSex == 0 ;Male
 			AddTextOption("$BaseSexText", "$MaleText")
 		Else
 			AddTextOption("$BaseSexText", "$FemaleText")
@@ -724,7 +700,7 @@ Event OnPageReset(string page)
 		
 	ElseIf (page == "$FlashingStatesPage")
 		AddHeaderOption("$CurtainRiskHeader")
-		If PlayerBase.GetSex() == 0 ;Male
+		If PlayerSex == 0 ;Male
 			If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow_Male)
 				If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 					AddTextOption("$ChestText", TopCurtainOddsLow_Male as String + "%")
@@ -931,10 +907,10 @@ Event OnPageReset(string page)
 		EndIf
 		
 		AddHeaderOption("$TransparentClothesRiskHeader")
-		If PlayerBase.GetSex() != 0 ;FEMALE
+		If PlayerSex != 0 ;FEMALE
 			If PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low)
 				AddTextOption("$TopText", TransparentTopArmorOdds_Low as String + "%")
-			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerBase.GetSex() != 0
+			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) && PlayerSex != 0
 				AddTextOption("$TopText", TransparentTopArmorOdds as String + "%")
 			ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High)
 				AddTextOption("$TopText", TransparentTopArmorOdds_High as String + "%")
@@ -1087,7 +1063,7 @@ Event OnPageReset(string page)
 		AddTextOption("$ChestCurtainRollText", Main.TopCurtainRoll)
 		AddTextOption("$AssCurtainRollText", Main.AssCurtainRoll)
 		AddTextOption("$PelvicCurtainRollText", Main.PelvicCurtainRoll)
-		If PlayerBase.GetSex() == 0 ;Male
+		If PlayerSex == 0 ;Male
 			AddTextOption("$BananaHammockRollText", Main.CStringRoll)
 		Else
 			AddTextOption("$CStringRollText", Main.CStringRoll)
@@ -1097,7 +1073,7 @@ Event OnPageReset(string page)
 		AddTextOption("$TransparentBraRollText", Main.BraTransparentRoll)
 		AddTextOption("$TransparentUnderwearRollText", Main.UnderwearTransparentRoll)
 		AddTextOption("$TransparentHotpantsRollText", Main.HotpantsTransparentRoll)
-		If PlayerBase.GetSex() == 0 ;Male
+		If PlayerSex == 0 ;Male
 			AddTextOption("$TransparentHimboSkirtRollText", Main.ShowgirlTransparentRoll)
 		Else
 			AddTextOption("$TransparentShowgirlSkirtRollText", Main.ShowgirlTransparentRoll)
@@ -1105,7 +1081,7 @@ Event OnPageReset(string page)
 		
 	ElseIf (page == "$CurtainKeywordsPage")
 	
-		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtain) && PlayerSex != 0
 			AddTextOption("AND_ChestCurtain", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtain_Male)
 			AddTextOption("AND_ChestCurtain", "$YesText")
@@ -1113,7 +1089,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestCurtain", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT) && PlayerSex != 0
 			AddTextOption("AND_ChestCurtainT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestCurtainT_Male)
 			AddTextOption("AND_ChestCurtainT", "$YesText")
@@ -1121,7 +1097,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestCurtainT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain) && PlayerSex != 0
 			AddTextOption("AND_PelvicCurtain", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtain_Male)
 			AddTextOption("AND_PelvicCurtain", "$YesText")
@@ -1129,7 +1105,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicCurtain", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT) && PlayerSex != 0
 			AddTextOption("AND_PelvicCurtainT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicCurtainT_Male)
 			AddTextOption("AND_PelvicCurtainT", "$YesText")
@@ -1137,7 +1113,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicCurtainT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtain) && PlayerSex != 0
 			AddTextOption("AND_AssCurtain", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtain_Male)
 			AddTextOption("AND_AssCurtain", "$YesText")
@@ -1145,7 +1121,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssCurtain", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssCurtainT) && PlayerSex != 0
 			AddTextOption("AND_AssCurtainT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssCurtainT_Male)
 			AddTextOption("AND_AssCurtainT", "$YesText")
@@ -1153,7 +1129,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssCurtainT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Miniskirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Miniskirt) && PlayerSex != 0
 			AddTextOption("AND_Miniskirt", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Miniskirt_Male)
 			AddTextOption("AND_Miniskirt", "$YesText")
@@ -1161,7 +1137,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Miniskirt", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_MiniskirtT) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_MiniskirtT) && PlayerSex != 0
 			AddTextOption("AND_MiniskirtT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_MiniskirtT_Male)
 			AddTextOption("AND_MiniskirtT", "$YesText")
@@ -1173,7 +1149,7 @@ Event OnPageReset(string page)
 	
 		AddHeaderOption("$ArmorKeywordsHeader")
 	
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop) && PlayerSex != 0
 			AddTextOption("AND_ArmorTop", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTop_Male)
 			AddTextOption("AND_ArmorTop", "$YesText")
@@ -1181,7 +1157,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorTop", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High)) && PlayerSex != 0
 			AddTextOption("AND_ArmorTopT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorTopT_High_Male)
 			AddTextOption("AND_ArmorTopT", "$YesText")
@@ -1189,7 +1165,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorTopT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorTop_NoCover) && PlayerSex != 0
 			AddTextOption("AND_ArmorTop_NoCover", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorTop_NoCover_Male)
 			AddTextOption("AND_ArmorTop_NoCover", "$YesText")
@@ -1197,7 +1173,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorTop_NoCover", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom) && PlayerSex != 0
 			AddTextOption("AND_ArmorBottom", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_Male)
 			AddTextOption("AND_ArmorBottom", "$YesText")
@@ -1205,7 +1181,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorBottom", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High)) && PlayerSex != 0
 			AddTextOption("AND_ArmorBottomT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_Male) || PlayerRef.WornHasKeyword(Main.AND_ArmorBottomT_High_Male)
 			AddTextOption("AND_ArmorBottomT", "$YesText")
@@ -1213,7 +1189,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorBottomT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_NoCover) && PlayerSex != 0
 			AddTextOption("AND_ArmorBottom_NoCover", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ArmorBottom_NoCover_Male)
 			AddTextOption("AND_ArmorBottom_NoCover", "$YesText")
@@ -1221,7 +1197,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ArmorBottom_NoCover", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Hotpants) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Hotpants) && PlayerSex != 0
 			AddTextOption("AND_Hotpants", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Hotpants_Male)
 			AddTextOption("AND_Hotpants", "$YesText")
@@ -1229,7 +1205,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Hotpants", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High)) && PlayerSex != 0
 			AddTextOption("AND_HotpantsT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_Male) || PlayerRef.WornHasKeyword(Main.AND_HotpantsT_High_Male)
 			AddTextOption("AND_HotpantsT", "$YesText")
@@ -1237,24 +1213,24 @@ Event OnPageReset(string page)
 			AddTextOption("AND_HotpantsT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirt) && PlayerSex != 0
 			AddTextOption("AND_ShowgirlSkirt", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirt)
 			AddTextOption("AND_HimboSkirt", "$YesText")
 		Else
-			If PlayerBase.GetSex() != 0
+			If PlayerSex != 0
 				AddTextOption("AND_ShowgirlSkirt", "$NoText")
 			Else
 				AddTextOption("AND_HimboSkirt", "$NoText")
 			EndIf
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_Low) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT) || PlayerRef.WornHasKeyword(Main.AND_ShowgirlSkirtT_High)) && PlayerSex != 0
 			AddTextOption("AND_ShowgirlSkirtT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_Low) || PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT) || PlayerRef.WornHasKeyword(Main.AND_HimboSkirtT_High)
 			AddTextOption("AND_HimboSkirtT", "$YesText")
 		Else
-			If PlayerBase.GetSex() != 0
+			If PlayerSex != 0
 				AddTextOption("AND_ShowgirlSkirtT", "$NoText")
 			Else
 				AddTextOption("AND_HimboSkirtT", "$NoText")
@@ -1265,7 +1241,7 @@ Event OnPageReset(string page)
 		
 		AddHeaderOption("$UnderwearKeywordsHeader")
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Bra) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Bra) && PlayerSex != 0
 			AddTextOption("AND_Bra", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Bra_Male)
 			AddTextOption("AND_Bra", "$YesText")
@@ -1273,7 +1249,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Bra", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_BraT_Low) || PlayerRef.WornHasKeyword(Main.AND_BraT) || PlayerRef.WornHasKeyword(Main.AND_BraT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_BraT_Low) || PlayerRef.WornHasKeyword(Main.AND_BraT) || PlayerRef.WornHasKeyword(Main.AND_BraT_High)) && PlayerSex != 0
 			AddTextOption("AND_BraT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_BraT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_BraT_Male) || PlayerRef.WornHasKeyword(Main.AND_BraT_High_Male)
 			AddTextOption("AND_BraT", "$YesText")
@@ -1281,7 +1257,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_BraT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Bra_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Bra_NoCover) && PlayerSex != 0
 			AddTextOption("AND_Bra_NoCover", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Bra_NoCover_Male)
 			AddTextOption("AND_Bra_NoCover", "$YesText")
@@ -1289,31 +1265,31 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Bra_NoCover", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_CString) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_CString) && PlayerSex != 0
 			AddTextOption("AND_CString", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammock)
 			AddTextOption("AND_BananaHammock", "$YesText")
 		Else
-			If PlayerBase.GetSex() != 0
+			If PlayerSex != 0
 				AddTextOption("AND_CString", "$NoText")
 			Else
 				AddTextOption("AND_BananaHammock", "$NoText")
 			EndIf
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(Main.AND_CStringT) || PlayerRef.WornHasKeyword(Main.AND_CStringT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_CStringT_Low) || PlayerRef.WornHasKeyword(Main.AND_CStringT) || PlayerRef.WornHasKeyword(Main.AND_CStringT_High)) && PlayerSex != 0
 			AddTextOption("AND_CStringT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_Low) || PlayerRef.WornHasKeyword(Main.AND_BananaHammockT) || PlayerRef.WornHasKeyword(Main.AND_BananaHammockT_High)
 			AddTextOption("AND_BananaHammockT", "$YesText")
 		Else
-			If PlayerBase.GetSex() != 0
+			If PlayerSex != 0
 				AddTextOption("AND_CStringT", "$NoText")
 			Else
 				AddTextOption("AND_BananaHammockT", "$NoText")
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Thong) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Thong) && PlayerSex != 0
 			AddTextOption("AND_Thong", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Thong_Male)
 			AddTextOption("AND_Thong", "$YesText")
@@ -1321,7 +1297,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Thong", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(Main.AND_ThongT) || PlayerRef.WornHasKeyword(Main.AND_ThongT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_ThongT_Low) || PlayerRef.WornHasKeyword(Main.AND_ThongT) || PlayerRef.WornHasKeyword(Main.AND_ThongT_High)) && PlayerSex != 0
 			AddTextOption("AND_ThongT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ThongT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_ThongT_Male) || PlayerRef.WornHasKeyword(Main.AND_ThongT_High_Male)
 			AddTextOption("AND_ThongT", "$YesText")
@@ -1329,7 +1305,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ThongT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Thong_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Thong_NoCover) && PlayerSex != 0
 			AddTextOption("AND_Thong_NoCover", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Thong_NoCover_Male)
 			AddTextOption("AND_Thong_NoCover", "$YesText")
@@ -1337,7 +1313,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Thong_NoCover", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Underwear) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Underwear) && PlayerSex != 0
 			AddTextOption("AND_Underwear", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Underwear_Male)
 			AddTextOption("AND_Underwear", "$YesText")
@@ -1345,7 +1321,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Underwear", "$NoText")
 		EndIf
 		
-		If (PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High)) && PlayerBase.GetSex() != 0
+		If (PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High)) && PlayerSex != 0
 			AddTextOption("AND_UnderwearT", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Low_Male) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_Male) || PlayerRef.WornHasKeyword(Main.AND_UnderwearT_High_Male)
 			AddTextOption("AND_UnderwearT", "$YesText")
@@ -1353,7 +1329,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_UnderwearT", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Underwear_NoCover) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Underwear_NoCover) && PlayerSex != 0
 			AddTextOption("AND_Underwear_NoCover", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Underwear_NoCover_Male)
 			AddTextOption("AND_Underwear_NoCover", "$YesText")
@@ -1363,7 +1339,7 @@ Event OnPageReset(string page)
 
 	ElseIf (page == "$GeneralKeywordsPage")
 	
-		If PlayerRef.WornHasKeyword(Main.AND_CoversAll) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_CoversAll) && PlayerSex != 0
 			AddTextOption("AND_CoversAll", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_CoversAll_Male)
 			AddTextOption("AND_CoversAll", "$YesText")
@@ -1371,7 +1347,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_CoversAll", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_Microskirt) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_Microskirt) && PlayerSex != 0
 			AddTextOption("AND_Microskirt", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_Microskirt_Male)
 			AddTextOption("AND_Microskirt", "$YesText")
@@ -1379,7 +1355,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Microskirt", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_NipplePasties) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_NipplePasties) && PlayerSex != 0
 			AddTextOption("AND_NipplePasties", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_NipplePasties_Male)
 			AddTextOption("AND_NipplePasties", "$YesText")
@@ -1387,17 +1363,17 @@ Event OnPageReset(string page)
 			AddTextOption("AND_NipplePasties", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_VaginaPasties) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_VaginaPasties) && PlayerSex != 0
 			AddTextOption("AND_VaginaPasties", "$YesText")
 		Else
-			If PlayerBase.GetSex() != 0
+			If PlayerSex != 0
 				AddTextOption("AND_VaginaPasties", "$NoText")
 			Else
 				AddTextOption("AND_VaginaPasties", "N/A")
 			EndIf
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_NearlyNaked) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_NearlyNaked) && PlayerSex != 0
 			AddTextOption("AND_NearlyNaked", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_NearlyNaked_Male)
 			AddTextOption("AND_NearlyNaked", "$YesText")
@@ -1405,7 +1381,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_NearlyNaked", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_EffectivelyNaked) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_EffectivelyNaked) && PlayerSex != 0
 			AddTextOption("AND_EffectivelyNaked", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_EffectivelyNaked_Male)
 			AddTextOption("AND_EffectivelyNaked", "$YesText")
@@ -1415,7 +1391,7 @@ Event OnPageReset(string page)
 	
 	ElseIf (page == "$FlashRiskKeywordsPage")
 		AddHeaderOption("$ChestCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra) && PlayerSex != 0
 			AddTextOption("AND_ChestFlashRiskUltra", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskUltra_Male)
 			AddTextOption("AND_ChestFlashRiskUltra", "$YesText")
@@ -1423,7 +1399,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme) && PlayerSex != 0
 			AddTextOption("AND_ChestFlashRiskExtreme", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskExtreme_Male)
 			AddTextOption("AND_ChestFlashRiskExtreme", "$YesText")
@@ -1431,7 +1407,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh) && PlayerSex != 0
 			AddTextOption("AND_ChestFlashRiskHigh", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskHigh_Male)
 			AddTextOption("AND_ChestFlashRiskHigh", "$YesText")
@@ -1439,7 +1415,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk) && PlayerSex != 0
 			AddTextOption("AND_ChestFlashRisk", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRisk_Male)
 			AddTextOption("AND_ChestFlashRisk", "$YesText")
@@ -1447,7 +1423,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_ChestFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow) && PlayerSex != 0
 			AddTextOption("AND_ChestFlashRiskLow", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_ChestFlashRiskLow_Male)
 			AddTextOption("AND_ChestFlashRiskLow", "$YesText")
@@ -1456,7 +1432,7 @@ Event OnPageReset(string page)
 		EndIf
 		
 		AddHeaderOption("$PelvicCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra) && PlayerSex != 0
 			AddTextOption("AND_PelvicFlashRiskUltra", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskUltra_Male)
 			AddTextOption("AND_PelvicFlashRiskUltra", "$YesText")
@@ -1464,7 +1440,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme) && PlayerSex != 0
 			AddTextOption("AND_PelvicFlashRiskExtreme", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskExtreme_Male)
 			AddTextOption("AND_PelvicFlashRiskExtreme", "$YesText")
@@ -1472,7 +1448,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh) && PlayerSex != 0
 			AddTextOption("AND_PelvicFlashRiskHigh", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskHigh_Male)
 			AddTextOption("AND_PelvicFlashRiskHigh", "$YesText")
@@ -1480,7 +1456,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk) && PlayerSex != 0
 			AddTextOption("AND_PelvicFlashRisk", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRisk_Male)
 			AddTextOption("AND_PelvicFlashRisk", "$YesText")
@@ -1488,7 +1464,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_PelvicFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow) && PlayerSex != 0
 			AddTextOption("AND_PelvicFlashRiskLow", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_PelvicFlashRiskLow_Male)
 			AddTextOption("AND_PelvicFlashRiskLow", "$YesText")
@@ -1499,7 +1475,7 @@ Event OnPageReset(string page)
 		SetCursorPosition(1)
 		
 		AddHeaderOption("$AssCurtainText")
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra) && PlayerSex != 0
 			AddTextOption("AND_AssFlashRiskUltra", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskUltra_Male)
 			AddTextOption("AND_AssFlashRiskUltra", "$YesText")
@@ -1507,7 +1483,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssFlashRiskUltra", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme) && PlayerSex != 0
 			AddTextOption("AND_AssFlashRiskExtreme", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskExtreme_Male)
 			AddTextOption("AND_AssFlashRiskExtreme", "$YesText")
@@ -1515,7 +1491,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssFlashRiskExtreme", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh) && PlayerSex != 0
 			AddTextOption("AND_AssFlashRiskHigh", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskHigh_Male)
 			AddTextOption("AND_AssFlashRiskHigh", "$YesText")
@@ -1523,7 +1499,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssFlashRiskHigh", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk) && PlayerSex != 0
 			AddTextOption("AND_AssFlashRisk", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRisk_Male)
 			AddTextOption("AND_AssFlashRisk", "$YesText")
@@ -1531,7 +1507,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_AssFlashRisk", "$NoText")
 		EndIf
 		
-		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow) && PlayerBase.GetSex() != 0
+		If PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow) && PlayerSex != 0
 			AddTextOption("AND_AssFlashRiskLow", "$YesText")
 		ElseIf PlayerRef.WornHasKeyword(Main.AND_AssFlashRiskLow_Male)
 			AddTextOption("AND_AssFlashRiskLow", "$YesText")
@@ -2097,9 +2073,7 @@ Event OnOptionHighlight(Int Option)
 		
 	ElseIf Option == Page12ToggleID[0] ;Enable Logging
 		SetInfoText("$EnableLoggingInfoText")
-	ElseIf Option == Page12ToggleID[1] ;Add To Main Log
-		SetInfoText("$AddToGameLogInfoText")
-		ElseIf Option == Page12ToggleID[2] ;Data Dump
+	ElseIf Option == Page12ToggleID[1] ;Data Dump
 		SetInfoText("$DataDumpInfoText")
 		;=========================
 		;---SLIDERS---
@@ -2220,7 +2194,7 @@ Event OnOptionSliderOpen(Int Option)
 	ElseIf Option == Page12SliderID[0]
 		StartValue = LoggingLevel
 		RangeMin = 0
-		RangeMax = 3
+		RangeMax = 2
 		Interval = 1
 		DefaultValue = 1
 	EndIf
