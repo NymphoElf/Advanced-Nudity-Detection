@@ -2335,26 +2335,14 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, StrictModestyRules)
 		ForcePageReset()
 	ElseIf Option == Page9ToggleID[2]
-		If ModestyCorruption == False
-			ModestyCorruption = True
-		Else
-			ModestyCorruption = False
-		EndIf
+		ModestyCorruption = !ModestyCorruption
 		SetToggleOptionValue(Option, ModestyCorruption)
 	ElseIf Option == Page9ToggleID[3]
-		If PermanentShameless == False
-			PermanentShameless = True
-		Else
-			PermanentShameless = False
-		EndIf
+		PermanentShameless = !PermanentShameless
 		SetToggleOptionValue(Option, PermanentShameless)
 		ForcePageReset()
 	ElseIf Option == Page9ToggleID[4]
-		If UseHardcoreModesty == False
-			UseHardcoreModesty = True
-		Else
-			UseHardcoreModesty = False
-		EndIf
+		UseHardcoreModesty = !UseHardcoreModesty
 		SetToggleOptionValue(Option, UseHardcoreModesty)
 		
 		If UseHardcoreModesty == True
@@ -2521,24 +2509,14 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, ResetModesty)
 		ForcePageReset()
 	ElseIf Option == Page9ToggleID[18]
-		If RandomizePlayer == False
-			RandomizePlayer = True
-		Else
-			RandomizePlayer = False
-		EndIf
+		RandomizePlayer = !RandomizePlayer
 		SetToggleOptionValue(Option, RandomizePlayer)
 		ForcePageReset()
 	ElseIf Option == Page9ToggleID[19]
-		If ModestyMonologue == False
-			ModestyMonologue = True
-		Else
-			ModestyMonologue = False
-		EndIf
+		ModestyMonologue = !ModestyMonologue
 		SetToggleOptionValue(Option, ModestyMonologue)
-	
 	ElseIf Option == Page9ToggleID[20]
 		ModestyMessagebox = !ModestyMessagebox
-		
 		SetToggleOptionValue(Option, ModestyMessagebox)
 		
 		;=============
@@ -2546,11 +2524,7 @@ Event OnOptionSelect(Int Option)
 		;=============
 
 	ElseIf Option == Page10ToggleID[0]
-		If ResetNPCs == False
-			ResetNPCs = True
-		Else
-			ResetNPCs = False
-		EndIf
+		ResetNPCs = !ResetNPCs
 		SetToggleOptionValue(Option, ResetNPCs)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[1]
@@ -2562,11 +2536,7 @@ Event OnOptionSelect(Int Option)
 		ResetNPCs = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[2]
-		If DeleteNPCs == False
-			DeleteNPCs = True
-		Else
-			DeleteNPCs = False
-		EndIf
+		DeleteNPCs = !DeleteNPCs
 		SetToggleOptionValue(Option, DeleteNPCs)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[3]
@@ -2581,32 +2551,19 @@ Event OnOptionSelect(Int Option)
 		DeleteNPCs = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[4]
-		If DynamicFollowers == False
-			DynamicFollowers = True
-		Else
-			DynamicFollowers = False
-		EndIf
-		If NPCTimerWipeArmed == False
-			NPCTimerWipeArmed = True
-		Else
-			NPCTimerWipeArmed = False
-		EndIf
+		DynamicFollowers = !DynamicFollowers
+		NPCTimerWipeArmed = !NPCTimerWipeArmed
+		
 		SetToggleOptionValue(Option, DynamicFollowers)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[5]
-		If NPCModestyCorruption == False
-			NPCModestyCorruption = True
-		Else
-			NPCModestyCorruption = False
-		EndIf
+		NPCPermanentShameless = !NPCPermanentShameless
+		SetToggleOptionValue(Option, NPCPermanentShameless)
+	ElseIf Option == Page10ToggleID[6]
+		NPCModestyCorruption = !NPCModestyCorruption
 		SetToggleOptionValue(Option, NPCModestyCorruption)
-	
 	ElseIf Option == Page10ToggleID[7]
-		If MakeFemalePermanent == False
-			MakeFemalePermanent = True
-		Else
-			MakeFemalePermanent = False
-		EndIf
+		MakeFemalePermanent = !MakeFemalePermanent
 		SetToggleOptionValue(Option, MakeFemalePermanent)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[8] ;Confirm Make Permanent
@@ -2622,11 +2579,7 @@ Event OnOptionSelect(Int Option)
 		MakeFemalePermanent = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[9]
-		If DeleteFemale == False
-			DeleteFemale = True
-		Else
-			DeleteFemale = False
-		EndIf
+		DeleteFemale = !DeleteFemale
 		SetToggleOptionValue(Option, DeleteFemale)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[10] ;Confirm Delete
@@ -2640,11 +2593,7 @@ Event OnOptionSelect(Int Option)
 		DeleteFemale = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[11]
-		If ResetFemaleModesty == False
-			ResetFemaleModesty = True
-		Else
-			ResetFemaleModesty = False
-		EndIf
+		ResetFemaleModesty = !ResetFemaleModesty
 		SetToggleOptionValue(Option, ResetFemaleModesty)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[12] ;Confirm Reset
@@ -2653,31 +2602,17 @@ Event OnOptionSelect(Int Option)
 		ResetFemaleModesty = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[13]
-		If ThisNPCPermanentShameless == False
-			ThisNPCPermanentShameless = True
-		Else
-			ThisNPCPermanentShameless = False
-		EndIf
+		ThisNPCPermanentShameless =!ThisNPCPermanentShameless
+		SetToggleOptionValue(Option, ThisNPCPermanentShameless)
 	ElseIf Option == Page10ToggleID[14]
-		If ThisNPCCorrupt == False
-			ThisNPCCorrupt = True
-		Else
-			ThisNPCCorrupt = False
-		EndIf
+		ThisNPCCorrupt = !ThisNPCCorrupt
+		SetToggleOptionValue(Option, ThisNPCCorrupt)
 	ElseIf Option == Page10ToggleID[15]
-		If ApplyTweak == False
-			ApplyTweak = True
-		Else
-			ApplyTweak = False
-		EndIf
+		ApplyTweak = !ApplyTweak
 		SetToggleOptionValue(Option, ApplyTweak)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[16]
-		If ApplyAsDefault == False
-			ApplyAsDefault = True
-		Else
-			ApplyAsDefault = False
-		EndIf
+		ApplyAsDefault = !ApplyAsDefault
 		SetToggleOptionValue(Option, ApplyAsDefault)
 	ElseIf Option == Page10ToggleID[17] ;Confirm Tweak
 		NPCModesty.TweakFemale(SelectedFemaleActor, DisplayIndex, ThisNPCStrictRank as Int, ThisNPCTopRank as Int, ThisNPCBottomRank as Int, ThisNPCMinimumStrictRank as Int, ThisNPCMinimumTopRank as Int, ThisNPCMinimumBottomRank as Int, ThisNPCPermanentShameless, ThisNPCCorrupt, ApplyAsDefault, StrictNPC, NPCUpgradeBlocked)
@@ -2686,11 +2621,7 @@ Event OnOptionSelect(Int Option)
 		ApplyAsDefault = False
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[18]
-		If DeletePermFemale == False
-			DeletePermFemale = True
-		Else
-			DeletePermFemale = False
-		EndIf
+		DeletePermFemale = !DeletePermFemale
 		SetToggleOptionValue(Option, DeletePermFemale)
 	ElseIf Option == Page10ToggleID[19] ;Confirm Permanent Removal
 		Actor permFemaleActor = GetFormValue(NPCModesty.PermJsonName, PermIndex) as Actor
@@ -2743,24 +2674,10 @@ Event OnOptionSelect(Int Option)
 		;=============
 		
 	ElseIf Option == Page12ToggleID[0]
-		If Logging == False
-			Logging = True
-		Else
-			Logging = False
-			;AddToMainLog = False
-		EndIf
+		Logging = !Logging
 		AND_Logger.EnableLogging(Logging)
 		SetToggleOptionValue(Option, Logging)
 		ForcePageReset()
-	;/
-	ElseIf Option == Page12ToggleID[1]
-		If AddToMainLog == False
-			AddToMainLog = True
-		Else
-			AddToMainLog = False
-		EndIf
-		SetToggleOptionValue(Option, AddToMainLog)
-	/;
 	ElseIf Option == Page12ToggleID[2]
 		NPCModesty.DumpNPCData()
 	EndIf
@@ -2912,11 +2829,7 @@ EndState
 
 State AND_DisableNakedCommentsState
 	Event OnSelectST()
-		If DisableNakedComments == False
-			DisableNakedComments = True
-		Else
-			DisableNakedComments = False
-		EndIf
+		DisableNakedComments = !DisableNakedComments
 		
 		SetToggleOptionValueST(DisableNakedComments, False, "AND_DisableNakedCommentsState")
 		ForcePageReset()
@@ -3087,11 +3000,7 @@ EndState
 
 State AND_AllowMotionFlashState
 	Event OnSelectST()
-		If AllowMotionFlash == False
-			AllowMotionFlash = True
-		Else
-			AllowMotionFlash = False
-		EndIf
+		AllowMotionFlash = !AllowMotionFlash
 		SetToggleOptionValueST(AllowMotionFlash, False, "AND_AllowMotionFlashState")
 		ForcePageReset()
 	EndEvent
@@ -3148,11 +3057,7 @@ EndState
 
 State UseGenderlessState
 	Event OnSelectST()
-		If GenderlessWording == False
-			GenderlessWording = True
-		Else
-			GenderlessWording = False
-		EndIf
+		GenderlessWording = !GenderlessWording
 		SetToggleOptionValueST(GenderlessWording, False, "UseGenderlessState")
 		ForcePageReset()
 	EndEvent
@@ -3163,7 +3068,6 @@ State UseGenderlessState
 EndState
 
 State AND_ChestCurtainLowOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsLow)
 		If TopCurtainOdds >= 20
@@ -3196,7 +3100,6 @@ State AND_ChestCurtainLowOdds
 EndState
 
 State AND_ChestCurtainLowOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsLow_Male)
 		If TopCurtainOdds_Male >= 20
@@ -3229,7 +3132,6 @@ State AND_ChestCurtainLowOddsMale
 EndState
 
 State AND_ChestCurtainOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOdds)
 		If TopCurtainOddsLow <= 35 && TopCurtainOddsHigh >= 35
@@ -3267,7 +3169,6 @@ State AND_ChestCurtainOdds
 EndState
 
 State AND_ChestCurtainOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOdds_Male)
 		If TopCurtainOddsLow_Male <= 35 && TopCurtainOddsHigh_Male >= 35
@@ -3305,7 +3206,6 @@ State AND_ChestCurtainOddsMale
 EndState
 
 State AND_ChestCurtainHighOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsHigh)
 		If TopCurtainOdds <= 50 && TopCurtainOddsExtreme >= 50
@@ -3343,7 +3243,6 @@ State AND_ChestCurtainHighOdds
 EndState
 
 State AND_ChestCurtainHighOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsHigh_Male)
 		If TopCurtainOdds_Male <= 50 && TopCurtainOddsExtreme_Male >= 50
@@ -3381,7 +3280,6 @@ State AND_ChestCurtainHighOddsMale
 EndState
 
 State AND_ChestCurtainExtremeOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsExtreme)
 		If TopCurtainOddsHigh <= 65 && TopCurtainOddsUltra >= 65
@@ -3419,7 +3317,6 @@ State AND_ChestCurtainExtremeOdds
 EndState
 
 State AND_ChestCurtainExtremeOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsExtreme_Male)
 		If TopCurtainOddsHigh_Male <= 65 && TopCurtainOddsUltra_Male >= 65
@@ -3457,7 +3354,6 @@ State AND_ChestCurtainExtremeOddsMale
 EndState
 
 State AND_ChestCurtainUltraOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsUltra)
 		If TopCurtainOddsExtreme <= 80
@@ -3490,7 +3386,6 @@ State AND_ChestCurtainUltraOdds
 EndState
 
 State AND_ChestCurtainUltraOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TopCurtainOddsUltra_Male)
 		If TopCurtainOddsExtreme_Male <= 80
@@ -3523,7 +3418,6 @@ State AND_ChestCurtainUltraOddsMale
 EndState
 
 State AND_TransparentChestCurtainLowOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsLow)
 		If TransparentTopCurtainOdds >= 55
@@ -3556,7 +3450,6 @@ State AND_TransparentChestCurtainLowOdds
 EndState
 
 State AND_TransparentChestCurtainLowOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsLow_Male)
 		If TransparentTopCurtainOdds_Male >= 55
@@ -3589,7 +3482,6 @@ State AND_TransparentChestCurtainLowOddsMale
 EndState
 
 State AND_TransparentChestCurtainOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOdds)
 		If TransparentTopCurtainOddsLow <= 65 && TransparentTopCurtainOddsHigh >= 65
@@ -3627,7 +3519,6 @@ State AND_TransparentChestCurtainOdds
 EndState
 
 State AND_TransparentChestCurtainOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOdds_Male)
 		If TransparentTopCurtainOddsLow_Male <= 65 && TransparentTopCurtainOddsHigh_Male >= 65
@@ -3665,7 +3556,6 @@ State AND_TransparentChestCurtainOddsMale
 EndState
 
 State AND_TransparentChestCurtainHighOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsHigh)
 		If TransparentTopCurtainOdds <= 75 && TransparentTopCurtainOddsExtreme >= 75
@@ -3703,7 +3593,6 @@ State AND_TransparentChestCurtainHighOdds
 EndState
 
 State AND_TransparentChestCurtainHighOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsHigh_Male)
 		If TransparentTopCurtainOdds_Male <= 75 && TransparentTopCurtainOddsExtreme_Male >= 75
@@ -3741,7 +3630,6 @@ State AND_TransparentChestCurtainHighOddsMale
 EndState
 
 State AND_TransparentChestCurtainExtremeOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsExtreme)
 		If TransparentTopCurtainOddsHigh <= 85 && TransparentTopCurtainOddsUltra >= 85
@@ -3779,7 +3667,6 @@ State AND_TransparentChestCurtainExtremeOdds
 EndState
 
 State AND_TransparentChestCurtainExtremeOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsExtreme_Male)
 		If TransparentTopCurtainOddsHigh_Male <= 85 && TransparentTopCurtainOddsUltra_Male >= 85
@@ -3817,7 +3704,6 @@ State AND_TransparentChestCurtainExtremeOddsMale
 EndState
 
 State AND_TransparentChestCurtainUltraOdds
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsUltra)
 		If TransparentTopCurtainOddsExtreme <= 95
@@ -3850,7 +3736,6 @@ State AND_TransparentChestCurtainUltraOdds
 EndState
 
 State AND_TransparentChestCurtainUltraOddsMale
-
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(TransparentTopCurtainOddsUltra_Male)
 		If TransparentTopCurtainOddsExtreme_Male <= 95
