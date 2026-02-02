@@ -54,6 +54,7 @@ Event OnPlayerLoadGame()
 	Core.ModCheck()
 	NPCModestyManager.RestoreNPCFactions()
 	
+	FactionCheck()
 	If Core.DFFMA_Found == True
 		SetPlayerModestyFactions()
 	EndIf
@@ -79,6 +80,19 @@ Function InitializeFactions()
 	PlayerRef.AddToFaction(Core.AND_ToplessFaction)
 	PlayerRef.AddToFaction(Core.AND_BottomlessFaction)
 	PlayerRef.AddToFaction(Core.AND_NudeActorFaction)
+	
+	PlayerRef.AddToFaction(Core.FlashingChestCurtain)
+	PlayerRef.AddToFaction(Core.FlashingPelvicCurtain)
+	PlayerRef.AddToFaction(Core.FlashingAssCurtain)
+	
+	PlayerRef.AddToFaction(Core.FlashingTop)
+	PlayerRef.AddToFaction(Core.FlashingBra)
+	
+	PlayerRef.AddToFaction(Core.FlashingBottom)
+	PlayerRef.AddToFaction(Core.FlashingUnderwear)
+	PlayerRef.AddToFaction(Core.FlashingCString)
+	PlayerRef.AddToFaction(Core.FlashingHotpants)
+	PlayerRef.AddToFaction(Core.FlashingSkirt)
 	
 	PlayerRef.AddToFaction(Core.ModestyFaction)
 	PlayerRef.SetFactionRank(Core.ModestyFaction, 0)
@@ -120,14 +134,34 @@ Function SetPlayerModestyFactions()
 	EndIf
 EndFunction
 
+Function FactionCheck()
+	PlayerRef.AddToFaction(Core.AND_ShowingAssFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingChestFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingGenitalsFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingBraFaction)
+	PlayerRef.AddToFaction(Core.AND_ShowingUnderwearFaction)
+	PlayerRef.AddToFaction(Core.AND_ToplessFaction)
+	PlayerRef.AddToFaction(Core.AND_BottomlessFaction)
+	PlayerRef.AddToFaction(Core.AND_NudeActorFaction)
+	
+	PlayerRef.AddToFaction(Core.FlashingChestCurtain)
+	PlayerRef.AddToFaction(Core.FlashingPelvicCurtain)
+	PlayerRef.AddToFaction(Core.FlashingAssCurtain)
+	
+	PlayerRef.AddToFaction(Core.FlashingTop)
+	PlayerRef.AddToFaction(Core.FlashingBra)
+	
+	PlayerRef.AddToFaction(Core.FlashingBottom)
+	PlayerRef.AddToFaction(Core.FlashingUnderwear)
+	PlayerRef.AddToFaction(Core.FlashingCString)
+	PlayerRef.AddToFaction(Core.FlashingHotpants)
+	PlayerRef.AddToFaction(Core.FlashingSkirt)
+EndFunction
+
 Event OnMenuClose(String MenuName)
 	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Menu Closed")
 	If MenuName == "RaceSex Menu"
 		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - RaceSex Menu Closed")
-		
-		Core.PlayerBase = PlayerRef.GetActorBase()
-		Core.BaseRace = Core.PlayerBase.GetRace()
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace)
 		
 		RegisterForAnimations()
 		InitializeFactions()
@@ -137,12 +171,16 @@ Event OnMenuClose(String MenuName)
 			PermanentsImported = True
 		EndIf
 		
+		Core.BaseRace = Core.PlayerBase.GetRace()
+		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace)
+		
 		If Core.BaseRace == None
 			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.ERROR)
-			Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your character's race again.")
-			Game.ShowRaceMenu()
+			Debug.MessageBox("A.N.D. - Race was not detected. Something is wrong with one or more of your other mods because they're telling Skyrim your Race is 'None'.")
+			;Game.ShowRaceMenu()
 			return
 		EndIf
+		
 		Core.RegisterForSingleUpdate(1.0)
 	EndIf
 	

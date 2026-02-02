@@ -121,7 +121,22 @@ Bool Function CurtainCheck(String Type, Bool IsTransparent, String Level)
 	EndIf
 	
 	If Roll <= Odds
+		If Type == "Chest"
+			PlayerRef.SetFactionRank(Core.FlashingChestCurtain, 0)
+		ElseIf Type == "Pelvic"
+			PlayerRef.SetFactionRank(Core.FlashingPelvicCurtain, 0)
+		ElseIf Type == "Ass"
+			PlayerRef.SetFactionRank(Core.FlashingAssCurtain, 0)
+		EndIf
 		return False
+	EndIf
+	
+	If Type == "Chest"
+		PlayerRef.SetFactionRank(Core.FlashingChestCurtain, 1)
+	ElseIf Type == "Pelvic"
+		PlayerRef.SetFactionRank(Core.FlashingPelvicCurtain, 1)
+	ElseIf Type == "Ass"
+		PlayerRef.SetFactionRank(Core.FlashingAssCurtain, 1)
 	EndIf
 	return True
 EndFunction
@@ -187,7 +202,34 @@ Bool Function TransparentItemCheck(String Type, String Level)
 	EndIf
 	
 	If Roll <= Odds
+		If Type == "Top"
+			PlayerRef.SetFactionRank(Core.FlashingTop, 0)
+		ElseIf Type == "Bra"
+			PlayerRef.SetFactionRank(Core.FlashingBra, 0)
+		ElseIf Type == "Bottom"
+			PlayerRef.SetFactionRank(Core.FlashingBottom, 0)
+		ElseIf Type == "Underwear"
+			PlayerRef.SetFactionRank(Core.FlashingUnderwear, 0)
+		ElseIf Type == "Hotpants"
+			PlayerRef.SetFactionRank(Core.FlashingHotpants, 0)
+		ElseIf Type == "Showgirl"
+			PlayerRef.SetFactionRank(Core.FlashingSkirt, 0)
+		EndIf
 		return False
+	EndIf
+	
+	If Type == "Top"
+		PlayerRef.SetFactionRank(Core.FlashingTop, 1)
+	ElseIf Type == "Bra"
+		PlayerRef.SetFactionRank(Core.FlashingBra, 1)
+	ElseIf Type == "Bottom"
+		PlayerRef.SetFactionRank(Core.FlashingBottom, 1)
+	ElseIf Type == "Underwear"
+		PlayerRef.SetFactionRank(Core.FlashingUnderwear, 1)
+	ElseIf Type == "Hotpants"
+		PlayerRef.SetFactionRank(Core.FlashingHotpants, 1)
+	ElseIf Type == "Showgirl"
+		PlayerRef.SetFactionRank(Core.FlashingSkirt, 1)
 	EndIf
 	return True
 EndFunction
@@ -205,8 +247,10 @@ Bool Function CStringCheck(Bool IsTransparent, String Level)
 	EndIf
 	
 	If Core.CStringRoll <= Odds
+		PlayerRef.SetFactionRank(Core.FlashingCString, 0)
 		return False
 	EndIf
+	PlayerRef.SetFactionRank(Core.FlashingCString, 1)
 	return True
 EndFunction
 

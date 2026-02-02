@@ -13,7 +13,7 @@ SLSF_Reloaded_ModIntegration Property SLSFR_Mods = None Auto Hidden
 sslActorStats Property SexlabStats = None Auto Hidden
 
 Actor Property Rosa Auto Hidden
-ActorBase Property PlayerBase Auto Hidden
+ActorBase Property PlayerBase Auto
 
 Bool Property MainRollRunning Auto Hidden
 Bool Property EquipScanArmed Auto Hidden
@@ -35,6 +35,19 @@ Faction Property BottomModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 
 
 Faction Property ShyWithMale Auto ;0 = No, 1 = Yes
 Faction Property ShyWithFemale Auto ;0 = No, 1 = Yes
+
+Faction Property FlashingChestCurtain Auto
+Faction Property FlashingPelvicCurtain Auto
+Faction Property FlashingAssCurtain Auto
+
+Faction Property FlashingTop Auto
+Faction Property FlashingBra Auto
+
+Faction Property FlashingBottom Auto
+Faction Property FlashingUnderwear Auto
+Faction Property FlashingHotpants Auto
+Faction Property FlashingSkirt Auto
+Faction Property FlashingCString Auto
 
 Keyword Property AND_ArmorTop Auto
 Keyword Property AND_ArmorTopT_Low Auto
@@ -210,7 +223,7 @@ Bool Property DFFMA_Found Auto Hidden
 Bool Property RosaExists Auto Hidden
 Bool Property SexlabInstalled Auto Hidden
 
-Race Property BaseRace = None Auto Hidden
+Race Property BaseRace Auto Hidden
 
 Race[] Property DefaultRaces Auto
 Race[] Property TransformedRaces Auto
@@ -329,13 +342,11 @@ Function AND_MovementDiceRoll(Bool Sprinting)
 	EndIf
 	
 	Int MaxRoll = 100
-	Int RunMod = Config.RunningModifier
-	Int SprintMod = Config.SprintingModifier
 	
 	If Sprinting == True
-		MaxRoll = (100 - SprintMod)
+		MaxRoll = (100 - Config.SprintingModifier)
 	Else
-		MaxRoll = (100 - RunMod)
+		MaxRoll = (100 - Config.RunningModifier)
 	EndIf
 	
 	;Player Flash Odds
@@ -370,14 +381,12 @@ Function AND_DiceRoll()
 		AND_Logger.FastLog("<Core> [AND_DiceRoll] - START")
 		
 		Int MaxRoll = 100
-		Int RunMod = Config.RunningModifier
-		Int SprintMod = Config.SprintingModifier
 		
 		If Config.AllowMotionFlash == True
 			If PlayerScript.PlayerRef.IsSprinting()
-				MaxRoll = (100 - SprintMod)
+				MaxRoll = (100 - Config.SprintingModifier)
 			ElseIf PlayerScript.PlayerRef.IsRunning()
-				MaxRoll = (100 - RunMod)
+				MaxRoll = (100 - Config.RunningModifier)
 			EndIf
 		EndIf
 		
@@ -405,6 +414,8 @@ Function AND_DiceRoll()
 		NPCHotpantsTransparentRoll = Utility.RandomInt(1,100)
 		NPCShowgirlTransparentRoll = Utility.RandomInt(1,100)
 		
+		ResetFlashFactions()
+		
 		If PlayerBase.GetSex() == 0 ;Male
 			AND_Logger.FastLog("<Core> [Dice Roll] - Send Male Scan")
 			MaleScan.FullAnalyze()
@@ -421,6 +432,19 @@ Function AND_DiceRoll()
 		MainRollRunning = False
 		AND_Logger.FastLog("<Core> [AND_DiceRoll] - END")
 	EndIf
+EndFunction
+
+Function ResetFlashFactions()
+	PlayerScript.PlayerRef.SetFactionRank(FlashingChestCurtain, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingPelvicCurtain, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingAssCurtain, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingTop, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingBra, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingBottom, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingUnderwear, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingCString, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingHotpants, 0)
+	PlayerScript.PlayerRef.SetFactionRank(FlashingSkirt, 0)
 EndFunction
 
 Function SLSFR_NakedCommentPreCheck()
