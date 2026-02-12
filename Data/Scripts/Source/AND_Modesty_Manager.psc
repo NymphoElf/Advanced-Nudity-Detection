@@ -21,19 +21,28 @@ String[] Property TopModestyTitle Auto
 String[] Property BottomModestyTitle Auto
 
 Event OnInit()
+	Startup()
+EndEvent
+
+Function Startup()
+	Utility.Wait(5.0)
 	RegisterForUpdateGameTime(1.0)
 	RegisteredForUpdate = True
 	LastTimeCheck = Utility.GetCurrentGameTime()
-EndEvent
+	AND_Logger.FastLog("<Modesty Manager> [Startup] - Startup Complete", Logger.CRITICAL)
+EndFunction
 
 Event OnUpdateGameTime()
+	AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - START")
 	If Core.DFFMA_Found == False && Core.EnableDynamicModesty == False
+		AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - DFFMA is not installed and Dynamic Modesty is Disabled - Unregistering for update")
 		UnregisterForUpdateGameTime()
 		RegisteredForUpdate = False
 		return
 	EndIf
 	
 	If Config.UseDynamicModesty == False || UpgradeBlocked == True
+		AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - Dynamic Modesty is Disabled or Upgrade is Blocked")
 		return
 	EndIf
 	
@@ -348,9 +357,9 @@ Function ModestyUpgrade(Int Hours, Int UpgradeTime, Bool Corruption)
 	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingBra = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
 	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingChest = " + PlayerRef.GetFactionRank(Core.AND_ShowingChestFaction) as Bool)
 	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsTopless = " + PlayerRef.GetFactionRank(Core.AND_ToplessFaction) as Bool)
-	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
-	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
-	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(Core.AND_ShowingBraFaction) as Bool)
+	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingUnderwear = " + PlayerRef.GetFactionRank(Core.AND_ShowingUnderwearFaction) as Bool)
+	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsShowingGenitals = " + PlayerRef.GetFactionRank(Core.AND_ShowingGenitalsFaction) as Bool)
+	AND_Logger.FastLog("<Modesty Manager> [ModestyUpgrade] IsBottomless = " + PlayerRef.GetFactionRank(Core.AND_BottomlessFaction) as Bool)
 	
 	If Config.MinimumModestyRank > ModestyRank
 		RankJump(Config.MinimumModestyRank)

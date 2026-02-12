@@ -157,10 +157,10 @@ Int Property TransparentShowgirlSkirtOdds_Male = 50 Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_Low_Male = 30 Auto Hidden
 Int Property TransparentShowgirlSkirtOdds_High_Male = 70 Auto Hidden
 
-Bool Property GenderlessWording = False Auto Hidden
+Bool Property GenderlessWording Auto Hidden
 Bool Property AllowMotionFlash = True Auto Hidden
-Bool Property DisableNakedComments = False Auto Hidden
-Bool Property UseDynamicModesty = False Auto Hidden
+Bool Property DisableNakedComments Auto Hidden
+Bool Property UseDynamicModesty Auto Hidden
 Bool Property ModestyCorruption = False Auto Hidden
 Bool Property PermanentShameless = False Auto Hidden
 Bool Property NPCModestyCorruption = False Auto Hidden
@@ -2317,6 +2317,11 @@ Event OnOptionSelect(Int Option)
 				AND_DynamicModesty.SetValue(1)
 			Else
 				AND_DynamicModesty.SetValue(2)
+			EndIf
+			
+			If ModestyManager.RegisteredForUpdate == False
+				ModestyManager.RegisterForUpdateGameTime(1.0)
+				ModestyManager.RegisteredForUpdate = True
 			EndIf
 		Else
 			UseDynamicModesty = False
