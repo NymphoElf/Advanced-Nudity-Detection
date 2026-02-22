@@ -1802,55 +1802,16 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$TrackedFemalesHeader")
 			Page10MenuID[1] = AddMenuOption("$SelectedFemaleText", SelectedFemale, 0)
-			If MakeFemalePermanent == False
-				Page10ToggleID[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermFemales.Find(SelectedFemale) >= 0))
-			Else
-				Page10ToggleID[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, 0)
-			EndIf
 			
-			If DeleteFemale == False
-				Page10ToggleID[9] = AddToggleOption("$DeleteFemale", DeleteFemale, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || ResetFemaleModesty == True || MakeFemalePermanent == True))
-			Else
-				Page10ToggleID[10] = AddToggleOption("$DeleteFemaleConfirm", ConfirmSelection, 0)
-			EndIf
+			Page10ToggleID[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermFemales.Find(SelectedFemale) >= 0))
+			Page10ToggleID[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, DisabledIf(MakeFemalePermanent == False))
 			
-			If ResetFemaleModesty == False
-				Page10ToggleID[11] = AddToggleOption("$ResetFemale", ResetFemaleModesty, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || MakeFemalePermanent == True))
-			Else
-				Page10ToggleID[12] = AddToggleOption("$ResetFemaleConfirm", ConfirmSelection, 0)
-			EndIf
+			Page10ToggleID[9] = AddToggleOption("$DeleteFemale", DeleteFemale, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || ResetFemaleModesty == True || MakeFemalePermanent == True))
+			Page10ToggleID[10] = AddToggleOption("$DeleteFemaleConfirm", ConfirmSelection, DisabledIf(DeleteFemale == False))
+		
+			Page10ToggleID[11] = AddToggleOption("$ResetFemale", ResetFemaleModesty, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || MakeFemalePermanent == True))
+			Page10ToggleID[12] = AddToggleOption("$ResetFemaleConfirm", ConfirmSelection, DisabledIf(ResetFemaleModesty == False))
 			
-			If SelectedFemale != "---" && SelectedFemale != ""
-				AND_Logger.FastLog("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
-				Int FemaleID = NPCModesty.FemaleActor.Find(SelectedFemaleActor)
-				Int Index = NPCModesty.ShynessMode[FemaleID]
-				
-				ThisNPCStrictRank = SelectedFemaleActor.GetFactionRank(Main.ModestyFaction) as Float
-				ThisNPCMinimumStrictRank = NPCModesty.MinimumRankStrict[FemaleID] as Float
-				ThisNPCTopRank = SelectedFemaleActor.GetFactionRank(Main.TopModestyFaction) as Float
-				ThisNPCMinimumTopRank = NPCModesty.MinimumRankTop[FemaleID] as Float
-				ThisNPCBottomRank = SelectedFemaleActor.GetFactionRank(Main.BottomModestyFaction) as Float
-				ThisNPCMinimumBottomRank = NPCModesty.MinimumRankBottom[FemaleID] as Float
-				
-				ThisNPCPermanentShameless = NPCModesty.AllowPermanentShameless[FemaleID] as Bool
-				ThisNPCCorrupt = NPCModesty.FemaleCorruption[FemaleID] as Bool
-				
-				NPCShyTweak = Sexes[Index]
-			Else
-				ThisNPCStrictRank = 0 as Float
-				ThisNPCTopRank = 0 as Float
-				ThisNPCBottomRank = 0 as Float
-				ThisNPCMinimumStrictRank = 0 as Float
-				ThisNPCMinimumTopRank = 0 as Float
-				ThisNPCMinimumBottomRank = 0 as Float
-				
-				ThisNPCPermanentShameless = False
-				ThisNPCCorrupt = False
-				
-				NPCShyTweak = Sexes[0]
-				ApplyTweak = False
-				ApplyAsDefault = False
-			EndIf
 			Page10SliderID[1] = AddSliderOption("$NPCStrictRank", ThisNPCStrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
 			Page10SliderID[2] = AddSliderOption("$NPCMinStrictRank", ThisNPCMinimumStrictRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
 			Page10SliderID[3] = AddSliderOption("$NPCTopRank", ThisNPCTopRank, "{0}", DisabledIf(SelectedFemale == "---" || SelectedFemale == ""))
@@ -2208,28 +2169,38 @@ EndEvent
 Event OnOptionSliderAccept(Int Option, Float Value)
 	If Option == Page9SliderID[0]
 		MinimumTopModestyRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page9SliderID[1]
 		MinimumBottomModestyRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[0]
 		NPCModestyArousalThreshold.SetValue(Value)
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[1]
 		ThisNPCStrictRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[2]
 		ThisNPCMinimumStrictRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[3]
 		ThisNPCTopRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[4]
 		ThisNPCMinimumTopRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[5]
 		ThisNPCBottomRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page10SliderID[6]
 		ThisNPCMinimumBottomRank = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 	ElseIf Option == Page12SliderID[0]
 		LoggingLevel = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
 		AND_Logger.SetLogLevel(LoggingLevel)
 		AND_Logger.FastLog("<MCM> [OnOptionSliderAccept] - LoggingLevel set to " + LoggingLevel, Logger.CRITICAL)
+		ForcePageReset()
 	EndIf
-	ForcePageReset()
 EndEvent
 
 Event OnOptionMenuOpen(Int Option)
@@ -2293,6 +2264,39 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 		
 		SelectedFemale = DisplayFemaleName[DisplayIndex]
 		SelectedFemaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		
+		If SelectedFemale != "---" && SelectedFemale != ""
+			AND_Logger.FastLog("<MCM> {NPC Modesty Page} Selected Female Actor is: " + SelectedFemaleActor + " " + SelectedFemale)
+			Int FemaleID = NPCModesty.FemaleActor.Find(SelectedFemaleActor)
+			Int FemaleIndex = NPCModesty.ShynessMode[FemaleID]
+			
+			ThisNPCStrictRank = SelectedFemaleActor.GetFactionRank(Main.ModestyFaction) as Float
+			ThisNPCMinimumStrictRank = NPCModesty.MinimumRankStrict[FemaleID] as Float
+			ThisNPCTopRank = SelectedFemaleActor.GetFactionRank(Main.TopModestyFaction) as Float
+			ThisNPCMinimumTopRank = NPCModesty.MinimumRankTop[FemaleID] as Float
+			ThisNPCBottomRank = SelectedFemaleActor.GetFactionRank(Main.BottomModestyFaction) as Float
+			ThisNPCMinimumBottomRank = NPCModesty.MinimumRankBottom[FemaleID] as Float
+			
+			ThisNPCPermanentShameless = NPCModesty.AllowPermanentShameless[FemaleID] as Bool
+			ThisNPCCorrupt = NPCModesty.FemaleCorruption[FemaleID] as Bool
+			
+			NPCShyTweak = Sexes[FemaleIndex]
+		Else
+			ThisNPCStrictRank = 0 as Float
+			ThisNPCTopRank = 0 as Float
+			ThisNPCBottomRank = 0 as Float
+			ThisNPCMinimumStrictRank = 0 as Float
+			ThisNPCMinimumTopRank = 0 as Float
+			ThisNPCMinimumBottomRank = 0 as Float
+			
+			ThisNPCPermanentShameless = False
+			ThisNPCCorrupt = False
+			
+			NPCShyTweak = Sexes[0]
+		EndIf
+		
+		ApplyTweak = False
+		ApplyAsDefault = False
 	ElseIf Option == Page10MenuID[2]
 		NPCShyTweak = Sexes[Index]
 	ElseIf Option == Page10MenuID[3]
@@ -2572,9 +2576,9 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, MakeFemalePermanent)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[8] ;Confirm Make Permanent
-		Actor femaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		Actor ThisFemaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
 		
-		NPCModesty.AddPermanent(femaleActor)
+		NPCModesty.AddPermanent(ThisFemaleActor)
 		
 		Int OldLength = PermFemales.Length
 		Int NewLength = OldLength + 1
@@ -2588,8 +2592,8 @@ Event OnOptionSelect(Int Option)
 		SetToggleOptionValue(Option, DeleteFemale)
 		ForcePageReset()
 	ElseIf Option == Page10ToggleID[10] ;Confirm Delete
-		Actor femaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
-		NPCModesty.RemoveFemale(femaleActor, DisplayIndex)
+		Actor ThisFemaleActor = NPCModesty.FemaleActor[DisplayIndex] as Actor
+		NPCModesty.RemoveFemale(ThisFemaleActor, DisplayIndex)
 		
 		Int OldLength = DisplayFemaleName.Length
 		Int NewLength = OldLength - 1
